@@ -1,0 +1,92 @@
+server:
+  # Google Cloud Run tells us where to listen using the PORT environment variable.
+  # Our k8s deployments use the Spring Boot name, SERVER_PORT.
+  # The following line allows either PORT or SERVER_PORT to specify the port the service listens on.
+  # If neither is specified, the default port will be 8085. This is a good default for local development.
+  # If both are specified (not recommended) SERVER_PORT will take precedence.
+  port: ${PORT:8085}
+
+dam:
+  base-url: http://localhost:3000/
+  client-id: local-dam-client-id
+  client-secret: local-dam-client-secret
+idp:
+  base-url: http://localhost:3001/
+  client-id: local-dam-client-id
+  client-secret: local-dam-client-secret
+ddap:
+  public-uri: http://localhost:8085
+  default-realm: dnastack
+  # Development key should not be deployed. There is an e2e test preventing this.
+  signingKey: |
+    VGhlcmUgb25jZSB3YXMgYSBsYW5ndWFnZSBjYWxsZWQgYmFzaApJdCdzIHNlbWFudGljcyB3ZXJlIG9mdGVuIHF1aXRlI
+    HJhc2gKQnV0IGl0IHdvcmtlZCwgbW9yZSBvciBsZXNzCkV2ZW4gdGhvdWdoIGl0J3MgYSBtZXNzClNvIEkgZ3Vlc3MgaX
+    Qgc3RheXMgb3V0IG9mIHRoZSB0cmFzaAo=
+  cors:
+    origins: "http://localhost:4200"
+  cookies:
+    # Default to false so cookies work on http://localhost
+    # e2e tests will remind you to set this true in real deployments!
+    secure: false
+  command-line-service:
+    aud: ${ddap.public-uri}
+    ttl: PT10M
+    signingKey: ${ddap.signingKey}
+  state-handler:
+    aud: ${ddap.public-uri}
+    ttl: PT10M
+    signingKey: ${ddap.signingKey}
+  wdl-validator:
+    url: https://wdl-validator.staging.dnastack.com
+    token: 1c0c52bedbc8c88bd998fa919243f32bcf5b201818288f112a477d118cc24d36
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        # NB: If you add a new route here,
+        # you may also need to modify com.dnastack.ddapfrontend.route.Router#angluarRoutes
+        - predicates:
+            - Path=/dam/**
+          filters:
+            - name: TimeoutAndRetry
+              args:
+                retries: 2
+                minimumTimeout: 1000
+                maximumTimeout: 20000
+                timeoutExponentialScalingBase: 10
+            - Logging
+            - AddRequestParameter=clientId,${dam.client-id}
+            - AddRequestParameter=clientSecret,${dam.client-secret}
+            - RemoveRequestHeader=Authorization
+            - SetBearerTokenFromCookie=DAM
+          uri: ${dam.base-url}
+        - predicates:
+            - Path=/identity/**
+          filters:
+            - name: TimeoutAndRetry
+              args:
+                retries: 2
+                minimumTimeout: 1000
+                maximumTimeout: 20000
+                timeoutExponentialScalingBase: 10
+            - Logging
+            - AddRequestParameter=clientId,${idp.client-id}
+            - AddRequestParameter=clientSecret,${idp.client-secret}
+            - RemoveRequestHeader=Authorization
+            - SetBearerTokenFromCookie=IC
+          uri: ${idp.base-url}
+logging:
+  level:
+    com:
+      dnastack:
+        ddap: DEBUG
+
+---
+
+spring:
+  profiles: basic-auth
+  security:
+    user:
+      name: "dev"
+      password: "dev"
