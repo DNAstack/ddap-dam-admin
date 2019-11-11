@@ -114,14 +114,15 @@ public class WalletLoginStrategy implements LoginStrategy {
         // Need to navigate to site before setting cookie
         driver.get(getUrlWithBasicCredentials(URI.create(DDAP_BASE_URL).resolve(format("/%s", realmName)).toString(), DDAP_USERNAME, DDAP_PASSWORD));
         cookieStore.getCookies()
-                   .stream()
-                   .filter(c -> cookieNames.contains(c.getName()))
-                   .forEach(cookie -> {
-                       driver.manage().deleteCookieNamed(cookie.getName());
-                       System.out.printf("Adding cookie to selenium: Cookie(name=%s, domain=%s, path=%s, expiry=%s, secure=%b", cookie.getName(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
-                       final Cookie browserCookie = new Cookie(cookie.getName(), cookie.getValue(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
-                       driver.manage().addCookie(browserCookie);
-                   });
+            .stream()
+            .filter(c -> cookieNames.contains(c.getName()))
+            .forEach(cookie -> {
+                driver.manage().deleteCookieNamed(cookie.getName());
+                System.out.printf("Adding cookie to selenium: Cookie(name=%s, domain=%s, path=%s, expiry=%s, secure=%b" + System.lineSeparator(),
+                    cookie.getName(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
+                final Cookie browserCookie = new Cookie(cookie.getName(), cookie.getValue(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
+                driver.manage().addCookie(browserCookie);
+            });
         driver.navigate().refresh();
 
         return pageFactory.apply(driver);
