@@ -63,7 +63,9 @@ export class PassportConditionsFormComponent implements OnInit {
   }
 
   getPrefixBtnValue(control: AbstractControl): string {
-    return this.getPrefixFromControlValue(control);
+    return control.value
+           ? this.getPrefixFromControlValue(control)
+           : '';
   }
 
   prefixChange(control: AbstractControl, prefix: string) {
@@ -72,11 +74,11 @@ export class PassportConditionsFormComponent implements OnInit {
     if (this.hasSomePrefix(control)) {
       this.replaceExistingPrefix(control, prefix);
     } else {
-      control.setValue(`${prefix}:${controlValue}`);
+      control.setValue(`${prefix}:${controlValue ? controlValue : ''}`);
     }
   }
 
-  private hasSomePrefix = ({ value }: AbstractControl) => this.prefixes.some((prefix) => value.startsWith(`${prefix}:`));
+  private hasSomePrefix = ({ value }: AbstractControl) => this.prefixes.some((prefix) => value && value.startsWith(`${prefix}:`));
 
   private replaceExistingPrefix(control: AbstractControl, newPrefix: string) {
     const { value: controlValue } = control;
