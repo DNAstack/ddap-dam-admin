@@ -17,3 +17,13 @@
     top: 5%;
   }
 }
+
+.row mat-button-toggle-group.col {
+  padding-right: 0;
+  width: auto;
+}
+
+mat-form-field.col {
+  width: auto;
+  flex-grow: 1;
+}

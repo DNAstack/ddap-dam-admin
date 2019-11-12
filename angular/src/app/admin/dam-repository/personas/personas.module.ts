@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DdapVisaPassportModule } from 'ddap-common-lib';
 
 import { DamRepositorySharedModule } from '../shared/shared.module';
@@ -24,6 +25,7 @@ import { PersonasRoutingModule } from './personas-routing.module';
     DamRepositorySharedModule,
     PersonasRoutingModule,
     DdapVisaPassportModule,
+    MatButtonToggleModule,
   ],
 })
 export class PersonasModule { }

@@ -62,4 +62,30 @@ export class PassportConditionsFormComponent implements OnInit {
     }
   }
 
+  getPrefixBtnValue(control: AbstractControl): string {
+    return this.getPrefixFromControlValue(control);
+  }
+
+  prefixChange(control: AbstractControl, prefix: string) {
+    const { value: controlValue } = control;
+
+    if (this.hasSomePrefix(control)) {
+      this.replaceExistingPrefix(control, prefix);
+    } else {
+      control.setValue(`${prefix}:${controlValue}`);
+    }
+  }
+
+  private hasSomePrefix = ({ value }: AbstractControl) => this.prefixes.some((prefix) => value.startsWith(`${prefix}:`));
+
+  private replaceExistingPrefix(control: AbstractControl, newPrefix: string) {
+    const { value: controlValue } = control;
+    control.setValue(controlValue.replace(this.getPrefixFromControlValue(control), newPrefix));
+  }
+
+  private getPrefixFromControlValue({ value }: AbstractControl): string {
+    const usedPrefixes = this.prefixes.filter((prefix) => value.startsWith(`${prefix}:`));
+    return usedPrefixes.length > 0 ? usedPrefixes[0] : '';
+  }
+
 }

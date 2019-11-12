@@ -63,6 +63,15 @@
                 </mat-form-field>
               </div>
               <div class="row">
+                <mat-button-toggle-group #byPrefixGroup="matButtonToggleGroup"
+                                         class="col"
+                                         [value]="getPrefixBtnValue(clause.get('by'))"
+                                         (change)="prefixChange(clause.get('by'), byPrefixGroup.value)">
+                  <mat-button-toggle *ngFor="let prefix of prefixes"
+                                     [value]="prefix">
+                    {{ prefix }}
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
                 <mat-form-field class="col">
                   <input matInput
                          [matAutocomplete]="authorityLevelsAutocomplete"
@@ -84,6 +93,15 @@
                 </mat-form-field>
               </div>
               <div class="row">
+                <mat-button-toggle-group #sourcePrefixGroup="matButtonToggleGroup"
+                                         class="col"
+                                         [value]="getPrefixBtnValue(clause.get('source'))"
+                                         (change)="prefixChange(clause.get('source'), sourcePrefixGroup.value)">
+                  <mat-button-toggle *ngFor="let prefix of prefixes"
+                                     [value]="prefix">
+                    {{ prefix }}
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
                 <mat-form-field class="col">
                   <input matInput
                          placeholder="Source"
@@ -98,6 +116,15 @@
                 </mat-form-field>
               </div>
               <div class="row">
+                <mat-button-toggle-group #valuePrefixGroup="matButtonToggleGroup"
+                                         class="col"
+                                         [value]="getPrefixBtnValue(clause.get('value'))"
+                                         (change)="prefixChange(clause.get('value'), valuePrefixGroup.value)">
+                  <mat-button-toggle *ngFor="let prefix of prefixes"
+                                     [value]="prefix">
+                    {{ prefix }}
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
                 <mat-form-field class="col">
                   <input matInput
                          placeholder="Value"
