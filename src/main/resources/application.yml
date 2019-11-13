@@ -4,7 +4,7 @@ server:
   # The following line allows either PORT or SERVER_PORT to specify the port the service listens on.
   # If neither is specified, the default port will be 8085. This is a good default for local development.
   # If both are specified (not recommended) SERVER_PORT will take precedence.
-  port: ${PORT:8085}
+  port: ${PORT:8087}
 
 dam:
   base-url: http://localhost:8083/
@@ -15,7 +15,7 @@ idp:
   client-id: 812c1319-fef5-4aa6-9393-beb5ec8facdf
   client-secret: 0000-0000-0000-0000-0000
 ddap:
-  public-uri: http://localhost:8085
+  public-uri: http://localhost:8087
   default-realm: dnastack
   # Development key should not be deployed. There is an e2e test preventing this.
   signingKey: |
