@@ -4,13 +4,12 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 
+import { DamService } from '../admin/dam-repository/dam.service';
 import { IdentityService } from '../identity/identity.service';
 import { IdentityStore } from '../identity/identity.store';
 import { Profile } from '../identity/profile.model';
-import { UserAccess } from '../admin/dam-repository/user-access.model';
-import { DamService } from "../admin/dam-repository/dam.service";
-import { DamConfigStore } from "../admin/dam-repository/shared/dam/dam-config.store";
-import { UserDamInfoAccess } from "./user-dam-info-access.model";
+
+import { UserDamInfoAccess } from './user-dam-info-access.model';
 
 const refreshRepeatTimeoutInMs = 600000;
 
