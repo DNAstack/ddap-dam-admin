@@ -1,6 +1,7 @@
 package com.dnastack.ddap.common.page;
 
 import com.dnastack.ddap.common.util.DdapBy;
+import com.dnastack.ddap.common.util.WebPageScroller;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,7 +36,9 @@ public class AdminListPage extends AdminDdapPage {
     }
 
     public AdminListPage clickDescriptionLink() {
-        driver.findElement(By.tagName("ddaplib-entity-description-link")).click();
+        WebElement descriptionLink = driver.findElement(By.tagName("ddaplib-entity-description-link"));
+        WebPageScroller.scrollTo(driver, descriptionLink);
+        descriptionLink.click();
         return new AdminListPage(driver);
     }
 
