@@ -3,12 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { defaultRealm } from 'ddap-common-lib';
 
 import { LayoutComponent } from './layout/layout.component';
+import { RealmGuard } from './shared/realm.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: `/${defaultRealm}` },
   {
     path: ':realmId',
     component: LayoutComponent,
+    canActivate: [RealmGuard],
     children: [
       {
         path: 'admin',

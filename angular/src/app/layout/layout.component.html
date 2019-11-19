@@ -122,13 +122,20 @@
   <mat-sidenav-content>
     <ddaplib-sandbox-banner *ngIf="isSandbox"></ddaplib-sandbox-banner>
 
-    <ng-container *ngIf="profile; else anonymousLandingPage">
-      <router-outlet></router-outlet>
+    <ng-container *ngIf="profile; else anonymousUserLandingPage">
+      <ng-container *ngIf="isChildPage(); else authorizedUserLandingPage">
+        <router-outlet></router-outlet>
+      </ng-container>
     </ng-container>
-    <ng-template #anonymousLandingPage>
+    <ng-template #authorizedUserLandingPage>
+      <ddaplib-landing-info-card [title]="'Data Access Manager Administration'">
+        This portal is for <b>DAM (Data Access Manager) administration</b>.
+      </ddaplib-landing-info-card>
+    </ng-template>
+    <ng-template #anonymousUserLandingPage>
       <ddaplib-landing-info-card [title]="'Data Access Manager Administration'">
             This portal is for <b>DAM (Data Access Manager) administration</b>.
-            To proceed please log in by clicking <b>Log in</b> in navigation menu or click
+            To proceed please log in by clicking <b>Log In</b> in navigation menu or click
             <a [href]="loginPath" class="btn-link"><b>here</b></a>.
       </ddaplib-landing-info-card>
     </ng-template>

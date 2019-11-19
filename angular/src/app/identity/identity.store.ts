@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { EntityModel, Store } from 'ddap-common-lib';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
@@ -9,23 +10,15 @@ import { IdentityService } from './identity.service';
 @Injectable({
   providedIn: 'root',
 })
-export class IdentityStore {
-
-  private _identity: ReplaySubject<Identity> = new ReplaySubject(1);
-  // tslint:disable-next-line:member-ordering
-  public readonly identity: Observable<Identity> = this._identity.asObservable();
+export class IdentityStore extends Store<Identity> {
 
   constructor(private identityService: IdentityService) {
-  }
-
-  getIdentity(): Observable<Identity> {
-    this.identityService.getIdentity()
-      .subscribe((identity: Identity) => this._identity.next(identity));
-    return this.identity;
+    super(null);
+    this.init();
   }
 
   getLoginHintForPrimaryAccount(): Observable<string> {
-    return this.identity
+    return this.state$
       .pipe(
         pluck('account'),
         map((account: any) => {
@@ -36,6 +29,13 @@ export class IdentityStore {
           return primaryAccount.loginHint;
         })
       );
+  }
+
+  private init(): void {
+    this.identityService.getIdentity()
+      .subscribe((identity: Identity) => {
+        this.setState(identity);
+      });
   }
 
 }
