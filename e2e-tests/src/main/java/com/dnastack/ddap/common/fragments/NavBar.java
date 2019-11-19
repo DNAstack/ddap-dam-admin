@@ -24,46 +24,54 @@ public class NavBar {
     public static class NavLink {
         private String title;
         private By selector;
+        private NavLink parentSelector;
 
+        public Optional<NavLink> getParentSelector() {
+            return Optional.ofNullable(parentSelector);
+        }
         public Optional<String> getTitle() {
             return Optional.ofNullable(title);
         }
     }
 
+    public static NavLink damPanelSelectorLink() {
+        return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-dam-panel']")), null);
+    }
+
     public static NavLink damOptionsLink() {
-        return new NavLink("Options", DdapBy.se("nav-options"));
+        return new NavLink("Options", DdapBy.se("nav-options"), damPanelSelectorLink());
     }
 
     public static NavLink damResourceLink() {
-        return new NavLink("Resource", DdapBy.se("nav-resources"));
+        return new NavLink("Resource", DdapBy.se("nav-resources"), damPanelSelectorLink());
     }
 
     public static NavLink damTestPersonaLink() {
-        return new NavLink("Test Personas", DdapBy.se("nav-test-personas"));
+        return new NavLink("Test Personas", DdapBy.se("nav-test-personas"), damPanelSelectorLink());
     }
 
     public static NavLink damClientLink() {
-        return new NavLink("Client Applications", DdapBy.se("nav-client-applications"));
+        return new NavLink("Client Applications", DdapBy.se("nav-client-applications"), damPanelSelectorLink());
     }
 
     public static NavLink damTrustedSourcesLink() {
-        return new NavLink("Trusted Sources", DdapBy.se("nav-trusted-sources"));
+        return new NavLink("Trusted Sources", DdapBy.se("nav-trusted-sources"), damPanelSelectorLink());
     }
 
     public static NavLink damClaimDefinitionLink() {
-        return new NavLink("Claim Definitions", DdapBy.se("nav-claim-definitions"));
+        return new NavLink("Claim Definitions", DdapBy.se("nav-claim-definitions"), damPanelSelectorLink());
     }
 
     public static NavLink damServiceDefinitionLink() {
-        return new NavLink("Service Definitions", DdapBy.se("nav-service-definitions"));
+        return new NavLink("Service Definitions", DdapBy.se("nav-service-definitions"), damPanelSelectorLink());
     }
 
     public static NavLink damPoliciesLink() {
-        return new NavLink("Access Policies", DdapBy.se("nav-access-policies"));
+        return new NavLink("Access Policies", DdapBy.se("nav-access-policies"), damPanelSelectorLink());
     }
 
     public static NavLink damPassportsLink() {
-        return new NavLink("Passport Issuers", DdapBy.se("nav-passport-issuers"));
+        return new NavLink("Passport Issuers", DdapBy.se("nav-passport-issuers"), damPanelSelectorLink());
     }
 
     public NavBar(WebDriver driver) {
@@ -71,9 +79,8 @@ public class NavBar {
     }
 
     public void assertAdminNavBar() {
-        // TODO: do we need to check this now as the modules are separated?
-//        Stream.of(damPanelSelectorLink().getSelector())
-//            .forEach(this.driver::findElement);
+        Stream.of(damPanelSelectorLink().getSelector())
+            .forEach(this.driver::findElement);
     }
 
     public boolean existsInNavBar(NavLink item) {
@@ -85,7 +92,9 @@ public class NavBar {
     }
 
     public <T> T goTo(NavLink navItem, Function<WebDriver, T> pageFactory) {
-        final WebElement clickableNavLink = driver.findElement(navItem.getSelector());
+        final WebElement clickableNavLink = navItem.getParentSelector()
+                                                   .map(parent -> getChildLink(navItem, parent))
+                                                   .orElseGet(() -> driver.findElement(navItem.getSelector()));
         clickableNavLink.click();
 
         return pageFactory.apply(driver);
