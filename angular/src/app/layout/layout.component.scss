@@ -37,4 +37,6 @@ mat-sidenav-container {
   color: $warn-color;
 }
 
-
+.mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
+  color: $navbar-font-main-color;
+}

@@ -56,16 +56,6 @@ export class LayoutComponent implements OnInit {
       .subscribe();
   }
 
-  isActivePanel(panelId: string): boolean {
-    const adminRoute = this.activatedRoute.firstChild;
-    if (adminRoute) {
-      const childRoute = adminRoute.firstChild;
-      const damPanelId = 'dam';
-      return panelId === damPanelId && childRoute.routeConfig.path === damPanelId;
-    }
-    return false;
-  }
-
   isChildPage() {
     return !!this.activatedRoute.firstChild;
   }
