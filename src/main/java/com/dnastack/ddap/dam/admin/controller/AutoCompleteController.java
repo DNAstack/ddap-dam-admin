@@ -84,29 +84,29 @@ public class AutoCompleteController {
         return Collections.emptyList();
     }
 
-    private List<String> getParsedVariableValues(String valueOrVariable, String policyName, DamService.DamConfig damConfig) {
-        boolean isVariable = valueOrVariable.startsWith("${") && valueOrVariable.endsWith("}");
-        if (isVariable) {
-            //variableName is: "${DATASETS}" cleaned up to "DATASETS"
-            String variableName = valueOrVariable.substring(2, valueOrVariable.length() - 1);
-            return getPoliciesInResourceViews(damConfig)
-                //Filter would match something like: variablePolicy(VAR1=value1,value2;VAR2=value3,value4)
-                .filter(resourcePolicyName -> resourcePolicyName.startsWith(policyName + "(") && resourcePolicyName
-                    .endsWith(")"))
-                .flatMap(policyValueString -> {
-                    List<String> assignmentList = Arrays
-                        .asList(policyValueString.substring(policyName.length() + 1, policyValueString.length() - 1)
-                            .split(";"));
-
-                    return getValuesForVariable(variableName, assignmentList)
-                        .filter(assignmentValue -> !isRegexValue(assignmentValue));
-                }).collect(Collectors.toList());
-        } else if (!isRegexValue(valueOrVariable)) {
-            return Collections.singletonList(valueOrVariable);
-        } else {
-            return Collections.emptyList();
-        }
-    }
+//    private List<String> getParsedVariableValues(String valueOrVariable, String policyName, DamService.DamConfig damConfig) {
+//        boolean isVariable = valueOrVariable.startsWith("${") && valueOrVariable.endsWith("}");
+//        if (isVariable) {
+//            //variableName is: "${DATASETS}" cleaned up to "DATASETS"
+//            String variableName = valueOrVariable.substring(2, valueOrVariable.length() - 1);
+//            return getPoliciesInResourceViews(damConfig)
+//                //Filter would match something like: variablePolicy(VAR1=value1,value2;VAR2=value3,value4)
+//                .filter(resourcePolicyName -> resourcePolicyName.startsWith(policyName + "(") && resourcePolicyName
+//                    .endsWith(")"))
+//                .flatMap(policyValueString -> {
+//                    List<String> assignmentList = Arrays
+//                        .asList(policyValueString.substring(policyName.length() + 1, policyValueString.length() - 1)
+//                            .split(";"));
+//
+//                    return getValuesForVariable(variableName, assignmentList)
+//                        .filter(assignmentValue -> !isRegexValue(assignmentValue));
+//                }).collect(Collectors.toList());
+//        } else if (!isRegexValue(valueOrVariable)) {
+//            return Collections.singletonList(valueOrVariable);
+//        } else {
+//            return Collections.emptyList();
+//        }
+//    }
 
     //Gets something like: DATASETS=^https?://dac\.nih\.gov/datasets/phs000710$,https://dac.nih.gov/datasets/phs000711,https://dac.nih.gov/datasets/phs000712
     //Returns the RHS split by comma something like: ^https?://dac\.nih\.gov/datasets/phs000710$, https://dac.nih.gov/datasets/phs000711, https://dac.nih.gov/datasets/phs000712
