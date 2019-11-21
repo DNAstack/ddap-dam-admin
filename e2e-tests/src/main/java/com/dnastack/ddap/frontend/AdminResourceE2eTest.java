@@ -19,7 +19,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
 
     private void waitForAccessTablesToLoad() {
         new WebDriverWait(driver, 15)
-                .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.tagName("mat-table"), 3));
+                .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.tagName("mat-table"), 1));
     }
 
     @Test
@@ -282,7 +282,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
     public void editResourceNoChangesToView() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                                               .goToAdmin(damResourceLink());
-        String resourceToEdit = "GA4GH APIs";
+        String resourceToEdit = "WES Resource";
 
         waitForAccessTablesToLoad();
         adminListPage.assertListItemExists(resourceToEdit);
@@ -293,8 +293,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-label"), "Cool edited resource");
 
         adminManagePage.waitForInflightRequests();
-        adminManagePage.findCheckedCheckbox("beacon/discovery/test_user_with_access");
-        adminManagePage.findCheckedCheckbox("gcs_read/viewer/test_user_with_access");
+        adminManagePage.findCheckedCheckbox("wes-view/execute/test_user_with_access");
 
         adminListPage = adminManagePage.updateEntity();
         waitForAccessTablesToLoad();
