@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormValidators } from 'ddap-common-lib';
 import IAssertion = common.IAssertion;
-import ICondition = common.Assertion.ICondition;
-import IConditionClause = common.Assertion.IConditionClause;
+import ICondition = common.ConditionSet;
+import IConditionClause = common.Condition;
 import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
@@ -57,7 +57,7 @@ export class PersonaFormBuilder {
   buildConditionsForm(conditions?: ICondition[]): FormArray {
     return this.formBuilder.array(conditions ? conditions.map((condition) => {
       return this.formBuilder.group({
-        clauses: this.formBuilder.array(condition.clauses.map((conditionClause: IConditionClause) => {
+        clauses: this.formBuilder.array(condition.allOf.map((conditionClause: IConditionClause) => {
           return this.formBuilder.group({
             type: [conditionClause.type, [Validators.required]],
             source: [conditionClause.source, [PassportVisaValidators.hasPrefix]],
