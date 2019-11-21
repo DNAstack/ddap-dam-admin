@@ -20,6 +20,21 @@ import View = dam.v1.View;
 })
 export class ResourceViewFormComponent implements OnInit, OnDestroy {
 
+  get serviceTemplate(): string {
+    return this.viewForm.get('serviceTemplate').value;
+  }
+
+  get selectedTemplate(): EntityModel {
+    if (!this.templates) {
+      return null;
+    }
+    return this.templates.find(this.equalToSelectedTemplateName);
+  }
+
+  get variableItems() {
+    return this.viewForm.get('variables') as FormArray;
+  }
+
   @Input()
   view: EntityModel;
   @Output()
@@ -35,21 +50,6 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
               private serviceDefinitionService: ServiceDefinitionService,
               private serviceDefinitionsStore: ServiceDefinitionsStore,
               private accessPoliciesStore: AccessPoliciesStore) {
-  }
-
-  get serviceTemplate(): string {
-    return this.viewForm.get('serviceTemplate').value;
-  }
-
-  get selectedTemplate(): EntityModel {
-    if (!this.templates) {
-      return null;
-    }
-    return this.templates.find(this.equalToSelectedTemplateName);
-  }
-
-  get variableItems() {
-    return this.viewForm.get('variables') as FormArray;
   }
 
   ngOnInit() {
@@ -128,6 +128,10 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   getVariablesBySelectedTemplate(): Observable<any> {
     const serviceTemplateId = this.viewForm.get('serviceTemplate').value;
     return this.serviceDefinitionService.getTargetAdapterVariables(serviceTemplateId);
+  }
+
+  bindFormControlErrors() {
+
   }
 
   private getPoliciesForRole(roleId: string): string[] {

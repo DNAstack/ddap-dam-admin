@@ -42,9 +42,11 @@ export class ResourceDetailComponent extends DamConfigEntityDetailComponentBase<
     const resourceModel: EntityModel = this.resourceForm.getModel();
     const applyModel = this.accessForm.getApplyModel(isDryRun) || {};
     const change = new ConfigModificationModel(resourceModel.dto, applyModel);
+
     this.resourceService.update(this.entity.name, change)
       .subscribe(() => {
         if (!isDryRun) {
+          // this.isFormValid = true;
           this.navigateUp('..');
         }
       }, (error) => this.handleError(isDryRun, error));
@@ -56,16 +58,37 @@ export class ResourceDetailComponent extends DamConfigEntityDetailComponentBase<
   }
 
   handleError = (isDryRun: boolean, error: HttpErrorResponse) => {
-    if (error.status === 424 && this.accessForm.isConfigModificationObject(error)) {
-      this.accessForm.makeFieldsValid();
-      this.accessForm.validatePersonaFields(error);
-    } else if (!isDryRun) {
-      this.showError(error);
-    }
+    // this.handleApiError(error);
+    this.errorDetails(error);
+    // if (error.status === 424 && this.accessForm.isConfigModificationObject(error)) {
+    //   this.accessForm.makeFieldsValid();
+    //   this.accessForm.validatePersonaFields(error);
+    // } else {
+    //   // this.handleApiError(error);
+    // }
   }
 
   executeDryRun() {
     this.update(true);
+  }
+
+  errorDetails = ({ error }) => {
+    if (error instanceof Object) {
+      // this.isFormValid = false;
+      this.formErrorMessage = '';
+      const errorDetails: object[] = error.details;
+      errorDetails.forEach(details => {
+        if (this.isConfigModification(details['@type'])) {
+          this.accessForm.makeFieldsValid();
+          this.accessForm.validatePersonaFields(details);
+        } else {
+          this.isFormValid = false;
+          this.isFormValidated = true;
+          this.resourceForm.setFormControlErrors(details);
+          // this.formErrorMessage = this.formErrorMessage.concat(details['description'], " ")
+        }
+      });
+    }
   }
 
 }

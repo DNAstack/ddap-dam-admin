@@ -35,6 +35,10 @@ import Resource = dam.v1.Resource;
 })
 export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
 
+  get views() {
+    return _get(this.resource, 'dto.views', {});
+  }
+
   @Input()
   resource?: EntityModel = new EntityModel('', Resource.create());
   @Output()
@@ -53,10 +57,6 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
   constructor(private formBuilder: FormBuilder,
               private resourceFormBuilder: ResourceFormBuilder,
               private cd: ChangeDetectorRef) {
-  }
-
-  get views() {
-    return _get(this.resource, 'dto.views', {});
   }
 
   ngOnInit(): void {
@@ -151,6 +151,19 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
     this.formChange.emit(values);
   }
 
+  setFormControlErrors(errorDetails: object) {
+    const viewForms = this.getViewChildrenForms();
+    viewForms.forEach(viewForm => {
+      const viewId = viewForm.value.id;
+      const resourceId = this.form.value.id;
+      const path = 'resources/' + resourceId + '/views/' + viewId + '/';
+      if (errorDetails['resourceName'].includes(path)) {
+        const field = errorDetails['resourceName'].replace(path, '');
+        // viewForm.controls['de']
+      }
+    });
+  }
+
   private getViewChildrenForms(): FormGroup[] {
     if (!this.viewChildComponents) {
       return [];
@@ -188,5 +201,4 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
       tap(() => this.resourceFormChange())
     ).subscribe();
   }
-
 }

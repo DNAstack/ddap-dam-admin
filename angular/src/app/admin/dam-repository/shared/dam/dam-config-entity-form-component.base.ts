@@ -32,4 +32,8 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
     this.isFormValidated = true;
   }
 
+  protected isConfigModification(errorType: string) {
+    return errorType.includes('ConfigModification');
+  }
+
 }
