@@ -31,8 +31,6 @@ export class ServiceDefinitionFormComponent implements OnInit, AfterViewInit {
   targetAdapters: object;
   requirements: object;
   itemFormats: string[];
-  roleSecondaryPlaceholder: string;
-  scopeSecondaryPlaceholder: string;
 
   constructor( private formBuilder: FormBuilder,
                private serviceDefinitionService: ServiceDefinitionService,
@@ -130,6 +128,24 @@ export class ServiceDefinitionFormComponent implements OnInit, AfterViewInit {
 
   isRequired(fieldName: string): boolean {
     return this.requirements && this.requirements[fieldName];
+  }
+
+  showFieldErrorMessage(fieldName: string) {
+    return (this.form.get(fieldName).errors
+      && this.form.get(fieldName).errors.serverError
+      && this.form.get(fieldName).errors.serverError.length > 0);
+  }
+
+  displayError({ details }) {
+    details.forEach(errorDetail => {
+      const path = 'serviceTemplates/' + this.form.value.id + '/';
+      if (errorDetail['resourceName'] && errorDetail['resourceName'].includes(path)) {
+        const fieldName = errorDetail['resourceName'].replace(path, '');
+        this.form.controls[fieldName].setErrors({
+          serverError: errorDetail['description'],
+        });
+      }
+    });
   }
 
   private createRoleForm(name, dto): FormGroup {

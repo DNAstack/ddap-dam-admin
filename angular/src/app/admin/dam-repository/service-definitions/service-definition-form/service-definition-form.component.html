@@ -52,6 +52,9 @@
         {{itemFormat.value.ui.label}}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="showFieldErrorMessage('itemFormat')">
+      {{form.get('itemFormat').errors?.serverError}}
+    </mat-error>
   </mat-form-field>
 
   <h3>
