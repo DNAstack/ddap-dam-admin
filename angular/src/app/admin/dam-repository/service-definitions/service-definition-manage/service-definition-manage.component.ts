@@ -31,6 +31,15 @@ export class ServiceDefinitionManageComponent extends DamConfigEntityFormCompone
     const serviceTemplate: EntityModel = this.serviceDefinitionForm.getModel();
     const change = new ConfigModificationModel(serviceTemplate.dto, {});
     this.serviceDefinitionService.save(serviceTemplate.name, change)
-      .subscribe(() => this.navigateUp('../..'), this.showError);
+      .subscribe(() => this.navigateUp('../..'), this.handleError);
+  }
+
+  handleError = (response) => {
+    const { error } = response;
+    if ( error instanceof Object) {
+      this.serviceDefinitionForm.displayError(error);
+    } else {
+      this.showError(response);
+    }
   }
 }
