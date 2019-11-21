@@ -194,7 +194,8 @@
                              secondaryPlaceholder="Add Policy"
                              placeholder="+ Policy"
                              editable="true"
-                             modelAsStrings="true">
+                             [identifyBy]="'name'"
+                             [displayBy]="'name'">
                     <tag-input-dropdown [autocompleteItems]="policies"></tag-input-dropdown>
                   </tag-input>
                 </div>

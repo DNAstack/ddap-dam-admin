@@ -169,8 +169,15 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
       }).map(([key, _]: any) => {
         return key;
       });
-
     emptyRoles.forEach((role) => delete roles[role]);
+
+    Object.entries(roles)
+      .forEach(([_, roleValue]: any) => {
+        roleValue.policies.forEach((policy) => {
+          delete policy.display; // needs to be deleted because ngx-chips (tag-input) adds this value
+          delete policy.value; // needs to be deleted because ngx-chips (tag-input) adds this value
+        });
+      });
 
     return roles;
   }
