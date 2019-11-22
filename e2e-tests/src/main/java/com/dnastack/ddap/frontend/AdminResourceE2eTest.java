@@ -3,7 +3,7 @@ package com.dnastack.ddap.frontend;
 import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AdminManagePage;
 import com.dnastack.ddap.common.util.DdapBy;
-import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -12,7 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.dnastack.ddap.common.fragments.NavBar.damResourceLink;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.startsWith;
 
 @SuppressWarnings("Duplicates")
 public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
@@ -145,6 +144,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists(resourceId);
     }
 
+    // TODO: Update with DISCO-2396
     @Test
     public void createInvalidResourceShowsServerSideError() {
         AdminListPage adminListPage = ddapPage.getNavBar()
@@ -179,9 +179,10 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickSave();
         adminListPage.waitForInflightRequests();
         adminManagePage.assertError(containsString("NONEXISTENT_POLICY"));
-        adminManagePage.assertError(Matchers.not(startsWith("{")));
+        adminManagePage.assertError(containsString("is not defined"));
     }
 
+    // TODO: Update with DISCO-2396
     @Test
     public void editInvalidResourceShowsServerSideError() {
         AdminListPage adminListPage = ddapPage.getNavBar()
@@ -202,9 +203,11 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickUpdate();
         adminManagePage.waitForInflightRequests();
         adminManagePage.assertError(containsString("NONEXISTENT_POLICY"));
-        adminManagePage.assertError(Matchers.not(startsWith("{")));
+        adminManagePage.assertError(containsString("is not defined"));
     }
 
+    // TODO: Update with DISCO-2396
+    @Ignore
     @Test
     public void editInvalidPersonaAccessShowsValidationMessage() {
         AdminListPage adminListPage = ddapPage.getNavBar()
@@ -257,7 +260,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
     public void editResourceRemoveView() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                                               .goToAdmin(damResourceLink());
-        String resourceToEdit = "1000 Genomes";
+        String resourceToEdit = "Edit Me";
 
         waitForAccessTablesToLoad();
         adminListPage.assertListItemExists(resourceToEdit);
@@ -279,34 +282,10 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
     }
 
     @Test
-    public void editResourceNoChangesToView() {
-        AdminListPage adminListPage = ddapPage.getNavBar()
-                                              .goToAdmin(damResourceLink());
-        String resourceToEdit = "WES Resource";
-
-        waitForAccessTablesToLoad();
-        adminListPage.assertListItemExists(resourceToEdit);
-
-        AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit, "Edit Resource");
-
-        adminManagePage.clearField(DdapBy.se("inp-label"));
-        adminManagePage.fillField(DdapBy.se("inp-label"), "Cool edited resource");
-
-        adminManagePage.waitForInflightRequests();
-        adminManagePage.findCheckedCheckbox("wes-view/execute/test_user_with_access");
-
-        adminListPage = adminManagePage.updateEntity();
-        waitForAccessTablesToLoad();
-
-        adminListPage.assertListItemDoNotExist(resourceToEdit);
-        adminListPage.assertListItemExists("Cool edited resource");
-    }
-
-    @Test
     public void deleteResource() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                                               .goToAdmin(damResourceLink());
-        String resourceToDelete = "Billing Test for GCS and BigQuery";
+        String resourceToDelete = "Delete Me";
 
         waitForAccessTablesToLoad();
         adminListPage.assertListItemExists(resourceToDelete);
