@@ -41,11 +41,10 @@ public class AutoCompleteApiTest extends AbstractBaseE2eTest {
                     .log().ifValidationFails()
                     .contentType(JSON)
                     .statusCode(200)
-                    .body("[0]", equalTo("foobar"))
-                    .body("[1]", equalTo("foobar2"))
-                    .body("[2]", equalTo("foobar3"))
-                    .body("[3]", equalTo("foobar4"))
-                    .body("[4]", equalTo("foobar5"));
+                    .body("[0]", equalTo("pattern:^.$"))
+                    .body("[1]", equalTo("split_pattern:foobar3"))
+                    .body("[2]", equalTo("split_pattern:foobar4"))
+                    .body("[3]", equalTo("split_pattern:foobar;foobar2"));
         // @formatter:on
     }
 
@@ -67,11 +66,7 @@ public class AutoCompleteApiTest extends AbstractBaseE2eTest {
                     .log().ifValidationFails()
                     .contentType(JSON)
                     .statusCode(200)
-                    .body("[0]", equalTo("https://dnastack.com/datasets/1"))
-                    .body("[1]", equalTo("https://dnastack.com/datasets/2"))
-                    .body("[2]", equalTo("https://dnastack.com/datasets/3"))
-                    .body("[3]", equalTo("https://dnastack.com/used/value"))
-                    .body("[4]", equalTo("https://www.foobar.com"));
+                    .body("[0]", equalTo("split_pattern:${DATASET}"));
         // @formatter:on
     }
 
