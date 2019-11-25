@@ -28,11 +28,13 @@ export class PersonaAccessFormComponent {
   }
 
   validateAccessFields(personaId, {error}) {
-    const fieldsToAdd: string[] = _get(error, `testPersonas[${personaId}].addAccess`, []);
-    const fieldsToRemove: string[] = _get(error, `testPersonas[${personaId}].removeAccess`, []);
+    error.details.forEach(errorDetail => {
+      const fieldsToAdd: string[] = _get(errorDetail, `testPersonas[${personaId}].addAccess`, []);
+      const fieldsToRemove: string[] = _get(errorDetail, `testPersonas[${personaId}].removeAccess`, []);
 
-    fieldsToAdd.forEach(this.setError);
-    fieldsToRemove.forEach(this.setError);
+      fieldsToAdd.forEach(this.setError);
+      fieldsToRemove.forEach(this.setError);
+    });
   }
 
   makeAccessFieldsValid() {

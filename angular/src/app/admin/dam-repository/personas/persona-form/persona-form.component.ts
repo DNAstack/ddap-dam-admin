@@ -31,6 +31,18 @@ import AuthorityLevel = PassportVisa.AuthorityLevel;
 })
 export class PersonaFormComponent implements OnInit, OnDestroy, Form {
 
+  get standardClaims() {
+    return this.form.get('passport.standardClaims') as FormArray;
+  }
+
+  get ga4ghAssertions() {
+    return this.form.get('passport.ga4ghAssertions') as FormArray;
+  }
+
+  get resourceAccess() {
+    return this.form.get('resourceAccess') as FormGroup;
+  }
+
   @Input()
   persona?: EntityModel = new EntityModel('', TestPersona.create());
 
@@ -47,18 +59,6 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
 
   private validatorSubscription: Subscription = new Subscription();
   private resourceAccess$: Observable<any>;
-
-  get standardClaims() {
-    return this.form.get('passport.standardClaims') as FormArray;
-  }
-
-  get ga4ghAssertions() {
-    return this.form.get('passport.ga4ghAssertions') as FormArray;
-  }
-
-  get resourceAccess() {
-    return this.form.get('resourceAccess') as FormGroup;
-  }
 
   constructor(private formBuilder: FormBuilder,
               private personaFormBuilder: PersonaFormBuilder,
@@ -129,6 +129,21 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
     return assertionControl as FormGroup;
   }
 
+  displayError({ error }) {
+    const { details } = error;
+    details.forEach(errorDetail => {
+      if (!errorDetail['@type'].includes('ConfigModification')) {
+        const path = 'testPersonas/' + this.form.value.id;
+        if (errorDetail['resourceName'].includes(path)
+          && errorDetail['description'].includes('visa')) {
+          this.form.get('passport.ga4ghAssertions').setErrors({
+            serverError: errorDetail['description'],
+          });
+        }
+      }
+    });
+  }
+
   private buildGa4GhClaimGroup(ga4ghAssertion: common.IAssertion): FormGroup {
     const ga4ghClaimForm: FormGroup = this.personaFormBuilder.buildGa4ghAssertionForm(ga4ghAssertion);
 
@@ -179,6 +194,7 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
       tap(() => this.accessForm.makeAccessFieldsValid()),
       catchError((error) => {
         this.accessForm.validateAccessFields(personaId, error);
+        this.displayError(error);
         return EMPTY;
       }));
   }
