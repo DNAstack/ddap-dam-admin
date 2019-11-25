@@ -128,10 +128,10 @@
         <h3>
           <mat-icon class="icon icon-settings"></mat-icon>
           <span>Target Adapter Variables</span>
+          <mat-error *ngIf="viewForm.get('variables').invalid">
+            {{ viewForm.get('variables').errors?.serverError }}
+          </mat-error>
         </h3>
-        <mat-error *ngIf="viewForm.get('variables').invalid">
-          {{ viewForm.get('variables').errors?.serverError }}
-        </mat-error>
         <ul class="timeline">
           <li class="event row" *ngFor="let variable of variableItems.controls; let i=index"
               formArrayName="variables">
