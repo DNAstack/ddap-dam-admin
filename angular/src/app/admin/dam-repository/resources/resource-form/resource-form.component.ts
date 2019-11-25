@@ -155,12 +155,20 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
     const viewForms = this.getViewChildrenForms();
     viewForms.forEach(viewForm => {
       const viewId = viewForm.value.id;
-      const resourceId = this.form.value.id;
-      const path = 'resources/' + resourceId + '/views/' + viewId + '/';
-      if (errorDetails['resourceName'].includes(path)) {
-        const field = errorDetails['resourceName'].replace(path, '');
-        // viewForm.controls['de']
+      if (errorDetails['resourceName'].includes(viewId)) {
+        const fieldsPath = errorDetails['resourceName'].replace(new RegExp('^.+' + viewId + '\/'), '');
+        if (fieldsPath.includes('accessRoles')) {
+          this.displayErrorMessage('roles', viewForm, errorDetails);
+        } else if (fieldsPath.includes('items')) {
+          this.displayErrorMessage('variables', viewForm, errorDetails);
+        }
       }
+    });
+  }
+
+  private displayErrorMessage(fieldControlName, form, errorDetails) {
+    form.get(fieldControlName).setErrors({
+      serverError: errorDetails['description'],
     });
   }
 
