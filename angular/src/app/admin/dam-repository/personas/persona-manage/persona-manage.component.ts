@@ -39,9 +39,11 @@ export class PersonaManageComponent extends DamConfigEntityManageComponentBase {
         () => this.navigateUp('../..'),
         (err) => {
           this.personaForm.accessForm.validateAccessFields(personaModel.name, err);
-          this.showError(err);
+          this.personaForm.displayError(err);
         }
       );
   }
+
+
 
 }

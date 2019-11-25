@@ -27,9 +27,18 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
   protected navigateUp = (path: string) => this.router.navigate([path], { relativeTo: this.route });
 
   protected showError = ({ error }: HttpErrorResponse) => {
-    this.formErrorMessage = (error instanceof Object) ? JSON.stringify(error) : error;
-    this.isFormValid = false;
-    this.isFormValidated = true;
+    const { details } = error;
+    details.forEach(errorDetail => {
+      if (!this.isConfigModification(errorDetail['@type'])) {
+        this.formErrorMessage = errorDetail['description'];
+        this.isFormValid = false;
+        this.isFormValidated = true;
+      }
+    });
+  }
+
+  protected isConfigModification(errorType: string) {
+    return errorType.includes('ConfigModification');
   }
 
 }

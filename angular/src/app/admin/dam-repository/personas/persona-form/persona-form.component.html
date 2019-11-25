@@ -63,19 +63,22 @@
     </ng-container>
 
     <ng-container formArrayName="ga4ghAssertions">
-    <h3>
-      <span>Global Alliance for Genomics and Health Passport Visas</span>
-      <div>
-        <button mat-button
-                color="primary"
-                class="uppercase"
-                type="button"
-                data-se="btn-add-passport"
-                (click)="addGa4ghAssertion()">
-          Add Passport Visa
-        </button>
-      </div>
-    </h3>
+      <h3>
+        <span>Global Alliance for Genomics and Health Passport Visas</span>
+        <div>
+          <button mat-button
+                  color="primary"
+                  class="uppercase"
+                  type="button"
+                  data-se="btn-add-passport"
+                  (click)="addGa4ghAssertion()">
+            Add Passport Visa
+          </button>
+        </div>
+      </h3>
+      <mat-error *ngIf="form.get('passport.ga4ghAssertions').invalid" class="ddap-access-col">
+        {{ form.get('passport.ga4ghAssertions').errors?.serverError }}
+      </mat-error>
       <mat-accordion multi displayMode="flat">
         <mat-expansion-panel *ngFor="let ga4ghAssertion of ga4ghAssertions.controls; let i=index"
                              [attr.data-se]="'passport-' + i">

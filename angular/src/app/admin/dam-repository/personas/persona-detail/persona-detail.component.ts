@@ -34,7 +34,6 @@ export class PersonaDetailComponent extends DamConfigEntityDetailComponentBase<P
     if (!this.validate(this.personaForm)) {
       return;
     }
-
     const personaModel: EntityModel = this.personaForm.getModel();
     const change = new ConfigModificationModel(personaModel.dto, {});
     this.personaService.update(this.entity.name, change)
@@ -51,7 +50,7 @@ export class PersonaDetailComponent extends DamConfigEntityDetailComponentBase<P
       const personaModel: EntityModel = this.personaForm.getModel();
       this.personaForm.accessForm.validateAccessFields(personaModel.name, error);
     } else {
-      this.showError(error);
+      this.personaForm.displayError(error);
     }
   }
 
