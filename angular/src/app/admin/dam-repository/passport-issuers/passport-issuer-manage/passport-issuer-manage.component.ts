@@ -41,7 +41,33 @@ export class PassportIssuerManageComponent extends DamConfigEntityFormComponentB
     const personaModel: EntityModel = this.passportIssuerForm.getModel();
     const change = new ConfigModificationModel(personaModel.dto, {});
     this.passportIssuerService.save(personaModel.name, change)
-      .subscribe(() => this.navigateUp('../..'), this.showError);
+      .subscribe(() => this.navigateUp('../..'), this.handleError);
+  }
+
+  handleError = ({ error }) => {
+    const { details } = error;
+    if (details) {
+      details.forEach(errorDetail => {
+        if (!this.isConfigModification(errorDetail['@type'])) {
+          const path = 'trustedPassportIssuer/' + this.passportIssuerForm.form.get('id').value + '/';
+          const fieldName = errorDetail['resourceName'].replace(path, '').replace('/', '.');
+          if (fieldName.length > 0) {
+            this.passportIssuerForm.form.get(fieldName).setErrors({
+              serverError: errorDetail['description'],
+            });
+          } else {
+            // TODO a global error message
+            this.formErrorMessage = errorDetail['description'];
+            this.isFormValid = false;
+            this.isFormValidated = true;
+          }
+        }
+      });
+    } else {
+      this.formErrorMessage = error;
+      this.isFormValid = false;
+      this.isFormValidated = true;
+    }
   }
 
 }

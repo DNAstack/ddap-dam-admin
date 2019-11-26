@@ -10,6 +10,7 @@
              [readonly]="passportIssuer.name && passportIssuer.name.length > 0"
              required>
       <mat-error *ngIf="form.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
+      <mat-error *ngIf="form.get('id').invalid">{{ form.get('id').errors?.serverError }}</mat-error>
     </mat-form-field>
     <mat-form-field class="col"
                     formGroupName="ui">
@@ -29,6 +30,7 @@
                 required>
       </textarea>
       <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
+      <mat-error *ngIf="form.get('ui.description').invalid">{{ form.get('ui.description').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
   <div class="row">
@@ -45,6 +47,7 @@
           {{ option }}
         </mat-option>
       </mat-autocomplete>
+      <mat-error *ngIf="form.get('issuer').invalid">{{ form.get('issuer').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
   <div class="row">
@@ -57,6 +60,7 @@
           {{ translator.label }}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="form.get('translateUsing').invalid">{{ form.get('translateUsing').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
 
