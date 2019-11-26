@@ -44,6 +44,4 @@ export class PersonaManageComponent extends DamConfigEntityManageComponentBase {
       );
   }
 
-
-
 }
