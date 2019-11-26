@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  ddapApiUrl: 'http://localhost:8085/api/v1alpha',
-  idpApiUrl: 'http://localhost:8085/identity/v1alpha',
-  damApiUrl: 'http://localhost:8085/dam/v1alpha',
+  ddapApiUrl: 'http://localhost:8087/api/v1alpha',
+  idpApiUrl: 'http://localhost:8087/identity/v1alpha',
+  damApiUrl: 'http://localhost:8087/dam/v1alpha',
   claimExpirationWarningThresholdInHours: 48,
 };
 
