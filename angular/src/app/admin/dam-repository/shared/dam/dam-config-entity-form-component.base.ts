@@ -4,6 +4,7 @@ import { Form } from 'ddap-common-lib';
 import { FormValidationService } from 'ddap-common-lib';
 
 import { DamConfigEntityComponentBase } from './dam-config-entity-component.base';
+import { DamConfigEntityType } from './dam-config-entity-type.enum';
 
 export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBase {
 
@@ -35,6 +36,29 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
         this.isFormValidated = true;
       }
     });
+  }
+
+  protected displayFieldErrorMessage = (error, moduleName, form) => {
+    const { details } = error;
+    if (details) {
+      details.forEach(errorDetail => {
+        const path = moduleName + '/' + form.get('id').value + '/';
+        const fieldName = errorDetail['resourceName'].replace(path, '').replace('/', '.');
+        if (fieldName.length > 0) {
+          form.get(fieldName).setErrors({
+            serverError: errorDetail['description'],
+          });
+        } else {
+          this.formErrorMessage = errorDetail['description'];
+          this.isFormValid = false;
+          this.isFormValidated = true;
+        }
+      });
+    } else {
+      this.formErrorMessage = error;
+      this.isFormValid = false;
+      this.isFormValidated = true;
+    }
   }
 
   protected isConfigModification(errorType: string) {

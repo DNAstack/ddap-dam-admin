@@ -6,6 +6,7 @@ import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import { DamConfigEntityDetailComponentBase } from '../../shared/dam/dam-config-entity-detail-component.base';
+import { DamConfigEntityType } from '../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../shared/dam/dam-config.store';
 import {
   EntityRemovalConfirmationDialogComponent
@@ -52,6 +53,7 @@ export class PassportIssuerDetailComponent extends DamConfigEntityDetailComponen
   }
 
   showErrorMessage = ({ error }: HttpErrorResponse) => {
+    // TODO handle this
     if (error && ('testPersonas' in error)) {
       this.openEntityRemovalConfirmationDialog(error);
       return;
@@ -59,28 +61,8 @@ export class PassportIssuerDetailComponent extends DamConfigEntityDetailComponen
     this.handleError(error);
   }
 
-  handleError = ({ error }) => {
-    const { details } = error;
-    if (details) {
-      details.forEach(errorDetail => {
-        const path = 'trustedPassportIssuer/' + this.passportIssuerForm.form.get('id').value + '/';
-        const fieldName = errorDetail['resourceName'].replace(path, '').replace('/', '.');
-        if (fieldName.length > 0) {
-          this.passportIssuerForm.form.get(fieldName).setErrors({
-            serverError: errorDetail['description'],
-          });
-        } else {
-          // TODO a global error message
-          this.formErrorMessage = errorDetail['description'];
-          this.isFormValid = false;
-          this.isFormValidated = true;
-        }
-      });
-    } else {
-      this.formErrorMessage = error;
-      this.isFormValid = false;
-      this.isFormValidated = true;
-    }
+  handleError = (error) => {
+    this.displayFieldErrorMessage(error, 'trustedPassportIssuer', this.passportIssuerForm.form);
   }
 
   private openEntityRemovalConfirmationDialog(accessChange): void {
