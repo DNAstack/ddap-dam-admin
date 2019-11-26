@@ -131,18 +131,12 @@ export class ServiceDefinitionFormComponent implements OnInit, AfterViewInit {
     return this.requirements && this.requirements[fieldName];
   }
 
-  showFieldErrorMessage(fieldName: string) {
-    return (this.form.get(fieldName).errors
-      && this.form.get(fieldName).errors.serverError
-      && this.form.get(fieldName).errors.serverError.length > 0);
-  }
-
   displayError({ details }) {
     details.forEach(errorDetail => {
-      const path = DamConfigEntityType.serviceTemplates + '/' + this.form.value.id + '/';
+      const path = DamConfigEntityType.serviceTemplates + '/' + this.form.get('id').value + '/';
       if (errorDetail['resourceName'] && errorDetail['resourceName'].includes(path)) {
         const fieldName = errorDetail['resourceName'].replace(path, '');
-        this.form.controls[fieldName].setErrors({
+        this.form.get(fieldName).setErrors({
           serverError: errorDetail['description'],
         });
       }
