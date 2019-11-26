@@ -26,7 +26,6 @@ import { ResourceViewFormComponent } from './resource-view-form/resource-view-fo
 
 import Resource = dam.v1.Resource;
 
-
 @Component({
   selector: 'ddap-resource-form',
   templateUrl: './resource-form.component.html',
@@ -150,6 +149,28 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
   resourceFormChange(values?) {
     this.formChange.emit(values);
   }
+
+  setFormControlErrors(errorDetails: object) {
+    const viewForms = this.getViewChildrenForms();
+    viewForms.forEach(viewForm => {
+      const viewId = viewForm.value.id;
+      if (errorDetails['resourceName'].includes(viewId)) {
+        const fieldsPath = errorDetails['resourceName'].replace(new RegExp('^.+' + viewId + '\/'), '');
+        if (fieldsPath.includes('accessRoles')) {
+          this.displayErrorMessage('roles', viewForm, errorDetails);
+        } else if (fieldsPath.includes('items')) {
+          this.displayErrorMessage('variables', viewForm, errorDetails);
+        }
+      }
+    });
+  }
+
+  private displayErrorMessage(fieldControlName, form, errorDetails) {
+    form.get(fieldControlName).setErrors({
+      serverError: errorDetails['description'],
+    });
+  }
+
 
   private getViewChildrenForms(): FormGroup[] {
     if (!this.viewChildComponents) {

@@ -4,6 +4,7 @@ import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { dam } from 'src/app/shared/proto/dam-service';
 
+import { DamConfigEntityType } from '../../shared/dam/dam-config-entity-type.enum';
 import { TargetAdaptersService } from '../../target-adapters/target-adapters.service';
 import ServiceTemplate = dam.v1.ServiceTemplate;
 import ServiceRole = dam.v1.ServiceRole;
@@ -138,7 +139,7 @@ export class ServiceDefinitionFormComponent implements OnInit, AfterViewInit {
 
   displayError({ details }) {
     details.forEach(errorDetail => {
-      const path = 'serviceTemplates/' + this.form.value.id + '/';
+      const path = DamConfigEntityType.serviceTemplates + '/' + this.form.value.id + '/';
       if (errorDetail['resourceName'] && errorDetail['resourceName'].includes(path)) {
         const fieldName = errorDetail['resourceName'].replace(path, '');
         this.form.controls[fieldName].setErrors({

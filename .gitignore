@@ -33,3 +33,6 @@ ci/e2e-tests/target
 # Maven frontend plugin
 node_installation/
 node_modules
+
+# System Files
+.DS_Store

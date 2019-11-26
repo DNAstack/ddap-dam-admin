@@ -107,8 +107,8 @@ export class ResourceAccessComponent implements Form, OnChanges {
       });
     }
   }
-  validatePersonaFields({error}) {
-    const testPersonasCorrect = _get(error, 'testPersonas', {});
+  validatePersonaFields(errorDetails) {
+    const testPersonasCorrect = _get(errorDetails, 'testPersonas', {});
     const setError = ([persona, access]) => {
       access.forEach((accessRole) => {
         const resourceName = accessRole.substr(0, accessRole.indexOf('/'));
@@ -119,7 +119,7 @@ export class ResourceAccessComponent implements Form, OnChanges {
     };
 
     Object.entries(testPersonasCorrect)
-      .forEach(([persona, {addAccess, removeAccess}]: any) => {
+      .forEach(([persona, {addAccess = [], removeAccess = []}]: any) => {
         const toAdd = addAccess.filter(access => this.isViewOfThisResource(access));
         setError([persona, toAdd]);
 

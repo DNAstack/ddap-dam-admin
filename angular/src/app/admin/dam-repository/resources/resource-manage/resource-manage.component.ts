@@ -47,10 +47,19 @@ export class ResourceManageComponent extends DamConfigEntityFormComponentBase {
       }, (error) => this.handleError(isDryRun, error));
   }
 
-  handleError = (isDryRun: boolean, error: HttpErrorResponse) => {
-    if (error.status === 424 && this.accessForm.isConfigModificationObject(error)) {
-      this.accessForm.makeFieldsValid();
-      this.accessForm.validatePersonaFields(error);
+  handleError = (isDryRun: boolean, { error }) => {
+    if (error instanceof Object) {
+      const errorDetails: object[] = error.details;
+      errorDetails.forEach(details => {
+        if (this.isConfigModification(details['@type'])) {
+          this.accessForm.makeFieldsValid();
+          this.accessForm.validatePersonaFields(details);
+        } else {
+          this.isFormValid = false;
+          this.isFormValidated = true;
+          this.resourceForm.setFormControlErrors(details);
+        }
+      });
     } else if (!isDryRun) {
       this.showError(error);
     }

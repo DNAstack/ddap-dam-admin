@@ -128,6 +128,9 @@
         <h3>
           <mat-icon class="icon icon-settings"></mat-icon>
           <span>Target Adapter Variables</span>
+          <mat-error *ngIf="viewForm.get('variables').invalid">
+            {{ viewForm.get('variables').errors?.serverError }}
+          </mat-error>
         </h3>
         <ul class="timeline">
           <li class="event row" *ngFor="let variable of variableItems.controls; let i=index"
@@ -155,6 +158,9 @@
           <span>Roles</span>
           <mat-error *ngIf="viewForm.get('defaultRole').invalid">
             Single role must be set as default
+          </mat-error>
+          <mat-error *ngIf="viewForm.get('roles').invalid">
+            {{ viewForm.get('roles').errors?.serverError }}
           </mat-error>
         </h3>
         <ul class="timeline">
