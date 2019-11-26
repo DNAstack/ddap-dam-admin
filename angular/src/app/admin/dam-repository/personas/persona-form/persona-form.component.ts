@@ -61,7 +61,7 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
   private resourceAccess$: Observable<any>;
 
   constructor(private formBuilder: FormBuilder,
-              private personaFormBuilder: PersonaFormBuilder,
+              public personaFormBuilder: PersonaFormBuilder,
               private personaService: PersonaService,
               private resourcesStore: ResourcesStore,
               private claimDefService: ClaimDefinitionService,

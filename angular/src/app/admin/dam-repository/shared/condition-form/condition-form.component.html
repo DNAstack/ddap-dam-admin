@@ -1,6 +1,6 @@
 <ng-container [formGroup]="form">
   <h3>
-    <span>Conditions</span>
+    <span>{{ label || 'Conditions' }}</span>
     <div>
       <button mat-button
               color="primary"
@@ -14,7 +14,7 @@
   </h3>
 
   <p *ngIf="conditions.controls.length < 1; else conditionsInfo">
-    No conditions are applied to the passport visa.
+    No conditions are applied.
   </p>
   <ng-template #conditionsInfo>
     <p>
@@ -23,9 +23,9 @@
   </ng-template>
 
   <mat-accordion multi displayMode="flat"
-                 formArrayName="conditions">
+                 [formArrayName]="this.anyOfFieldName">
     <mat-expansion-panel *ngFor="let condition of conditions.controls; let conditionIndex=index"
-                         [attr.data-se]="'passport-condition-' + conditionIndex">
+                         [attr.data-se]="'condition-' + conditionIndex">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
         <mat-panel-title *ngIf="getClauses(condition).controls.length as numberOfConditions">
@@ -39,7 +39,7 @@
       </mat-expansion-panel-header>
       <ul class="timeline"
           [formGroupName]="conditionIndex">
-        <ng-container formArrayName="clauses">
+        <ng-container formArrayName="allOf">
           <li class="event"
               *ngFor="let clause of getClauses(condition).controls; let clauseIndex=index">
             <ng-container [formGroupName]="clauseIndex">

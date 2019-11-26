@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { DamRepositorySharedModule } from '../shared/shared.module';
 
@@ -19,7 +18,6 @@ import { AccessPolicyManageComponent } from './access-policy-manage/access-polic
   imports: [
     DamRepositorySharedModule,
     AccessPoliciesRoutingModule,
-    MatButtonToggleModule,
   ],
 })
 export class AccessPoliciesModule { }

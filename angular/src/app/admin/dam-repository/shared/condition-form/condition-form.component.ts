@@ -1,35 +1,46 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import ConditionPrefix = PassportVisa.ConditionPrefix;
+import AuthorityLevel = PassportVisa.AuthorityLevel;
+import { EntityModel } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ClaimDefinitionsStore } from '../../../claim-definitions/claim-definitions.store';
-import { makeDistinct, pick } from '../../../shared/autocomplete.util';
-import { PassportVisa } from '../../../shared/passport-visa/passport-visa.constant';
-import ConditionPrefix = PassportVisa.ConditionPrefix;
-import AuthorityLevel = PassportVisa.AuthorityLevel;
-import { PersonaFormBuilder } from '../persona-form-builder.service';
+import { dam } from '../../../../shared/proto/dam-service';
+import { ClaimDefinitionsStore } from '../../claim-definitions/claim-definitions.store';
+import { makeDistinct, pick } from '../autocomplete.util';
+import { PassportVisa } from '../passport-visa/passport-visa.constant';
+
+import Policy = dam.v1.Policy;
+import { ConditionFormBuilder } from './condition-form-builder.service';
 
 @Component({
-  selector: 'ddap-passport-conditions-form',
-  templateUrl: './passport-conditions-form.component.html',
-  styleUrls: ['./passport-conditions-form.component.scss'],
+  selector: 'ddap-condition-form',
+  templateUrl: './condition-form.component.html',
+  styleUrls: ['./condition-form.component.scss'],
 })
-export class PassportConditionsFormComponent implements OnInit {
+export class ConditionFormComponent implements OnInit {
 
   @Input()
+  entity: EntityModel;
+  @Input()
   form: FormGroup;
+  @Input()
+  conditionFormBuilder: ConditionFormBuilder;
+  @Input()
+  anyOfFieldName: string;
+  @Input()
+  label?: string;
 
   passportVisaTypes$: Observable<string[]>;
   authorityLevels: string[] = Object.values(AuthorityLevel);
   prefixes: string[] = Object.values(ConditionPrefix);
 
   get conditions() {
-    return this.form.get('conditions') as FormArray;
+    return this.form.get(this.anyOfFieldName) as FormArray;
   }
 
-  constructor(private personaFormBuilder: PersonaFormBuilder,
-              private claimDefinitionsStore: ClaimDefinitionsStore) {
+  constructor(private claimDefinitionsStore: ClaimDefinitionsStore) {
   }
 
   ngOnInit(): void {
@@ -39,12 +50,22 @@ export class PassportConditionsFormComponent implements OnInit {
       );
   }
 
+  getModel(): EntityModel {
+    const { id, ui, anyOf } = this.form.value;
+    const accessPolicy: Policy = Policy.create({
+      ui,
+      anyOf,
+    });
+
+    return new EntityModel(id, accessPolicy);
+  }
+
   getClauses(condition: AbstractControl) {
-    return condition.get('clauses') as FormArray;
+    return condition.get('allOf') as FormArray;
   }
 
   addCondition() {
-    this.conditions.insert(0, this.personaFormBuilder.buildConditionForm());
+    this.conditions.insert(0, this.conditionFormBuilder.buildConditionForm());
   }
 
   removeCondition(index: number) {
@@ -52,7 +73,7 @@ export class PassportConditionsFormComponent implements OnInit {
   }
 
   addClauseCondition(condition: AbstractControl) {
-    this.getClauses(condition).push(this.personaFormBuilder.buildClauseConditionForm());
+    this.getClauses(condition).push(this.conditionFormBuilder.buildClauseConditionForm());
   }
 
   removeClauseCondition(condition: AbstractControl, clauseIndex: number, conditionIndex: number) {

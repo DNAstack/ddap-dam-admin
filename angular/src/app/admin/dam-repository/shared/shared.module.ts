@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { AdminSharedModule } from '../../shared/shared.module';
 
+import { ConditionFormComponent } from './condition-form/condition-form.component';
 import { EntityManageFormComponent } from './entity-manage-form/entity-manage-form.component';
 import {
   EntityRemovalConfirmationDialogComponent
@@ -12,6 +14,7 @@ import { PersonasAccessTableComponent } from './personas-access-table/personas-a
 
 @NgModule({
   declarations: [
+    ConditionFormComponent,
     PersonasAccessTableComponent,
     JsonPanelComponent,
     EntityManageFormComponent,
@@ -19,10 +22,12 @@ import { PersonasAccessTableComponent } from './personas-access-table/personas-a
   ],
   imports: [
     AdminSharedModule,
+    MatButtonToggleModule,
   ],
   exports: [
     AdminSharedModule,
 
+    ConditionFormComponent,
     PersonasAccessTableComponent,
     JsonPanelComponent,
     EntityManageFormComponent,

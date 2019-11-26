@@ -186,8 +186,11 @@
               </mat-form-field>
             </div>
 
-            <ddap-passport-conditions-form [form]="getGa4ghAssertionAsFormGroup(ga4ghAssertion)">
-            </ddap-passport-conditions-form>
+            <ddap-condition-form [form]="getGa4ghAssertionAsFormGroup(ga4ghAssertion)"
+                                 [conditionFormBuilder]="personaFormBuilder"
+                                 [anyOfFieldName]="'anyOfConditions'"
+                                 [entity]="persona">
+            </ddap-condition-form>
 
             <div class="footer">
               <button mat-button
