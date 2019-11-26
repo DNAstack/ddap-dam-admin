@@ -19,7 +19,8 @@ export class OptionListComponent implements OnInit {
 
   ngOnInit() {
     this.optionService.get()
-      .subscribe((options) => this.options = options);
+      .subscribe((options) => this.options = options,
+        this.handleError);
   }
 
   updateOptionValue({ optionKey, newValue }) {
@@ -29,11 +30,10 @@ export class OptionListComponent implements OnInit {
     try {
       const convertedNewValue = typeof oldValue !== 'string' ? JSON.parse(newValue) : newValue;
       newOptions[optionKey] = convertedNewValue;
-
       this.optionService.update(newOptions)
         .subscribe(
           () => this.options[optionKey] = convertedNewValue,
-          ({error}) => this.error = error.substring(error.lastIndexOf(':') + 1)
+          this.handleError
         );
     } catch (e) {
       // The only type of error we expect here a syntax error.
@@ -43,6 +43,17 @@ export class OptionListComponent implements OnInit {
 
   private cloneOptions(): object {
     return Object.assign({}, this.options);
+  }
+
+  private handleError = ({ error }) => {
+    if (error instanceof Object) {
+      const { details } = error;
+      details.forEach(errorDetail => {
+        this.error = errorDetail['description'];
+      });
+    } else {
+    //  TODO: show a global error
+    }
   }
 
 }
