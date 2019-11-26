@@ -52,7 +52,7 @@
                          [matAutocomplete]="passportVisaTypesAutocomplete"
                          placeholder="Passport Visa Type"
                          formControlName="type"
-                         data-se="inp-condition-type"
+                         [attr.data-se]="'inp-condition-' + clauseIndex + '-type'"
                          required>
                   <mat-autocomplete #passportVisaTypesAutocomplete="matAutocomplete">
                     <mat-option *ngFor="let type of passportVisaTypes$ | async"
@@ -77,7 +77,7 @@
                          [matAutocomplete]="authorityLevelsAutocomplete"
                          formControlName="by"
                          placeholder="By"
-                         data-se="inp-condition-by">
+                         [attr.data-se]="'inp-condition-' + clauseIndex + '-by'">
                   <mat-autocomplete #authorityLevelsAutocomplete="matAutocomplete">
                     <mat-option *ngFor="let authorityLevel of authorityLevels"
                                 [value]="authorityLevel">
@@ -106,7 +106,7 @@
                   <input matInput
                          placeholder="Source"
                          formControlName="source"
-                         data-se="inp-condition-source">
+                         [attr.data-se]="'inp-condition-' + clauseIndex + '-source'">
                   <mat-error *ngIf="clause.get('source').hasError('prefix')">
                     Must be prefixed with any of
                     <b *ngFor="let prefix of prefixes; let k=index">
@@ -129,7 +129,7 @@
                   <input matInput
                          placeholder="Value"
                          formControlName="value"
-                         data-se="inp-condition-value">
+                         [attr.data-se]="'inp-condition-' + clauseIndex + '-value'">
                   <mat-error *ngIf="clause.get('value').hasError('prefix')">
                     Must be prefixed with any of
                     <b *ngFor="let prefix of prefixes; let k=index">
