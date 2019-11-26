@@ -9,6 +9,7 @@
              data-se="inp-id"
              required>
       <mat-error *ngIf="form.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
+      <mat-error *ngIf="form.get('id').invalid">{{ form.get('id').errors?.serverError }}</mat-error>
     </mat-form-field>
     <mat-form-field class="col"
                     formGroupName="ui">
@@ -17,6 +18,7 @@
              formControlName="label"
              data-se="inp-label"
              required>
+      <mat-error *ngIf="form.get('ui.label').invalid">{{ form.get('ui.label').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
   <div class="row">
@@ -28,6 +30,7 @@
                 data-se="inp-description"
                 required>
         <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
+        <mat-error *ngIf="form.get('ui.description').invalid">{{ form.get('ui.description').errors?.serverError }}</mat-error>
       </textarea>
     </mat-form-field>
   </div>
@@ -72,6 +75,7 @@
                  placeholder="Source"
                  data-se="inp-source"
                  required>
+          <mat-error *ngIf="form.get('sources.' + i).invalid">{{ form.get('sources.' + i).errors?.serverError }}</mat-error>
         </mat-form-field>
       </div>
 
@@ -127,6 +131,7 @@
                  placeholder="Claim"
                  data-se="inp-claim"
                  required>
+          <mat-error *ngIf="form.get('claims.' + i).invalid">{{ form.get('claims.' + i).errors?.serverError }}</mat-error>
         </mat-form-field>
       </div>
 

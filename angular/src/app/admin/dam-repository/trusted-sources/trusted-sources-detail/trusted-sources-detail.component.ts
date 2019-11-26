@@ -4,6 +4,7 @@ import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import { DamConfigEntityDetailComponentBase } from '../../shared/dam/dam-config-entity-detail-component.base';
+import { DamConfigEntityType } from '../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../shared/dam/dam-config.store';
 import { TrustedSourcesFormComponent } from '../trusted-sources-form/trusted-sources-form.component';
 import { TrustedSourcesService } from '../trusted-sources.service';
@@ -37,12 +38,35 @@ export class TrustedSourcesDetailComponent extends DamConfigEntityDetailComponen
     const trustedSources: EntityModel = this.trustedSourcesForm.getModel();
     const change = new ConfigModificationModel(trustedSources.dto, {});
     this.trustedSourcesService.update(this.entity.name, change)
-      .subscribe(() => this.navigateUp('..'), this.showError);
+      .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
   delete() {
     this.trustedSourcesService.remove(this.entity.name)
-      .subscribe(() => this.navigateUp('..'), this.showError);
+      .subscribe(() => this.navigateUp('..'), this.handleError);
+  }
+
+  handleError = ({ error }) => {
+    const { details } = error;
+    if (details) {
+      details.forEach(errorDetail => {
+        const path = DamConfigEntityType.trustedSources + '/' + this.trustedSourcesForm.form.get('id').value + '/';
+        const fieldName = errorDetail['resourceName'].replace(path, '').replace('/', '.');
+        if (fieldName.length > 0) {
+          this.trustedSourcesForm.form.get(fieldName).setErrors({
+            serverError: errorDetail['description'],
+          });
+        } else {
+          this.formErrorMessage = errorDetail['description'];
+          this.isFormValid = false;
+          this.isFormValidated = true;
+        }
+      });
+    } else {
+      this.formErrorMessage = error;
+      this.isFormValid = false;
+      this.isFormValidated = true;
+    }
   }
 
 }

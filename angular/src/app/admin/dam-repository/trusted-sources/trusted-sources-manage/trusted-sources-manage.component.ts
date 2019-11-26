@@ -4,6 +4,7 @@ import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import { DamConfigEntityFormComponentBase } from '../../shared/dam/dam-config-entity-form-component.base';
+import { DamConfigEntityType } from '../../shared/dam/dam-config-entity-type.enum';
 import { TrustedSourcesFormComponent } from '../trusted-sources-form/trusted-sources-form.component';
 import { TrustedSourcesService } from '../trusted-sources.service';
 
@@ -33,7 +34,30 @@ export class TrustedSourcesManageComponent extends DamConfigEntityFormComponentB
     const trustedSources: EntityModel = this.trustedSourcesForm.getModel();
     const change = new ConfigModificationModel(trustedSources.dto, {});
     this.trustedSourcesService.save(trustedSources.name, change)
-      .subscribe(() => this.navigateUp('../..'), this.showError);
+      .subscribe(() => this.navigateUp('../..'), this.handleError);
+  }
+
+  handleError = ({ error }) => {
+    const { details } = error;
+    if (details) {
+      details.forEach(errorDetail => {
+        const path = DamConfigEntityType.trustedSources + '/' + this.trustedSourcesForm.form.get('id').value + '/';
+        const fieldName = errorDetail['resourceName'].replace(path, '').replace('/', '.');
+        if (fieldName.length > 0) {
+          this.trustedSourcesForm.form.get(fieldName).setErrors({
+            serverError: errorDetail['description'],
+          });
+        } else {
+          this.formErrorMessage = errorDetail['description'];
+          this.isFormValid = false;
+          this.isFormValidated = true;
+        }
+      });
+    } else {
+      this.formErrorMessage = error;
+      this.isFormValid = false;
+      this.isFormValidated = true;
+    }
   }
 
 }
