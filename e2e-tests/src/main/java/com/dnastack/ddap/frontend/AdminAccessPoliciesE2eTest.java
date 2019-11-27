@@ -45,6 +45,12 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-description"), "test-policy-description");
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
 
+        adminManagePage.clickButton(DdapBy.se("btn-add-variable"));
+        adminManagePage.toggleExpansionPanel("variable-0");
+        adminManagePage.fillField(DdapBy.se("inp-variable-0-name"), "TEST_VARIABLE_DATASET");
+        adminManagePage.fillField(DdapBy.se("inp-variable-0-description"), "description");
+        adminManagePage.fillField(DdapBy.se("inp-variable-0-regexp"), "^phs\\d{6}$");
+
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
         adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
@@ -53,7 +59,7 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickButton(DdapBy.se("btn-add-clause-condition"));
         adminManagePage.fillField(DdapBy.se("inp-condition-1-type"), "AffiliationAndRole");
         adminManagePage.fillField(DdapBy.se("inp-condition-1-by"), "const:self");
-        adminManagePage.fillField(DdapBy.se("inp-condition-1-value"), "const:faculty@uni-heidelberg.de");
+        adminManagePage.fillField(DdapBy.se("inp-condition-1-value"), "const:https://dac.nih.gov/datasets/${TEST_VARIABLE_DATASET}");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
         adminManagePage.toggleExpansionPanel("condition-0");

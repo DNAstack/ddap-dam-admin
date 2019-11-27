@@ -43,6 +43,83 @@
     </div>
   </ng-container>
 
+  <h3>
+    <span>Variable Definitions</span>
+    <div>
+      <button mat-button
+              color="primary"
+              class="uppercase"
+              type="button"
+              data-se="btn-add-variable"
+              (click)="addVariable()">
+        Add Variable
+      </button>
+    </div>
+  </h3>
+  <p>
+    {{ 'Variables are usable in access policy conditions via string interpolation (e.g. ${DATASET}).' }}
+  </p>
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="variableDefinitions">
+    <mat-expansion-panel *ngFor="let variableDefinition of variableDefinitions.controls; let i=index"
+                         [attr.data-se]="'variable-' + i">
+      <mat-expansion-panel-header collapsedHeight="5rem"
+                                  expandedHeight="5rem">
+        <mat-panel-title>
+          <span>{{ variableDefinition.get('id').value || 'Variable' }}</span>
+        </mat-panel-title>
+        <div class="invalid-warning" *ngIf="variableDefinition.invalid">
+          <mat-icon class="icon icon-warning"
+                    matTooltip="Variable definition is invalid">
+          </mat-icon>
+        </div>
+      </mat-expansion-panel-header>
+
+      <ng-container [formGroupName]="i">
+        <div class="row">
+          <mat-form-field class="col">
+            <input matInput
+                   formControlName="id"
+                   placeholder="Name"
+                   [attr.data-se]="'inp-variable-' + i + '-name'"
+                   required>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col"
+                          formGroupName="ui">
+            <textarea matInput
+                      placeholder="Description"
+                      formControlName="description"
+                      [attr.data-se]="'inp-variable-' + i + '-description'"
+                      required>
+            </textarea>
+            <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col">
+            <input matInput
+                   formControlName="regexp"
+                   placeholder="Regexp"
+                   [attr.data-se]="'inp-variable-' + i + '-regexp'"
+                   required>
+          </mat-form-field>
+        </div>
+
+        <div class="footer">
+          <button mat-button
+                  type="button"
+                  color="warn"
+                  class="uppercase"
+                  (click)="removeVariable(i)">
+            Remove Variable
+          </button>
+        </div>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
+
   <ddap-condition-form [form]="form"
                        [conditionFormBuilder]="accessPolicyFormBuilder"
                        [anyOfFieldName]="'anyOf'"
