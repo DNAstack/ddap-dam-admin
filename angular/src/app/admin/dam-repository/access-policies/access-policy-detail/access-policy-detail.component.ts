@@ -14,7 +14,7 @@ import { AccessPolicyFormComponent } from '../access-policy-form/access-policy-f
   templateUrl: './access-policy-detail.component.html',
   styleUrls: ['./access-policy-detail.component.scss'],
 })
-export class AccessPolicDetailComponent extends DamConfigEntityDetailComponentBase<AccessPoliciesStore> {
+export class AccessPolicyDetailComponent extends DamConfigEntityDetailComponentBase<AccessPoliciesStore> {
 
   @ViewChild(AccessPolicyFormComponent, { static: false })
   accessPolicyForm: AccessPolicyFormComponent;
