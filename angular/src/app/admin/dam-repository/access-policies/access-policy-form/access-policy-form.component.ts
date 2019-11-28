@@ -16,7 +16,7 @@ import IVariableFormat = dam.v1.IVariableFormat;
 export class AccessPolicyFormComponent implements OnInit, Form {
 
   get variableDefinitions() {
-    return this.form.get('variableDefinitions') as FormArray;
+    return this.form.get('variableDefinitions') as FormGroup;
   }
 
   @Input()
@@ -32,11 +32,9 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   }
 
   getModel(): EntityModel {
-    const { id, ui, anyOf, variableDefinitions } = this.form.value;
+    const { id, ...rest } = this.form.value;
     const accessPolicy: Policy = Policy.create({
-      ui,
-      anyOf,
-      variableDefinitions: this.getVariableDefinitionsModel(variableDefinitions),
+      ...rest,
     });
 
     return new EntityModel(id, accessPolicy);
@@ -60,11 +58,21 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   }
 
   addVariable() {
-    this.variableDefinitions.insert(0, this.accessPolicyFormBuilder.buildVariableDefinitionForm());
+    const controlId = `VAR_1`;
+    this.variableDefinitions.addControl(controlId, this.accessPolicyFormBuilder.buildVariableDefinitionForm(controlId));
   }
 
-  removeVariable(index: number) {
-    this.variableDefinitions.removeAt(index);
+  removeVariable(id: string) {
+    this.variableDefinitions.removeControl(id);
+  }
+
+  getIdValue(control: AbstractControl): string {
+    return control.get('id').value;
+  }
+
+  changeVariableControlId(previousId, newId) {
+    this.variableDefinitions.addControl(newId, this.variableDefinitions.get(previousId));
+    this.variableDefinitions.removeControl(previousId);
   }
 
 }

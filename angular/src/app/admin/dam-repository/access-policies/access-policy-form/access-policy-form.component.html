@@ -18,6 +18,11 @@
              formControlName="label"
              data-se="inp-label"
              required>
+      <mat-error *ngIf="form.get('ui.label') as control">
+        <ng-container *ngIf="control.invalid">
+          {{ control.errors?.serverError }}
+        </ng-container>
+      </mat-error>
     </mat-form-field>
   </div>
   <ng-container formGroupName="ui">
@@ -30,6 +35,11 @@
                 required>
       </textarea>
         <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
+        <mat-error *ngIf="form.get('ui.description') as control">
+          <ng-container *ngIf="control.invalid">
+            {{ control.errors?.serverError }}
+          </ng-container>
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="row">
@@ -39,6 +49,11 @@
                formControlName="infoUrl"
                data-se="inp-infoUrl">
         <mat-error *ngIf="form.get('ui.infoUrl').hasError('url')">Must start with http:// or https://</mat-error>
+        <mat-error *ngIf="form.get('ui.infoUrl') as control">
+          <ng-container *ngIf="control.invalid">
+            {{ control.errors?.serverError }}
+          </ng-container>
+        </mat-error>
       </mat-form-field>
     </div>
   </ng-container>
@@ -61,27 +76,30 @@
   </p>
   <mat-accordion multi displayMode="flat"
                  formArrayName="variableDefinitions">
-    <mat-expansion-panel *ngFor="let variableDefinition of variableDefinitions.controls; let i=index"
-                         [attr.data-se]="'variable-' + i">
+    <mat-expansion-panel *ngFor="let variableDefinition of variableDefinitions.controls | keyvalue"
+                         [attr.data-se]="'variable-' + getIdValue(variableDefinition.value)">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
         <mat-panel-title>
-          <span>{{ variableDefinition.get('id').value || 'Variable' }}</span>
+          <span>{{ getIdValue(variableDefinition.value) || 'Undefined Variable' }}</span>
         </mat-panel-title>
-        <div class="invalid-warning" *ngIf="variableDefinition.invalid">
+        <div class="invalid-warning"
+             *ngIf="variableDefinition.value.invalid">
           <mat-icon class="icon icon-warning"
                     matTooltip="Variable definition is invalid">
           </mat-icon>
         </div>
       </mat-expansion-panel-header>
 
-      <ng-container [formGroupName]="i">
+      <ng-container *ngIf="getIdValue(variableDefinition.value) as variableId"
+                    [formGroupName]="variableId">
         <div class="row">
           <mat-form-field class="col">
             <input matInput
                    formControlName="id"
+                   (change)="changeVariableControlId(variableDefinition.key, variableId)"
                    placeholder="Name"
-                   [attr.data-se]="'inp-variable-' + i + '-name'"
+                   [attr.data-se]="'inp-variable-' + variableId + '-name'"
                    required>
           </mat-form-field>
         </div>
@@ -91,10 +109,15 @@
             <textarea matInput
                       placeholder="Description"
                       formControlName="description"
-                      [attr.data-se]="'inp-variable-' + i + '-description'"
+                      [attr.data-se]="'inp-variable-' + variableId + '-description'"
                       required>
             </textarea>
             <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
+            <mat-error *ngIf="variableDefinition.value.get('description') as control">
+              <ng-container *ngIf="control.invalid">
+                {{ control.errors?.serverError }}
+              </ng-container>
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="row">
@@ -102,8 +125,12 @@
             <input matInput
                    formControlName="regexp"
                    placeholder="Regexp"
-                   [attr.data-se]="'inp-variable-' + i + '-regexp'"
-                   required>
+                   [attr.data-se]="'inp-variable-' + variableId + '-regexp'">
+            <mat-error *ngIf="variableDefinition.value.get('regexp') as control">
+              <ng-container *ngIf="control.invalid">
+                {{ control.errors?.serverError }}
+              </ng-container>
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -112,7 +139,7 @@
                   type="button"
                   color="warn"
                   class="uppercase"
-                  (click)="removeVariable(i)">
+                  (click)="removeVariable(variableId)">
             Remove Variable
           </button>
         </div>

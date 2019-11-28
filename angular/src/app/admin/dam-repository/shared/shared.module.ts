@@ -14,9 +14,9 @@ import { PersonasAccessTableComponent } from './personas-access-table/personas-a
 @NgModule({
   declarations: [
     ConditionFormComponent,
-    PersonasAccessTableComponent,
     EntityManageFormComponent,
     EntityRemovalConfirmationDialogComponent,
+    PersonasAccessTableComponent,
   ],
   imports: [
     AdminSharedModule,
@@ -26,9 +26,9 @@ import { PersonasAccessTableComponent } from './personas-access-table/personas-a
     AdminSharedModule,
 
     ConditionFormComponent,
-    PersonasAccessTableComponent,
     EntityManageFormComponent,
     EntityRemovalConfirmationDialogComponent,
+    PersonasAccessTableComponent,
   ],
   entryComponents: [
     EntityRemovalConfirmationDialogComponent,

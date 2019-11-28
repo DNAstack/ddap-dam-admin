@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
@@ -29,17 +29,19 @@ export class AccessPolicyFormBuilder extends ConditionFormBuilder {
     });
   }
 
-  buildVariableDefinitionsForm(variableDefinitions?: { [k: string]: IVariableFormat }): FormArray {
-    return this.formBuilder.array(variableDefinitions ? Object.entries(variableDefinitions)
-      .map(([variableKey, variableFormat]) => {
-        return this.buildVariableDefinitionForm(variableKey, variableFormat);
-      }) : []);
+  buildVariableDefinitionsForm(variableDefinitions?: { [k: string]: IVariableFormat }): FormGroup {
+    const variableDefinitionsForm = {};
+    Object.entries(variableDefinitions)
+      .forEach(([variableKey, variableFormat]) => {
+        variableDefinitionsForm[variableKey] = this.buildVariableDefinitionForm(variableKey, variableFormat);
+      });
+    return this.formBuilder.group(variableDefinitionsForm);
   }
 
   buildVariableDefinitionForm(variableId?: string, variableFormat?: IVariableFormat): FormGroup {
     return this.formBuilder.group({
       id: [variableId, [Validators.required]],
-      regexp: [_get(variableFormat, 'regexp'), [Validators.required]],
+      regexp: [_get(variableFormat, 'regexp')],
       ui: this.formBuilder.group({
         description: [_get(variableFormat, 'ui.description'), [Validators.required]],
       }),
