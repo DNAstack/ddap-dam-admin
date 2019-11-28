@@ -31,17 +31,19 @@ export class AccessPolicyFormBuilder extends ConditionFormBuilder {
 
   buildVariableDefinitionsForm(variableDefinitions?: { [k: string]: IVariableFormat }): FormGroup {
     const variableDefinitionsForm = {};
-    Object.entries(variableDefinitions)
-      .forEach(([variableKey, variableFormat]) => {
-        variableDefinitionsForm[variableKey] = this.buildVariableDefinitionForm(variableKey, variableFormat);
-      });
+    if (variableDefinitions) {
+      Object.entries(variableDefinitions)
+        .forEach(([variableKey, variableFormat]) => {
+          variableDefinitionsForm[variableKey] = this.buildVariableDefinitionForm(variableKey, variableFormat);
+        });
+    }
     return this.formBuilder.group(variableDefinitionsForm);
   }
 
   buildVariableDefinitionForm(variableId?: string, variableFormat?: IVariableFormat): FormGroup {
     return this.formBuilder.group({
       id: [variableId, [Validators.required]],
-      regexp: [_get(variableFormat, 'regexp')],
+      regexp: [_get(variableFormat, 'regexp'), [Validators.required]],
       ui: this.formBuilder.group({
         description: [_get(variableFormat, 'ui.description'), [Validators.required]],
       }),

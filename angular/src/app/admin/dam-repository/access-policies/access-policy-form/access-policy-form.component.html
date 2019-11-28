@@ -77,11 +77,11 @@
   <mat-accordion multi displayMode="flat"
                  formArrayName="variableDefinitions">
     <mat-expansion-panel *ngFor="let variableDefinition of variableDefinitions.controls | keyvalue"
-                         [attr.data-se]="'variable-' + getIdValue(variableDefinition.value)">
+                         [attr.data-se]="'variable-' + variableDefinition.value.get('id').value">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
         <mat-panel-title>
-          <span>{{ getIdValue(variableDefinition.value) || 'Undefined Variable' }}</span>
+          <span>{{ variableDefinition.value.get('id').value || 'UNDEFINED_VARIABLE' }}</span>
         </mat-panel-title>
         <div class="invalid-warning"
              *ngIf="variableDefinition.value.invalid">
@@ -91,15 +91,13 @@
         </div>
       </mat-expansion-panel-header>
 
-      <ng-container *ngIf="getIdValue(variableDefinition.value) as variableId"
-                    [formGroupName]="variableId">
+      <ng-container [formGroupName]="variableDefinition.key">
         <div class="row">
           <mat-form-field class="col">
             <input matInput
                    formControlName="id"
-                   (change)="changeVariableControlId(variableDefinition.key, variableId)"
                    placeholder="Name"
-                   [attr.data-se]="'inp-variable-' + variableId + '-name'"
+                   [attr.data-se]="'inp-variable-' + variableDefinition.key + '-name'"
                    required>
           </mat-form-field>
         </div>
@@ -109,7 +107,7 @@
             <textarea matInput
                       placeholder="Description"
                       formControlName="description"
-                      [attr.data-se]="'inp-variable-' + variableId + '-description'"
+                      [attr.data-se]="'inp-variable-' + variableDefinition.key + '-description'"
                       required>
             </textarea>
             <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
@@ -125,7 +123,8 @@
             <input matInput
                    formControlName="regexp"
                    placeholder="Regexp"
-                   [attr.data-se]="'inp-variable-' + variableId + '-regexp'">
+                   [attr.data-se]="'inp-variable-' + variableDefinition.key + '-regexp'"
+                   required>
             <mat-error *ngIf="variableDefinition.value.get('regexp') as control">
               <ng-container *ngIf="control.invalid">
                 {{ control.errors?.serverError }}
@@ -139,7 +138,7 @@
                   type="button"
                   color="warn"
                   class="uppercase"
-                  (click)="removeVariable(variableId)">
+                  (click)="removeVariable(variableDefinition.key)">
             Remove Variable
           </button>
         </div>

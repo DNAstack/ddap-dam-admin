@@ -23,6 +23,7 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   accessPolicy?: EntityModel = new EntityModel('', Policy.create());
 
   form: FormGroup;
+  counter = 1;
 
   constructor(public accessPolicyFormBuilder: AccessPolicyFormBuilder) {
   }
@@ -32,6 +33,8 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   }
 
   getModel(): EntityModel {
+    this.setVariableDefinitionControls();
+
     const { id, ...rest } = this.form.value;
     const accessPolicy: Policy = Policy.create({
       ...rest,
@@ -58,21 +61,25 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   }
 
   addVariable() {
-    const controlId = `VAR_1`;
+    const controlId = `UNDEFINED_VARIABLE_${this.counter}`;
     this.variableDefinitions.addControl(controlId, this.accessPolicyFormBuilder.buildVariableDefinitionForm(controlId));
+    this.counter += 1;
   }
 
   removeVariable(id: string) {
     this.variableDefinitions.removeControl(id);
   }
 
-  getIdValue(control: AbstractControl): string {
-    return control.get('id').value;
+  private setVariableDefinitionControls() {
+    Object.entries(this.variableDefinitions.controls).forEach(([currentControlId, control]) => {
+      const { id: newControlId } = control.value;
+      this.changeVariableControlId(currentControlId, newControlId);
+    });
   }
 
-  changeVariableControlId(previousId, newId) {
-    this.variableDefinitions.addControl(newId, this.variableDefinitions.get(previousId));
-    this.variableDefinitions.removeControl(previousId);
+  private changeVariableControlId(currentId, newId) {
+    this.variableDefinitions.addControl(newId, this.variableDefinitions.get(currentId));
+    this.variableDefinitions.removeControl(currentId);
   }
 
 }

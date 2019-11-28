@@ -53,13 +53,18 @@
                          placeholder="Passport Visa Type"
                          formControlName="type"
                          [attr.data-se]="'inp-condition-' + clauseIndex + '-type'"
-                         required>
+                         >
                   <mat-autocomplete #passportVisaTypesAutocomplete="matAutocomplete">
                     <mat-option *ngFor="let type of passportVisaTypes$ | async"
                                 [value]="type">
                       {{ type }}
                     </mat-option>
                   </mat-autocomplete>
+                  <mat-error *ngIf="clause.get('type') as control">
+                    <ng-container *ngIf="control.invalid">
+                      {{ control.errors?.serverError }}
+                    </ng-container>
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="row">
@@ -90,6 +95,11 @@
                       <i>{{ prefix }}:{{ k < prefixes.length - 1 ? ', ' : '' }}</i>
                     </b>
                   </mat-error>
+                  <mat-error *ngIf="clause.get('by') as control">
+                    <ng-container *ngIf="control.invalid">
+                      {{ control.errors?.serverError }}
+                    </ng-container>
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="row">
@@ -113,6 +123,11 @@
                       <i>{{ prefix }}:{{ k < prefixes.length - 1 ? ', ' : '' }}</i>
                     </b>
                   </mat-error>
+                  <mat-error *ngIf="clause.get('source') as control">
+                    <ng-container *ngIf="control.invalid">
+                      {{ control.errors?.serverError }}
+                    </ng-container>
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="row">
@@ -135,6 +150,11 @@
                     <b *ngFor="let prefix of prefixes; let k=index">
                       <i>{{ prefix }}:{{ k < prefixes.length - 1 ? ', ' : '' }}</i>
                     </b>
+                  </mat-error>
+                  <mat-error *ngIf="clause.get('value') as control">
+                    <ng-container *ngIf="control.invalid">
+                      {{ control.errors?.serverError }}
+                    </ng-container>
                   </mat-error>
                 </mat-form-field>
               </div>
