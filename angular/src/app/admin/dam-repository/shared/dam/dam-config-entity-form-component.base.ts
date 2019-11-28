@@ -42,8 +42,10 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
     const { details } = error;
     if (details) {
       details.forEach(errorDetail => {
-        const path = moduleName + '/' + form.get('id').value + '/';
-        const fieldName = errorDetail['resourceName'].replace(path, '').replace('/', '.');
+        const path = `${moduleName}/${form.get('id').value}/`;
+        const fieldName = errorDetail['resourceName']
+          .replace(path, '')
+          .replace(/\//g, '.');
         if (fieldName.length > 0) {
           form.get(fieldName).setErrors({
             serverError: errorDetail['description'],
