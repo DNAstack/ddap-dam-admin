@@ -50,6 +50,7 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
           form.get(fieldName).setErrors({
             serverError: errorDetail['description'],
           });
+          form.get(fieldName).markAsTouched();
         } else {
           this.formErrorMessage = errorDetail['description'];
           this.isFormValid = false;

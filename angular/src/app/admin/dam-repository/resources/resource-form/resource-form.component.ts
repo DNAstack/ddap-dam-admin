@@ -169,6 +169,7 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
             viewForm.get(fieldName).setErrors({
               serverError: errorDetails['description'],
             });
+            viewForm.get(fieldName).markAsTouched();
           }
         }
       }
@@ -179,6 +180,7 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
     form.get(fieldControlName).setErrors({
       serverError: errorDetails['description'],
     });
+    form.get(fieldControlName).markAsTouched();
   }
 
 
