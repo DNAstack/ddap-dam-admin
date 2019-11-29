@@ -10,6 +10,7 @@
              data-se="inp-id"
              required>
       <mat-error *ngIf="form.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
+      <mat-error *ngIf="form.get('id').invalid">{{ form.get('id').errors?.serverError }}</mat-error>
     </mat-form-field>
     <mat-form-field class="col"
                     formGroupName="ui">
@@ -18,6 +19,7 @@
              formControlName="label"
              data-se="inp-label"
              required>
+      <mat-error *ngIf="form.get('ui.label').invalid">{{ form.get('ui.label').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
     <div class="row">
@@ -30,6 +32,7 @@
                   required>
           <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
         </textarea>
+        <mat-error *ngIf="form.get('ui.description').invalid">{{ form.get('ui.description').errors?.serverError }}</mat-error>
       </mat-form-field>
     </div>
     <div class="row">
@@ -39,12 +42,14 @@
                placeholder="Owner"
                formControlName="owner"
                data-se="inp-owner">
+        <mat-error *ngIf="form.get('ui.owner').invalid">{{ form.get('ui.owner').errors?.serverError }}</mat-error>
       </mat-form-field>
       <mat-form-field class="col">
         <input matInput
                placeholder="Maximum TTL"
                formControlName="maxTokenTtl"
                data-se="inp-max-ttl">
+        <mat-error *ngIf="form.get('maxTokenTtl').invalid">{{ form.get('maxTokenTtl').errors?.serverError }}</mat-error>
       </mat-form-field>
     </div>
   <ng-container formGroupName="ui">
@@ -54,6 +59,7 @@
                placeholder="AccessModel"
                formControlName="access"
                data-se="inp-access">
+        <mat-error *ngIf="form.get('ui.access').invalid">{{ form.get('ui.access').errors?.serverError }}</mat-error>
       </mat-form-field>
     </div>
     <div class="row">
@@ -62,12 +68,14 @@
                placeholder="Year"
                formControlName="year"
                data-se="inp-year">
+        <mat-error *ngIf="form.get('ui.year').invalid">{{ form.get('ui.year').errors?.serverError }}</mat-error>
       </mat-form-field>
       <mat-form-field class="col">
         <input matInput
                placeholder="Size"
                formControlName="size"
                data-se="inp-size">
+        <mat-error *ngIf="form.get('ui.size').invalid">{{ form.get('ui.size').errors?.serverError }}</mat-error>
       </mat-form-field>
     </div>
     <div class="row">
@@ -77,6 +85,7 @@
                formControlName="tags"
                data-se="inp-tags">
         <mat-hint>Separate tags by comma</mat-hint>
+        <mat-error *ngIf="form.get('ui.tags').invalid">{{ form.get('ui.tags').errors?.serverError }}</mat-error>
       </mat-form-field>
     </div>
     <div class="row">
@@ -87,6 +96,7 @@
                formControlName="imageUrl"
                data-se="inp-image-url">
         <mat-error *ngIf="form.get('ui.imageUrl').hasError('url')">Must start with http:// or https://</mat-error>
+        <mat-error *ngIf="form.get('ui.imageUrl').invalid">{{ form.get('ui.imageUrl').errors?.serverError }}</mat-error>
       </mat-form-field>
     </div>
     <div class="row">
@@ -97,6 +107,7 @@
                formControlName="infoUrl"
                data-se="inp-info-url">
         <mat-error *ngIf="form.get('ui.infoUrl').hasError('url')">Must start with http:// or https://</mat-error>
+        <mat-error *ngIf="form.get('ui.infoUrl').invalid">{{ form.get('ui.infoUrl').errors?.serverError }}</mat-error>
       </mat-form-field>
     </div>
     <div class="row">
@@ -107,6 +118,7 @@
                formControlName="applyUrl"
                data-se="inp-apply-url">
         <mat-error *ngIf="form.get('ui.applyUrl').hasError('url')">Must start with http:// or https://</mat-error>
+        <mat-error *ngIf="form.get('ui.applyUrl').invalid">{{ form.get('ui.applyUrl').errors?.serverError }}</mat-error>
       </mat-form-field>
     </div>
     <div class="row">
@@ -117,6 +129,7 @@
                formControlName="troubleshootUrl"
                data-se="inp-troubleshoot-url">
         <mat-error *ngIf="form.get('ui.troubleshootUrl').hasError('url')">Must start with http:// or https://</mat-error>
+        <mat-error *ngIf="form.get('ui.troubleshootUrl').invalid">{{ form.get('ui.troubleshootUrl').errors?.serverError }}</mat-error>
       </mat-form-field>
     </div>
   </ng-container>

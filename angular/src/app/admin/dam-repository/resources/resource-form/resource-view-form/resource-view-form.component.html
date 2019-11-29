@@ -119,6 +119,9 @@
             {{ template.dto.ui.label }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="viewForm.get('serviceTemplate').invalid">
+          {{ viewForm.get('serviceTemplate').errors?.serverError }}
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="ddap-view-service-template"

@@ -157,15 +157,25 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
       if (errorDetails['resourceName'].includes(viewId)) {
         const fieldsPath = errorDetails['resourceName'].replace(new RegExp('^.+' + viewId + '\/'), '');
         if (fieldsPath.includes('accessRoles')) {
-          this.displayErrorMessage('roles', viewForm, errorDetails);
+          this.setServerError('roles', viewForm, errorDetails);
         } else if (fieldsPath.includes('items')) {
-          this.displayErrorMessage('variables', viewForm, errorDetails);
+          this.setServerError('variables', viewForm, errorDetails);
+        } else {
+          const path = `resources/${this.form.get('id').value}/views/${viewForm.get('id').value}/`;
+          const fieldName = errorDetails['resourceName']
+            .replace(path, '')
+            .replace(/\//g, '.');
+          if (fieldName.length > 0) {
+            viewForm.get(fieldName).setErrors({
+              serverError: errorDetails['description'],
+            });
+          }
         }
       }
     });
   }
 
-  private displayErrorMessage(fieldControlName, form, errorDetails) {
+  private setServerError(fieldControlName, form, errorDetails) {
     form.get(fieldControlName).setErrors({
       serverError: errorDetails['description'],
     });

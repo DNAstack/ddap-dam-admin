@@ -63,9 +63,11 @@ export class ResourceDetailComponent extends DamConfigEntityDetailComponentBase<
           this.accessForm.makeFieldsValid();
           this.accessForm.validatePersonaFields(details);
         } else {
-          this.isFormValid = false;
-          this.isFormValidated = true;
-          this.resourceForm.setFormControlErrors(details);
+          if (details['resourceName'].includes('views')) {
+            this.resourceForm.setFormControlErrors(details);
+          } else {
+            this.displayFieldErrorMessage(error, 'resources', this.resourceForm);
+          }
         }
       });
     } else if (!isDryRun) {

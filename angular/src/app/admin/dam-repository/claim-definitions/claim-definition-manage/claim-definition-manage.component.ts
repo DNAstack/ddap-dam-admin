@@ -4,6 +4,7 @@ import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import { DamConfigEntityFormComponentBase } from '../../shared/dam/dam-config-entity-form-component.base';
+import { DamConfigEntityType } from '../../shared/dam/dam-config-entity-type.enum';
 import { ClaimDefinitionFormComponent } from '../claim-definition-form/claim-definition-form.component';
 import { ClaimDefinitionService } from '../claim-definitions.service';
 
@@ -33,7 +34,11 @@ export class ClaimDefinitionManageComponent extends DamConfigEntityFormComponent
     const claimDefinition: EntityModel = this.claimDefinitionForm.getModel();
     const change = new ConfigModificationModel(claimDefinition.dto, {});
     this.claimDefinitionService.save(claimDefinition.name, change)
-      .subscribe(() => this.navigateUp('../..'), this.showError);
+      .subscribe(() => this.navigateUp('../..'), this.handleError);
+  }
+
+  handleError = ({ error }) => {
+    this.displayFieldErrorMessage(error, DamConfigEntityType.policies, this.claimDefinitionForm.form);
   }
 
 }

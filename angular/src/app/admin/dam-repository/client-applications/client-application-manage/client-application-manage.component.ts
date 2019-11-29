@@ -4,6 +4,7 @@ import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import { DamConfigEntityFormComponentBase } from '../../shared/dam/dam-config-entity-form-component.base';
+import { DamConfigEntityType } from '../../shared/dam/dam-config-entity-type.enum';
 import { ClientApplicationFormComponent } from '../client-application-form/client-application-form.component';
 import { ClientApplicationService } from '../client-applications.service';
 
@@ -33,7 +34,11 @@ export class ClientApplicationManageComponent extends DamConfigEntityFormCompone
     const clientApplication: EntityModel = this.clientApplicationForm.getModel();
     const change = new ConfigModificationModel(clientApplication.dto, {});
     this.clientApplicationService.save(clientApplication.name, change)
-      .subscribe(() => this.navigateUp('../..'), this.showError);
+      .subscribe(() => this.navigateUp('../..'), this.handleError);
+  }
+
+  handleError = ({ error }) => {
+    this.displayFieldErrorMessage(error, DamConfigEntityType.policies, this.clientApplicationForm.form);
   }
 
 }

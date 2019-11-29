@@ -38,7 +38,6 @@ export class ResourceManageComponent extends DamConfigEntityFormComponentBase {
     const resourceModel: EntityModel = this.resourceForm.getModel();
     const applyModel = this.accessForm.getApplyModel(isDryRun) || {};
     const change = new ConfigModificationModel(resourceModel.dto, applyModel);
-
     return this.resourceService.save(resourceModel.name, change)
       .subscribe(() => {
         if (!isDryRun) {
@@ -55,9 +54,11 @@ export class ResourceManageComponent extends DamConfigEntityFormComponentBase {
           this.accessForm.makeFieldsValid();
           this.accessForm.validatePersonaFields(details);
         } else {
-          this.isFormValid = false;
-          this.isFormValidated = true;
-          this.resourceForm.setFormControlErrors(details);
+          if (details['resourceName'].includes('views')) {
+            this.resourceForm.setFormControlErrors(details);
+          } else {
+            this.displayFieldErrorMessage(error, 'resources', this.resourceForm.form);
+          }
         }
       });
     } else if (!isDryRun) {
