@@ -76,8 +76,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
-        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "test_whitelist");
+        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
 
         adminManagePage.waitForInflightRequests();
         adminManagePage.clickCheckbox(By.id(viewId + "/" + role + "/test_user_with_access"));
@@ -118,8 +118,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Google Cloud Storage");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-bucket"), "ga4gh-apis-controlled-access");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-project"), "ga4gh-apis");
-        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + view1Role));
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + view1Role), "test_whitelist");
+        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + view1Role));
 
         adminManagePage.clickButton(DdapBy.se("btn-add-view"));
         adminManagePage.toggleExpansionPanel("view-new");
@@ -130,8 +130,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
-        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + view2Role));
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + view2Role), "test_whitelist");
+        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + view2Role));
 
         adminManagePage.waitForInflightRequests();
         adminManagePage.clickCheckbox(By.id(view1Id + "/" + view1Role + "/test_user_with_access"));
@@ -172,9 +172,9 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
-        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
         // This is the invalid part
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "NONEXISTENT_POLICY");
+        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
 
         adminManagePage.clickSave();
         adminListPage.waitForInflightRequests();
@@ -196,9 +196,9 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit, "Edit Resource");
         adminManagePage.toggleExpansionPanel("view-discovery-access");
 
-        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + newDefaultRole));
         // Invalid part
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + newDefaultRole), "NONEXISTENT_POLICY");
+        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + newDefaultRole));
 
         adminManagePage.clickUpdate();
         adminManagePage.waitForInflightRequests();
@@ -242,8 +242,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminManagePage.findCheckedCheckbox("discovery-access/discovery/test_user_with_access");
 
-        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + newDefaultRole));
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + newDefaultRole), "test_whitelist");
+        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + newDefaultRole));
 
         adminManagePage.waitForInflightRequests();
         adminManagePage.clickCheckbox(By.id("discovery-access/" + newDefaultRole + "/test_user_with_access"));
