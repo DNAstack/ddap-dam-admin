@@ -737,6 +737,48 @@
         "description": "Offers executing of workflow",
         "label": "Workflow Execution Schema"
       }
+    },
+    "edit-me": {
+      "targetAdapter": "token:aggregate:view",
+      "itemFormat": "view",
+      "roles": {
+        "viewer": {
+          "damRoleCategories": [
+            "metadata",
+            "list",
+            "read"
+          ],
+          "ui": {
+            "description": "Offers Viewer access across multiple views",
+            "label": "Viewer"
+          }
+        }
+      },
+      "ui": {
+        "description": "Offers Resource Viewer access across multiple views",
+        "label": "Edit Me"
+      }
+    },
+    "delete-me": {
+      "targetAdapter": "token:aggregate:view",
+      "itemFormat": "view",
+      "roles": {
+        "viewer": {
+          "damRoleCategories": [
+            "metadata",
+            "list",
+            "read"
+          ],
+          "ui": {
+            "description": "Offers Viewer access across multiple views",
+            "label": "Viewer"
+          }
+        }
+      },
+      "ui": {
+        "description": "Offers Resource Viewer access across multiple views",
+        "label": "Delete Me"
+      }
     }
   },
   "claimDefinitions": {

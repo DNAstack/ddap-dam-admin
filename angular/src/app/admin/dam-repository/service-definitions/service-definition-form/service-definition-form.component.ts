@@ -1,122 +1,60 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
-import _get from 'lodash.get';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { alignControlsWithModelDefinitions, EntityModel, removeInternalFields } from 'ddap-common-lib';
 import { dam } from 'src/app/shared/proto/dam-service';
 
-import { DamConfigEntityType } from '../../shared/dam/dam-config-entity-type.enum';
 import { TargetAdaptersService } from '../../target-adapters/target-adapters.service';
-import ServiceTemplate = dam.v1.ServiceTemplate;
-import ServiceRole = dam.v1.ServiceRole;
 import { ServiceDefinitionService } from '../service-definitions.service';
+
+import { ServiceDefinitionFormBuilder } from './service-definition-form-builder.service';
+import ServiceTemplate = dam.v1.ServiceTemplate;
+
+import ITargetAdapter = dam.v1.ITargetAdapter;
 
 @Component({
   selector: 'ddap-service-definition-form',
   templateUrl: './service-definition-form.component.html',
   styleUrls: ['./service-definition-form.component.scss'],
 })
-export class ServiceDefinitionFormComponent implements OnInit, AfterViewInit {
+export class ServiceDefinitionFormComponent implements OnInit {
 
   get interfaces() {
-    return this.form.get('interfaces') as FormArray;
+    return this.form.get('interfaces') as FormGroup;
   }
 
   get roles() {
-    return this.form.get('roles') as FormArray;
+    return this.form.get('roles') as FormGroup;
+  }
+
+  get selectedTargetAdapter(): ITargetAdapter | null {
+    return this.targetAdapters
+           ? this.targetAdapters[this.form.get('targetAdapter').value]
+           : null;
   }
 
   @Input()
   serviceTemplate?: EntityModel = new EntityModel( '' , ServiceTemplate.create());
 
   form: FormGroup;
-  targetAdapters: object;
+  interfaceCounter = 1;
+  roleCounter = 1;
+  targetAdapters: ITargetAdapter[];
   requirements: object;
-  itemFormats: string[];
 
-  constructor( private formBuilder: FormBuilder,
-               private serviceDefinitionService: ServiceDefinitionService,
-               private targetAdaptersService: TargetAdaptersService) {
-    this.form = this.buildServiceTemplateForm();
+  constructor(private formBuilder: FormBuilder,
+              private serviceDefinitionFormBuilder: ServiceDefinitionFormBuilder,
+              private serviceDefinitionService: ServiceDefinitionService,
+              private targetAdaptersService: TargetAdaptersService) {
   }
 
   ngOnInit() {
     this.targetAdaptersService.getTargetAdapters()
-      .subscribe(targetAdapters => {
+      .subscribe((targetAdapters: ITargetAdapter[]) => {
         this.targetAdapters = targetAdapters;
         this.targetAdapterChange();
       });
-    this.form = this.buildServiceTemplateForm();
-  }
 
-  buildServiceTemplateForm() {
-    const { name, dto } = this.serviceTemplate;
-    return this.formBuilder.group({
-      id: [name, [Validators.pattern(nameConstraintPattern),
-        Validators.required]],
-      targetAdapter: [dto.targetAdapter, [Validators.required]],
-      itemFormat: [dto.itemFormat, [Validators.required]],
-      interfaces: this.formBuilder.array([]),
-      roles: this.formBuilder.array([]),
-      ui: this.formBuilder.group({
-        label: [dto.ui.label, [Validators.required]],
-        description: [dto.ui.description, [Validators.required, Validators.maxLength(255)]],
-      }),
-    });
-  }
-
-  ngAfterViewInit(): void {
-    const roles = _get(this.serviceTemplate, 'dto.roles', {});
-    const interfaces = _get(this.serviceTemplate, 'dto.interfaces', {});
-    this.updateRolesForm(roles);
-    this.updateInterfacesForm(interfaces);
-  }
-
-  addRole(roleId?: string, roles?): void {
-    const {name, dto} = new EntityModel(
-      roleId ? roleId : '',
-      roles ? _get(roles, roleId, null) : ServiceRole.create()
-    );
-    this.roles.insert(0, this.createRoleForm(name, dto));
-    this.updateRoleValidations();
-  }
-
-  removeRole(index: number): void {
-    this.roles.removeAt(index);
-  }
-
-  addInterface(interfaceType?, interfaces?) {
-    const {name, dto} = new EntityModel(
-      interfaceType ? interfaceType : '',
-      interfaces ? _get(interfaces, interfaceType, null) : ''
-    );
-    this.interfaces.insert(0, this.createInterfacesForm(name, dto));
-  }
-
-  removeInterface(index: number) {
-    this.interfaces.removeAt(index);
-  }
-
-  getModel(): EntityModel {
-    const {
-      id,
-      interfaces,
-      roles,
-      ...rest
-    } = this.form.value;
-    return new EntityModel(id, {
-      interfaces: this.getInterfacesModel(interfaces),
-      roles: this.getRolesModel(roles),
-      ...rest,
-    });
-  }
-
-  targetAdapterChange() {
-    const selectedTargetAdapter: string = this.form.get('targetAdapter').value || '';
-    if (selectedTargetAdapter) {
-      this.itemFormats = this.targetAdapters[selectedTargetAdapter].itemFormats;
-      this.requirements = this.targetAdapters[selectedTargetAdapter].requirements;
-      this.updateRoleValidations();
-    }
+    this.form = this.serviceDefinitionFormBuilder.buildForm(this.serviceTemplate);
   }
 
   getAllForms(): FormGroup[] {
@@ -127,87 +65,72 @@ export class ServiceDefinitionFormComponent implements OnInit, AfterViewInit {
     return this.form.valid;
   }
 
+  addInterface() {
+    const controlId = `UNDEFINED_INTERFACE_${this.interfaceCounter}`;
+    this.interfaces.addControl(controlId, this.serviceDefinitionFormBuilder.buildInterfaceForm(controlId));
+    this.interfaceCounter += 1;
+  }
+
+  removeInterface(id: string) {
+    this.interfaces.removeControl(id);
+  }
+
+  addRole() {
+    const controlId = `UNDEFINED_ROLE_${this.roleCounter}`;
+    this.roles.addControl(controlId, this.serviceDefinitionFormBuilder.buildServiceRoleForm(controlId));
+    this.roleCounter += 1;
+  }
+
+  removeRole(id: string) {
+    this.roles.removeControl(id);
+  }
+
+  targetAdapterChange() {
+    if (!this.selectedTargetAdapter) {
+      return;
+    }
+
+    this.requirements = this.selectedTargetAdapter.requirements;
+    this.updateRoleValidations();
+  }
+
   isRequired(fieldName: string): boolean {
-    return this.requirements && this.requirements[fieldName];
+    return this.requirements && fieldName in this.requirements;
   }
 
-  displayError({ details }) {
-    details.forEach(errorDetail => {
-      const path = DamConfigEntityType.serviceTemplates + '/' + this.form.get('id').value + '/';
-      if (errorDetail['resourceName'] && errorDetail['resourceName'].includes(path)) {
-        const fieldName = errorDetail['resourceName'].replace(path, '');
-        this.form.get(fieldName).setErrors({
-          serverError: errorDetail['description'],
+  getModel(): EntityModel {
+    alignControlsWithModelDefinitions([this.roles, this.interfaces]);
+
+    const { id, roles, interfaces, ...rest } = this.form.value;
+    return new EntityModel(id, {
+      roles: removeInternalFields(roles, ['id']),
+      interfaces: this.getInterfacesModel(interfaces),
+      ...rest,
+    });
+  }
+
+  private getInterfacesModel(interfaces: { [ key: string]: string }) {
+    const interfacesModel = {};
+    if (interfaces) {
+      Object.values(interfaces)
+        .forEach((interfaceValue: any) => {
+          interfacesModel[interfaceValue.id] = interfaceValue.value;
         });
-      }
-    });
-  }
-
-  private createRoleForm(name, dto): FormGroup {
-    return this.formBuilder.group({
-      name: [name, [Validators.pattern(nameConstraintPattern), Validators.required]],
-      targetRoles: [dto.targetRoles, []],
-      targetScopes: [dto.targetScopes, []],
-      damRoleCategories: [dto.damRoleCategories, []],
-      ui: this.formBuilder.group({
-        label: [ dto.ui.label, [Validators.required]],
-        description: [dto.ui.description, [Validators.required, Validators.maxLength(255)]],
-      }),
-    });
-  }
-
-  private createInterfacesForm(name = '', dto= ''): FormGroup {
-    return this.formBuilder.group({
-      name: [name, [Validators.required]],
-      value: [dto, [Validators.required]],
-    });
-  }
-
-  private updateRolesForm(roles: any) {
-    if (!Object.keys(roles).length) {
-      this.addRole();
-      return;
     }
-    Object.keys(roles).forEach(roleId => this.addRole(roleId, roles));
-  }
-
-  private updateInterfacesForm(interfaces: any) {
-    if (!Object.keys(interfaces).length) {
-      return;
-    }
-    Object.keys(interfaces).forEach(interfaceType => this.addInterface(interfaceType, interfaces));
-  }
-
-  private getInterfacesModel(interfaces) {
-    const modifiedInterfaces = {};
-    interfaces.forEach(interfaceObj =>
-      modifiedInterfaces[interfaceObj.name] = interfaceObj.value
-    );
-    return modifiedInterfaces;
-  }
-
-  private getRolesModel(roles) {
-
-    const rolesModel: object = {};
-    roles.map(role => {
-      const { name } = role;
-      delete role.name;
-      Object.assign(rolesModel, { [name] : ServiceRole.create(role) });
-    });
-    return rolesModel;
+    return interfacesModel;
   }
 
   private updateRoleValidations() {
-    const roleFormControls: any[] = this.roles.controls;
-    roleFormControls.forEach(roleFormGroup => {
-      const roleValidators = (this.requirements && this.requirements['targetRole']) ? [Validators.required] : [];
-      const scopeValidators = (this.requirements && this.requirements['targetScope']) ? [Validators.required] : [];
+    Object.entries(this.roles.controls)
+      .forEach(([_, roleControl]: any) => {
+        const roleValidators = (this.requirements && this.requirements['targetRole']) ? [Validators.required] : [];
+        const scopeValidators = (this.requirements && this.requirements['targetScope']) ? [Validators.required] : [];
 
-      roleFormGroup.controls['targetRoles'].setValidators(roleValidators);
-      roleFormGroup.controls['targetScopes'].setValidators(scopeValidators);
+        roleControl.controls['targetRoles'].setValidators(roleValidators);
+        roleControl.controls['targetScopes'].setValidators(scopeValidators);
 
-      roleFormGroup.controls['targetRoles'].updateValueAndValidity();
-      roleFormGroup.controls['targetScopes'].updateValueAndValidity();
-    });
+        roleControl.controls['targetRoles'].updateValueAndValidity();
+        roleControl.controls['targetScopes'].updateValueAndValidity();
+      });
   }
 }

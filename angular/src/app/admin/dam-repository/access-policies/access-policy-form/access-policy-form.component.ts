@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
-import { EntityModel, Form } from 'ddap-common-lib';
+import { alignControlsWithModelDefinitions, EntityModel, Form, removeInternalFields } from 'ddap-common-lib';
 
 import { dam } from '../../../../shared/proto/dam-service';
 
@@ -33,23 +33,15 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   }
 
   getModel(): EntityModel {
-    this.setVariableDefinitionControls();
+    alignControlsWithModelDefinitions([this.variableDefinitions]);
 
-    const { id, ...rest } = this.form.value;
+    const { id, variableDefinitions, ...rest } = this.form.value;
     const accessPolicy: Policy = Policy.create({
+      variableDefinitions: removeInternalFields(variableDefinitions, ['id']),
       ...rest,
     });
 
     return new EntityModel(id, accessPolicy);
-  }
-
-  getVariableDefinitionsModel(variableDefinitions: any[]): { [key: string]: IVariableFormat } {
-    const variableDefinitionsModel = {};
-    variableDefinitions.forEach((variableDefinition) => {
-      const { id, ...rest } = variableDefinition;
-      variableDefinitionsModel[id] = { ...rest };
-    });
-    return variableDefinitionsModel;
   }
 
   getAllForms(): FormGroup[] {
@@ -68,18 +60,6 @@ export class AccessPolicyFormComponent implements OnInit, Form {
 
   removeVariable(id: string) {
     this.variableDefinitions.removeControl(id);
-  }
-
-  private setVariableDefinitionControls() {
-    Object.entries(this.variableDefinitions.controls).forEach(([currentControlId, control]) => {
-      const { id: newControlId } = control.value;
-      this.changeVariableControlId(currentControlId, newControlId);
-    });
-  }
-
-  private changeVariableControlId(currentId, newId) {
-    this.variableDefinitions.addControl(newId, this.variableDefinitions.get(currentId));
-    this.variableDefinitions.removeControl(currentId);
   }
 
 }

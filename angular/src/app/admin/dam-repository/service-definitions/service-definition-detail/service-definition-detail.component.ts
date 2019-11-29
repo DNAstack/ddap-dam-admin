@@ -16,6 +16,7 @@ import { ServiceDefinitionsStore } from '../service-definitions.store';
   styleUrls: ['./service-definition-detail.component.scss'],
 })
 export class ServiceDefinitionDetailComponent extends DamConfigEntityDetailComponentBase<ServiceDefinitionsStore> implements OnInit {
+
   @ViewChild(ServiceDefinitionFormComponent, {static: false})
   serviceDefinitionForm: ServiceDefinitionFormComponent;
 
@@ -28,22 +29,24 @@ export class ServiceDefinitionDetailComponent extends DamConfigEntityDetailCompo
     super(route, router, validationService, damConfigStore, serviceDefinitionsStore);
   }
 
-  delete(): void {
-    this.serviceDefinitionService.remove(this.entity.name)
-      .subscribe(() => this.navigateUp('..'), this.showError);
-  }
-
   update(): void {
     if (!this.validate(this.serviceDefinitionForm)) {
       return;
     }
+
     const serviceTemplate: EntityModel = this.serviceDefinitionForm.getModel();
     const change = new ConfigModificationModel(serviceTemplate.dto, {});
     this.serviceDefinitionService.update(serviceTemplate.name, change)
       .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
+  delete(): void {
+    this.serviceDefinitionService.remove(this.entity.name)
+      .subscribe(() => this.navigateUp('..'), this.handleError);
+  }
+
   handleError = ({ error }) => {
     this.displayFieldErrorMessage(error, DamConfigEntityType.serviceTemplates, this.serviceDefinitionForm.form);
   }
+
 }

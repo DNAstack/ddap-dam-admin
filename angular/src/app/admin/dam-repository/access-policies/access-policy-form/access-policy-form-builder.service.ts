@@ -21,7 +21,7 @@ export class AccessPolicyFormBuilder extends ConditionFormBuilder {
       id: [_get(policy, 'name'), [Validators.pattern(nameConstraintPattern)]],
       ui: this.formBuilder.group({
         label: [_get(policy, 'dto.ui.label'), [Validators.required]],
-        description: [_get(policy, 'dto.ui.description'), [Validators.required]],
+        description: [_get(policy, 'dto.ui.description'), [Validators.required, Validators.maxLength(255)]],
         infoUrl: [_get(policy, 'dto.ui.infoUrl'), []],
       }),
       anyOf: this.buildConditionsForm(_get(policy, 'dto.anyOf')),
@@ -45,7 +45,7 @@ export class AccessPolicyFormBuilder extends ConditionFormBuilder {
       id: [variableId, [Validators.required]],
       regexp: [_get(variableFormat, 'regexp'), [Validators.required]],
       ui: this.formBuilder.group({
-        description: [_get(variableFormat, 'ui.description'), [Validators.required]],
+        description: [_get(variableFormat, 'ui.description'), [Validators.required, Validators.maxLength(255)]],
       }),
     });
   }
