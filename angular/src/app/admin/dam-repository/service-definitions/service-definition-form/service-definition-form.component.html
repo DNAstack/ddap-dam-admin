@@ -90,7 +90,7 @@
         </mat-panel-title>
         <mat-panel-description *ngIf="interfaceObj.value as control">
           <mat-error *ngIf="control.invalid">
-            {{ test(control.errors?.serverError) }}
+            {{ control.errors?.serverError }}
           </mat-error>
         </mat-panel-description>
         <div class="invalid-warning"
