@@ -4,6 +4,7 @@ import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import { DamConfigEntityFormComponentBase } from '../../shared/dam/dam-config-entity-form-component.base';
+import { DamConfigEntityType } from '../../shared/dam/dam-config-entity-type.enum';
 import { ServiceDefinitionFormComponent } from '../service-definition-form/service-definition-form.component';
 import { ServiceDefinitionService } from '../service-definitions.service';
 
@@ -34,12 +35,7 @@ export class ServiceDefinitionManageComponent extends DamConfigEntityFormCompone
       .subscribe(() => this.navigateUp('../..'), this.handleError);
   }
 
-  handleError = (response) => {
-    const { error } = response;
-    if ( error instanceof Object) {
-      this.serviceDefinitionForm.displayError(error);
-    } else {
-      this.showError(response);
-    }
+  handleError = ({ error }) => {
+    this.displayFieldErrorMessage(error, DamConfigEntityType.serviceTemplates, this.serviceDefinitionForm.form);
   }
 }

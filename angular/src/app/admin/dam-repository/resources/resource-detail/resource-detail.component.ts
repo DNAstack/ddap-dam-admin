@@ -66,7 +66,7 @@ export class ResourceDetailComponent extends DamConfigEntityDetailComponentBase<
           if (details['resourceName'].includes('views')) {
             this.resourceForm.setFormControlErrors(details);
           } else {
-            this.displayFieldErrorMessage(error, 'resources', this.resourceForm);
+            this.displayFieldErrorMessage(error, 'resources', this.resourceForm.form);
           }
         }
       });

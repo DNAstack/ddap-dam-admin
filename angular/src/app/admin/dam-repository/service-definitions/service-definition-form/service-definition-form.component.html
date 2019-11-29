@@ -41,6 +41,9 @@
         {{targetAdapter.value.ui.label}}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="form.get('targetAdapter').invalid">
+      {{form.get('targetAdapter').errors?.serverError}}
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Item Format</mat-label>
@@ -96,6 +99,9 @@
                  placeholder="Interface Name"
                  data-se="inp-interface-type"/>
           <mat-hint>Example: <i>http:gcp:gs</i></mat-hint>
+          <mat-error *ngIf="form.get('interfaces.' + i + '.name').invalid">
+            {{form.get('interfaces.' + i + '.name').errors?.serverError}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="col">
           <input matInput
@@ -103,6 +109,9 @@
                  formControlName="value"
                  placeholder="Interface Value"
                  data-se="inp-interface-value"/>
+          <mat-error *ngIf="form.get('interfaces.' + i + '.value').invalid">
+            {{form.get('interfaces.' + i + '.value').errors?.serverError}}
+          </mat-error>
         </mat-form-field>
       </div>
       <div class="footer">
@@ -161,6 +170,9 @@
             <mat-error *ngIf="form.get('roles').controls[i].get('name').invalid">
               Name must be 3-46 characters and alphanumeric
             </mat-error>
+            <mat-error *ngIf="form.get('roles.' + i + '.name').invalid">
+              {{form.get('roles.' + i + '.name').errors?.serverError}}
+            </mat-error>
           </mat-form-field>
           <mat-form-field class="col"
                           formGroupName="ui">
@@ -169,6 +181,9 @@
                    placeholder="Display Name"
                    formControlName="label"
                    [attr.data-se]="'inp-role-label-' + i"/>
+            <mat-error *ngIf="form.get('roles.' + i + '.ui.label').invalid">
+              {{form.get('roles.' + i + '.ui.label').errors?.serverError}}
+            </mat-error>
           </mat-form-field>
         </div>
         <mat-form-field formGroupName="ui">
@@ -181,6 +196,9 @@
           <mat-error *ngIf="form.get('roles').controls[i].get('ui.description').invalid">
             Description must be up to 255 characters
           </mat-error>
+          <mat-error *ngIf="form.get('roles.' + i + '.ui.description').invalid">
+            {{form.get('roles.' + i + '.ui.description').errors?.serverError}}
+          </mat-error>
         </mat-form-field>
         <div class="row">
           <div class="col">
@@ -192,6 +210,9 @@
                        [attr.data-se]="'inp-target-role-' + i"
                        modelAsStrings="true">
             </tag-input>
+            <mat-error *ngIf="form.get('roles.' + i + '.targetRoles').invalid">
+              {{form.get('roles.' + i + '.targetRoles').errors?.serverError}}
+            </mat-error>
           </div>
         </div>
         <div class="row">
@@ -204,6 +225,9 @@
                        modelAsStrings="true"
                        [attr.data-se]="'inp-target-scope-' + i">
             </tag-input>
+            <mat-error *ngIf="form.get('roles.' + i + '.targetScopes').invalid">
+              {{form.get('roles.' + i + '.targetScopes').errors?.serverError}}
+            </mat-error>
           </div>
         </div>
         <div class="row">
@@ -215,6 +239,9 @@
                        modelAsStrings="true"
                        [attr.data-se]="'inp-dam-role-category-' + i">
             </tag-input>
+            <mat-error *ngIf="form.get('roles.' + i + '.damRoleCategories').invalid">
+              {{form.get('roles.' + i + '.damRoleCategories').errors?.serverError}}
+            </mat-error>
           </div>
         </div>
       </div>
