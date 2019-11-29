@@ -123,7 +123,7 @@ public class AdminManagePage extends AdminDdapPage {
 
     public AdminListPage saveEntity() {
         clickSave();
-
+        this.waitForInflightRequests();
         return new AdminListPage(driver);
     }
 
