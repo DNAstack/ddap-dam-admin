@@ -88,6 +88,11 @@
           <mat-icon class="icon icon-views"></mat-icon>
           <span>{{ interfaceObj.value.get('id').value || 'UNDEFINED_INTERFACE' }}</span>
         </mat-panel-title>
+        <mat-panel-description *ngIf="interfaceObj.value as control">
+          <mat-error *ngIf="control.invalid">
+            {{ test(control.errors?.serverError) }}
+          </mat-error>
+        </mat-panel-description>
         <div class="invalid-warning"
              *ngIf="interfaceObj.value.invalid">
           <mat-icon class="icon icon-warning"
