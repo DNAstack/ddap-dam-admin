@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.dnastack.ddap.common.fragments.NavBar.damResourceLink;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertThat;
 
 @SuppressWarnings("Duplicates")
 public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
@@ -178,8 +179,10 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminManagePage.clickSave();
         adminListPage.waitForInflightRequests();
-        adminManagePage.assertError(containsString("NONEXISTENT_POLICY"));
-        adminManagePage.assertError(containsString("is not defined"));
+        final WebElement errorField = new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-role-error")));
+        assertThat(errorField.getText(), containsString("NONEXISTENT_POLICY"));
+        assertThat(errorField.getText(), containsString("is not defined"));
     }
 
     // TODO: Update with DISCO-2396
@@ -202,8 +205,10 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminManagePage.clickUpdate();
         adminManagePage.waitForInflightRequests();
-        adminManagePage.assertError(containsString("NONEXISTENT_POLICY"));
-        adminManagePage.assertError(containsString("is not defined"));
+        final WebElement errorField = new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-role-error")));
+        assertThat(errorField.getText(), containsString("NONEXISTENT_POLICY"));
+        assertThat(errorField.getText(), containsString("is not defined"));
     }
 
     // TODO: Update with DISCO-2396

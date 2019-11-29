@@ -159,13 +159,15 @@
         <h3>
           <mat-icon class="icon icon-identity"></mat-icon>
           <span>Roles</span>
+        </h3>
+        <div>
           <mat-error *ngIf="viewForm.get('defaultRole').invalid">
             Single role must be set as default
           </mat-error>
-          <mat-error *ngIf="viewForm.get('roles').invalid">
+          <mat-error *ngIf="viewForm.get('roles').invalid" data-se="resources-role-error">
             {{ viewForm.get('roles').errors?.serverError }}
           </mat-error>
-        </h3>
+        </div>
         <ul class="timeline">
           <li class="event"
               *ngFor="let role of selectedTemplate.dto.roles | keyvalue">
