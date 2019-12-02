@@ -60,7 +60,7 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
 
   ngOnInit(): void {
     this.form = this.resourceFormBuilder.buildForm(this.resource);
-    this.subscribeToFormChanges();
+    // this.subscribeToFormChanges();
   }
 
   ngAfterViewInit(): void {
