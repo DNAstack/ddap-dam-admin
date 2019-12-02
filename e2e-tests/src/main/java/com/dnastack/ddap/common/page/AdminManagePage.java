@@ -122,6 +122,7 @@ public class AdminManagePage extends AdminDdapPage {
     }
 
     public AdminListPage saveEntity() {
+        this.waitForInflightRequests();
         clickSave();
         this.waitForInflightRequests();
         return new AdminListPage(driver);
@@ -132,8 +133,9 @@ public class AdminManagePage extends AdminDdapPage {
     }
 
     public AdminListPage updateEntity() {
+        this.waitForInflightRequests();
         clickUpdate();
-
+        this.waitForInflightRequests();
         return new AdminListPage(driver);
     }
 
@@ -143,6 +145,7 @@ public class AdminManagePage extends AdminDdapPage {
 
     public AdminListPage deleteEntity() {
         this.clickButton(DdapBy.se("btn-delete"));
+        this.waitForInflightRequests();
 
         return new AdminListPage(driver);
     }
