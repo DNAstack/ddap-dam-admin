@@ -78,6 +78,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "test_whitelist");
+        adminManagePage.waitForInflightRequests();
+
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
 
         adminManagePage.waitForInflightRequests();
