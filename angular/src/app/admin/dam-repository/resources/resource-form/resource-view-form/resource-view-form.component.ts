@@ -66,7 +66,7 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
           this.rebuildPoliciesForRolesForm();
           this.rebuildVariablesForItemsForm();
         }
-        this.subscribeToFormChanges();
+        // this.subscribeToFormChanges();
       });
 
     this.policyValues$ = this.accessPoliciesStore.getAsList()

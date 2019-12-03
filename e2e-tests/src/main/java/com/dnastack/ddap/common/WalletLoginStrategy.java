@@ -120,7 +120,9 @@ public class WalletLoginStrategy implements LoginStrategy {
                 driver.manage().deleteCookieNamed(cookie.getName());
                 System.out.printf("Adding cookie to selenium: Cookie(name=%s, domain=%s, path=%s, expiry=%s, secure=%b" + System.lineSeparator(),
                     cookie.getName(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
-                final Cookie browserCookie = new Cookie(cookie.getName(), cookie.getValue(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
+                // Making cookie null for localhost, more info: https://stackoverflow.com/a/29312227/4445511
+                final String domain = "localhost".equals(cookie.getDomain()) ? null : cookie.getDomain();
+                final Cookie browserCookie = new Cookie(cookie.getName(), cookie.getValue(), domain, cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
                 driver.manage().addCookie(browserCookie);
             });
         driver.navigate().refresh();
