@@ -102,6 +102,10 @@ public class AutoCompleteController {
                         .filter(assignmentValue -> !isRegexValue(assignmentValue));
                 }).collect(Collectors.toList());
         } else if (!isRegexValue(valueOrVariable)) {
+            String[] prefixesArray = { "const:", "pattern:", "split_pattern"};
+            if(Stream.of(prefixesArray).anyMatch(valueOrVariable::startsWith)) {
+                return Collections.singletonList(valueOrVariable.substring(valueOrVariable.indexOf(":") + 1));
+            }
             return Collections.singletonList(valueOrVariable);
         } else {
             return Collections.emptyList();
