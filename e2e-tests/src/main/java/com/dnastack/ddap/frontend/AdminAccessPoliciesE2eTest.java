@@ -25,8 +25,10 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
         adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
-        adminManagePage.fillField(DdapBy.se("inp-condition-0-by"), "const:so");
-        adminManagePage.fillField(DdapBy.se("inp-condition-0-value"), "const:faculty@uni-heidelberg.de");
+        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-by-prefix-const"));
+        adminManagePage.fillTagField(DdapBy.se("inp-condition-0-by-value"), "so");
+        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
+        adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "faculty@uni-heidelberg.de");
 
         adminListPage = adminManagePage.saveEntity();
 
@@ -55,17 +57,28 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
         adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
-        adminManagePage.fillField(DdapBy.se("inp-condition-0-by"), "const:so");
-        adminManagePage.fillField(DdapBy.se("inp-condition-0-value"), "const:faculty@uni-heidelberg.de");
+
+        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-by-prefix-const"));
+        adminManagePage.fillTagField(DdapBy.se("inp-condition-0-by-value"), "so");
+
+        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
+        adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "faculty@uni-heidelberg.de");
+
         adminManagePage.clickButton(DdapBy.se("btn-add-clause-condition"));
         adminManagePage.fillField(DdapBy.se("inp-condition-1-type"), "AffiliationAndRole");
-        adminManagePage.fillField(DdapBy.se("inp-condition-1-by"), "const:self");
-        adminManagePage.fillField(DdapBy.se("inp-condition-1-value"), "const:https://dac.nih.gov/datasets/${TEST_VARIABLE_DATASET}");
+
+        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-1-by-prefix-const"));
+        adminManagePage.fillTagField(DdapBy.se("inp-condition-1-by-value"), "self");
+
+        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-1-value-prefix-const"));
+        adminManagePage.fillTagField(DdapBy.se("inp-condition-1-value-value"), "https://dac.nih.gov/datasets/${TEST_VARIABLE_DATASET}");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
         adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "ResearcherStatus");
-        adminManagePage.fillField(DdapBy.se("inp-condition-0-by"), "const:so");
+
+        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-by-prefix-const"));
+        adminManagePage.fillTagField(DdapBy.se("inp-condition-0-by-value"), "so");
 
         adminListPage = adminManagePage.saveEntity();
 
