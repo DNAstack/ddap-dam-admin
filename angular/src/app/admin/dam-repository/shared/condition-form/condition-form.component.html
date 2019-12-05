@@ -67,96 +67,79 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div class="row">
+              <div class="row prefix-wrapper" formGroupName="by">
                 <mat-button-toggle-group #byPrefixGroup="matButtonToggleGroup"
                                          class="col"
-                                         [value]="getPrefixBtnValue(clause.get('by'))"
-                                         (change)="prefixChange(clause.get('by'), byPrefixGroup.value)">
+                                         formControlName="prefix">
                   <mat-button-toggle *ngFor="let prefix of prefixes"
+                                     [attr.data-se]="'inp-condition-' + clauseIndex + '-by-prefix-' + prefix"
                                      [value]="prefix">
                     {{ prefix }}
                   </mat-button-toggle>
                 </mat-button-toggle-group>
-                <mat-form-field class="col">
-                  <input matInput
-                         [matAutocomplete]="authorityLevelsAutocomplete"
-                         formControlName="by"
-                         placeholder="By"
-                         [attr.data-se]="'inp-condition-' + clauseIndex + '-by'">
-                  <mat-autocomplete #authorityLevelsAutocomplete="matAutocomplete">
-                    <mat-option *ngFor="let authorityLevel of authorityLevels"
-                                [value]="authorityLevel">
-                      {{ authorityLevel }}
-                    </mat-option>
-                  </mat-autocomplete>
-                  <mat-error *ngIf="clause.get('by').hasError('prefix')">
-                    Must be prefixed with any of
-                    <b *ngFor="let prefix of prefixes; let k=index">
-                      <i>{{ prefix }}:{{ k < prefixes.length - 1 ? ', ' : '' }}</i>
-                    </b>
-                  </mat-error>
-                  <mat-error *ngIf="clause.get('by') as control">
-                    <ng-container *ngIf="control.invalid">
-                      {{ control.errors?.serverError }}
-                    </ng-container>
-                  </mat-error>
-                </mat-form-field>
+                <div class="value col">
+                  <tag-input formControlName="value"
+                             maxItems="{{byPrefixGroup.value === 'split_pattern' ? 100 : 1}}"
+                             secondaryPlaceholder="Add Value"
+                             placeholder="+ Value"
+                             [attr.data-se]="'inp-condition-' + clauseIndex + '-by-value'"
+                             modelAsStrings="true">
+                    <tag-input-dropdown [autocompleteItems]="authorityLevels"></tag-input-dropdown>
+                  </tag-input>
+                  <div *ngIf="clause.get('by').invalid" class="field-error">
+                    {{ clause.get('by').errors?.serverError || 'choose one of the prefixes' }}
+                  </div>
+                </div>
               </div>
-              <div class="row">
+              <div class="row prefix-wrapper" formGroupName="source">
                 <mat-button-toggle-group #sourcePrefixGroup="matButtonToggleGroup"
-                                         class="col"
-                                         [value]="getPrefixBtnValue(clause.get('source'))"
-                                         (change)="prefixChange(clause.get('source'), sourcePrefixGroup.value)">
+                                         formControlName="prefix"
+                                         class="col">
                   <mat-button-toggle *ngFor="let prefix of prefixes"
+                                     [attr.data-se]="'inp-condition-' + clauseIndex + '-source-prefix-' + prefix"
                                      [value]="prefix">
                     {{ prefix }}
                   </mat-button-toggle>
                 </mat-button-toggle-group>
-                <mat-form-field class="col">
-                  <input matInput
-                         placeholder="Source"
-                         formControlName="source"
-                         [attr.data-se]="'inp-condition-' + clauseIndex + '-source'">
-                  <mat-error *ngIf="clause.get('source').hasError('prefix')">
-                    Must be prefixed with any of
-                    <b *ngFor="let prefix of prefixes; let k=index">
-                      <i>{{ prefix }}:{{ k < prefixes.length - 1 ? ', ' : '' }}</i>
-                    </b>
-                  </mat-error>
-                  <mat-error *ngIf="clause.get('source') as control">
+                <div class="value col">
+                  <tag-input formControlName="value"
+                             maxItems="{{sourcePrefixGroup.value === 'split_pattern' ? 100 : 1}}"
+                             secondaryPlaceholder="Add Value"
+                             placeholder="+ Value"
+                             [attr.data-se]="'inp-condition-' + clauseIndex + '-source-value'"
+                             modelAsStrings="true">
+                  </tag-input>
+                  <div *ngIf="clause.get('source') as control" class="field-error">
                     <ng-container *ngIf="control.invalid">
-                      {{ control.errors?.serverError }}
+                      {{ control.errors?.serverError || 'choose one of the prefixes' }}
                     </ng-container>
-                  </mat-error>
-                </mat-form-field>
+                  </div>
+                </div>
               </div>
-              <div class="row">
+              <div class="row prefix-wrapper" formGroupName="value">
                 <mat-button-toggle-group #valuePrefixGroup="matButtonToggleGroup"
-                                         class="col"
-                                         [value]="getPrefixBtnValue(clause.get('value'))"
-                                         (change)="prefixChange(clause.get('value'), valuePrefixGroup.value)">
+                                         formControlName="prefix"
+                                         class="col">
                   <mat-button-toggle *ngFor="let prefix of prefixes"
+                                     [attr.data-se]="'inp-condition-' + clauseIndex + '-value-prefix-' + prefix"
                                      [value]="prefix">
                     {{ prefix }}
                   </mat-button-toggle>
                 </mat-button-toggle-group>
-                <mat-form-field class="col">
-                  <input matInput
-                         placeholder="Value"
-                         formControlName="value"
-                         [attr.data-se]="'inp-condition-' + clauseIndex + '-value'">
-                  <mat-error *ngIf="clause.get('value').hasError('prefix')">
-                    Must be prefixed with any of
-                    <b *ngFor="let prefix of prefixes; let k=index">
-                      <i>{{ prefix }}:{{ k < prefixes.length - 1 ? ', ' : '' }}</i>
-                    </b>
-                  </mat-error>
-                  <mat-error *ngIf="clause.get('value') as control">
+                <div class="value col">
+                  <tag-input formControlName="value"
+                             maxItems="{{valuePrefixGroup.value === 'split_pattern' ? 100 : 1}}"
+                             secondaryPlaceholder="Add Value"
+                             placeholder="+ Value"
+                             [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
+                             modelAsStrings="true">
+                  </tag-input>
+                  <div *ngIf="clause.get('value') as control" class="field-error">
                     <ng-container *ngIf="control.invalid">
-                      {{ control.errors?.serverError }}
+                      {{ control.errors?.serverError || 'choose one of the prefixes' }}
                     </ng-container>
-                  </mat-error>
-                </mat-form-field>
+                  </div>
+                </div>
               </div>
               <div class="footer">
                 <button mat-button
