@@ -35,9 +35,10 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   getModel(): EntityModel {
     alignControlsWithModelDefinitions([this.variableDefinitions]);
 
-    const { id, variableDefinitions, ...rest } = this.form.value;
+    const { id, variableDefinitions, anyOf, ...rest } = this.form.value;
     const accessPolicy: Policy = Policy.create({
       variableDefinitions: removeInternalFields(variableDefinitions, ['id']),
+      anyOf: this.modifyAnyOf(anyOf),
       ...rest,
     });
 
@@ -62,4 +63,27 @@ export class AccessPolicyFormComponent implements OnInit, Form {
     this.variableDefinitions.removeControl(id);
   }
 
+  // TODO: This is a lot of modification, should handle it at form side
+  private modifyAnyOf(anyOf = []) {
+    anyOf.forEach(conditionSet => {
+      const { allOf } = conditionSet;
+      if (Array.isArray(allOf)) {
+        allOf.forEach((conditionClause, index) => {
+          const modifiedObj = Object.assign({}, conditionClause);
+          Object.keys(conditionClause).forEach(condition => {
+            if ((condition === 'by' || condition === 'source' || condition === 'value')) {
+              if (Array.isArray(conditionClause[condition]['value'])) {
+                conditionClause[condition]['value'] = conditionClause[condition]['value'].join(';');
+              }
+              modifiedObj[condition] = conditionClause[condition]['prefix'].length > 0 ?
+                conditionClause[condition]['prefix'] + ':' + conditionClause[condition]['value'] :
+                '';
+            }
+          });
+          allOf[index] = modifiedObj;
+        });
+      }
+    });
+    return anyOf;
+  }
 }

@@ -17,13 +17,26 @@
     top: 5%;
   }
 }
-
-.row mat-button-toggle-group.col {
-  padding-right: 0;
-  width: auto;
+.prefix-wrapper {
+  &.row:not(:last-child) {
+    margin-bottom: 0.8rem;
+  }
+  mat-button-toggle-group.col {
+    padding-right: 0;
+    width: auto;
+  }
 }
 
-mat-form-field.col {
+.value.col {
   width: auto;
   flex-grow: 1;
+  tag-input {
+    padding-bottom: 0;
+  }
+}
+
+.field-error {
+  color: #F44336;
+  position: absolute;
+  font-size: 0.7rem;
 }

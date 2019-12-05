@@ -7,12 +7,16 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { dam } from '../../../../shared/proto/dam-service';
+import { ClaimDefinitionService } from '../../claim-definitions/claim-definitions.service';
 import { ClaimDefinitionsStore } from '../../claim-definitions/claim-definitions.store';
-import { makeDistinct, pick } from '../autocomplete.util';
+import { PassportIssuersStore } from '../../passport-issuers/passport-issuers.store';
+import { TrustedSourcesStore } from '../../trusted-sources/trusted-sources.store';
+import { filterBy, flatten, includes, makeDistinct, pick } from '../autocomplete.util';
 import { PassportVisa } from '../passport-visa/passport-visa.constant';
 
-import Policy = dam.v1.Policy;
 import { ConditionFormBuilder } from './condition-form-builder.service';
+
+import Policy = dam.v1.Policy;
 
 @Component({
   selector: 'ddap-condition-form',
@@ -33,6 +37,8 @@ export class ConditionFormComponent implements OnInit {
   label?: string;
 
   passportVisaTypes$: Observable<string[]>;
+  trustedSources: Observable<string[]>;
+  passportIssuers: Observable<string[]>;
   authorityLevels: string[] = Object.values(AuthorityLevel);
   prefixes: string[] = Object.values(ConditionPrefix);
 
@@ -40,7 +46,10 @@ export class ConditionFormComponent implements OnInit {
     return this.form.get(this.anyOfFieldName) as FormArray;
   }
 
-  constructor(private claimDefinitionsStore: ClaimDefinitionsStore) {
+  constructor(private claimDefinitionsStore: ClaimDefinitionsStore,
+              private claimDefinitionService: ClaimDefinitionService,
+              private trustedSourcesStore: TrustedSourcesStore,
+              private passportIssuersStore: PassportIssuersStore) {
   }
 
   ngOnInit(): void {
@@ -85,18 +94,12 @@ export class ConditionFormComponent implements OnInit {
 
   getPrefixBtnValue(control: AbstractControl): string {
     return control.value
-           ? this.getPrefixFromControlValue(control)
+           ? this.getPrefixFromControlValue(control.value)
            : '';
   }
 
-  prefixChange(control: AbstractControl, prefix: string) {
-    const { value: controlValue } = control;
-
-    if (this.hasSomePrefix(control)) {
-      this.replaceExistingPrefix(control, prefix);
-    } else {
-      control.setValue(`${prefix}:${controlValue ? controlValue : ''}`);
-    }
+  prefixChange(prefix: string) {
+    // TODO: make single select/multi select based on the selected prefix
   }
 
   private hasSomePrefix = ({ value }: AbstractControl) => this.prefixes.some((prefix) => value && value.startsWith(`${prefix}:`));
@@ -107,8 +110,22 @@ export class ConditionFormComponent implements OnInit {
   }
 
   private getPrefixFromControlValue({ value }: AbstractControl): string {
-    const usedPrefixes = this.prefixes.filter((prefix) => value.startsWith(`${prefix}:`));
+    const usedPrefixes = this.prefixes.filter((prefix) => {
+      value.startsWith(`${prefix}:`);
+    });
     return usedPrefixes.length > 0 ? usedPrefixes[0] : '';
   }
 
+  private buildAutoComplete(formGroup: FormGroup) {
+    // const formArray: FormArray = formGroup.get('allOf');
+    // const claimName$ = formGroup.get('type').valueChanges.pipe(
+    //   startWith('')
+    // );
+    // const value$ = formGroup.get('value').valueChanges.pipe(
+    //   startWith('')
+    // );
+    return this.claimDefinitionService.getClaimDefinitionSuggestions('').pipe(
+      map(filterBy(includes('')))
+    );
+  }
 }
