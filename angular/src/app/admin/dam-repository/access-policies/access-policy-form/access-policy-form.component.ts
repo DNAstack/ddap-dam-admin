@@ -63,7 +63,6 @@ export class AccessPolicyFormComponent implements OnInit, Form {
     this.variableDefinitions.removeControl(id);
   }
 
-  // TODO: This is a lot of modification, should handle it at form side
   private modifyAnyOf(anyOf = []) {
     anyOf.forEach(conditionSet => {
       const { allOf } = conditionSet;
