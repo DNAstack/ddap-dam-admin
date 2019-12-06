@@ -98,10 +98,6 @@ export class ConditionFormComponent implements OnInit {
            : '';
   }
 
-  prefixChange(prefix: string) {
-    // TODO: make single select/multi select based on the selected prefix
-  }
-
   private hasSomePrefix = ({ value }: AbstractControl) => this.prefixes.some((prefix) => value && value.startsWith(`${prefix}:`));
 
   private replaceExistingPrefix(control: AbstractControl, newPrefix: string) {
@@ -116,16 +112,4 @@ export class ConditionFormComponent implements OnInit {
     return usedPrefixes.length > 0 ? usedPrefixes[0] : '';
   }
 
-  private buildAutoComplete(formGroup: FormGroup) {
-    // const formArray: FormArray = formGroup.get('allOf');
-    // const claimName$ = formGroup.get('type').valueChanges.pipe(
-    //   startWith('')
-    // );
-    // const value$ = formGroup.get('value').valueChanges.pipe(
-    //   startWith('')
-    // );
-    return this.claimDefinitionService.getClaimDefinitionSuggestions('').pipe(
-      map(filterBy(includes('')))
-    );
-  }
 }
