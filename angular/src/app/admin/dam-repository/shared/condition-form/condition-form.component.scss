@@ -17,19 +17,31 @@
     top: 5%;
   }
 }
+
+h4 {
+  margin-top: 1rem;
+  color: $color-grey;
+}
+
 .prefix-wrapper {
-  &.row:not(:last-child) {
-    margin-bottom: 0.8rem;
+  mat-button-toggle-group {
+    height: 4.2rem;
+
+    &.col {
+      padding-right: 0;
+      width: auto;
+    }
   }
-  mat-button-toggle-group.col {
-    padding-right: 0;
-    width: auto;
+
+  ::ng-deep .mat-button-toggle-button {
+    height: 100%;
   }
 }
 
 .value.col {
   width: auto;
   flex-grow: 1;
+
   tag-input {
     padding-bottom: 0;
   }

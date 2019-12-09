@@ -18,7 +18,8 @@
   </p>
   <ng-template #conditionsInfo>
     <p>
-      Multiple conditions act like "OR" clauses, while inner set of conditions act like "AND" clauses.
+      Multiple conditions act like logical <i>OR</i> clauses, while inner set of conditions act like logical <i>AND</i> clauses.
+      Each condition consists of <i>Type</i> and three prefix-suffix pairs <i>By</i>, <i>Source</i> and <i>Value</i>.
     </p>
   </ng-template>
 
@@ -67,6 +68,8 @@
                   </mat-error>
                 </mat-form-field>
               </div>
+
+              <h4 class="row">By</h4>
               <div class="row prefix-wrapper"
                    formGroupName="by">
                 <mat-button-toggle-group #byPrefixGroup="matButtonToggleGroup"
@@ -82,8 +85,8 @@
                      *ngIf="clause.get('by.prefix').value as prefix">
                   <tag-input formControlName="value"
                              maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
-                             secondaryPlaceholder="Add Value"
-                             placeholder="+ Value"
+                             secondaryPlaceholder="Add By"
+                             placeholder="+ By"
                              [attr.data-se]="'inp-condition-' + clauseIndex + '-by-value'"
                              modelAsStrings="true">
                     <tag-input-dropdown [autocompleteItems]="authorityLevels"></tag-input-dropdown>
@@ -94,6 +97,8 @@
                   </div>
                 </div>
               </div>
+
+              <h4 class="row">Source</h4>
               <div class="row prefix-wrapper"
                    formGroupName="source">
                 <mat-button-toggle-group #sourcePrefixGroup="matButtonToggleGroup"
@@ -109,8 +114,8 @@
                      *ngIf="clause.get('source.prefix').value as prefix">
                   <tag-input formControlName="value"
                              maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
-                             secondaryPlaceholder="Add Value"
-                             placeholder="+ Value"
+                             secondaryPlaceholder="Add Source"
+                             placeholder="+ Source"
                              [attr.data-se]="'inp-condition-' + clauseIndex + '-source-value'"
                              modelAsStrings="true">
                   </tag-input>
@@ -122,6 +127,8 @@
                   </div>
                 </div>
               </div>
+
+              <h4 class="row">Value</h4>
               <div class="row prefix-wrapper"
                    formGroupName="value">
                 <mat-button-toggle-group #valuePrefixGroup="matButtonToggleGroup"
