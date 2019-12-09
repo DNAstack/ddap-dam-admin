@@ -31,7 +31,8 @@
         <mat-panel-title *ngIf="getClauses(condition).controls.length as numberOfConditions">
           {{ numberOfConditions }} {{ numberOfConditions > 1 ? 'Condition Clauses' : 'Condition Clause' }}
         </mat-panel-title>
-        <div class="invalid-warning" *ngIf="condition.invalid">
+        <div class="invalid-warning"
+             *ngIf="condition.invalid">
           <mat-icon class="icon icon-warning"
                     matTooltip="Condition is invalid">
           </mat-icon>
@@ -52,8 +53,7 @@
                          [matAutocomplete]="passportVisaTypesAutocomplete"
                          placeholder="Passport Visa Type"
                          formControlName="type"
-                         [attr.data-se]="'inp-condition-' + clauseIndex + '-type'"
-                         >
+                         [attr.data-se]="'inp-condition-' + clauseIndex + '-type'">
                   <mat-autocomplete #passportVisaTypesAutocomplete="matAutocomplete">
                     <mat-option *ngFor="let type of passportVisaTypes$ | async"
                                 [value]="type">
@@ -67,7 +67,8 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div class="row prefix-wrapper" formGroupName="by">
+              <div class="row prefix-wrapper"
+                   formGroupName="by">
                 <mat-button-toggle-group #byPrefixGroup="matButtonToggleGroup"
                                          class="col"
                                          formControlName="prefix">
@@ -77,21 +78,24 @@
                     {{ prefix }}
                   </mat-button-toggle>
                 </mat-button-toggle-group>
-                <div class="value col">
+                <div class="value col"
+                     *ngIf="clause.get('by.prefix').value as prefix">
                   <tag-input formControlName="value"
-                             maxItems="{{byPrefixGroup.value === 'split_pattern' ? 100 : 1}}"
+                             maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
                              secondaryPlaceholder="Add Value"
                              placeholder="+ Value"
                              [attr.data-se]="'inp-condition-' + clauseIndex + '-by-value'"
                              modelAsStrings="true">
                     <tag-input-dropdown [autocompleteItems]="authorityLevels"></tag-input-dropdown>
                   </tag-input>
-                  <div *ngIf="clause.get('by').invalid" class="field-error">
+                  <div *ngIf="clause.get('by').invalid"
+                       class="field-error">
                     {{ clause.get('by').errors?.serverError || 'choose one of the prefixes' }}
                   </div>
                 </div>
               </div>
-              <div class="row prefix-wrapper" formGroupName="source">
+              <div class="row prefix-wrapper"
+                   formGroupName="source">
                 <mat-button-toggle-group #sourcePrefixGroup="matButtonToggleGroup"
                                          formControlName="prefix"
                                          class="col">
@@ -101,22 +105,25 @@
                     {{ prefix }}
                   </mat-button-toggle>
                 </mat-button-toggle-group>
-                <div class="value col">
+                <div class="value col"
+                     *ngIf="clause.get('source.prefix').value as prefix">
                   <tag-input formControlName="value"
-                             maxItems="{{sourcePrefixGroup.value === 'split_pattern' ? 100 : 1}}"
+                             maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
                              secondaryPlaceholder="Add Value"
                              placeholder="+ Value"
                              [attr.data-se]="'inp-condition-' + clauseIndex + '-source-value'"
                              modelAsStrings="true">
                   </tag-input>
-                  <div *ngIf="clause.get('source') as control" class="field-error">
+                  <div *ngIf="clause.get('source') as control"
+                       class="field-error">
                     <ng-container *ngIf="control.invalid">
                       {{ control.errors?.serverError || 'choose one of the prefixes' }}
                     </ng-container>
                   </div>
                 </div>
               </div>
-              <div class="row prefix-wrapper" formGroupName="value">
+              <div class="row prefix-wrapper"
+                   formGroupName="value">
                 <mat-button-toggle-group #valuePrefixGroup="matButtonToggleGroup"
                                          formControlName="prefix"
                                          class="col">
@@ -126,15 +133,17 @@
                     {{ prefix }}
                   </mat-button-toggle>
                 </mat-button-toggle-group>
-                <div class="value col">
+                <div class="value col"
+                     *ngIf="clause.get('value.prefix').value as prefix">
                   <tag-input formControlName="value"
-                             maxItems="{{valuePrefixGroup.value === 'split_pattern' ? 100 : 1}}"
+                             maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
                              secondaryPlaceholder="Add Value"
                              placeholder="+ Value"
                              [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
                              modelAsStrings="true">
                   </tag-input>
-                  <div *ngIf="clause.get('value') as control" class="field-error">
+                  <div *ngIf="clause.get('value') as control"
+                       class="field-error">
                     <ng-container *ngIf="control.invalid">
                       {{ control.errors?.serverError || 'choose one of the prefixes' }}
                     </ng-container>
