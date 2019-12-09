@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieKind;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RestController
@@ -60,7 +62,7 @@ public class AutoCompleteController {
         return policy.getAnyOfList().stream()
             .map(Common.ConditionSet::getAllOfList)
             .flatMap(Collection::stream)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private List<String> getAllContainedValuesFromConditions(List<Common.Condition> conditions,
@@ -70,7 +72,9 @@ public class AutoCompleteController {
         return conditions.stream()
             .map(condition -> getAllContainedValues(claimName, condition, damConfig, policyName))
             .flatMap(Collection::stream)
-            .collect(Collectors.toList());
+            .map(this::stripPrefix)
+            .flatMap(Collection::stream)
+            .collect(toList());
     }
 
     private List<String> getAllContainedValues(String claimName,
@@ -94,15 +98,14 @@ public class AutoCompleteController {
                 .filter(resourcePolicyName -> resourcePolicyName.startsWith(policyName + "(") && resourcePolicyName
                     .endsWith(")"))
                 .flatMap(policyValueString -> {
-                    List<String> assignmentList = Arrays
-                        .asList(policyValueString.substring(policyName.length() + 1, policyValueString.length() - 1)
+                    List<String> assignmentList = asList(policyValueString.substring(policyName.length() + 1, policyValueString.length() - 1)
                             .split(";"));
 
                     return getValuesForVariable(variableName, assignmentList)
                         .filter(assignmentValue -> !isRegexValue(assignmentValue));
-                }).collect(Collectors.toList());
+                }).collect(toList());
         } else if (!isRegexValue(valueOrVariable)) {
-            return Collections.singletonList(valueOrVariable);
+            return singletonList(valueOrVariable);
         } else {
             return Collections.emptyList();
         }
@@ -133,6 +136,20 @@ public class AutoCompleteController {
 
     private boolean isRegexValue(String assignmentValue) {
         return assignmentValue.startsWith("^") && assignmentValue.endsWith("$");
+    }
+
+    private List<String> stripPrefix(String value) {
+        return Stream.of("const:", "pattern:", "split_pattern:")
+            .filter(value::startsWith)
+            .map((prefix) -> {
+                if (!prefix.equals("split_pattern:")) {
+                    return singletonList(value.replaceFirst(prefix, ""));
+                }
+                String splitPatters = value.replaceFirst(prefix, "");
+                return asList(splitPatters.split(";"));
+            })
+            .flatMap(Collection::stream)
+            .collect(toList());
     }
 
 }
