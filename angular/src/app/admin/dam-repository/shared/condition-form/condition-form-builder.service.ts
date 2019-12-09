@@ -3,7 +3,6 @@ import { EntityModel } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 import { common } from '../../../../shared/proto/dam-service';
-import { PassportVisaValidators } from '../passport-visa/passport-visa-validators';
 import { PassportVisa } from '../passport-visa/passport-visa.constant';
 
 import ICondition = common.ConditionSet;
@@ -65,12 +64,14 @@ export abstract class ConditionFormBuilder {
     }
     return usedPrefix ? usedPrefix : '';
   }
+
   private extractValue(jointValue: string): any {
     const usedPrefix = this.extractPrefix(jointValue);
     return usedPrefix && usedPrefix !== ''
       ? jointValue.replace(`${usedPrefix}:`, '').split(';')
       : jointValue;
   }
+
 }
 
 

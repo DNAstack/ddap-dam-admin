@@ -36,7 +36,7 @@
 }
 
 .field-error {
-  color: #F44336;
+  color: $failure-color;
   position: absolute;
   font-size: 0.7rem;
 }
