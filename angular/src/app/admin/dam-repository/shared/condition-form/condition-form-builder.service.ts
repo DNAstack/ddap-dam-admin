@@ -3,11 +3,14 @@ import { EntityModel } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 import { common } from '../../../../shared/proto/dam-service';
+import { PassportVisa } from '../passport-visa/passport-visa.constant';
+
+import { ConditionAutocompleteService } from './condition-autocomplete.service';
+import { PrefixValuePairService } from './prefix-value-pair.service';
 
 import ICondition = common.ConditionSet;
 import IConditionClause = common.Condition;
-import { ConditionAutocompleteService } from './condition-autocomplete.service';
-import { PrefixValuePairService } from './prefix-value-pair.service';
+import ConditionPrefix = PassportVisa.ConditionPrefix;
 
 export abstract class ConditionFormBuilder {
 
@@ -25,9 +28,9 @@ export abstract class ConditionFormBuilder {
 
   buildConditionForm(condition?: ICondition): FormGroup {
     return this.formBuilder.group({
-      allOf: this.formBuilder.array(condition.allOf.map((conditionClause: IConditionClause) => {
+      allOf: this.formBuilder.array(condition ? condition.allOf.map((conditionClause: IConditionClause) => {
         return this.buildClauseConditionForm(conditionClause);
-      })),
+      }) : [this.buildClauseConditionForm()]),
     });
   }
 
@@ -49,8 +52,9 @@ export abstract class ConditionFormBuilder {
   }
 
   private buildPrefixValuePairForm(jointValue: string): FormGroup {
+    const prefix = PrefixValuePairService.extractPrefix(jointValue);
     return this.formBuilder.group({
-      prefix: [PrefixValuePairService.extractPrefix(jointValue)],
+      prefix: [prefix ? prefix : ConditionPrefix.const],
       value: [PrefixValuePairService.extractValue(jointValue)],
     });
   }
@@ -58,7 +62,7 @@ export abstract class ConditionFormBuilder {
   private buildAutocompleteForValueField(form: FormGroup) {
     form.get('type').valueChanges
       .subscribe((type) => {
-        form.get('value').reset();
+        form.get('value.value').reset();
         this.setAutocompleteValuesForType(form, type);
       });
   }
