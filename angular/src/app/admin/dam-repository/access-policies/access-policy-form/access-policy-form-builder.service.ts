@@ -4,16 +4,18 @@ import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 import { dam } from '../../../../shared/proto/dam-service';
-import { ConditionFormBuilder } from '../../shared/condition-form/condition-form-builder.service';
 import IVariableFormat = dam.v1.IVariableFormat;
+import { ConditionAutocompleteService } from '../../shared/condition-form/condition-autocomplete.service';
+import { ConditionFormBuilder } from '../../shared/condition-form/condition-form-builder.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccessPolicyFormBuilder extends ConditionFormBuilder {
 
-  constructor(protected formBuilder: FormBuilder) {
-    super(formBuilder);
+  constructor(protected formBuilder: FormBuilder,
+              protected autocompleteService: ConditionAutocompleteService) {
+    super(formBuilder, autocompleteService);
   }
 
   buildForm(policy?: EntityModel): FormGroup {

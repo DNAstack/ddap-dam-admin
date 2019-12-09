@@ -6,43 +6,46 @@ import { common } from '../../../../shared/proto/dam-service';
 
 import ICondition = common.ConditionSet;
 import IConditionClause = common.Condition;
+import { ConditionAutocompleteService } from './condition-autocomplete.service';
 import { PrefixValuePairService } from './prefix-value-pair.service';
 
 export abstract class ConditionFormBuilder {
 
-  constructor(protected formBuilder: FormBuilder) {
+  constructor(protected formBuilder: FormBuilder,
+              protected autocompleteService: ConditionAutocompleteService) {
   }
 
   abstract buildForm(entity?: EntityModel): FormGroup;
 
   buildConditionsForm(conditions?: ICondition[]): FormArray {
     return this.formBuilder.array(conditions ? conditions.map((condition) => {
-      return this.formBuilder.group({
-        allOf: this.formBuilder.array(condition.allOf.map((conditionClause: IConditionClause) => {
-          return this.formBuilder.group({
-            type: [conditionClause.type, [Validators.required]],
-            source: this.buildPrefixValuePairForm(conditionClause.source),
-            value: this.buildPrefixValuePairForm(conditionClause.value),
-            by: this.buildPrefixValuePairForm(conditionClause.by),
-          });
-        })),
-      });
+      return this.buildConditionForm(condition);
     }) : []);
   }
 
-  buildConditionForm(): FormGroup {
+  buildConditionForm(condition?: ICondition): FormGroup {
     return this.formBuilder.group({
-      allOf: this.formBuilder.array([this.buildClauseConditionForm()]),
+      allOf: this.formBuilder.array(condition.allOf.map((conditionClause: IConditionClause) => {
+        return this.buildClauseConditionForm(conditionClause);
+      })),
     });
   }
 
   buildClauseConditionForm(clause?: IConditionClause): FormGroup {
-    return this.formBuilder.group({
+    const form: FormGroup = this.formBuilder.group({
       type: [_get(clause, 'type'), [Validators.required]],
       source: this.buildPrefixValuePairForm(_get(clause, 'source')),
       value: this.buildPrefixValuePairForm(_get(clause, 'value')),
       by: this.buildPrefixValuePairForm(_get(clause, 'by')),
+      _autocomplete_values_for_type: [],
     });
+
+    this.buildAutocompleteForValueField(form);
+    if (clause) {
+      this.setAutocompleteValuesForType(form, _get(clause, 'type'));
+    }
+
+    return form;
   }
 
   private buildPrefixValuePairForm(jointValue: string): FormGroup {
@@ -50,6 +53,21 @@ export abstract class ConditionFormBuilder {
       prefix: [PrefixValuePairService.extractPrefix(jointValue)],
       value: [PrefixValuePairService.extractValue(jointValue)],
     });
+  }
+
+  private buildAutocompleteForValueField(form: FormGroup) {
+    form.get('type').valueChanges
+      .subscribe((type) => {
+        form.get('value').reset();
+        this.setAutocompleteValuesForType(form, type);
+      });
+  }
+
+  private setAutocompleteValuesForType(form: FormGroup, type: string) {
+    this.autocompleteService.getValuesForType(type)
+      .subscribe((values) => {
+        form.get('_autocomplete_values_for_type').setValue(values);
+      });
   }
 
 }
