@@ -3,15 +3,12 @@ import { EntityModel } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 import { common } from '../../../../shared/proto/dam-service';
-import { PassportVisa } from '../passport-visa/passport-visa.constant';
 
 import ICondition = common.ConditionSet;
 import IConditionClause = common.Condition;
-import ConditionPrefix = PassportVisa.ConditionPrefix;
+import { PrefixValuePairService } from './prefix-value-pair.service';
 
 export abstract class ConditionFormBuilder {
-
-  prefixes: string[] = Object.values(ConditionPrefix);
 
   constructor(protected formBuilder: FormBuilder) {
   }
@@ -50,26 +47,9 @@ export abstract class ConditionFormBuilder {
 
   private buildPrefixValuePairForm(jointValue: string): FormGroup {
     return this.formBuilder.group({
-      prefix: [this.extractPrefix(jointValue)],
-      value: [this.extractValue(jointValue)],
+      prefix: [PrefixValuePairService.extractPrefix(jointValue)],
+      value: [PrefixValuePairService.extractValue(jointValue)],
     });
-  }
-
-  private extractPrefix(jointValue: string): string {
-    let usedPrefix;
-    if (jointValue) {
-      usedPrefix = this.prefixes.find((prefix) => {
-        return jointValue.startsWith(`${prefix}:`);
-      });
-    }
-    return usedPrefix ? usedPrefix : '';
-  }
-
-  private extractValue(jointValue: string): any {
-    const usedPrefix = this.extractPrefix(jointValue);
-    return usedPrefix && usedPrefix !== ''
-      ? jointValue.replace(`${usedPrefix}:`, '').split(';')
-      : jointValue;
   }
 
 }
