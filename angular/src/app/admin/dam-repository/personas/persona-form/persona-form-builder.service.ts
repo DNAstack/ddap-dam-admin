@@ -6,6 +6,7 @@ import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 import { common } from '../../../../shared/proto/dam-service';
+import { ConditionAutocompleteService } from '../../shared/condition-form/condition-autocomplete.service';
 import { ConditionFormBuilder } from '../../shared/condition-form/condition-form-builder.service';
 
 @Injectable({
@@ -13,8 +14,9 @@ import { ConditionFormBuilder } from '../../shared/condition-form/condition-form
 })
 export class PersonaFormBuilder extends ConditionFormBuilder {
 
-  constructor(protected formBuilder: FormBuilder) {
-    super(formBuilder);
+  constructor(protected formBuilder: FormBuilder,
+              protected autocompleteService: ConditionAutocompleteService) {
+    super(formBuilder, autocompleteService);
   }
 
   buildForm(persona?: EntityModel): FormGroup {
