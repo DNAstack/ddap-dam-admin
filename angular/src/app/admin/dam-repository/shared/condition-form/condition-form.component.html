@@ -39,137 +39,144 @@
           </mat-icon>
         </div>
       </mat-expansion-panel-header>
-      <ul class="timeline"
-          [formGroupName]="conditionIndex">
+      <ng-container [formGroupName]="conditionIndex">
         <ng-container formArrayName="allOf">
-          <li class="event"
-              *ngFor="let clause of getClauses(condition).controls; let clauseIndex=index">
+          <mat-card *ngFor="let clause of getClauses(condition).controls; let clauseIndex=index">
             <ng-container [formGroupName]="clauseIndex">
-              <div class="line first"></div>
-              <div class="line-text">AND</div>
-              <div class="line last"></div>
-              <div class="row">
-                <mat-form-field class="col">
-                  <input matInput
-                         [matAutocomplete]="passportVisaTypesAutocomplete"
-                         placeholder="Passport Visa Type"
-                         formControlName="type"
-                         [attr.data-se]="'inp-condition-' + clauseIndex + '-type'">
-                  <mat-autocomplete #passportVisaTypesAutocomplete="matAutocomplete">
-                    <mat-option *ngFor="let type of autocompleteService.getTypeValues() | async"
-                                [value]="type">
-                      {{ type }}
-                    </mat-option>
-                  </mat-autocomplete>
-                  <mat-error *ngIf="clause.get('type') as control">
-                    <ng-container *ngIf="control.invalid">
-                      {{ control.errors?.serverError }}
-                    </ng-container>
-                  </mat-error>
-                </mat-form-field>
-              </div>
+              <mat-card-title>
+                {{ clause.get('type').value || '' }}
+              </mat-card-title>
 
-              <h4 class="row">By</h4>
-              <div class="row prefix-wrapper"
-                   formGroupName="by">
-                <mat-button-toggle-group #byPrefixGroup="matButtonToggleGroup"
-                                         class="col"
-                                         formControlName="prefix">
-                  <mat-button-toggle *ngFor="let prefix of prefixes"
-                                     [attr.data-se]="'inp-condition-' + clauseIndex + '-by-prefix-' + prefix"
-                                     [value]="prefix">
-                    {{ prefix }}
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-                <div class="value col"
-                     *ngIf="clause.get('by.prefix').value as prefix">
-                  <tag-input formControlName="value"
-                             maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
-                             secondaryPlaceholder="Add By"
-                             placeholder="+ By"
-                             [attr.data-se]="'inp-condition-' + clauseIndex + '-by-value'"
-                             modelAsStrings="true"
-                             [onlyFromAutocomplete]="true">
-                    <tag-input-dropdown [showDropdownIfEmpty]="true"
-                                        [autocompleteItems]="autocompleteService.getByValues()">
-                    </tag-input-dropdown>
-                  </tag-input>
-                  <div *ngIf="clause.get('by').invalid"
-                       class="field-error">
-                    {{ clause.get('by').errors?.serverError || 'choose one of the prefixes' }}
-                  </div>
-                </div>
-              </div>
-
-              <h4 class="row">Source</h4>
-              <div class="row prefix-wrapper"
-                   formGroupName="source">
-                <mat-button-toggle-group #sourcePrefixGroup="matButtonToggleGroup"
-                                         formControlName="prefix"
-                                         class="col">
-                  <mat-button-toggle *ngFor="let prefix of prefixes"
-                                     [attr.data-se]="'inp-condition-' + clauseIndex + '-source-prefix-' + prefix"
-                                     [value]="prefix">
-                    {{ prefix }}
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-                <div class="value col"
-                     *ngIf="clause.get('source.prefix').value as prefix">
-                  <tag-input formControlName="value"
-                             maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
-                             secondaryPlaceholder="Add Source"
-                             placeholder="+ Source"
-                             [attr.data-se]="'inp-condition-' + clauseIndex + '-source-value'"
-                             modelAsStrings="true">
-                    <tag-input-dropdown [showDropdownIfEmpty]="true"
-                                        [autocompleteItems]="trustedSources">
-                    </tag-input-dropdown>
-                  </tag-input>
-                  <div *ngIf="clause.get('source') as control"
-                       class="field-error">
-                    <ng-container *ngIf="control.invalid">
-                      {{ control.errors?.serverError || 'choose one of the prefixes' }}
-                    </ng-container>
-                  </div>
-                </div>
-              </div>
-
-              <ng-container *ngIf="clause.get('_autocomplete_values_for_type').value as autocompleteValues">
-                <h4 class="row">Value</h4>
-                <div class="row prefix-wrapper"
-                     formGroupName="value">
-                  <mat-button-toggle-group #valuePrefixGroup="matButtonToggleGroup"
-                                           formControlName="prefix"
-                                           class="col">
-                    <mat-button-toggle *ngFor="let prefix of prefixes"
-                                       [attr.data-se]="'inp-condition-' + clauseIndex + '-value-prefix-' + prefix"
-                                       [value]="prefix">
-                      {{ prefix }}
-                    </mat-button-toggle>
-                  </mat-button-toggle-group>
-                  <div class="value col"
-                       *ngIf="clause.get('value.prefix').value as prefix">
-                    <tag-input formControlName="value"
-                               maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
-                               secondaryPlaceholder="Add Value"
-                               placeholder="+ Value"
-                               [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
-                               modelAsStrings="true">
-                      <tag-input-dropdown [showDropdownIfEmpty]="true"
-                                          [autocompleteItems]="autocompleteValues">
-                      </tag-input-dropdown>
-                    </tag-input>
-                    <div *ngIf="clause.get('value') as control"
-                         class="field-error">
+              <mat-card-content>
+                <div class="row">
+                  <mat-form-field class="col">
+                    <input matInput
+                           [matAutocomplete]="passportVisaTypesAutocomplete"
+                           placeholder="Passport Visa Type"
+                           formControlName="type"
+                           required
+                           [attr.data-se]="'inp-condition-' + clauseIndex + '-type'">
+                    <mat-autocomplete #passportVisaTypesAutocomplete="matAutocomplete">
+                      <mat-option *ngFor="let type of autocompleteService.getTypeValues() | async"
+                                  [value]="type">
+                        {{ type }}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="clause.get('type') as control">
                       <ng-container *ngIf="control.invalid">
-                        {{ control.errors?.serverError || 'choose one of the prefixes' }}
+                        {{ control.errors?.serverError }}
                       </ng-container>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div formGroupName="by">
+                  <h4 class="row">By</h4>
+                  <div class="row">
+                    <mat-button-toggle-group #byPrefixGroup="matButtonToggleGroup"
+                                             class="col"
+                                             formControlName="prefix">
+                      <mat-button-toggle *ngFor="let prefix of prefixes"
+                                         [attr.data-se]="'inp-condition-' + clauseIndex + '-by-prefix-' + prefix"
+                                         [value]="prefix">
+                        {{ prefix }}
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                    <div class="col"
+                         *ngIf="clause.get('by.prefix').value as prefix">
+                      <tag-input formControlName="value"
+                                 theme="minimal"
+                                 maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
+                                 secondaryPlaceholder="Add By"
+                                 placeholder="+ By"
+                                 [attr.data-se]="'inp-condition-' + clauseIndex + '-by-value'"
+                                 modelAsStrings="true"
+                                 [onlyFromAutocomplete]="true">
+                        <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                            [autocompleteItems]="autocompleteService.getByValues()">
+                        </tag-input-dropdown>
+                      </tag-input>
+                      <div *ngIf="clause.get('by').invalid"
+                           class="field-error">
+                        {{ clause.get('by').errors?.serverError || 'choose one of the prefixes' }}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </ng-container>
 
-              <div class="footer">
+                <div formGroupName="source">
+                  <h4 class="row">Source</h4>
+                  <div class="row">
+                    <mat-button-toggle-group #sourcePrefixGroup="matButtonToggleGroup"
+                                             formControlName="prefix"
+                                             class="col">
+                      <mat-button-toggle *ngFor="let prefix of prefixes"
+                                         [attr.data-se]="'inp-condition-' + clauseIndex + '-source-prefix-' + prefix"
+                                         [value]="prefix">
+                        {{ prefix }}
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                    <div class="col"
+                         *ngIf="clause.get('source.prefix').value as prefix">
+                      <tag-input formControlName="value"
+                                 theme="minimal"
+                                 maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
+                                 secondaryPlaceholder="Add Source"
+                                 placeholder="+ Source"
+                                 [attr.data-se]="'inp-condition-' + clauseIndex + '-source-value'"
+                                 modelAsStrings="true">
+                        <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                            [autocompleteItems]="trustedSources">
+                        </tag-input-dropdown>
+                      </tag-input>
+                      <div *ngIf="clause.get('source') as control"
+                           class="field-error">
+                        <ng-container *ngIf="control.invalid">
+                          {{ control.errors?.serverError || 'choose one of the prefixes' }}
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div formGroupName="value">
+                  <h4 class="row">Value</h4>
+                  <div class="row">
+                    <mat-button-toggle-group #valuePrefixGroup="matButtonToggleGroup"
+                                             formControlName="prefix"
+                                             class="col">
+                      <mat-button-toggle *ngFor="let prefix of prefixes"
+                                         [attr.data-se]="'inp-condition-' + clauseIndex + '-value-prefix-' + prefix"
+                                         [value]="prefix">
+                        {{ prefix }}
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                    <div class="col"
+                         *ngIf="clause.get('value.prefix').value as prefix">
+                      <tag-input *ngIf="clause.get('_autocomplete_values_for_type').value as autocompleteValues"
+                                 formControlName="value"
+                                 theme="minimal"
+                                 maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
+                                 secondaryPlaceholder="Add Value"
+                                 placeholder="+ Value"
+                                 [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
+                                 modelAsStrings="true">
+                        <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                            [autocompleteItems]="autocompleteValues">
+                        </tag-input-dropdown>
+                      </tag-input>
+                      <div *ngIf="clause.get('value') as control"
+                           class="field-error">
+                        <ng-container *ngIf="control.invalid">
+                          {{ control.errors?.serverError || 'choose one of the prefixes' }}
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+
+              <mat-card-actions class="footer">
                 <button mat-button
                         type="button"
                         color="warn"
@@ -177,11 +184,11 @@
                         (click)="removeClauseCondition(condition, clauseIndex, conditionIndex)">
                   Remove Clause
                 </button>
-              </div>
+              </mat-card-actions>
             </ng-container>
-          </li>
+          </mat-card>
         </ng-container>
-      </ul>
+      </ng-container>
       <mat-action-row>
         <button mat-button
                 color="primary"
