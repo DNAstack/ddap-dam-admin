@@ -11,10 +11,11 @@ import { ClaimDefinitionService } from '../../claim-definitions/claim-definition
 import { ClaimDefinitionsStore } from '../../claim-definitions/claim-definitions.store';
 import { PassportIssuersStore } from '../../passport-issuers/passport-issuers.store';
 import { TrustedSourcesStore } from '../../trusted-sources/trusted-sources.store';
-import { filterBy, flatten, includes, makeDistinct, pick } from '../autocomplete.util';
+import { makeDistinct, pick } from '../autocomplete.util';
 import { PassportVisa } from '../passport-visa/passport-visa.constant';
 
 import { ConditionFormBuilder } from './condition-form-builder.service';
+import { PrefixValuePairService } from './prefix-value-pair.service';
 
 import Policy = dam.v1.Policy;
 
@@ -94,22 +95,8 @@ export class ConditionFormComponent implements OnInit {
 
   getPrefixBtnValue(control: AbstractControl): string {
     return control.value
-           ? this.getPrefixFromControlValue(control.value)
+           ? PrefixValuePairService.extractPrefix(control.value)
            : '';
-  }
-
-  private hasSomePrefix = ({ value }: AbstractControl) => this.prefixes.some((prefix) => value && value.startsWith(`${prefix}:`));
-
-  private replaceExistingPrefix(control: AbstractControl, newPrefix: string) {
-    const { value: controlValue } = control;
-    control.setValue(controlValue.replace(this.getPrefixFromControlValue(control), newPrefix));
-  }
-
-  private getPrefixFromControlValue({ value }: AbstractControl): string {
-    const usedPrefixes = this.prefixes.filter((prefix) => {
-      value.startsWith(`${prefix}:`);
-    });
-    return usedPrefixes.length > 0 ? usedPrefixes[0] : '';
   }
 
 }
