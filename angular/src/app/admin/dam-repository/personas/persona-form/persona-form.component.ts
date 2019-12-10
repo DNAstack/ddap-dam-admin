@@ -213,7 +213,10 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
     };
   }
 
-  private getViewRolesCombinations(view: object) {
+  private getViewRolesCombinations(view?: object): any[] {
+    if (!view) {
+      return [];
+    }
     const viewEntries = Object.entries(view);
 
     return viewEntries.reduce((sum, [viewName, viewDto]) => {
