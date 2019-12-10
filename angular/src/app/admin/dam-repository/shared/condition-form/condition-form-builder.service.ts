@@ -3,14 +3,12 @@ import { EntityModel } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 import { common } from '../../../../shared/proto/dam-service';
-import { PassportVisa } from '../passport-visa/passport-visa.constant';
 
 import { ConditionAutocompleteService } from './condition-autocomplete.service';
 import { PrefixValuePairService } from './prefix-value-pair.service';
 
 import ICondition = common.ConditionSet;
 import IConditionClause = common.Condition;
-import ConditionPrefix = PassportVisa.ConditionPrefix;
 
 export abstract class ConditionFormBuilder {
 
@@ -52,9 +50,8 @@ export abstract class ConditionFormBuilder {
   }
 
   private buildPrefixValuePairForm(jointValue: string): FormGroup {
-    const prefix = PrefixValuePairService.extractPrefix(jointValue);
     return this.formBuilder.group({
-      prefix: [prefix ? prefix : ConditionPrefix.const],
+      prefix: [PrefixValuePairService.extractPrefix(jointValue)],
       value: [PrefixValuePairService.extractValue(jointValue)],
     });
   }
@@ -62,7 +59,7 @@ export abstract class ConditionFormBuilder {
   private buildAutocompleteForValueField(form: FormGroup) {
     form.get('type').valueChanges
       .subscribe((type) => {
-        form.get('value.value').reset();
+        form.get('value').reset();
         this.setAutocompleteValuesForType(form, type);
       });
   }

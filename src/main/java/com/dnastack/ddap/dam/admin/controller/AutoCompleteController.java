@@ -38,10 +38,10 @@ public class AutoCompleteController {
     //Reading the realm config
     //Iterate through realm config policies and find all the values in policies
     @GetMapping("/claim-value")
-    public Mono<List<String>> getClaimValues(ServerHttpRequest request,
+    public Mono<Set<String>> getClaimValues(ServerHttpRequest request,
                                              @PathVariable String realm,
                                              @RequestParam String claimName) {
-        List<String> result = new ArrayList<>();
+        Set<String> result = new TreeSet<>();
 
         // find beacons under resourceId in DAM config
         Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.DAM, CookieKind.REFRESH));
@@ -53,7 +53,6 @@ public class AutoCompleteController {
                     List<Common.Condition> conditions = getAllConditionsFromPolicy(policyEntry.getValue());
                     result.addAll(getAllContainedValuesFromConditions(conditions, claimName, damConfig, policyEntry.getKey()));
                 }
-                Collections.sort(result);
                 return Mono.just(result);
             });
     }

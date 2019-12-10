@@ -1,12 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { alignControlsWithModelDefinitions, EntityModel, Form, removeInternalFields } from 'ddap-common-lib';
 
 import { dam } from '../../../../shared/proto/dam-service';
+import { ConditionFormComponent } from '../../shared/condition-form/condition-form.component';
+
+import { AccessPolicyFormBuilder } from './access-policy-form-builder.service';
 
 import Policy = dam.v1.Policy;
-import { AccessPolicyFormBuilder } from './access-policy-form-builder.service';
-import IVariableFormat = dam.v1.IVariableFormat;
 
 @Component({
   selector: 'ddap-access-policy-form',
@@ -18,6 +19,9 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   get variableDefinitions() {
     return this.form.get('variableDefinitions') as FormGroup;
   }
+
+  @ViewChild(ConditionFormComponent, { static: false })
+  conditionForm: ConditionFormComponent;
 
   @Input()
   accessPolicy?: EntityModel = new EntityModel('', Policy.create());
@@ -38,7 +42,7 @@ export class AccessPolicyFormComponent implements OnInit, Form {
     const { id, variableDefinitions, anyOf, ...rest } = this.form.value;
     const accessPolicy: Policy = Policy.create({
       variableDefinitions: removeInternalFields(variableDefinitions, ['id']),
-      anyOf: this.modifyAnyOf(anyOf),
+      anyOf: this.conditionForm.getModel(),
       ...rest,
     });
 
@@ -63,26 +67,4 @@ export class AccessPolicyFormComponent implements OnInit, Form {
     this.variableDefinitions.removeControl(id);
   }
 
-  private modifyAnyOf(anyOf = []) {
-    anyOf.forEach(conditionSet => {
-      const { allOf } = conditionSet;
-      if (Array.isArray(allOf)) {
-        allOf.forEach((conditionClause, index) => {
-          const modifiedObj = Object.assign({}, conditionClause);
-          Object.keys(conditionClause).forEach(condition => {
-            if ((condition === 'by' || condition === 'source' || condition === 'value')) {
-              if (Array.isArray(conditionClause[condition]['value'])) {
-                conditionClause[condition]['value'] = conditionClause[condition]['value'].join(';');
-              }
-              modifiedObj[condition] = conditionClause[condition]['prefix'].length > 0 ?
-                conditionClause[condition]['prefix'] + ':' + conditionClause[condition]['value'] :
-                '';
-            }
-          });
-          allOf[index] = modifiedObj;
-        });
-      }
-    });
-    return anyOf;
-  }
 }

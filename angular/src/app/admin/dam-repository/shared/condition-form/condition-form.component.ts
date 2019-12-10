@@ -1,16 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { EntityModel } from 'ddap-common-lib';
+import _get from 'lodash.get';
 
-import { dam } from '../../../../shared/proto/dam-service';
+import { common } from '../../../../shared/proto/dam-service';
 import { PassportVisa } from '../passport-visa/passport-visa.constant';
 
 import { ConditionAutocompleteService } from './condition-autocomplete.service';
 import { ConditionFormBuilder } from './condition-form-builder.service';
 import ConditionPrefix = PassportVisa.ConditionPrefix;
-
-
-import Policy = dam.v1.Policy;
+import IConditionSet = common.IConditionSet;
+import ICondition = common.ICondition;
 
 @Component({
   selector: 'ddap-condition-form',
@@ -47,14 +47,26 @@ export class ConditionFormComponent implements OnInit {
       });
   }
 
-  getModel(): EntityModel {
-    const { id, ui, anyOf } = this.form.value;
-    const accessPolicy: Policy = Policy.create({
-      ui,
-      anyOf,
+  getModel(): IConditionSet[] {
+    const anyOf: any[] = this.form.get(this.anyOfFieldName).value;
+    const anyOfModel: IConditionSet[] = [];
+
+    anyOf.forEach((condition) => {
+      const allOfModel: ICondition[] = [];
+      condition.allOf.forEach((clause) => {
+        const clauseModel = { type: clause.type };
+        const hasValueSet = (field) => !!_get(clause, `${field}.value`);
+        ['by', 'source', 'value']
+          .filter(hasValueSet)
+          .forEach((field) => {
+            clauseModel[field] = `${clause[field].prefix}:${clause[field].value}`;
+          });
+        allOfModel.push(clauseModel);
+      });
+      anyOfModel.push({ allOf: allOfModel });
     });
 
-    return new EntityModel(id, accessPolicy);
+    return anyOfModel;
   }
 
   getClauses(condition: AbstractControl) {
@@ -85,7 +97,7 @@ export class ConditionFormComponent implements OnInit {
   showAutocompleteDropdown(prefix: string, control: AbstractControl): boolean {
     if (prefix === ConditionPrefix.const || prefix === ConditionPrefix.pattern) {
       const { value } = control;
-      return !value || value === '';
+      return !value || value.length < 1;
     }
     return this.isSplitPattern(prefix);
   }

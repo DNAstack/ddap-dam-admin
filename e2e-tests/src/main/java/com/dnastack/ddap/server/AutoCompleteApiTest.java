@@ -41,10 +41,11 @@ public class AutoCompleteApiTest extends AbstractBaseE2eTest {
                     .log().ifValidationFails()
                     .contentType(JSON)
                     .statusCode(200)
-                    .body("[0]", equalTo("pattern:^.$"))
-                    .body("[1]", equalTo("split_pattern:foobar3"))
-                    .body("[2]", equalTo("split_pattern:foobar4"))
-                    .body("[3]", equalTo("split_pattern:foobar;foobar2"));
+                    .body("[0]", equalTo("^.$"))
+                    .body("[1]", equalTo("foobar"))
+                    .body("[2]", equalTo("foobar2"))
+                    .body("[3]", equalTo("foobar3"))
+                    .body("[4]", equalTo("foobar4"));
         // @formatter:on
     }
 
@@ -66,7 +67,7 @@ public class AutoCompleteApiTest extends AbstractBaseE2eTest {
                     .log().ifValidationFails()
                     .contentType(JSON)
                     .statusCode(200)
-                    .body("[0]", equalTo("split_pattern:${DATASET}"));
+                    .body("[0]", equalTo("${DATASET}"));
         // @formatter:on
     }
 

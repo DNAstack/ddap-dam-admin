@@ -40,11 +40,8 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
 
-        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-by-prefix-const"));
-        adminManagePage.fillTagField(DdapBy.se("inp-condition-0-by-value"), "so");
-
         adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
-        adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "const:faculty@uni-heidelberg.de");
+        adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "faculty@uni-heidelberg.de");
 
         adminListPage = adminManagePage.saveEntity();
 
@@ -123,14 +120,15 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.toggleExpansionPanel("passport-0");
 
         adminManagePage.fillField(DdapBy.se("inp-passport-type"), "ControlledAccessGrants");
-        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-value"), "split_pattern:${DATASET}");
+        adminManagePage.waitForInflightRequests();
+        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-value"), "${DATASET}");
         adminManagePage.closeAutocompletes();
 
         adminManagePage.clearField(DdapBy.se("inp-passport-type"));
         adminManagePage.clearField(DdapBy.se("inp-passport-value"));
 
         adminManagePage.fillField(DdapBy.se("inp-passport-type"), "ResearcherStatus");
-        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-value"), "split_pattern:https://www.nature.com/articles/s99999-999-9999-z");
+        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-value"), "https://www.nature.com/articles/s99999-999-9999-z");
         adminManagePage.closeAutocompletes();
     }
 

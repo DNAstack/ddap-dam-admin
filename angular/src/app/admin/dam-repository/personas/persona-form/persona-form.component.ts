@@ -15,6 +15,7 @@ import { PassportIssuersStore } from '../../passport-issuers/passport-issuers.st
 import TestPersona = common.TestPersona;
 import { ResourcesStore } from '../../resources/resources.store';
 import { filterBy, flatten, includes, makeDistinct, pick } from '../../shared/autocomplete.util';
+import { ConditionFormComponent } from '../../shared/condition-form/condition-form.component';
 import { PassportVisa } from '../../shared/passport-visa/passport-visa.constant';
 import { TrustedSourcesStore } from '../../trusted-sources/trusted-sources.store';
 import { PersonaAccessFormComponent } from '../persona-resource-form/persona-access-form.component';
@@ -43,11 +44,13 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
     return this.form.get('resourceAccess') as FormGroup;
   }
 
-  @Input()
-  persona?: EntityModel = new EntityModel('', TestPersona.create());
-
+  @ViewChild(ConditionFormComponent, { static: false })
+  conditionForm: ConditionFormComponent;
   @ViewChild(PersonaAccessFormComponent, { static: false })
   accessForm: PersonaAccessFormComponent;
+
+  @Input()
+  persona?: EntityModel = new EntityModel('', TestPersona.create());
 
   form: FormGroup;
   resourcesList = [];
@@ -116,6 +119,7 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
   getModel(): EntityModel {
     const { id, passport, ui } = this.form.value;
     const access = this.accessForm.getModel();
+    this.setAnyOfModel(passport);
     const testPersona: TestPersona = TestPersona.create({
       ui,
       passport,
@@ -141,6 +145,12 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
           });
         }
       }
+    });
+  }
+
+  private setAnyOfModel(passport) {
+    passport.ga4ghAssertions.forEach((assertion) => {
+      assertion.anyOfConditions = this.conditionForm.getModel();
     });
   }
 

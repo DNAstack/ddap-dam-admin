@@ -35,6 +35,7 @@ public class AdminManagePage extends AdminDdapPage {
     public void clickButtonToggle(By fieldSelector) {
         WebElement button = new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.elementToBeClickable(fieldSelector));
+        WebPageScroller.scrollTo(driver, button);
         Actions actions = new Actions(driver);
         actions.moveToElement(button).click().build().perform();
     }
