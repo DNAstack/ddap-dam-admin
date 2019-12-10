@@ -39,7 +39,10 @@ export class ConditionAutocompleteService {
   }
 
   getValuesForType(type: string): Observable<string[]> {
-    return this.claimDefService.getClaimDefinitionSuggestions(type);
+    return this.claimDefService.getClaimDefinitionSuggestions(type)
+      .pipe(
+        map(makeDistinct)
+      );
   }
 
 }

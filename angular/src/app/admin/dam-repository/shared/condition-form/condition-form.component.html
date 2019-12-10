@@ -86,13 +86,13 @@
                          *ngIf="clause.get('by.prefix').value as prefix">
                       <tag-input formControlName="value"
                                  theme="minimal"
-                                 maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
+                                 maxItems="{{ isSplitPattern(prefix) ? 100 : 1 }}"
                                  secondaryPlaceholder="Add By"
                                  placeholder="+ By"
                                  [attr.data-se]="'inp-condition-' + clauseIndex + '-by-value'"
                                  modelAsStrings="true"
                                  [onlyFromAutocomplete]="true">
-                        <tag-input-dropdown [showDropdownIfEmpty]="true"
+                        <tag-input-dropdown [showDropdownIfEmpty]="showAutocompleteDropdown(prefix, clause.get('by.value'))"
                                             [autocompleteItems]="autocompleteService.getByValues()">
                         </tag-input-dropdown>
                       </tag-input>
@@ -125,7 +125,7 @@
                                  placeholder="+ Source"
                                  [attr.data-se]="'inp-condition-' + clauseIndex + '-source-value'"
                                  modelAsStrings="true">
-                        <tag-input-dropdown [showDropdownIfEmpty]="true"
+                        <tag-input-dropdown [showDropdownIfEmpty]="showAutocompleteDropdown(prefix, clause.get('source.value'))"
                                             [autocompleteItems]="trustedSources">
                         </tag-input-dropdown>
                       </tag-input>
@@ -161,7 +161,7 @@
                                  placeholder="+ Value"
                                  [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
                                  modelAsStrings="true">
-                        <tag-input-dropdown [showDropdownIfEmpty]="true"
+                        <tag-input-dropdown [showDropdownIfEmpty]="showAutocompleteDropdown(prefix, clause.get('value.value'))"
                                             [autocompleteItems]="autocompleteValues">
                         </tag-input-dropdown>
                       </tag-input>

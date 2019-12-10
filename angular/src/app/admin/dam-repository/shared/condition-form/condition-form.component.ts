@@ -80,4 +80,14 @@ export class ConditionFormComponent implements OnInit {
     }
   }
 
+  isSplitPattern = (prefix: string): boolean => prefix === ConditionPrefix.split_pattern;
+
+  showAutocompleteDropdown(prefix: string, control: AbstractControl): boolean {
+    if (prefix === ConditionPrefix.const || prefix === ConditionPrefix.pattern) {
+      const { value } = control;
+      return !value || value === '';
+    }
+    return this.isSplitPattern(prefix);
+  }
+
 }
