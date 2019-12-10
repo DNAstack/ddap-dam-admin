@@ -62,6 +62,9 @@
                         {{ type }}
                       </mat-option>
                     </mat-autocomplete>
+                    <mat-hint>
+                      Selecting Type will reset Value.
+                    </mat-hint>
                     <mat-error *ngIf="clause.get('type') as control">
                       <ng-container *ngIf="control.invalid">
                         {{ control.errors?.serverError }}
@@ -82,9 +85,9 @@
                         {{ prefix }}
                       </mat-button-toggle>
                     </mat-button-toggle-group>
-                    <div class="col"
-                         *ngIf="clause.get('by.prefix').value as prefix">
-                      <tag-input formControlName="value"
+                    <div class="col">
+                      <tag-input *ngIf="clause.get('by.prefix').value as prefix"
+                                 formControlName="value"
                                  theme="minimal"
                                  maxItems="{{ isSplitPattern(prefix) ? 100 : 1 }}"
                                  secondaryPlaceholder="Add By"
@@ -116,9 +119,9 @@
                         {{ prefix }}
                       </mat-button-toggle>
                     </mat-button-toggle-group>
-                    <div class="col"
-                         *ngIf="clause.get('source.prefix').value as prefix">
-                      <tag-input formControlName="value"
+                    <div class="col">
+                      <tag-input *ngIf="clause.get('source.prefix').value as prefix"
+                                 formControlName="value"
                                  theme="minimal"
                                  maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
                                  secondaryPlaceholder="Add Source"
@@ -151,20 +154,21 @@
                         {{ prefix }}
                       </mat-button-toggle>
                     </mat-button-toggle-group>
-                    <div class="col"
-                         *ngIf="clause.get('value.prefix').value as prefix">
-                      <tag-input *ngIf="clause.get('_autocomplete_values_for_type').value as autocompleteValues"
-                                 formControlName="value"
-                                 theme="minimal"
-                                 maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
-                                 secondaryPlaceholder="Add Value"
-                                 placeholder="+ Value"
-                                 [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
-                                 modelAsStrings="true">
-                        <tag-input-dropdown [showDropdownIfEmpty]="showAutocompleteDropdown(prefix, clause.get('value.value'))"
-                                            [autocompleteItems]="autocompleteValues">
-                        </tag-input-dropdown>
-                      </tag-input>
+                    <div class="col">
+                      <ng-container *ngIf="clause.get('value.prefix').value as prefix">
+                        <tag-input *ngIf="clause.get('_autocomplete_values_for_type').value as autocompleteValues"
+                                   formControlName="value"
+                                   theme="minimal"
+                                   maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
+                                   secondaryPlaceholder="Add Value"
+                                   placeholder="+ Value"
+                                   [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
+                                   modelAsStrings="true">
+                          <tag-input-dropdown [showDropdownIfEmpty]="showAutocompleteDropdown(prefix, clause.get('value.value'))"
+                                              [autocompleteItems]="autocompleteValues">
+                          </tag-input-dropdown>
+                        </tag-input>
+                      </ng-container>
                       <div *ngIf="clause.get('value') as control"
                            class="field-error">
                         <ng-container *ngIf="control.invalid">
