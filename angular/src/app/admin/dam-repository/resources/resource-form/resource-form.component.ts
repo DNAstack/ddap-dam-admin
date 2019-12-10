@@ -60,7 +60,6 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
 
   ngOnInit(): void {
     this.form = this.resourceFormBuilder.buildForm(this.resource);
-    // this.subscribeToFormChanges();
   }
 
   ngAfterViewInit(): void {
@@ -156,7 +155,7 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
       const viewId = viewForm.value.id;
       if (errorDetails['resourceName'].includes(viewId)) {
         const fieldsPath = errorDetails['resourceName'].replace(new RegExp('^.+' + viewId + '\/'), '');
-        if (fieldsPath.includes('accessRoles')) {
+        if (fieldsPath.includes('roles')) {
           this.setServerError('roles', viewForm, errorDetails);
         } else if (fieldsPath.includes('items')) {
           this.setServerError('variables', viewForm, errorDetails);

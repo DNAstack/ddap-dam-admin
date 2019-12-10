@@ -44,6 +44,9 @@ export class PersonasAccessTableComponent implements OnInit {
   }
 
   private getViewRoles(views): ViewRole[] {
+    if (!views) {
+      return [];
+    }
     return flatten(Object.entries(views)
       .map(([viewId, view]) => {
         const roles = this.getRolesForViews(view);
