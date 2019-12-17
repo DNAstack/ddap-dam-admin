@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineForms, FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
-import { DamConfigEntityFormComponentBase } from '../../shared/dam/dam-config-entity-form-component.base';
+import { DamConfigEntityManageComponentBase } from '../../shared/dam/dam-config-entity-manage-component.base';
+import { DamConfigStore } from '../../shared/dam/dam-config.store';
 import { ResourceAccessComponent } from '../resource-access/resource-access.component';
 import { ResourceFormComponent } from '../resource-form/resource-form.component';
 import { ResourceService } from '../resources.service';
@@ -15,7 +16,7 @@ import { ResourceService } from '../resources.service';
   styleUrls: ['./resource-manage.component.scss'],
   providers: [FormValidationService],
 })
-export class ResourceManageComponent extends DamConfigEntityFormComponentBase {
+export class ResourceManageComponent extends DamConfigEntityManageComponentBase {
 
   @ViewChild(ResourceFormComponent, { static: false })
   resourceForm: ResourceFormComponent;
@@ -25,8 +26,9 @@ export class ResourceManageComponent extends DamConfigEntityFormComponentBase {
   constructor(protected route: ActivatedRoute,
               protected router: Router,
               protected validationService: FormValidationService,
+              protected damConfigStore: DamConfigStore,
               public resourceService: ResourceService) {
-    super(route, router, validationService);
+    super(route, router, validationService, damConfigStore);
   }
 
   save(isDryRun = false) {
