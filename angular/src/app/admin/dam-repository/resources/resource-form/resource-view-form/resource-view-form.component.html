@@ -209,6 +209,9 @@
                              [displayBy]="'name'">
                     <tag-input-dropdown [autocompleteItems]="policies"></tag-input-dropdown>
                   </tag-input>
+                  <mat-error *ngIf="viewForm.get('roles.'+role.key+'.policies').invalid" data-se="resources-policy-error">
+                    {{ viewForm.get('roles.'+role.key+'.policies').errors?.serverError }}
+                  </mat-error>
                 </div>
               </ng-container>
             </div>

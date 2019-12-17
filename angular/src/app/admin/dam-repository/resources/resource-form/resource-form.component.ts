@@ -154,21 +154,20 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
     viewForms.forEach(viewForm => {
       const viewId = viewForm.value.id;
       if (errorDetails['resourceName'].includes(viewId)) {
-        const fieldsPath = errorDetails['resourceName'].replace(new RegExp('^.+' + viewId + '\/'), '');
-        if (fieldsPath.includes('roles')) {
+        const fieldsPath = errorDetails['resourceName']
+          .replace(new RegExp('^.+' + viewId + '\/'), '');
+        if (fieldsPath.includes('policies')) {
+          const fieldName = fieldsPath.match(/^.+(policies)/)[0]
+            .replace(/\//g, '.');
+          this.setServerError(fieldName, viewForm, errorDetails);
+        } else if (fieldsPath.includes('roles')) {
           this.setServerError('roles', viewForm, errorDetails);
         } else if (fieldsPath.includes('items')) {
           this.setServerError('variables', viewForm, errorDetails);
         } else {
-          const path = `resources/${this.form.get('id').value}/views/${viewForm.get('id').value}/`;
-          const fieldName = errorDetails['resourceName']
-            .replace(path, '')
-            .replace(/\//g, '.');
+          const fieldName = fieldsPath.replace(/\//g, '.');
           if (fieldName.length > 0) {
-            viewForm.get(fieldName).setErrors({
-              serverError: errorDetails['description'],
-            });
-            viewForm.get(fieldName).markAsTouched();
+            this.setServerError(fieldName, viewForm, errorDetails);
           }
         }
       }

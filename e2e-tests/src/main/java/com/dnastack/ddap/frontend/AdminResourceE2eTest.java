@@ -179,7 +179,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickSave();
         adminListPage.waitForInflightRequests();
         final WebElement errorField = new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-role-error")));
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-policy-error")));
         assertThat(errorField.getText(), containsString("NONEXISTENT_POLICY"));
         assertThat(errorField.getText(), containsString("is not defined"));
     }
@@ -205,7 +205,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickUpdate();
         adminManagePage.waitForInflightRequests();
         final WebElement errorField = new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-role-error")));
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-policy-error")));
         assertThat(errorField.getText(), containsString("NONEXISTENT_POLICY"));
         assertThat(errorField.getText(), containsString("is not defined"));
     }
