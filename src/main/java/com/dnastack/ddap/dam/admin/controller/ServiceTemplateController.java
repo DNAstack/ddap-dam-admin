@@ -33,7 +33,7 @@ public class ServiceTemplateController {
     public Mono<Map<String, VariableFormat>> resolveVariables(ServerHttpRequest request,
                                                               @PathVariable String realm,
                                                               @PathVariable String serviceTemplateId) {
-        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.DAM, CookieKind.REFRESH));
+        Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.DAM, CookieKind.REFRESH));
         return getServiceTemplate(damClient, realm, tokens, serviceTemplateId)
             .flatMap(serviceTemplate -> getItemFormatForServiceTemplate(damClient, realm, tokens, serviceTemplate)
                 .map(ItemFormat::getVariablesMap));
@@ -41,9 +41,9 @@ public class ServiceTemplateController {
 
     private Mono<ServiceTemplate> getServiceTemplate(ReactiveAdminDamClient damClient,
                                                      String realm,
-                                                     Map<CookieKind, String> tokens,
+                                                     Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens,
                                                      String serviceTemplateId) {
-        return damClient.getConfig(realm, tokens.get(CookieKind.DAM), tokens.get(CookieKind.REFRESH))
+        return damClient.getConfig(realm, tokens.get(CookieKind.DAM).getClearText(), tokens.get(CookieKind.REFRESH).getClearText())
             .map(DamService.DamConfig::getServiceTemplatesMap)
             .map(serviceTemplates -> {
                 if (!serviceTemplates.containsKey(serviceTemplateId)) {
@@ -55,12 +55,12 @@ public class ServiceTemplateController {
 
     private Mono<ItemFormat> getItemFormatForServiceTemplate(ReactiveAdminDamClient damClient,
                                                              String realm,
-                                                             Map<CookieKind, String> tokens,
+                                                             Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens,
                                                              ServiceTemplate serviceTemplate) {
         String targetAdapterId = serviceTemplate.getTargetAdapter();
         String itemFormatId = serviceTemplate.getItemFormat();
 
-        return damClient.getTargetAdapters(realm, tokens.get(CookieKind.DAM), tokens.get(CookieKind.REFRESH))
+        return damClient.getTargetAdapters(realm, tokens.get(CookieKind.DAM).getClearText(), tokens.get(CookieKind.REFRESH).getClearText())
             .map(targetAdaptersResponse -> {
                 TargetAdapter targetAdapter = getDamTargetAdapter(targetAdapterId, targetAdaptersResponse);
                 return getDamItemFormat(targetAdapterId, itemFormatId, targetAdapter);

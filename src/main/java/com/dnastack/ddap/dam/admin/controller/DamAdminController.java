@@ -35,7 +35,7 @@ public class DamAdminController {
     @GetMapping(value = "/info")
     public Mono<? extends ResponseEntity<?>> getAccessInfo(ServerHttpRequest request,
                                                            @PathVariable String realm) {
-        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.DAM, CookieKind.REFRESH));
+        Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.DAM, CookieKind.REFRESH));
 
         Mono<UserDamAccessInfo> accessesMono = accessTesterClient.determineAccessForUser(realm, tokens);
 

@@ -44,9 +44,9 @@ public class AutoCompleteController {
         Set<String> result = new TreeSet<>();
 
         // find beacons under resourceId in DAM config
-        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.DAM, CookieKind.REFRESH));
+        Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.DAM, CookieKind.REFRESH));
 
-        return damClient.getConfig(realm, tokens.get(CookieKind.DAM), tokens.get(CookieKind.REFRESH))
+        return damClient.getConfig(realm, tokens.get(CookieKind.DAM).getClearText(), tokens.get(CookieKind.REFRESH).getClearText())
             .flatMap((damConfig) -> {
                 Map<String, Policy> policies = damConfig.getPoliciesMap();
                 for (Map.Entry<String, Policy> policyEntry : policies.entrySet()) {
