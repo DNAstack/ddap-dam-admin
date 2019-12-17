@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { OptionService } from '../options.service';
 
@@ -13,14 +12,15 @@ export class OptionListComponent implements OnInit {
   options: any;
   error: string;
 
-  constructor(public optionService: OptionService,
-              private route: ActivatedRoute) {
+  constructor(public optionService: OptionService) {
   }
 
   ngOnInit() {
     this.optionService.get()
-      .subscribe((options) => this.options = options,
-        this.handleError);
+      .subscribe((options) => {
+          this.options = options;
+        }, this.handleError
+      );
   }
 
   updateOptionValue({ optionKey, newValue }) {
