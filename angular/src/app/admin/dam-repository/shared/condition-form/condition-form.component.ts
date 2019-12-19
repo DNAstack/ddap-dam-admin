@@ -59,7 +59,8 @@ export class ConditionFormComponent implements OnInit {
         ['by', 'source', 'value']
           .filter(hasValueSet)
           .forEach((field) => {
-            clauseModel[field] = `${clause[field].prefix}:${clause[field].value}`;
+            const values: string[] = clause[field].value;
+            clauseModel[field] = `${clause[field].prefix}:${values.join(';')}`;
           });
         allOfModel.push(clauseModel);
       });
