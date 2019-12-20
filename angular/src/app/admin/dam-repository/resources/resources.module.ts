@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { DamRepositorySharedModule } from '../shared/shared.module';
 
+import { PolicyVariableDialogComponent } from './policy-variable-dialog/policy-variable-dialog.component';
 import { ResourceAccessComponent } from './resource-access/resource-access.component';
 import { ResourceDetailComponent } from './resource-detail/resource-detail.component';
 import { ResourceFormComponent } from './resource-form/resource-form.component';
@@ -18,10 +19,14 @@ import { ResourcesRoutingModule } from './resources-routing.module';
     ResourceFormComponent,
     ResourceViewFormComponent,
     ResourceAccessComponent,
+    PolicyVariableDialogComponent,
   ],
   imports: [
     DamRepositorySharedModule,
     ResourcesRoutingModule,
+  ],
+  entryComponents: [
+    PolicyVariableDialogComponent,
   ],
 })
 export class ResourcesModule { }

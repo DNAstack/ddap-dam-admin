@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EntityModel } from 'ddap-common-lib';
+import { MatDialog } from '@angular/material/dialog';
+import { EntityModel, FormValidationService } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable, Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
@@ -9,8 +10,9 @@ import { dam } from '../../../../../shared/proto/dam-service';
 import { AccessPoliciesStore } from '../../../access-policies/access-policies.store';
 import { ServiceDefinitionService } from '../../../service-definitions/service-definitions.service';
 import { ServiceDefinitionsStore } from '../../../service-definitions/service-definitions.store';
-import { ResourceFormBuilder } from '../resource-form-builder.service';
 import View = dam.v1.View;
+import { PolicyVariableDialogComponent } from '../../policy-variable-dialog/policy-variable-dialog.component';
+import { ResourceFormBuilder } from '../resource-form-builder.service';
 
 
 @Component({
@@ -19,23 +21,6 @@ import View = dam.v1.View;
   styleUrls: ['./resource-view-form.component.scss'],
 })
 export class ResourceViewFormComponent implements OnInit, OnDestroy {
-
-  @Input()
-  view: EntityModel;
-  @Output()
-  readonly formChange: EventEmitter<any> = new EventEmitter<any>();
-
-  viewForm: FormGroup;
-  templates: EntityModel[];
-  templatesSubscription: Subscription;
-  policyValues$: Observable<string[]>;
-
-  constructor(private formBuilder: FormBuilder,
-              private resourceFormBuilder: ResourceFormBuilder,
-              private serviceDefinitionService: ServiceDefinitionService,
-              private serviceDefinitionsStore: ServiceDefinitionsStore,
-              private accessPoliciesStore: AccessPoliciesStore) {
-  }
 
   get serviceTemplate(): string {
     return this.viewForm.get('serviceTemplate').value;
@@ -50,6 +35,26 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
 
   get variableItems() {
     return this.viewForm.get('variables') as FormArray;
+  }
+
+  @Input()
+  view: EntityModel;
+  @Output()
+  readonly formChange: EventEmitter<any> = new EventEmitter<any>();
+
+  viewForm: FormGroup;
+  templates: EntityModel[];
+  templatesSubscription: Subscription;
+  policyValues$: Observable<string[]>;
+  policiesDetail: object = {};
+
+  constructor(private formBuilder: FormBuilder,
+              private resourceFormBuilder: ResourceFormBuilder,
+              private serviceDefinitionService: ServiceDefinitionService,
+              private serviceDefinitionsStore: ServiceDefinitionsStore,
+              private accessPoliciesStore: AccessPoliciesStore,
+              public dialog: MatDialog,
+              protected validationService: FormValidationService) {
   }
 
   ngOnInit() {
@@ -72,7 +77,10 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     this.policyValues$ = this.accessPoliciesStore.getAsList()
       .pipe(
         map((policies: EntityModel[]) => {
-          return policies.map((policy) => policy.name);
+          return policies.map((policy) => {
+            this.policiesDetail[policy.name] = policy['dto']['variableDefinitions'];
+            return policy.name;
+          });
         })
       );
   }
@@ -130,6 +138,23 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     return this.serviceDefinitionService.getTargetAdapterVariables(serviceTemplateId);
   }
 
+  policyAdd($event, roleId) {
+    const { name } = $event;
+    const variables = this.policiesDetail[name];
+    const policyVarsForm = this.policyVarsForm();
+    if (variables) {
+      policyVarsForm.varsFormGroup = this.createPolicyVariablesForm(variables, this.getPolicyDetails(name, roleId));
+      const dialogRef = this.dialog.open(PolicyVariableDialogComponent, {
+        width: '30rem',
+        data: {
+          onClick: () => this.addPolicyVariables(policyVarsForm, name, roleId, dialogRef),
+          variables,
+          varsFormGroup : policyVarsForm.varsFormGroup,
+        },
+      });
+    }
+  }
+
   private getPoliciesForRole(roleId: string): string[] {
     return _get(this.view, `dto.roles[${roleId}].policies`, []);
   }
@@ -147,4 +172,45 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  private createPolicyVariablesForm(variables, policyDetails) {
+    const varsFormGroup = this.formBuilder.group({});
+    Object.keys(variables).map(controlName => {
+      varsFormGroup.addControl(controlName,
+        this.formBuilder.control((policyDetails && policyDetails['vars']) ? policyDetails['vars'][controlName] : '',
+        [Validators.required, Validators.pattern(variables[controlName]['regexp'])]));
+    });
+    return varsFormGroup;
+  }
+
+  private addPolicyVariables(policyVarsForm, policyName, roleId, dialogRef) {
+    if (!this.validationService.validate(policyVarsForm)) {
+      return;
+    }
+    const policies = this.viewForm.get(`roles.${roleId}.policies`).value;
+    policies.map(policyDetail => {
+      if (policyDetail['name'] === policyName) {
+        policyDetail['vars'] = policyVarsForm.varsFormGroup.value;
+      }
+    });
+    this.viewForm.get(`roles.${roleId}.policies`).patchValue(policies);
+    dialogRef.close();
+  }
+
+  private getPolicyDetails(policyName, roleId: string) {
+    return this.getPoliciesForRole(roleId).find(policy => policy['name'] === policyName);
+  }
+
+  private policyVarsForm() {
+    const varsFormGroup = this.formBuilder.group({});
+    return {
+      varsFormGroup,
+      getAllForms(): FormGroup[] {
+        return [varsFormGroup];
+      },
+
+      isValid(): boolean {
+        return varsFormGroup.valid;
+      },
+    };
+  }
 }
