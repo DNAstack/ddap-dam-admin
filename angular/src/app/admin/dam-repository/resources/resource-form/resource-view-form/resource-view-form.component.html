@@ -205,6 +205,8 @@
                              secondaryPlaceholder="Add Policy"
                              placeholder="+ Policy"
                              editable="true"
+                             (onSelect)="policyAdd($event, role.key, policies)"
+                             (onAdd)="policyAdd($event, role.key)"
                              [identifyBy]="'name'"
                              [displayBy]="'name'">
                     <tag-input-dropdown [autocompleteItems]="policies"></tag-input-dropdown>

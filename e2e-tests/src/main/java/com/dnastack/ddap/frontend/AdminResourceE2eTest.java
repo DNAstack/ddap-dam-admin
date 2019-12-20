@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static com.dnastack.ddap.common.fragments.NavBar.damPoliciesLink;
 import static com.dnastack.ddap.common.fragments.NavBar.damResourceLink;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
@@ -142,6 +143,73 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage = adminManagePage.saveEntity();
 
         adminListPage.assertListItemExists(resourceId);
+    }
+
+    @Test
+    public void addResourceSingleViewPolicyVariables() {
+        addPolicyWithVariables();
+        AdminListPage adminListPage = ddapPage.getNavBar()
+                .goToAdmin(damResourceLink());
+        String resourceId = "resource-" + System.currentTimeMillis();
+        String viewId = "view-" + System.currentTimeMillis();
+        String role = "discovery";
+
+        waitForAccessTablesToLoad();
+        adminListPage.assertListItemDoNotExist(resourceId);
+
+        AdminManagePage adminManagePage = adminListPage.clickManage();
+        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
+        adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
+        adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
+        adminManagePage.fillField(DdapBy.se("inp-owner"), "E2E test");
+        adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
+
+        adminManagePage.enterButton(DdapBy.se("btn-add-view"));
+        adminManagePage.toggleExpansionPanel("view-new");
+        adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
+        adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
+        adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
+        adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
+        adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
+        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
+        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
+        adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "policy-with-variables");
+        adminManagePage.fillField(DdapBy.se("var-TEST_VARIABLE_DATASET"), "beacon");
+        adminManagePage.clickButton(DdapBy.se("btn-save-variable-data"));
+        adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
+        adminListPage = adminManagePage.saveEntity();
+        adminListPage.assertListItemExists(resourceId);
+    }
+
+    private void addPolicyWithVariables() {
+        AdminListPage adminListPage = ddapPage.getNavBar()
+                .goToAdmin(damPoliciesLink());
+
+        AdminManagePage adminManagePage = adminListPage.clickManage();
+
+        adminManagePage.fillField(DdapBy.se("inp-id"), "policy-with-variables");
+        adminManagePage.fillField(DdapBy.se("inp-label"), "policy-with-variables-name");
+        adminManagePage.fillField(DdapBy.se("inp-description"), "policy-with-variables-description");
+        adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
+
+        adminManagePage.clickButton(DdapBy.se("btn-add-variable"));
+        adminManagePage.toggleExpansionPanel("variable-UNDEFINED_VARIABLE_1");
+        adminManagePage.clearField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-name"));
+        adminManagePage.fillField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-name"), "TEST_VARIABLE_DATASET");
+        adminManagePage.fillField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-description"), "description");
+        adminManagePage.fillField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-regexp"), "\\w+");
+
+        adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
+        adminManagePage.toggleExpansionPanel("condition-0");
+        adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
+        adminManagePage.waitForInflightRequests();
+        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
+        adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "${TEST_VARIABLE_DATASET}");
+
+        adminListPage = adminManagePage.saveEntity();
+        adminManagePage.waitForInflightRequests();
+
+        adminListPage.assertListItemExists("policy-with-variables");
     }
 
     // TODO: Update with DISCO-2396
