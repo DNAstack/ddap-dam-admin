@@ -34,6 +34,26 @@ export class ConditionAutocompleteService {
       );
   }
 
+  getSourceNameValues(): Observable<any> {
+    const sourceName = [],
+      sourceValue = [],
+      trustedSources = {};
+    return this.trustedSourcesStore.getAsList()
+      .pipe(
+        map(sources => {
+          sources.forEach( source => {
+            trustedSources[source['name']] = source['dto']['sources'];
+            sourceName.push(source['name']);
+            sourceValue.push(source['dto']['sources']);
+          });
+          return {
+            trustedSourcesValues: makeDistinct(flatten(sourceName.concat(flatten(sourceValue)))),
+            trustedSources: trustedSources,
+          };
+        })
+      );
+  }
+
   getByValues(): string[] {
     return Object.values(AuthorityLevel);
   }
