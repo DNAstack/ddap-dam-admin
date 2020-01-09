@@ -122,14 +122,28 @@
                     <div class="col">
                       <tag-input *ngIf="clause.get('source.prefix').value as prefix"
                                  formControlName="value"
+                                 #sourceInput
                                  theme="minimal"
                                  maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
                                  secondaryPlaceholder="Add Source"
                                  placeholder="+ Source"
+                                 (onAdd)="addSource($event, sourcePrefixGroup, clause)"
                                  [attr.data-se]="'inp-condition-' + clauseIndex + '-source-value'"
                                  modelAsStrings="true">
+                          <ng-template let-selected="item" let-index="index">
+                            <div class="source-tag-wrapper"
+                                 matTooltip="{{resolveTrustedSource(selected)}}">
+                              {{
+                                (showTrustedSources && isTrustedSource(selected))
+                                ? (selected + ':' + resolveTrustedSource(selected))
+                                : selected
+                              }}
+                              <mat-icon class="close-tag icon icon-close" (click)="sourceInput.removeItem(selected, index)">
+                              </mat-icon>
+                            </div>
+                          </ng-template>
                         <tag-input-dropdown [showDropdownIfEmpty]="showAutocompleteDropdown(prefix, clause.get('source.value'))"
-                                            [autocompleteItems]="trustedSources">
+                                            [autocompleteItems]="trustedSourcesValues">
                         </tag-input-dropdown>
                       </tag-input>
                       <div *ngIf="clause.get('source') as control"

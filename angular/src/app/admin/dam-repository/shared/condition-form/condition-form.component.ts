@@ -29,8 +29,11 @@ export class ConditionFormComponent implements OnInit {
   anyOfFieldName: string;
   @Input()
   label?: string;
+  @Input()
+  showTrustedSources = false;
 
-  trustedSources: string[];
+  trustedSources: any;
+  trustedSourcesValues: string[];
   prefixes: string[] = Object.values(ConditionPrefix);
 
   get conditions() {
@@ -41,10 +44,19 @@ export class ConditionFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.autocompleteService.getSourceValues()
-      .subscribe((sources) => {
-        this.trustedSources = sources;
-      });
+    if (this.showTrustedSources) {
+      this.autocompleteService.getSourceNameValues()
+        .subscribe((sources) => {
+          this.trustedSourcesValues = sources.trustedSourcesValues;
+          this.trustedSources = sources.trustedSources;
+        });
+    } else {
+      this.autocompleteService.getSourceValues()
+        .subscribe((sources) => {
+          this.trustedSourcesValues = sources;
+        });
+    }
+
   }
 
   getModel(): IConditionSet[] {
@@ -72,6 +84,21 @@ export class ConditionFormComponent implements OnInit {
 
   getClauses(condition: AbstractControl) {
     return condition.get('allOf') as FormArray;
+  }
+
+  addSource(source, target, formGroup) {
+     // Force prefix to be 'split_pattern' when trusted source is selected
+    if (this.showTrustedSources && this.trustedSources[source.display]) {
+      formGroup.get('source.prefix').patchValue('split_pattern');
+    }
+  }
+
+  resolveTrustedSource(source) {
+    return (this.trustedSources && this.trustedSources[source]) ? this.trustedSources[source].toString() : source;
+  }
+
+  isTrustedSource(sourceName) {
+    return !!this.trustedSources[sourceName];
   }
 
   addCondition() {
