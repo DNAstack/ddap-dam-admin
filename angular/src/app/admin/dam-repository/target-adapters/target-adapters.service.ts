@@ -15,7 +15,7 @@ export class TargetAdaptersService {
 
   getTargetAdapters(): Observable<Object> {
     return this.http.get(
-      `${environment.ddapApiUrl}/${realmIdPlaceholder}/dam/target-adapters`
+      `${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/dam/target-adapters`
     );
   }
 

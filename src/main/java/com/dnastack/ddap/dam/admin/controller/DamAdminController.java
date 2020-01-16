@@ -20,7 +20,7 @@ import static com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieKi
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1alpha/{realm}/dam")
+@RequestMapping("/api/v1alpha/realm/{realm}/dam")
 public class DamAdminController {
 
     private UserTokenCookiePackager cookiePackager;

@@ -17,7 +17,7 @@ import java.util.Set;
 import static com.dnastack.ddap.common.security.UserTokenCookiePackager.*;
 
 @RestController
-@RequestMapping(value = "/api/v1alpha/{realm}/dam/target-adapters")
+@RequestMapping(value = "/api/v1alpha/realm/{realm}/dam/target-adapters")
 public class TargetAdapterController {
 
     private UserTokenCookiePackager cookiePackager;

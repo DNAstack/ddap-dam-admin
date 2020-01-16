@@ -16,7 +16,7 @@ import static com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieKi
 import static java.lang.String.format;
 
 @RestController
-@RequestMapping(value = "/api/v1alpha/{realm}/dam/service-templates")
+@RequestMapping(value = "/api/v1alpha/realm/{realm}/dam/service-templates")
 public class ServiceTemplateController {
 
     private UserTokenCookiePackager cookiePackager;

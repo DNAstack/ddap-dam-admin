@@ -20,7 +20,7 @@ export class ServiceDefinitionService extends DamConfigService {
 
   getTargetAdapterVariables(serviceTemplateId: string, params: {} = {}): Observable<TargetAdapterVariables> {
     return this.http.get<TargetAdapterVariables>(
-      `${environment.ddapApiUrl}/${realmIdPlaceholder}/dam/service-templates/${serviceTemplateId}/variables`,
+      `${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/dam/service-templates/${serviceTemplateId}/variables`,
       {params}
     );
   }

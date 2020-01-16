@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1alpha/{realm}/dam/autocomplete")
+@RequestMapping("/api/v1alpha/realm/{realm}/dam/autocomplete")
 public class AutoCompleteController {
 
     private UserTokenCookiePackager cookiePackager;
