@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import dam.v1.DamService;
+import org.apache.http.client.CookieStore;
+import org.apache.http.cookie.Cookie;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -37,7 +39,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     public void shouldIncludeValidAuthStatusInResponseHeader() throws Exception {
-        String unexpiredUserTokenCookie = fakeUserToken(Instant.now().plusSeconds(10));
+        final CookieStore cookieStore = loginStrategy.performPersonaLogin(TestingPersona.USER_WITHOUT_ACCESS.getId(), REALM);
+        final String unexpiredUserTokenCookie = cookieStore.getCookies()
+                                                           .stream()
+                                                           .filter(cookie -> cookie.getName().equals("dam_token"))
+                                                           .map(Cookie::getValue)
+                                                           .findFirst()
+                                                           .orElseThrow(AssertionError::new);
+
 
         // @formatter:off
         getRequestSpecification()

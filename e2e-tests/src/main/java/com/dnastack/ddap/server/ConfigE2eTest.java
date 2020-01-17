@@ -63,29 +63,6 @@ public class ConfigE2eTest extends AbstractBaseE2eTest {
     }
 
     @Test(expected = SignatureException.class)
-    public void doNotUseDevSigningKeyForCliLogin() {
-        Assume.assumeFalse("Dev keys are allowed on localhost", RestAssured.baseURI.startsWith("http://localhost:"));
-        Assume.assumeFalse("Dev keys are allowed on localhost", RestAssured.baseURI.startsWith("http://host.docker.internal:"));
-        final Response response = given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-                .when()
-                .post("/api/v1alpha/realm/dnastack/cli/login");
-        response
-                .then()
-                .log().ifValidationFails()
-                .statusCode(200)
-                .body("token", not(isEmptyOrNullString()));
-
-        final String jwt = response.body().as(CliLoginResponse.class).getToken();
-        final String base64EncodedDevSigningKey = "VGhlcmUgb25jZSB3YXMgYSBsYW5ndWFnZSBjYWxsZWQgYmFzaApJdCdzIHNlbWFudGljcyB3ZXJlIG9mdGVuIHF1aXRlIHJhc2gKQnV0IGl0IHdvcmtlZCwgbW9yZSBvciBsZXNzCkV2ZW4gdGhvdWdoIGl0J3MgYSBtZXNzClNvIEkgZ3Vlc3MgaXQgc3RheXMgb3V0IG9mIHRoZSB0cmFzaAo=";
-        Jwts.parser()
-            .setSigningKey(base64EncodedDevSigningKey)
-            .parseClaimsJws(jwt);
-    }
-
-    @Test(expected = SignatureException.class)
     public void doNotUseDevSigningKeyForOAuthState() {
         Assume.assumeFalse("Dev keys are allowed on localhost", RestAssured.baseURI.startsWith("http://localhost:"));
         Assume.assumeFalse("Dev keys are allowed on localhost", RestAssured.baseURI.startsWith("http://host.docker.internal:"));
