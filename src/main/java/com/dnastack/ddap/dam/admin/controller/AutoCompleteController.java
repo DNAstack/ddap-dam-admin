@@ -1,6 +1,8 @@
 package com.dnastack.ddap.dam.admin.controller;
 
 import com.dnastack.ddap.common.security.UserTokenCookiePackager;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieName;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.TokenKind;
 import com.dnastack.ddap.dam.admin.client.ReactiveAdminDamClient;
 import common.Common;
 import dam.v1.DamService;
@@ -15,7 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieKind;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
@@ -44,9 +46,9 @@ public class AutoCompleteController {
         Set<String> result = new TreeSet<>();
 
         // find beacons under resourceId in DAM config
-        Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.DAM, CookieKind.REFRESH));
+        Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(IC.cookieName(TokenKind.IDENTITY), IC.cookieName(TokenKind.REFRESH)));
 
-        return damClient.getConfig(realm, tokens.get(CookieKind.DAM).getClearText(), tokens.get(CookieKind.REFRESH).getClearText())
+        return damClient.getConfig(realm, tokens.get(IC.cookieName(TokenKind.IDENTITY)).getClearText(), tokens.get(IC.cookieName(TokenKind.REFRESH)).getClearText())
             .flatMap((damConfig) -> {
                 Map<String, Policy> policies = damConfig.getPoliciesMap();
                 for (Map.Entry<String, Policy> policyEntry : policies.entrySet()) {

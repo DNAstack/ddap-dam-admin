@@ -1,6 +1,8 @@
 package com.dnastack.ddap.dam.admin.controller;
 
 import com.dnastack.ddap.common.security.UserTokenCookiePackager;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieName;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.TokenKind;
 import com.dnastack.ddap.dam.admin.model.UserDamAccessInfo;
 import com.dnastack.ddap.dam.admin.service.DamAdminAccessTester;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +18,8 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 import java.util.Set;
 
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieKind;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
+
 
 @Slf4j
 @RestController
@@ -35,7 +38,7 @@ public class DamAdminController {
     @GetMapping(value = "/info")
     public Mono<? extends ResponseEntity<?>> getAccessInfo(ServerHttpRequest request,
                                                            @PathVariable String realm) {
-        Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.DAM, CookieKind.REFRESH));
+        Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(IC.cookieName(TokenKind.IDENTITY), IC.cookieName(TokenKind.REFRESH)));
 
         Mono<UserDamAccessInfo> accessesMono = accessTesterClient.determineAccessForUser(realm, tokens);
 

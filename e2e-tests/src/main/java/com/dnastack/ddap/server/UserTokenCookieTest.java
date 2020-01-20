@@ -45,7 +45,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
         final CookieStore cookieStore = loginStrategy.performPersonaLogin(TestingPersona.USER_WITHOUT_ACCESS.getId(), REALM);
         final String unexpiredUserTokenCookie = cookieStore.getCookies()
                                                            .stream()
-                                                           .filter(cookie -> cookie.getName().equals("dam_token"))
+                                                           .filter(cookie -> cookie.getName().equals("ic_identity"))
                                                            .map(Cookie::getValue)
                                                            .findFirst()
                                                            .orElseThrow(AssertionError::new);
@@ -57,7 +57,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("dam_token", unexpiredUserTokenCookie)
+            .cookie("ic_identity", unexpiredUserTokenCookie)
         .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
         .then()
@@ -78,7 +78,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("dam_token", expiredUserTokenCookie)
+            .cookie("ic_identity", expiredUserTokenCookie)
         .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
         .then()
@@ -118,7 +118,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", validPersonaToken)
+            .cookie("ic_access", validPersonaToken)
         .when()
             .get(icViaDdap("/accounts/-"))
         .then()
@@ -143,14 +143,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("dam_token", expiredUserTokenCookie)
+            .cookie("ic_identity", expiredUserTokenCookie)
             .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("dam_token", "expired");
+            .cookie("ic_identity", "expired");
         // @formatter:on
     }
 
@@ -165,14 +165,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", expiredUserTokenCookie)
+            .cookie("ic_access", expiredUserTokenCookie)
             .when()
             .get(damViaDdap("/accounts/-"))
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("ic_token", "expired");
+            .cookie("ic_access", "expired");
         // @formatter:on
     }
 
@@ -187,14 +187,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("dam_token", expiredUserTokenCookie)
+            .cookie("ic_identity", expiredUserTokenCookie)
             .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("dam_token", "expired");
+            .cookie("ic_identity", "expired");
         // @formatter:on
     }
 
@@ -209,14 +209,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", expiredUserTokenCookie)
+            .cookie("ic_access", expiredUserTokenCookie)
             .when()
             .get(icViaDdap("/accounts/-"))
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("ic_token", "expired");
+            .cookie("ic_access", "expired");
         // @formatter:on
     }
 

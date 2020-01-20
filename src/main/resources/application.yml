@@ -62,7 +62,7 @@ spring:
             - AddRequestParameter=clientId,${dam.client-id}
             - AddRequestParameter=clientSecret,${dam.client-secret}
             - RemoveRequestHeader=Authorization
-            - SetBearerTokenFromCookie=DAM
+            - SetBearerTokenFromCookie=IC,IDENTITY
           uri: ${dam.base-url}
         - predicates:
             - Path=/identity/**
@@ -77,7 +77,7 @@ spring:
             - AddRequestParameter=clientId,${idp.client-id}
             - AddRequestParameter=clientSecret,${idp.client-secret}
             - RemoveRequestHeader=Authorization
-            - SetBearerTokenFromCookie=IC
+            - SetBearerTokenFromCookie=IC,ACCESS
           uri: ${idp.base-url}
 logging:
   level:

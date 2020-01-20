@@ -1,6 +1,8 @@
 package com.dnastack.ddap.dam.admin.service;
 
 import com.dnastack.ddap.common.security.UserTokenCookiePackager;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieName;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.TokenKind;
 import com.dnastack.ddap.dam.admin.client.ReactiveAdminDamClient;
 import com.dnastack.ddap.dam.admin.model.UserDamAccessInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieKind;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
 
 @Slf4j
 @Component
@@ -23,10 +25,10 @@ public class DamAdminAccessTester {
         this.damClient = damClient;
     }
 
-    public Mono<UserDamAccessInfo> determineAccessForUser(String realm, Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens) {
+    public Mono<UserDamAccessInfo> determineAccessForUser(String realm, Map<CookieName, UserTokenCookiePackager.CookieValue> tokens) {
         UserDamAccessInfo userDamAccessInfo = new UserDamAccessInfo();
 
-        return damClient.getConfig(realm, tokens.get(CookieKind.DAM).getClearText(), tokens.get(CookieKind.REFRESH).getClearText())
+        return damClient.getConfig(realm, tokens.get(IC.cookieName(TokenKind.IDENTITY)).getClearText(), tokens.get(IC.cookieName(TokenKind.REFRESH)).getClearText())
             .doOnSuccessOrError((damConfig, throwable) -> {
                 if (throwable != null && !throwable.getMessage().contains("403")) {
                     log.warn("Unexpected exception", throwable);
