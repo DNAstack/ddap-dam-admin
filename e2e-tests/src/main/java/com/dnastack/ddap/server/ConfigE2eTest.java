@@ -1,6 +1,7 @@
 package com.dnastack.ddap.server;
 
 import com.dnastack.ddap.common.AbstractBaseE2eTest;
+import com.dnastack.ddap.common.util.DdapLoginUtil;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.SignatureException;
 import io.restassured.RestAssured;
@@ -8,28 +9,21 @@ import io.restassured.response.Response;
 import lombok.Data;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.cookie.Cookie;
 import org.junit.Assume;
-import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class ConfigE2eTest extends AbstractBaseE2eTest {
-
-    private String basicUsername;
-    private String basicPassword;
-
-    @Before
-    public void setup() {
-        basicUsername = requiredEnv("E2E_BASIC_USERNAME");
-        basicPassword = requiredEnv("E2E_BASIC_PASSWORD");
-    }
 
     @Test
     public void doNotAcceptDevCookieEncryptorCredentials() {
@@ -48,45 +42,47 @@ public class ConfigE2eTest extends AbstractBaseE2eTest {
 
     @Test
     public void doNotAcceptDevCredentials() {
-        Assume.assumeTrue(basicPassword != null);
+        Assume.assumeTrue(DDAP_PASSWORD != null);
         Assume.assumeFalse("Dev credentials are allowed on localhost", RestAssured.baseURI.startsWith("http://localhost:"));
         Assume.assumeFalse("Dev credentials are allowed on localhost", RestAssured.baseURI.startsWith("http://host.docker.internal:"));
         given()
             .log().method()
             .log().uri()
-            .auth().preemptive().basic("dev", "dev")
-        .when()
+            .when()
             .get("/index.html")
-        .then()
+            .then()
             .log().ifValidationFails()
-            .statusCode(401);
+            .statusCode(200)
+            .body("html.head.title", containsString("Please sign in"));
     }
 
     @Test(expected = SignatureException.class)
-    public void doNotUseDevSigningKeyForOAuthState() {
+    public void doNotUseDevSigningKeyForOAuthState() throws IOException {
         Assume.assumeFalse("Dev keys are allowed on localhost", RestAssured.baseURI.startsWith("http://localhost:"));
         Assume.assumeFalse("Dev keys are allowed on localhost", RestAssured.baseURI.startsWith("http://host.docker.internal:"));
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
+
         final Response response = given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-                .redirects().follow(false)
-                .when()
-                .get("/api/v1alpha/realm/dnastack/identity/login");
+            .log().method()
+            .log().uri()
+            .redirects().follow(false)
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
+            .when()
+            .get("/api/v1alpha/realm/dnastack/identity/login");
         response
-                .then()
-                .log().ifValidationFails()
-                .statusCode(allOf(greaterThanOrEqualTo(300), lessThan(400)))
-                .header("Location", startsWith("https://"));
+            .then()
+            .log().ifValidationFails()
+            .statusCode(allOf(greaterThanOrEqualTo(300), lessThan(400)))
+            .header("Location", startsWith("https://"));
 
         final URI location = URI.create(response.getHeader("Location"));
         final List<NameValuePair> queryPairs = URLEncodedUtils.parse(location, Charset.forName("UTF-8"));
         final String stateJwt = queryPairs.stream()
-                                          .filter(pair -> pair.getName().equals("state"))
-                                          .map(NameValuePair::getValue)
-                                          .findFirst()
-                                          .orElseThrow(() -> new AssertionError(
-                                                  "No state parameter in login redirect URL."));
+            .filter(pair -> pair.getName().equals("state"))
+            .map(NameValuePair::getValue)
+            .findFirst()
+            .orElseThrow(() -> new AssertionError(
+                "No state parameter in login redirect URL."));
 
         final String base64EncodedDevSigningKey = "VGhlcmUgb25jZSB3YXMgYSBsYW5ndWFnZSBjYWxsZWQgYmFzaApJdCdzIHNlbWFudGljcyB3ZXJlIG9mdGVuIHF1aXRlIHJhc2gKQnV0IGl0IHdvcmtlZCwgbW9yZSBvciBsZXNzCkV2ZW4gdGhvdWdoIGl0J3MgYSBtZXNzClNvIEkgZ3Vlc3MgaXQgc3RheXMgb3V0IG9mIHRoZSB0cmFzaAo=";
         Jwts.parser()
@@ -103,7 +99,8 @@ public class ConfigE2eTest extends AbstractBaseE2eTest {
                 .get("/index.html")
         .then()
                 .log().ifValidationFails()
-                .statusCode(401);
+            .statusCode(200)
+            .body("html.head.title", containsString("Please sign in"));
     }
 
     @Test
@@ -119,109 +116,122 @@ public class ConfigE2eTest extends AbstractBaseE2eTest {
     }
 
     @Test
-    public void accessAngularIndexPage() {
+    public void accessAngularIndexPage() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
+
         given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-        .when()
-                .get("/index.html")
-        .then()
-                .log().ifValidationFails()
-                .statusCode(200);
+            .log().method()
+            .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
+            .when()
+            .get("/index.html")
+            .then()
+            .log().ifValidationFails()
+            .statusCode(200);
     }
 
     @Test
-    public void accessDamEndpoint() {
+    public void accessDamEndpoint() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
+
         given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-        .when()
-                .get("/dam/v1alpha/dnastack/resources")
-        .then()
-                .log().ifValidationFails()
-                .contentType("application/json")
-                .statusCode(200);
+            .log().method()
+            .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
+            .when()
+            .get("/dam/v1alpha/dnastack/resources")
+            .then()
+            .log().ifValidationFails()
+            .contentType("application/json")
+            .statusCode(200);
     }
 
     @Test
-    public void accessIdpEndpoint() {
+    public void accessIdpEndpoint() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
+
         given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-                .when()
-                .get("/identity")
-                .then()
-                .log().ifValidationFails()
-                .contentType("application/json")
-                .statusCode(200);
+            .log().method()
+            .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
+            .when()
+            .get("/identity")
+            .then()
+            .log().ifValidationFails()
+            .contentType("application/json")
+            .statusCode(200);
     }
 
     @Test
     public void serveAngularRoutes() {
         given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-        .when()
-                .get("/resources")
-        .then()
-                .log().ifValidationFails()
-                .statusCode(200);
+            .log().method()
+            .log().uri()
+            .when()
+            .get("/resources")
+            .then()
+            .log().ifValidationFails()
+            .statusCode(200);
     }
 
     @Test
-    public void angularRoutesDoNotWorkForJavaScriptFiles() {
+    public void angularRoutesDoNotWorkForJavaScriptFiles() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
+
         given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-        .when()
-                .get("/made-up-resource-name.js")
-        .then()
-                .log().ifValidationFails()
-                .statusCode(404);
+            .log().method()
+            .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
+            .when()
+            .get("/made-up-resource-name.js")
+            .then()
+            .log().ifValidationFails()
+            .statusCode(404);
     }
 
     @Test
-    public void noAngularRoutesForMapFiles() {
+    public void noAngularRoutesForMapFiles() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
+
         given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-        .when()
-                .get("/made-up-resource-name.js.map")
-        .then()
-                .log().ifValidationFails()
-                .statusCode(404);
+            .log().method()
+            .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
+            .when()
+            .get("/made-up-resource-name.js.map")
+            .then()
+            .log().ifValidationFails()
+            .statusCode(404);
     }
 
     @Test
-    public void noAngularRoutesForHtmlFiles() {
+    public void noAngularRoutesForHtmlFiles() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
+
         given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-        .when()
-                .get("/made-up-resource-name.html")
-        .then()
-                .log().ifValidationFails()
-                .statusCode(404);
+            .log().method()
+            .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
+            .when()
+            .get("/made-up-resource-name.html")
+            .then()
+            .log().ifValidationFails()
+            .statusCode(404);
     }
 
     @Test
-    public void noAngularRoutesForFileWithArbitraryExtension() {
+    public void noAngularRoutesForFileWithArbitraryExtension() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
+
         given()
-                .log().method()
-                .log().uri()
-                .auth().preemptive().basic(basicUsername, basicPassword)
-        .when()
-                .get("/made-up-resource-name.foobar")
-        .then()
-                .log().ifValidationFails()
-                .statusCode(404);
+            .log().method()
+            .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
+            .when()
+            .get("/made-up-resource-name.foobar")
+            .then()
+            .log().ifValidationFails()
+            .statusCode(404);
     }
 
     @Data

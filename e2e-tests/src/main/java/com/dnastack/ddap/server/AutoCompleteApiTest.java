@@ -2,12 +2,15 @@ package com.dnastack.ddap.server;
 
 import com.dnastack.ddap.common.AbstractBaseE2eTest;
 import com.dnastack.ddap.common.TestingPersona;
+import com.dnastack.ddap.common.util.DdapLoginUtil;
 import dam.v1.DamService;
+import org.apache.http.cookie.Cookie;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -25,6 +28,7 @@ public class AutoCompleteApiTest extends AbstractBaseE2eTest {
 
     @Test
     public void shouldFindSuggestionsForMatchingClaim() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String validPersonaToken = fetchRealPersonaDamToken(TestingPersona.ADMINISTRATOR, REALM);
         String refreshToken = fetchRealPersonaRefreshToken(TestingPersona.ADMINISTRATOR, REALM);
 
@@ -34,6 +38,7 @@ public class AutoCompleteApiTest extends AbstractBaseE2eTest {
                     .log().method()
                     .log().uri()
                     .when()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                     .cookie("dam_token", validPersonaToken)
                     .cookie("refresh_token", refreshToken)
                     .get("/api/v1alpha/realm/" + REALM + "/dam/autocomplete/claim-value?claimName=com.dnastack.test.claim")
@@ -51,6 +56,7 @@ public class AutoCompleteApiTest extends AbstractBaseE2eTest {
 
     @Test
     public void shouldFindSuggestionsForVariableValues() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String validPersonaToken = fetchRealPersonaDamToken(TestingPersona.ADMINISTRATOR, REALM);
         String refreshToken = fetchRealPersonaRefreshToken(TestingPersona.ADMINISTRATOR, REALM);
 
@@ -60,6 +66,7 @@ public class AutoCompleteApiTest extends AbstractBaseE2eTest {
                     .log().method()
                     .log().uri()
                     .when()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                     .cookie("dam_token", validPersonaToken)
                     .cookie("refresh_token", refreshToken)
                     .get("/api/v1alpha/realm/" + REALM + "/dam/autocomplete/claim-value?claimName=ControlledAccessGrants")

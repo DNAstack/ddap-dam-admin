@@ -2,6 +2,7 @@ package com.dnastack.ddap.server;
 
 import com.dnastack.ddap.common.AbstractBaseE2eTest;
 import com.dnastack.ddap.common.TestingPersona;
+import com.dnastack.ddap.common.util.DdapLoginUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -18,6 +19,7 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.Map;
 
+import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.not;
@@ -39,6 +41,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     public void shouldIncludeValidAuthStatusInResponseHeader() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         final CookieStore cookieStore = loginStrategy.performPersonaLogin(TestingPersona.USER_WITHOUT_ACCESS.getId(), REALM);
         final String unexpiredUserTokenCookie = cookieStore.getCookies()
                                                            .stream()
@@ -53,6 +56,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
             .cookie("dam_token", unexpiredUserTokenCookie)
         .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
@@ -65,6 +69,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     public void shouldIncludeInvalidAuthStatusInResponseHeader() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String expiredUserTokenCookie = fakeUserToken(Instant.now().minusSeconds(10));
 
         // @formatter:off
@@ -72,6 +77,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
             .cookie("dam_token", expiredUserTokenCookie)
         .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
@@ -84,11 +90,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     public void shouldIncludeMissingAuthStatusInResponseHeader() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
+
         // @formatter:off
         getRequestSpecification()
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
         .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
         .then()
@@ -100,6 +109,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     public void shouldBeAbleToAccessICWithAppropriateCookie() throws IOException {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String validPersonaToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM);
 
         // @formatter:off
@@ -107,6 +117,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
             .cookie("ic_token", validPersonaToken)
         .when()
             .get(icViaDdap("/accounts/-"))
@@ -123,6 +134,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     public void expiredDamTokenShouldExpireUserTokenCookies() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String expiredUserTokenCookie = fakeUserToken(Instant.now().minusSeconds(10));
 
         // @formatter:off
@@ -130,6 +142,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
             .cookie("dam_token", expiredUserTokenCookie)
             .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
@@ -143,6 +156,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     public void expiredIcTokenShouldExpireUserTokenCookies() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String expiredUserTokenCookie = fakeUserToken(Instant.now().minusSeconds(10));
 
         // @formatter:off
@@ -150,6 +164,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
             .cookie("ic_token", expiredUserTokenCookie)
             .when()
             .get(damViaDdap("/accounts/-"))
@@ -163,6 +178,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     public void staleDamTokenShouldExpireUserTokenCookies() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String expiredUserTokenCookie = fakeClearTextUserToken(Instant.now().minusSeconds(10));
 
         // @formatter:off
@@ -170,6 +186,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
             .cookie("dam_token", expiredUserTokenCookie)
             .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
@@ -183,6 +200,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     public void staleIcTokenShouldExpireUserTokenCookies() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String expiredUserTokenCookie = fakeClearTextUserToken(Instant.now().minusSeconds(10));
 
         // @formatter:off
@@ -190,6 +208,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
             .cookie("ic_token", expiredUserTokenCookie)
             .when()
             .get(icViaDdap("/accounts/-"))

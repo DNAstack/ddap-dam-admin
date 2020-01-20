@@ -88,8 +88,8 @@ logging:
 ---
 
 spring:
-  profiles: basic-auth
+  profiles: auth
   security:
     user:
-      name: "dev"
-      password: "dev"
+      name: dev
+      password: dev

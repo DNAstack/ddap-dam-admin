@@ -1,7 +1,6 @@
 package com.dnastack.ddap.common;
 
 import com.dnastack.ddap.common.WalletLoginStrategy.LoginInfo;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Message;
@@ -12,12 +11,9 @@ import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.specification.RequestSpecification;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -30,8 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -155,7 +149,6 @@ public abstract class AbstractBaseE2eTest {
 
         final HttpClient httpclient = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).build();
         HttpPut request = new HttpPut(format("%s/dam/v1alpha/%s/config", DDAP_BASE_URL, realmName));
-        addDdapBasicAuthHeader(request);
         request.setEntity(new StringEntity(modificationPayload));
 
         System.out.printf("Sending setup realm request to URI [%s]\n", request.getURI());
@@ -243,30 +236,4 @@ public abstract class AbstractBaseE2eTest {
         return tokenCookie.getValue();
     }
 
-    public static void addDdapBasicAuthHeader(HttpRequest request) {
-        String auth = DDAP_USERNAME + ":" + DDAP_PASSWORD;
-        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.ISO_8859_1));
-        request.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + new String(encodedAuth));
-    }
-
-    private static Map<String, Object> getIdentityProviderConfig(String realmName,
-                                                          String provider,
-                                                          HttpClient httpclient) throws IOException {
-        final Map<String, Object> providerConfig;
-        final ObjectMapper mapper = new ObjectMapper();
-
-        HttpGet request = new HttpGet(format("%s/identity/v1alpha/%s/config/identityProviders/%s",
-                DDAP_BASE_URL, realmName, provider));
-        addDdapBasicAuthHeader(request);
-
-        final HttpResponse response = httpclient.execute(request);
-        final int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode == 200) {
-            final String responseBody = EntityUtils.toString(response.getEntity());
-            providerConfig = mapper.readValue(responseBody, new TypeReference<Map<String, Object>>() {});
-        } else {
-            providerConfig = null;
-        }
-        return providerConfig;
-    }
 }
