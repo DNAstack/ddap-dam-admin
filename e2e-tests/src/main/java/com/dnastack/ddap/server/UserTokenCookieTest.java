@@ -3,25 +3,16 @@ package com.dnastack.ddap.server;
 import com.dnastack.ddap.common.AbstractBaseE2eTest;
 import com.dnastack.ddap.common.TestingPersona;
 import com.dnastack.ddap.common.util.DdapLoginUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
 import dam.v1.DamService;
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.util.Base64;
-import java.util.Map;
 
 import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static java.lang.String.format;
-import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.not;
 
 public class UserTokenCookieTest extends AbstractBaseE2eTest {
@@ -68,27 +59,6 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
     }
 
     @Test
-    public void shouldIncludeInvalidAuthStatusInResponseHeader() throws Exception {
-        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
-        String expiredUserTokenCookie = fakeUserToken(Instant.now().minusSeconds(10));
-
-        // @formatter:off
-        getRequestSpecification()
-            .log().method()
-            .log().cookies()
-            .log().uri()
-            .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_identity", expiredUserTokenCookie)
-        .when()
-            .get(damViaDdap("/resources/resource-name/views/view-name"))
-        .then()
-            .log().body()
-            .log().ifValidationFails()
-            .header("X-DDAP-Authenticated", "false");
-        // @formatter:on
-    }
-
-    @Test
     public void shouldIncludeMissingAuthStatusInResponseHeader() throws Exception {
         Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
 
@@ -130,115 +100,5 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     private String icViaDdap(String path) {
         return format("/identity/v1alpha/%s%s", REALM, path);
-    }
-
-    @Test
-    public void expiredDamTokenShouldExpireUserTokenCookies() throws Exception {
-        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
-        String expiredUserTokenCookie = fakeUserToken(Instant.now().minusSeconds(10));
-
-        // @formatter:off
-        getRequestSpecification()
-            .log().method()
-            .log().cookies()
-            .log().uri()
-            .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_identity", expiredUserTokenCookie)
-            .when()
-            .get(damViaDdap("/resources/resource-name/views/view-name"))
-            .then()
-            .log().body()
-            .log().ifValidationFails()
-            .statusCode(isOneOf(401, 404))
-            .cookie("ic_identity", "expired");
-        // @formatter:on
-    }
-
-    @Test
-    public void expiredIcTokenShouldExpireUserTokenCookies() throws Exception {
-        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
-        String expiredUserTokenCookie = fakeUserToken(Instant.now().minusSeconds(10));
-
-        // @formatter:off
-        getRequestSpecification()
-            .log().method()
-            .log().cookies()
-            .log().uri()
-            .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_access", expiredUserTokenCookie)
-            .when()
-            .get(damViaDdap("/accounts/-"))
-            .then()
-            .log().body()
-            .log().ifValidationFails()
-            .statusCode(isOneOf(401, 404))
-            .cookie("ic_access", "expired");
-        // @formatter:on
-    }
-
-    @Test
-    public void staleDamTokenShouldExpireUserTokenCookies() throws Exception {
-        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
-        String expiredUserTokenCookie = fakeClearTextUserToken(Instant.now().minusSeconds(10));
-
-        // @formatter:off
-        getRequestSpecification()
-            .log().method()
-            .log().cookies()
-            .log().uri()
-            .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_identity", expiredUserTokenCookie)
-            .when()
-            .get(damViaDdap("/resources/resource-name/views/view-name"))
-            .then()
-            .log().body()
-            .log().ifValidationFails()
-            .statusCode(isOneOf(401, 404))
-            .cookie("ic_identity", "expired");
-        // @formatter:on
-    }
-
-    @Test
-    public void staleIcTokenShouldExpireUserTokenCookies() throws Exception {
-        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
-        String expiredUserTokenCookie = fakeClearTextUserToken(Instant.now().minusSeconds(10));
-
-        // @formatter:off
-        getRequestSpecification()
-            .log().method()
-            .log().cookies()
-            .log().uri()
-            .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_access", expiredUserTokenCookie)
-            .when()
-            .get(icViaDdap("/accounts/-"))
-            .then()
-            .log().body()
-            .log().ifValidationFails()
-            .statusCode(isOneOf(401, 404))
-            .cookie("ic_access", "expired");
-        // @formatter:on
-    }
-
-    private String fakeUserToken(Instant exp) throws JsonProcessingException {
-        TextEncryptor encryptor = Encryptors.text(DDAP_COOKIES_ENCRYPTOR_PASSWORD, DDAP_COOKIES_ENCRYPTOR_SALT);
-        return encryptor.encrypt(fakeClearTextUserToken(exp));
-    }
-
-    private String fakeClearTextUserToken(Instant exp) throws JsonProcessingException {
-        // Note this will only work so long as DDAP frontend uses unencrypted DAM access tokens as cookie value
-        ObjectMapper jsonMapper = new ObjectMapper();
-        Base64.Encoder b64Encoder = Base64.getUrlEncoder().withoutPadding();
-
-        Map<String, Object> header = ImmutableMap.of(
-            "typ", "JWT",
-            "alg", "none");
-        Map<String, Object> body = ImmutableMap.of(
-            "exp", exp.getEpochSecond());
-
-        return b64Encoder.encodeToString(jsonMapper.writeValueAsBytes(header)) +
-            "." +
-            b64Encoder.encodeToString(jsonMapper.writeValueAsBytes(body)) +
-            ".";
     }
 }
