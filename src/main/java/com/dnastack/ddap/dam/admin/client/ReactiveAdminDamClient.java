@@ -37,7 +37,7 @@ public class ReactiveAdminDamClient {
             .uri(damProperties.getBaseUrl().resolve("/dam"))
             .retrieve()
             .bodyToMono(String.class)
-            .flatMap(json -> ProtobufDeserializer.fromJson(json, DamService.GetInfoResponse.getDefaultInstance()));
+            .flatMap(json -> ProtobufDeserializer.fromJsonToMono(json, DamService.GetInfoResponse.getDefaultInstance()));
     }
 
     public Mono<DamConfig> getConfig(String realm, String damToken, String refreshToken) {
@@ -55,7 +55,7 @@ public class ReactiveAdminDamClient {
             .header(AUTHORIZATION, "Bearer " + damToken)
             .retrieve()
             .bodyToMono(String.class)
-            .flatMap(json -> ProtobufDeserializer.fromJson(json, DamConfig.getDefaultInstance()));
+            .flatMap(json -> ProtobufDeserializer.fromJsonToMono(json, DamConfig.getDefaultInstance()));
     }
 
     public Mono<TargetAdaptersResponse> getTargetAdapters(String realm, String damToken, String refreshToken) {
@@ -73,7 +73,7 @@ public class ReactiveAdminDamClient {
             .header(AUTHORIZATION, "Bearer " + damToken)
             .retrieve()
             .bodyToMono(String.class)
-            .flatMap(json -> ProtobufDeserializer.fromJson(json, TargetAdaptersResponse.getDefaultInstance()));
+            .flatMap(json -> ProtobufDeserializer.fromJsonToMono(json, TargetAdaptersResponse.getDefaultInstance()));
     }
 
 }
