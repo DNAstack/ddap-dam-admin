@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Form } from 'ddap-common-lib';
+import { Form, isExpanded } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { combineLatest, Observable } from 'rxjs';
@@ -53,6 +53,7 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
   persona?: EntityModel = new EntityModel('', TestPersona.create());
 
   form: FormGroup;
+  isExpanded: Function = isExpanded;
   resourcesList = [];
   authorityLevels: string[] = Object.values(AuthorityLevel);
   passportIssuers: Observable<string[]>;

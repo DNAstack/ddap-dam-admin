@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { alignControlsWithModelDefinitions, EntityModel, Form, removeInternalFields } from 'ddap-common-lib';
+import { alignControlsWithModelDefinitions, EntityModel, Form, isExpanded, removeInternalFields } from 'ddap-common-lib';
 
 import { dam } from '../../../../shared/proto/dam-service';
 import { ConditionFormComponent } from '../../shared/condition-form/condition-form.component';
@@ -27,6 +27,7 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   accessPolicy?: EntityModel = new EntityModel('', Policy.create());
 
   form: FormGroup;
+  isExpanded: Function = isExpanded;
   counter = 1;
 
   constructor(public accessPolicyFormBuilder: AccessPolicyFormBuilder) {

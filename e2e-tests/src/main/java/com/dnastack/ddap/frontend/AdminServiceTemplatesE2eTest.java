@@ -28,14 +28,12 @@ public class AdminServiceTemplatesE2eTest extends AbstractAdminFrontendE2eTest {
 
         // Add interface
         adminManagePage.enterButton(DdapBy.se("btn-add-interface"));
-        adminManagePage.toggleExpansionPanel("interface-UNDEFINED_INTERFACE_1");
         adminManagePage.clearField(DdapBy.se("inp-interface-UNDEFINED_INTERFACE_1-name"));
         adminManagePage.fillField(DdapBy.se("inp-interface-UNDEFINED_INTERFACE_1-name"), "http:beacon");
         adminManagePage.fillField(DdapBy.se("inp-interface-UNDEFINED_INTERFACE_1-value"), "${url}");
 
         // Add role
         adminManagePage.enterButton(DdapBy.se("btn-add-role"));
-        adminManagePage.toggleExpansionPanel("role-UNDEFINED_ROLE_1");
         adminManagePage.clearField(DdapBy.se("inp-role-UNDEFINED_ROLE_1-name"));
         adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_1-name"), "basic_discovery");
         adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_1-label"), "Discovery Beacon Search without Metadata");
@@ -45,7 +43,6 @@ public class AdminServiceTemplatesE2eTest extends AbstractAdminFrontendE2eTest {
 
         // Add role
         adminManagePage.enterButton(DdapBy.se("btn-add-role"));
-        adminManagePage.toggleExpansionPanel("role-UNDEFINED_ROLE_2");
         adminManagePage.clearField(DdapBy.se("inp-role-UNDEFINED_ROLE_2-name"));
         adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_2-name"), "discovery");
         adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_2-label"), "Discovery Beacon Search with Metadata");

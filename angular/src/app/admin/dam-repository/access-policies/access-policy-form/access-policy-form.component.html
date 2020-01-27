@@ -76,7 +76,9 @@
   </p>
   <mat-accordion multi displayMode="flat"
                  formArrayName="variableDefinitions">
-    <mat-expansion-panel *ngFor="let variableDefinition of variableDefinitions.controls | keyvalue"
+    <mat-expansion-panel #variableExpansionPanel
+                         *ngFor="let variableDefinition of variableDefinitions.controls | keyvalue"
+                         [expanded]="isExpanded(variableDefinition.value, variableExpansionPanel)"
                          [attr.data-se]="'variable-' + variableDefinition.value.get('id').value">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">

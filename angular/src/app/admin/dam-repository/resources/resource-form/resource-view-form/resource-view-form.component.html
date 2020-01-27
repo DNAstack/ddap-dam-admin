@@ -1,5 +1,6 @@
-
-<mat-expansion-panel [attr.data-se]="'view-' + (viewForm.get('id').value || 'new')">
+<mat-expansion-panel #viewExpansionPanel
+                     [expanded]="isExpanded(viewForm, viewExpansionPanel)"
+                     [attr.data-se]="'view-' + (viewForm.get('id').value || 'new')">
   <mat-expansion-panel-header collapsedHeight="5rem"
                               expandedHeight="5rem">
     <mat-panel-title>

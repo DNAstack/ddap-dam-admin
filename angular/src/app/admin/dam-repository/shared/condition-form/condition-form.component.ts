@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
-import { EntityModel } from 'ddap-common-lib';
+import { EntityModel, isExpanded } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 import { common } from '../../../../shared/proto/dam-service';
@@ -32,6 +32,7 @@ export class ConditionFormComponent implements OnInit {
   @Input()
   showTrustedSources = false;
 
+  isExpanded: Function = isExpanded;
   trustedSources: any;
   trustedSourcesValues: string[];
   prefixes: string[] = Object.values(ConditionPrefix);

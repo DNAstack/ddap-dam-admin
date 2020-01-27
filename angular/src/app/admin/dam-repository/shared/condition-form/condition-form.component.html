@@ -25,7 +25,9 @@
 
   <mat-accordion multi displayMode="flat"
                  [formArrayName]="this.anyOfFieldName">
-    <mat-expansion-panel *ngFor="let condition of conditions.controls; let conditionIndex=index"
+    <mat-expansion-panel #conditionExpansionPanel
+                         *ngFor="let condition of conditions.controls; let conditionIndex=index"
+                         [expanded]="isExpanded(condition, conditionExpansionPanel)"
                          [attr.data-se]="'condition-' + conditionIndex">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">

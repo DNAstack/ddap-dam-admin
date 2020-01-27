@@ -23,7 +23,6 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
-        adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
         adminManagePage.waitForInflightRequests();
         adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
@@ -47,14 +46,12 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-variable"));
-        adminManagePage.toggleExpansionPanel("variable-UNDEFINED_VARIABLE_1");
         adminManagePage.clearField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-name"));
         adminManagePage.fillField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-name"), "TEST_VARIABLE_DATASET");
         adminManagePage.fillField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-description"), "description");
         adminManagePage.fillField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-regexp"), "^phs\\d{6}$");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
-        adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
         adminManagePage.waitForInflightRequests();
         adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
@@ -67,7 +64,6 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillTagField(DdapBy.se("inp-condition-1-value-value"), "https://dac.nih.gov/datasets/${TEST_VARIABLE_DATASET}");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
-        adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "ResearcherStatus");
         adminManagePage.waitForInflightRequests();
         adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-source-prefix-pattern"));

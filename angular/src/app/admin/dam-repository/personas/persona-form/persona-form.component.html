@@ -80,7 +80,9 @@
         {{ form.get('passport.ga4ghAssertions').errors?.serverError }}
       </mat-error>
       <mat-accordion multi displayMode="flat">
-        <mat-expansion-panel *ngFor="let ga4ghAssertion of ga4ghAssertions.controls; let i=index"
+        <mat-expansion-panel #assertionExpansionPanel
+                             *ngFor="let ga4ghAssertion of ga4ghAssertions.controls; let i=index"
+                             [expanded]="isExpanded(ga4ghAssertion, assertionExpansionPanel)"
                              [attr.data-se]="'passport-' + i">
           <mat-expansion-panel-header collapsedHeight="5rem"
                                       expandedHeight="5rem">

@@ -26,7 +26,6 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-picture"), "https://pbs.twimg.com/profile_images/3443048571/ef5062acfce64a7aef1d75b4934fbee6_400x400.png");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-passport"));
-        adminManagePage.toggleExpansionPanel("passport-0");
         adminManagePage.fillField(DdapBy.se("inp-passport-type"), "ControlledAccessGrants");
         adminManagePage.fillField(DdapBy.se("inp-passport-source"), "https://institute1.test");
         adminManagePage.closeAutocompletes();
@@ -37,7 +36,6 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-by"), "peer");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
-        adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
 
         adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
@@ -66,7 +64,6 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-email"), "test-subject@test-ddap.com");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-passport"));
-        adminManagePage.toggleExpansionPanel("passport-0");
         adminManagePage.fillField(DdapBy.se("inp-passport-type"), "test-claimName");
         adminManagePage.fillField(DdapBy.se("inp-passport-source"), "https://institute1.test");
         adminManagePage.fillField(DdapBy.se("inp-passport-value"), "test-value");
@@ -117,7 +114,6 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
         adminManagePage.clickButton(DdapBy.se("btn-add-passport"));
-        adminManagePage.toggleExpansionPanel("passport-0");
 
         adminManagePage.fillField(DdapBy.se("inp-passport-type"), "ControlledAccessGrants");
         adminManagePage.waitForInflightRequests();

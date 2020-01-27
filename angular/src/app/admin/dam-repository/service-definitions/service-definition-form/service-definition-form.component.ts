@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { alignControlsWithModelDefinitions, EntityModel, removeInternalFields } from 'ddap-common-lib';
+import { alignControlsWithModelDefinitions, EntityModel, isExpanded, removeInternalFields } from 'ddap-common-lib';
 import { dam } from 'src/app/shared/proto/dam-service';
 
 import { TargetAdaptersService } from '../../target-adapters/target-adapters.service';
@@ -36,6 +36,7 @@ export class ServiceDefinitionFormComponent implements OnInit {
   serviceTemplate?: EntityModel = new EntityModel( '' , ServiceTemplate.create());
 
   form: FormGroup;
+  isExpanded: Function = isExpanded;
   interfaceCounter = 1;
   roleCounter = 1;
   targetAdapters: ITargetAdapter[];

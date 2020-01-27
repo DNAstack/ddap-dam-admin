@@ -70,7 +70,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
-        adminManagePage.toggleExpansionPanel("view-new");
         adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
@@ -110,7 +109,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
-        adminManagePage.toggleExpansionPanel("view-new");
         adminManagePage.fillField(DdapBy.se("inp-view-id"), view1Id);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), view1Id);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View 1 Description");
@@ -123,7 +121,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + view1Role));
 
         adminManagePage.clickButton(DdapBy.se("btn-add-view"));
-        adminManagePage.toggleExpansionPanel("view-new");
         adminManagePage.fillField(DdapBy.se("inp-view-id"), view2Id);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), view2Id);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View 2 Description");
@@ -165,7 +162,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
-        adminManagePage.toggleExpansionPanel("view-new");
         adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
@@ -193,7 +189,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-variable"));
-        adminManagePage.toggleExpansionPanel("variable-UNDEFINED_VARIABLE_1");
         adminManagePage.clearField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-name"));
         adminManagePage.fillField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-name"), "TEST_VARIABLE_DATASET");
         adminManagePage.fillField(DdapBy.se("inp-variable-UNDEFINED_VARIABLE_1-description"), "description");
@@ -232,7 +227,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
-        adminManagePage.toggleExpansionPanel("view-new");
         adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");

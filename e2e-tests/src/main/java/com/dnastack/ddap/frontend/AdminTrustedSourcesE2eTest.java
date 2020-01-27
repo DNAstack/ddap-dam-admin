@@ -22,11 +22,9 @@ public class AdminTrustedSourcesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-description"), "test-source-desc");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-source"));
-        adminManagePage.toggleExpansionPanel("source-0");
         adminManagePage.fillField(DdapBy.se("inp-source"), "https://test-source.com");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-claim"));
-        adminManagePage.toggleExpansionPanel("claim-0");
         adminManagePage.fillField(DdapBy.se("inp-claim"), "ResearcherStatus");
 
         adminListPage = adminManagePage.saveEntity();

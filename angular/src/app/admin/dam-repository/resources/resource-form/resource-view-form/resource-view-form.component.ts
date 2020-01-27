@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { EntityModel, FormValidationService } from 'ddap-common-lib';
+import { EntityModel, FormValidationService, isExpanded } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable, Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
@@ -43,6 +43,7 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   readonly formChange: EventEmitter<any> = new EventEmitter<any>();
 
   viewForm: FormGroup;
+  isExpanded: Function = isExpanded;
   templates: EntityModel[];
   templatesSubscription: Subscription;
   policyValues$: Observable<string[]>;

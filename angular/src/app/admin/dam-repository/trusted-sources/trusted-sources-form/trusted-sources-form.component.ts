@@ -1,18 +1,19 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormGroup } from '@angular/forms';
 import TrustedSource = dam.v1.TrustedSource;
-import { Form } from 'ddap-common-lib';
-import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
-import _get from 'lodash.get';
+import { Form, isExpanded } from 'ddap-common-lib';
+import { EntityModel } from 'ddap-common-lib';
 
 import { dam } from '../../../../shared/proto/dam-service';
+
+import { TrustedSourcesFormBuilder } from './trusted-sources-form-builder.service';
 
 @Component({
   selector: 'ddap-trusted-sources-form',
   templateUrl: './trusted-sources-form.component.html',
   styleUrls: ['./trusted-sources-form.component.scss'],
 })
-export class TrustedSourcesFormComponent implements OnChanges, OnDestroy, Form {
+export class TrustedSourcesFormComponent implements OnInit, Form {
 
   get sources() {
     return this.form.get('sources') as FormArray;
@@ -23,28 +24,20 @@ export class TrustedSourcesFormComponent implements OnChanges, OnDestroy, Form {
   }
 
   @Input()
-  trustedSource?: TrustedSource = TrustedSource.create({});
+  trustedSource?: EntityModel = new EntityModel('', TrustedSource.create());
 
   form: FormGroup;
+  isExpanded: Function = isExpanded;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.form = this.buildForm(null, this.trustedSource);
+  constructor(private trustedSourcesFormBuilder: TrustedSourcesFormBuilder) {
   }
 
-  ngOnChanges({trustedSource}: SimpleChanges): void {
-    const sourceId: string = _get(trustedSource, 'currentValue.name', '');
-    const sourceDto: TrustedSource = _get(trustedSource, 'currentValue.dto', TrustedSource.create({}));
-
-    this.form = this.buildForm(sourceId, sourceDto);
-  }
-
-  ngOnDestroy(): void {
+  ngOnInit(): void {
+    this.form = this.trustedSourcesFormBuilder.buildForm(this.trustedSource);
   }
 
   addSource(): void {
-    this.sources.insert(
-      0, this.formBuilder.control('')
-    );
+    this.sources.insert(0, this.trustedSourcesFormBuilder.buildStringControl());
   }
 
   removeSource(index: number): void {
@@ -52,9 +45,7 @@ export class TrustedSourcesFormComponent implements OnChanges, OnDestroy, Form {
   }
 
   addClaim(): void {
-    this.claims.insert(
-      0, this.formBuilder.control('')
-    );
+    this.claims.insert(0, this.trustedSourcesFormBuilder.buildStringControl());
   }
 
   removeClaim(index: number): void {
@@ -80,19 +71,6 @@ export class TrustedSourcesFormComponent implements OnChanges, OnDestroy, Form {
     return this.form.valid;
   }
 
-  private buildForm(sourceId: string, {ui, sources, claims}: TrustedSource) {
-    const sourcesForm = this.formBuilder.array(sources || []);
-    const claimsForm = this.formBuilder.array(claims || []);
 
-    return this.formBuilder.group({
-        id: [{value: sourceId, disabled: !!sourceId}, [Validators.pattern(nameConstraintPattern)]],
-        ui: this.formBuilder.group({
-          label: [_get(ui, 'label'), [Validators.required]],
-          description: [_get(ui, 'description', ''), [Validators.required, Validators.maxLength(255)]],
-        }),
-        sources: sourcesForm,
-        claims: claimsForm,
-      }
-    );
-  }
+
 }

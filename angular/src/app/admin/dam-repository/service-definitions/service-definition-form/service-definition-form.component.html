@@ -80,7 +80,9 @@
   <mat-accordion multi
                  displayMode="flat"
                  formGroupName="interfaces">
-    <mat-expansion-panel *ngFor="let interfaceObj of interfaces.controls | keyvalue"
+    <mat-expansion-panel #interfaceExpansionPanel
+                         *ngFor="let interfaceObj of interfaces.controls | keyvalue"
+                         [expanded]="isExpanded(interfaceObj.value, interfaceExpansionPanel)"
                          [attr.data-se]="'interface-' + interfaceObj.value.get('id').value">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
@@ -150,7 +152,9 @@
   <mat-accordion multi
                  displayMode="flat"
                  formGroupName="roles">
-    <mat-expansion-panel *ngFor="let role of roles.controls | keyvalue"
+    <mat-expansion-panel #roleExpansionPanel
+                         *ngFor="let role of roles.controls | keyvalue"
+                         [expanded]="isExpanded(role.value, roleExpansionPanel)"
                          [attr.data-se]="'role-' + role.value.get('id').value">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">

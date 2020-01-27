@@ -50,9 +50,11 @@
   </h3>
   <p>Trusted sources to issue access policy claims</p>
 
-  <mat-accordion multi displayMode="flat">
-    <mat-expansion-panel *ngFor="let source of sources.controls; let i=index"
-                         formArrayName="sources"
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="sources">
+    <mat-expansion-panel #sourceExpansionPanel
+                         *ngFor="let source of sources.controls; let i=index"
+                         [expanded]="isExpanded(source, sourceExpansionPanel)"
                          [attr.data-se]="'source-' + i">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
@@ -106,9 +108,11 @@
   </h3>
   <p>Trusted claims to be issued from these sources</p>
 
-  <mat-accordion multi displayMode="flat">
-    <mat-expansion-panel *ngFor="let claim of claims.controls; let i=index"
-                         formArrayName="claims"
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="claims">
+    <mat-expansion-panel #claimExpansionPanel
+                         *ngFor="let claim of claims.controls; let i=index"
+                         [expanded]="isExpanded(claim, claimExpansionPanel)"
                          [attr.data-se]="'claim-' + i">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
