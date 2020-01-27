@@ -1,7 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import { IdentityStore } from '../../../identity/identity.store';
+import { RealmService } from '../realm.service';
 
 import { RealmChangeConfirmationDialogModel } from './realm-change-confirmation-dialog.model';
 
@@ -14,10 +16,16 @@ export class RealmChangeConfirmationDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<RealmChangeConfirmationDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: RealmChangeConfirmationDialogModel,
-              private identityStore: IdentityStore) {
+              private identityStore: IdentityStore,
+              private realmService: RealmService,
+              private router: Router) {
     dialogRef.afterClosed().subscribe(acknowledged => {
       if (acknowledged) {
-        this.changeRealmAndGoToLogin();
+        if (this.data.action === 'edit') {
+          this.changeRealmAndGoToLogin();
+        } else if (this.data.action === 'delete') {
+          this.deleteRealm();
+        }
       }
     });
   }
@@ -29,4 +37,11 @@ export class RealmChangeConfirmationDialogComponent {
       });
   }
 
+  private deleteRealm() {
+    if (this.data.realm !== 'master') {
+      this.realmService.deleteRealm(this.data.realm).subscribe(() => {
+        this.router.navigate(['/master']).then(() => window.location.reload());
+      });
+    }
+  }
 }

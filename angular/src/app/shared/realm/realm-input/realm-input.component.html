@@ -6,8 +6,11 @@
     <input matInput
            data-se="realm-input"
            formControlName="realm"
-           (change)="openRealmChangeConfirmationDialog()">
+           (change)="openRealmChangeConfirmationDialog('edit')">
     <mat-error *ngIf="form.get('realm').invalid">Realm name must be 3-46 characters and alphanumeric</mat-error>
     <mat-icon matSuffix class="icon icon-edit"></mat-icon>
+    <mat-icon matSuffix class="icon icon-close"
+              *ngIf="realm !== 'master'"
+              (click)="openRealmChangeConfirmationDialog('delete')"></mat-icon>
   </mat-form-field>
 </form>

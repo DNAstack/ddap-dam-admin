@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Are you sure?</h2>
-<mat-dialog-content>
+<mat-dialog-content *ngIf="data.action === 'edit'">
   Changing realm to <b>{{ data.realm }}</b> will log you out of your current session.
 </mat-dialog-content>
 <mat-dialog-actions align="end">
@@ -14,6 +14,6 @@
           color="warn"
           class="uppercase"
           data-se="accept-btn">
-    Change Realm
+    {{data.action === 'edit' ? 'Change' : 'Delete' }} Realm
   </button>
 </mat-dialog-actions>
