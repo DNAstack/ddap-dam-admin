@@ -11,7 +11,12 @@ dam:
   client-id: 812c1319-fef5-4aa6-9393-beb5ec8facdf
   client-secret: 0000-0000-0000-0000-0000
 idp:
-  base-url: http://localhost:8082/
+  enabled: true
+  base-url: http://localhost.dam.localhost:8083
+  authorize-url: ${idp.base-url}/oauth2/auth
+  token-url: ${idp.base-url}/oauth2/token
+  revoke-url: ${idp.base-url}/oauth2/revoke
+  user-info-url: ${idp.base-url}/userinfo
   client-id: 812c1319-fef5-4aa6-9393-beb5ec8facdf
   client-secret: 0000-0000-0000-0000-0000
 ddap:
@@ -62,7 +67,7 @@ spring:
             - AddRequestParameter=clientId,${dam.client-id}
             - AddRequestParameter=clientSecret,${dam.client-secret}
             - RemoveRequestHeader=Authorization
-            - SetBearerTokenFromCookie=IC,IDENTITY
+            - SetBearerTokenFromCookie=DAM,ACCESS
           uri: ${dam.base-url}
         - predicates:
             - Path=/identity/**

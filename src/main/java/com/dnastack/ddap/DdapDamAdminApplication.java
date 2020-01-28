@@ -7,8 +7,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
-@EnableConfigurationProperties(value = { IdpProperties.class })
 @SpringBootApplication
+@EnableConfigurationProperties(IdpProperties.class)
 public class DdapDamAdminApplication {
 
 	public static void main(String[] args) {

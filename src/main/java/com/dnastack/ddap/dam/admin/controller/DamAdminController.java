@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 import java.util.Set;
 
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.DAM;
 
 
 @Slf4j
@@ -38,7 +38,8 @@ public class DamAdminController {
     @GetMapping(value = "/info")
     public Mono<? extends ResponseEntity<?>> getAccessInfo(ServerHttpRequest request,
                                                            @PathVariable String realm) {
-        Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(IC.cookieName(TokenKind.IDENTITY), IC.cookieName(TokenKind.REFRESH)));
+        Map<CookieName, UserTokenCookiePackager.CookieValue> tokens =
+                cookiePackager.extractRequiredTokens(request, Set.of(DAM.cookieName(TokenKind.ACCESS), DAM.cookieName(TokenKind.REFRESH)));
 
         Mono<UserDamAccessInfo> accessesMono = accessTesterClient.determineAccessForUser(realm, tokens);
 

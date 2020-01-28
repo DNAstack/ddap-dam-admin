@@ -22,7 +22,7 @@ const refreshRepeatTimeoutInMs = 600000;
 export class LayoutComponent implements OnInit {
 
   isSandbox = false;
-  profile: Profile = null;
+  account: { profile?: Profile };
   userDamInfoAccess: UserDamInfoAccess;
   realm: string;
   loginPath: string;
@@ -44,7 +44,7 @@ export class LayoutComponent implements OnInit {
         }
         const { sandbox, account } = identity;
         this.isSandbox = sandbox;
-        this.profile = account.profile;
+        this.account = account;
       });
 
     this.determineAdminAccessForDam();

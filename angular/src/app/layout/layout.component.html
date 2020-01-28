@@ -22,37 +22,37 @@
         <ddaplib-realm-input (onAcknowledge)="onAcknowledge($event)" actions="['edit', 'delete']"></ddaplib-realm-input>
       </div>
 
-      <div *ngIf="profile"
+      <div *ngIf="account"
            class="ddap-logout">
         <mat-list-item class="credentials-username"
                        data-se="nav-account">
-          <h4 mat-line>{{ profile?.name || '&nbsp;' }}</h4>
+          <h4 mat-line>{{ account?.profile?.name || '&nbsp;' }}</h4>
           <span mat-line
                 data-se="nav-logout"
                 (click)="logout()">Log Out</span>
           <div class="credentials-picture">
             <img matListAvatar
-                 [src]="profile?.picture || '/assets/images/placeholder_identity.png'"
+                 [src]="account?.profile?.picture || '/assets/images/placeholder_identity.png'"
                  alt="Profile picture">
           </div>
         </mat-list-item>
       </div>
       <a [href]="loginPath"
-         *ngIf="!profile"
+         *ngIf="!account"
          data-se="nav-login">
         <mat-list-item class="credentials-username"
                        data-se="nav-account">
           <h4 mat-line>Log In</h4>
           <div class="credentials-picture">
             <img matListAvatar
-                 [src]="profile?.picture || '/assets/images/placeholder_identity.png'"
+                 [src]="account?.profile?.picture || '/assets/images/placeholder_identity.png'"
                  alt="Profile picture">
           </div>
         </mat-list-item>
       </a>
     </mat-nav-list>
 
-    <div *ngIf="profile"
+    <div *ngIf="account"
          class="accordion-wrapper">
       <mat-accordion [multi]="false"
                      *ngIf="userDamInfoAccess && userDamInfoAccess.accessible">

@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.DAM;
 
 @Slf4j
 @Component
@@ -28,7 +28,8 @@ public class DamAdminAccessTester {
     public Mono<UserDamAccessInfo> determineAccessForUser(String realm, Map<CookieName, UserTokenCookiePackager.CookieValue> tokens) {
         UserDamAccessInfo userDamAccessInfo = new UserDamAccessInfo();
 
-        return damClient.getConfig(realm, tokens.get(IC.cookieName(TokenKind.IDENTITY)).getClearText(), tokens.get(IC.cookieName(TokenKind.REFRESH)).getClearText())
+        return damClient.getConfig(realm, tokens.get(DAM.cookieName(TokenKind.ACCESS)).getClearText(),
+                                   tokens.get(DAM.cookieName(TokenKind.REFRESH)).getClearText())
             .doOnSuccessOrError((damConfig, throwable) -> {
                 if (throwable != null && !throwable.getMessage().contains("403")) {
                     log.warn("Unexpected exception", throwable);
