@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { Identity } from '../identity/identity.model';
 import { IdentityService } from '../identity/identity.service';
 import { IdentityStore } from '../identity/identity.store';
 import { Profile } from '../identity/profile.model';
+import { RealmService } from '../shared/realm/realm.service';
 
 import { UserDamInfoAccess } from './user-dam-info-access.model';
 
@@ -30,7 +31,9 @@ export class LayoutComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private identityService: IdentityService,
               private identityStore: IdentityStore,
-              private damService: DamService) {
+              private damService: DamService,
+              private realmService: RealmService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -67,6 +70,16 @@ export class LayoutComponent implements OnInit {
       });
   }
 
+  onAcknowledge(dialogData) {
+    if (dialogData) {
+      if (dialogData.action === 'edit') {
+        this.changeRealmAndGoToLogin(dialogData.realm);
+      } else if (dialogData.action === 'delete') {
+        this.deleteRealm(dialogData.realm);
+      }
+    }
+  }
+
   private determineAdminAccessForDam() {
     this.damService.getDamInfoAndUserAccess()
       .subscribe((userDamInfoAccess: UserDamInfoAccess) => {
@@ -79,6 +92,21 @@ export class LayoutComponent implements OnInit {
       .pipe(
         repeatWhen(() => interval(refreshRepeatTimeoutInMs))
       );
+  }
+
+  private changeRealmAndGoToLogin(realm) {
+    this.identityStore.getLoginHintForPrimaryAccount()
+      .subscribe((loginHint) => {
+        window.location.href = `/api/v1alpha/realm/${realm}/identity/login?loginHint=${loginHint}`;
+      });
+  }
+
+  private deleteRealm(realm) {
+    if (realm !== 'master') {
+      this.realmService.deleteRealm(realm).subscribe(() => {
+        this.router.navigate(['/master']).then(() => window.location.reload());
+      });
+    }
   }
 
 }

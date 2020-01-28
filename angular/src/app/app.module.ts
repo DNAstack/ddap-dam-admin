@@ -7,9 +7,6 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './layout/layout.component';
-import {
-  RealmChangeConfirmationDialogComponent
-} from './shared/realm/realm-change-confirmation-dialog/realm-change-confirmation-dialog.component';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -25,9 +22,6 @@ import { SharedModule } from './shared/shared.module';
 
     SharedModule,
     AppRoutingModule,
-  ],
-  entryComponents: [
-    RealmChangeConfirmationDialogComponent,
   ],
   bootstrap: [AppComponent],
 })

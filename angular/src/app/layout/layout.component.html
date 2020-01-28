@@ -19,7 +19,7 @@
     <mat-nav-list>
       <div *ngIf="isSandbox"
            class="ddap-realm-select">
-        <ddap-realm-input></ddap-realm-input>
+        <ddaplib-realm-input (onAcknowledge)="onAcknowledge($event)" actions="['edit', 'delete']"></ddaplib-realm-input>
       </div>
 
       <div *ngIf="profile"

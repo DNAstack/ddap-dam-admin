@@ -29,15 +29,9 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 import { MetadataFilterPipe } from './metadata-list/metadata-filter.pipe';
 import { MetadataListComponent } from './metadata-list/metadata-list.component';
-import {
-  RealmChangeConfirmationDialogComponent
-} from './realm/realm-change-confirmation-dialog/realm-change-confirmation-dialog.component';
-import { RealmInputComponent } from './realm/realm-input/realm-input.component';
 
 @NgModule({
   declarations: [
-    RealmInputComponent,
-    RealmChangeConfirmationDialogComponent,
     MetadataListComponent,
     MetadataFilterPipe,
   ],
@@ -109,7 +103,6 @@ import { RealmInputComponent } from './realm/realm-input/realm-input.component';
 
     MetadataListComponent,
     MetadataFilterPipe,
-    RealmInputComponent,
   ],
 })
 export class SharedModule {
