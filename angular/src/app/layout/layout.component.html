@@ -130,7 +130,7 @@
   <mat-sidenav-content>
     <ddaplib-sandbox-banner *ngIf="isSandbox"></ddaplib-sandbox-banner>
 
-    <ng-container *ngIf="profile; else anonymousUserLandingPage">
+    <ng-container *ngIf="account; else anonymousUserLandingPage">
       <ng-container *ngIf="isChildPage(); else authorizedUserLandingPage">
         <router-outlet></router-outlet>
       </ng-container>
