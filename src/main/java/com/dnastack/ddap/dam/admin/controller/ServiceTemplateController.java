@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 import java.util.Set;
 
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.DAM;
 import static java.lang.String.format;
 
 @RestController
@@ -38,7 +38,7 @@ public class ServiceTemplateController {
     public Mono<Map<String, VariableFormat>> resolveVariables(ServerHttpRequest request,
                                                               @PathVariable String realm,
                                                               @PathVariable String serviceTemplateId) {
-        Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(IC.cookieName(TokenKind.IDENTITY), IC.cookieName(TokenKind.REFRESH)));
+        Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(DAM.cookieName(TokenKind.ACCESS), DAM.cookieName(TokenKind.REFRESH)));
         return getServiceTemplate(damClient, realm, tokens, serviceTemplateId)
             .flatMap(serviceTemplate -> getItemFormatForServiceTemplate(damClient, realm, tokens, serviceTemplate)
                 .map(ItemFormat::getVariablesMap));
@@ -48,7 +48,7 @@ public class ServiceTemplateController {
                                                      String realm,
                                                      Map<CookieName, UserTokenCookiePackager.CookieValue> tokens,
                                                      String serviceTemplateId) {
-        return damClient.getConfig(realm, tokens.get(IC.cookieName(TokenKind.IDENTITY)).getClearText(), tokens.get(IC.cookieName(TokenKind.REFRESH)).getClearText())
+        return damClient.getConfig(realm, tokens.get(DAM.cookieName(TokenKind.ACCESS)).getClearText(), tokens.get(DAM.cookieName(TokenKind.REFRESH)).getClearText())
             .map(DamService.DamConfig::getServiceTemplatesMap)
             .map(serviceTemplates -> {
                 if (!serviceTemplates.containsKey(serviceTemplateId)) {
@@ -65,7 +65,7 @@ public class ServiceTemplateController {
         String targetAdapterId = serviceTemplate.getTargetAdapter();
         String itemFormatId = serviceTemplate.getItemFormat();
 
-        return damClient.getTargetAdapters(realm, tokens.get(IC.cookieName(TokenKind.IDENTITY)).getClearText(), tokens.get(IC.cookieName(TokenKind.REFRESH)).getClearText())
+        return damClient.getTargetAdapters(realm, tokens.get(DAM.cookieName(TokenKind.ACCESS)).getClearText(), tokens.get(DAM.cookieName(TokenKind.REFRESH)).getClearText())
             .map(targetAdaptersResponse -> {
                 TargetAdapter targetAdapter = getDamTargetAdapter(targetAdapterId, targetAdaptersResponse);
                 return getDamItemFormat(targetAdapterId, itemFormatId, targetAdapter);

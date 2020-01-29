@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.DAM;
 
 @Configuration
 public class Config {
@@ -20,6 +20,6 @@ public class Config {
 
     @Bean
     public UserTokenStatusFilter userTokenStatusFilter(UserTokenCookiePackager userTokenCookiePackager) {
-        return new UserTokenStatusFilter(userTokenCookiePackager, IC.cookieName(UserTokenCookiePackager.TokenKind.IDENTITY));
+        return new UserTokenStatusFilter(userTokenCookiePackager, DAM.cookieName(UserTokenCookiePackager.TokenKind.ACCESS));
     }
 }

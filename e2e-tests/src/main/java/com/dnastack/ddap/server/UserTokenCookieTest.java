@@ -36,7 +36,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
         final CookieStore cookieStore = loginStrategy.performPersonaLogin(TestingPersona.USER_WITHOUT_ACCESS.getId(), REALM);
         final String unexpiredUserTokenCookie = cookieStore.getCookies()
                                                            .stream()
-                                                           .filter(cookie -> cookie.getName().equals("ic_identity"))
+                                                           .filter(cookie -> cookie.getName().equals("dam_access"))
                                                            .map(Cookie::getValue)
                                                            .findFirst()
                                                            .orElseThrow(AssertionError::new);
@@ -48,7 +48,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_identity", unexpiredUserTokenCookie)
+            .cookie("dam_access", unexpiredUserTokenCookie)
         .when()
             .get(damViaDdap("/resources/resource-name/views/view-name"))
         .then()

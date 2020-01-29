@@ -14,8 +14,9 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 import java.util.Set;
 
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.*;
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.DAM;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieName;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.TokenKind;
 
 @RestController
 @RequestMapping(value = "/api/v1alpha/realm/{realm}/dam/target-adapters")
@@ -34,9 +35,9 @@ public class TargetAdapterController {
     @GetMapping
     public Mono<Map<String, DamService.TargetAdapter>> getTargetAdapters(@PathVariable String realm,
                                                                          ServerHttpRequest request) {
-        Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(IC.cookieName(TokenKind.IDENTITY), IC.cookieName(TokenKind.REFRESH)));
+        Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(DAM.cookieName(TokenKind.ACCESS), DAM.cookieName(TokenKind.REFRESH)));
 
-        return damClient.getTargetAdapters(realm, tokens.get(IC.cookieName(TokenKind.IDENTITY)).getClearText(), tokens.get(IC.cookieName(TokenKind.REFRESH)).getClearText())
+        return damClient.getTargetAdapters(realm, tokens.get(DAM.cookieName(TokenKind.ACCESS)).getClearText(), tokens.get(DAM.cookieName(TokenKind.REFRESH)).getClearText())
             .map(DamService.TargetAdaptersResponse::getTargetAdaptersMap);
     }
 

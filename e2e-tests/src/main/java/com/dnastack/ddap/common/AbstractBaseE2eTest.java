@@ -193,20 +193,20 @@ public abstract class AbstractBaseE2eTest {
         return fetchRealPersonaToken(personaName, "ic_access", realmName, scopes);
     }
 
+    protected String fetchRealPersonaDamToken(String personaName, String realmName, String ... scopes) throws IOException {
+        return fetchRealPersonaToken(personaName, "dam_access", realmName, scopes);
+    }
+
     protected String fetchRealPersonaIcToken(TestingPersona persona, String realmName, String ... scopes) throws IOException {
         return fetchRealPersonaIcToken(persona.getId(), realmName, scopes);
     }
 
-    protected String fetchRealPersonaDamToken(String personaName, String realmName) throws IOException {
-        return fetchRealPersonaToken(personaName, "ic_identity", realmName);
-    }
-
-    protected String fetchRealPersonaDamToken(TestingPersona persona, String realmName) throws IOException {
-        return fetchRealPersonaDamToken(persona.getId(), realmName);
+    protected String fetchRealPersonaDamToken(TestingPersona persona, String realmName, String... scopes) throws IOException {
+        return fetchRealPersonaDamToken(persona.getId(), realmName, scopes);
     }
 
     protected String fetchRealPersonaRefreshToken(String personaName, String realmName) throws IOException {
-        return fetchRealPersonaToken(personaName, "ic_refresh", realmName);
+        return fetchRealPersonaToken(personaName, "dam_refresh", realmName);
     }
 
     protected String fetchRealPersonaRefreshToken(TestingPersona persona, String realmName) throws IOException {
