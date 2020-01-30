@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Form } from 'ddap-common-lib';
-import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
+import { FormArray, FormGroup, Validators } from '@angular/forms';
+import { Form, FormValidators, isExpanded } from 'ddap-common-lib';
+import { EntityModel } from 'ddap-common-lib';
 
 import { common } from '../../../../shared/proto/dam-service';
+
 import Client = common.Client;
+import { ClientApplicationFormBuilder } from './client-application-form-builder.service';
 
 @Component({
   selector: 'ddap-client-application-form',
@@ -13,31 +15,59 @@ import Client = common.Client;
 })
 export class ClientApplicationFormComponent implements OnInit, Form {
 
+  get redirectUris() {
+    return this.form.get('redirectUris') as FormArray;
+  }
+
+  get grantTypes() {
+    return this.form.get('grantTypes') as FormArray;
+  }
+
+  get responseTypes() {
+    return this.form.get('responseTypes') as FormArray;
+  }
+
   @Input()
   clientApplication?: EntityModel = new EntityModel('', Client.create());
 
   form: FormGroup;
+  isExpanded: Function = isExpanded;
 
-  constructor(private formBuilder: FormBuilder) {
-
+  constructor(private clientApplicationFormBuilder: ClientApplicationFormBuilder) {
   }
 
   ngOnInit(): void {
-    const { ui, clientId } = this.clientApplication.dto;
-    this.form = this.formBuilder.group({
-      id: [this.clientApplication.name || '', [Validators.pattern(nameConstraintPattern)]],
-      ui: this.formBuilder.group({
-        label: [ui.label || '', [Validators.required]],
-        description: [ui.description || '', [Validators.required, Validators.maxLength(255)]],
-      }),
-      clientId: [clientId],
-    });
+    this.form = this.clientApplicationFormBuilder.buildForm(this.clientApplication);
+  }
+
+  addRedirectUri(): void {
+    this.redirectUris.insert(0, this.clientApplicationFormBuilder.buildStringControl(null, [Validators.required, FormValidators.url]));
+  }
+
+  removeRedirectUri(index: number): void {
+    this.redirectUris.removeAt(index);
+  }
+
+  addGrantType(): void {
+    this.grantTypes.insert(0, this.clientApplicationFormBuilder.buildStringControl(null, [Validators.required]));
+  }
+
+  removeGrantType(index: number): void {
+    this.grantTypes.removeAt(index);
+  }
+
+  addResponseType(): void {
+    this.responseTypes.insert(0, this.clientApplicationFormBuilder.buildStringControl(null, [Validators.required]));
+  }
+
+  removeResponseType(index: number): void {
+    this.responseTypes.removeAt(index);
   }
 
   getModel(): EntityModel {
-    const { id, ui } = this.form.value;
+    const { id, ...rest } = this.form.value;
     const clientApplication: Client = Client.create({
-      ui,
+      ...rest,
     });
 
     return new EntityModel(id, clientApplication);

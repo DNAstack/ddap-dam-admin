@@ -43,6 +43,180 @@
              required>
     </mat-form-field>
   </div>
+  <div class="row">
+    <mat-form-field class="col">
+      <input matInput
+             placeholder="Scope"
+             formControlName="scope"
+             data-se="inp-scope"
+             required>
+    </mat-form-field>
+  </div>
+
+  <h3>
+    <span>Redirect URIs</span>
+    <div>
+      <button mat-button
+              color="primary"
+              class="uppercase"
+              type="button"
+              data-se="btn-add-redirectUri"
+              (click)="addRedirectUri()">
+        Add Redirect URI
+      </button>
+    </div>
+  </h3>
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="redirectUris">
+    <mat-expansion-panel #redirectUriExpansionPanel
+                         *ngFor="let redirectUri of redirectUris.controls; let i=index"
+                         [expanded]="isExpanded(redirectUri, redirectUriExpansionPanel)"
+                         [attr.data-se]="'redirectUri-' + i">
+      <mat-expansion-panel-header collapsedHeight="5rem"
+                                  expandedHeight="5rem">
+        <ng-container *ngIf="redirectUri">
+          <mat-panel-title>
+            <span>{{ redirectUri.value || 'Redirect URI' }}</span>
+          </mat-panel-title>
+          <div class="invalid-warning" *ngIf="redirectUri.invalid">
+            <mat-icon class="icon icon-warning"
+                      matTooltip="Redirect URI is invalid">
+            </mat-icon>
+          </div>
+        </ng-container>
+      </mat-expansion-panel-header>
+      <div class="row">
+        <mat-form-field class="col">
+          <input matInput
+                 [formControlName]="i"
+                 placeholder="Redirect URI"
+                 data-se="inp-redirectUri"
+                 required>
+          <mat-error *ngIf="redirectUri.invalid">{{ redirectUri.errors?.serverError }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="footer">
+        <button mat-button
+                type="button"
+                color="warn"
+                class="uppercase"
+                (click)="removeRedirectUri(i)">
+          Remove Redirect URI
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <h3>
+    <span>Grant Types</span>
+    <div>
+      <button mat-button
+              color="primary"
+              class="uppercase"
+              type="button"
+              data-se="btn-add-grantType"
+              (click)="addGrantType()">
+        Add Grant Type
+      </button>
+    </div>
+  </h3>
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="grantTypes">
+    <mat-expansion-panel #grantTypeExpansionPanel
+                         *ngFor="let grantType of grantTypes.controls; let i=index"
+                         [expanded]="isExpanded(grantType, grantTypeExpansionPanel)"
+                         [attr.data-se]="'grantType-' + i">
+      <mat-expansion-panel-header collapsedHeight="5rem"
+                                  expandedHeight="5rem">
+        <ng-container *ngIf="grantType">
+          <mat-panel-title>
+            <span>{{ grantType.value || 'Grant Type' }}</span>
+          </mat-panel-title>
+          <div class="invalid-warning" *ngIf="grantType.invalid">
+            <mat-icon class="icon icon-warning"
+                      matTooltip="Grant type is invalid">
+            </mat-icon>
+          </div>
+        </ng-container>
+      </mat-expansion-panel-header>
+      <div class="row">
+        <mat-form-field class="col">
+          <input matInput
+                 [formControlName]="i"
+                 placeholder="Grant Type"
+                 data-se="inp-grantType"
+                 required>
+          <mat-error *ngIf="grantType.invalid">{{ grantType.errors?.serverError }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="footer">
+        <button mat-button
+                type="button"
+                color="warn"
+                class="uppercase"
+                (click)="removeGrantType(i)">
+          Remove Grant Type
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <h3>
+    <span>Response Types</span>
+    <div>
+      <button mat-button
+              color="primary"
+              class="uppercase"
+              type="button"
+              data-se="btn-add-responseType"
+              (click)="addResponseType()">
+        Add Response type
+      </button>
+    </div>
+  </h3>
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="responseTypes">
+    <mat-expansion-panel #responseTypeExpansionPanel
+                         *ngFor="let responseType of responseTypes.controls; let i=index"
+                         [expanded]="isExpanded(responseType, responseTypeExpansionPanel)"
+                         [attr.data-se]="'responseType-' + i">
+      <mat-expansion-panel-header collapsedHeight="5rem"
+                                  expandedHeight="5rem">
+        <ng-container *ngIf="responseType">
+          <mat-panel-title>
+            <span>{{ responseType.value || 'Response Type' }}</span>
+          </mat-panel-title>
+          <div class="invalid-warning" *ngIf="responseType.invalid">
+            <mat-icon class="icon icon-warning"
+                      matTooltip="Response type is invalid">
+            </mat-icon>
+          </div>
+        </ng-container>
+      </mat-expansion-panel-header>
+      <div class="row">
+        <mat-form-field class="col">
+          <input matInput
+                 [formControlName]="i"
+                 placeholder="Response Type"
+                 data-se="inp-responseType"
+                 required>
+          <mat-error *ngIf="responseType.invalid">{{ responseType.errors?.serverError }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="footer">
+        <button mat-button
+                type="button"
+                color="warn"
+                class="uppercase"
+                (click)="removeResponseType(i)">
+          Remove Response Type
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 
   <ng-content></ng-content>
 </form>
