@@ -31,18 +31,18 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damClientLink());
 
-        adminListPage.assertListItemExists("DNAstack Front-End");
-        adminListPage.assertListItemDoNotExist("dnstck Front-End Edited");
+        adminListPage.assertListItemExists("edit-me");
+        adminListPage.assertListItemDoNotExist("dnstck edit-me");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("DNAstack Front-End", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("edit-me", "Edit");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
-        adminManagePage.fillField(DdapBy.se("inp-label"), "dnstck Front-End Edited");
+        adminManagePage.fillField(DdapBy.se("inp-label"), "dnstck edit-me");
 
         adminListPage = adminManagePage.updateEntity();
 
-        adminListPage.assertListItemDoNotExist("DNAstack Front-End");
-        adminListPage.assertListItemExists("dnstck Front-End Edited");
+        adminListPage.assertListItemDoNotExist("edit-me");
+        adminListPage.assertListItemExists("dnstck edit-me");
     }
 
     @Test
@@ -50,12 +50,12 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damClientLink());
 
-        adminListPage.assertListItemExists("Test Client");
+        adminListPage.assertListItemExists("delete-me");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Test Client", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("delete-me", "Edit");
 
         adminListPage = adminManagePage.deleteEntity();
 
-        adminListPage.assertListItemDoNotExist("Test Client");
+        adminListPage.assertListItemDoNotExist("delete-me");
     }
 }
