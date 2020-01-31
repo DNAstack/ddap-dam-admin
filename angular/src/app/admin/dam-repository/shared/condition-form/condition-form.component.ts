@@ -1,16 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { EntityModel, isExpanded } from 'ddap-common-lib';
 import _get from 'lodash.get';
+import ConditionPrefix = PassportVisa.ConditionPrefix;
+import IConditionSet = common.IConditionSet;
+import ICondition = common.ICondition;
+import { TagModelClass } from 'ngx-chips/core/accessor';
 
 import { common } from '../../../../shared/proto/dam-service';
 import { PassportVisa } from '../passport-visa/passport-visa.constant';
 
 import { ConditionAutocompleteService } from './condition-autocomplete.service';
 import { ConditionFormBuilder } from './condition-form-builder.service';
-import ConditionPrefix = PassportVisa.ConditionPrefix;
-import IConditionSet = common.IConditionSet;
-import ICondition = common.ICondition;
 
 @Component({
   selector: 'ddap-condition-form',
@@ -131,4 +133,13 @@ export class ConditionFormComponent implements OnInit {
     return this.isSplitPattern(prefix);
   }
 
+  addValue(clauseValue: any | TagModelClass, target: MatButtonToggleGroup, formGroup: AbstractControl) {
+    if (ConditionFormComponent.containsVariable(clauseValue.value)) {
+      formGroup.get('value.prefix').patchValue('split_pattern');
+    }
+  }
+
+  private static containsVariable(value: string) {
+    return value.includes('${');
+  }
 }

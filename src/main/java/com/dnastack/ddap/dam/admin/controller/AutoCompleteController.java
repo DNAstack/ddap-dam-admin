@@ -53,7 +53,7 @@ public class AutoCompleteController {
                 Map<String, Policy> policies = damConfig.getPoliciesMap();
                 for (Map.Entry<String, Policy> policyEntry : policies.entrySet()) {
                     List<Common.Condition> conditions = getAllConditionsFromPolicy(policyEntry.getValue());
-                    result.addAll(getAllContainedValuesFromConditions(conditions, claimName, damConfig, policyEntry.getKey()));
+                    result.addAll(getAllContainedValuesFromConditions(conditions, claimName, damConfig));
                 }
                 return Mono.just(result);
             });
@@ -68,10 +68,9 @@ public class AutoCompleteController {
 
     private List<String> getAllContainedValuesFromConditions(List<Common.Condition> conditions,
                                                              String claimName,
-                                                             DamService.DamConfig damConfig,
-                                                             String policyName) {
+                                                             DamService.DamConfig damConfig) {
         return conditions.stream()
-            .map(condition -> getAllContainedValues(claimName, condition, damConfig, policyName))
+            .map(condition -> getAllContainedValues(claimName, condition, damConfig))
             .flatMap(Collection::stream)
             .map(this::stripPrefix)
             .flatMap(Collection::stream)
@@ -80,31 +79,25 @@ public class AutoCompleteController {
 
     private List<String> getAllContainedValues(String claimName,
                                                Common.Condition condition,
-                                               DamService.DamConfig damConfig,
-                                               String policyName) {
+                                               DamService.DamConfig damConfig) {
         if (Objects.equals(claimName, condition.getType())) {
-            return getParsedVariableValues(condition.getValue(), policyName, damConfig);
+            return getParsedVariableValues(condition.getValue(), damConfig);
         }
 
         return Collections.emptyList();
     }
 
-    private List<String> getParsedVariableValues(String valueOrVariable, String policyName, DamService.DamConfig damConfig) {
-        boolean isVariable = valueOrVariable.startsWith("${") && valueOrVariable.endsWith("}");
+    private List<String> getParsedVariableValues(String valueOrVariable, DamService.DamConfig damConfig) {
+        boolean isVariable = valueOrVariable.contains("${");
         if (isVariable) {
             //variableName is: "${DATASETS}" cleaned up to "DATASETS"
-            String variableName = valueOrVariable.substring(2, valueOrVariable.length() - 1);
+            String variableName = valueOrVariable.substring(valueOrVariable.indexOf("{")+1, valueOrVariable.indexOf("}"));
             return getPoliciesInResourceViews(damConfig)
-                //Filter would match something like: variablePolicy(VAR1=value1,value2;VAR2=value3,value4)
-                .filter(resourcePolicyName -> resourcePolicyName.startsWith(policyName + "(") && resourcePolicyName
-                    .endsWith(")"))
-                .flatMap(policyValueString -> {
-                    List<String> assignmentList = asList(policyValueString.substring(policyName.length() + 1, policyValueString.length() - 1)
-                            .split(";"));
-
-                    return getValuesForVariable(variableName, assignmentList)
-                        .filter(assignmentValue -> !isRegexValue(assignmentValue));
-                }).collect(toList());
+                //replacing variable in values with the actual values
+                .flatMap(policyValueString ->
+                    Stream.of(valueOrVariable.replace("${"+ variableName + "}",
+                            policyValueString.get(variableName))))
+                    .collect(toList());
         } else if (!isRegexValue(valueOrVariable)) {
             return singletonList(valueOrVariable);
         } else {
@@ -112,27 +105,12 @@ public class AutoCompleteController {
         }
     }
 
-    //Gets something like: DATASETS=^https?://dac\.nih\.gov/datasets/phs000710$,https://dac.nih.gov/datasets/phs000711,https://dac.nih.gov/datasets/phs000712
-    //Returns the RHS split by comma something like: ^https?://dac\.nih\.gov/datasets/phs000710$, https://dac.nih.gov/datasets/phs000711, https://dac.nih.gov/datasets/phs000712
-    private Stream<String> getValuesForVariable(String variableName, List<String> assignmentList) {
-        return assignmentList.stream()
-            .filter(assignment -> {
-                String[] assignmentParts = assignment.split("=");
-                return assignmentParts[0].equals(variableName);
-            })
-            .map(variableAssignmentChunk -> {
-                String[] variableAssignment = variableAssignmentChunk.split("=");
-                return variableAssignment[1];
-            })
-            .flatMap(rhsAssignment -> Arrays.stream(rhsAssignment.split(",")));
-    }
-
-    private Stream<String> getPoliciesInResourceViews(DamConfig damConfig) {
+    private Stream<Map<String, String>> getPoliciesInResourceViews(DamConfig damConfig) {
         return damConfig.getResourcesMap().values().stream()
             .flatMap(res -> res.getViewsMap().values().stream())
             .flatMap(view -> view.getAccessRolesMap().values().stream())
             .flatMap(accessRole -> accessRole.getPoliciesList().stream())
-            .map(DamService.AccessRole.AccessPolicy::getName);
+            .map(DamService.AccessRole.AccessPolicy::getVars);
     }
 
     private boolean isRegexValue(String assignmentValue) {
