@@ -147,22 +147,6 @@ public class ConfigE2eTest extends AbstractBaseE2eTest {
     }
 
     @Test
-    public void accessIdpEndpoint() throws IOException {
-        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
-
-        given()
-            .log().method()
-            .log().uri()
-            .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .when()
-            .get("/identity")
-            .then()
-            .log().ifValidationFails()
-            .contentType("application/json")
-            .statusCode(200);
-    }
-
-    @Test
     public void serveAngularRoutes() {
         given()
             .log().method()
