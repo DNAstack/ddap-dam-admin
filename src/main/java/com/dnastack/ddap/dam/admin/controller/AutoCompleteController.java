@@ -96,7 +96,7 @@ public class AutoCompleteController {
                 //replacing variable in values with the actual values
                 .flatMap(policyValueString ->
                     Stream.of(valueOrVariable.replace("${"+ variableName + "}",
-                            policyValueString.get(variableName))))
+                            policyValueString.getOrDefault(variableName, "${" + variableName + "}"))))
                     .collect(toList());
         } else if (!isRegexValue(valueOrVariable)) {
             return singletonList(valueOrVariable);
