@@ -39,8 +39,8 @@
         "label": "IC DDAP"
       },
       "clientId": "$$E2E_BROKER_ID$$",
-      "authUrl": "$$E2E_PASSPORT_ISSUER$$oauth2/auth",
-      "tokenUrl": "$$E2E_PASSPORT_ISSUER$$oauth2/token"
+      "authUrl": "$$E2E_PASSPORT_ISSUER$$/oauth2/auth",
+      "tokenUrl": "$$E2E_PASSPORT_ISSUER$$/oauth2/token"
     }
   },
   "trustedSources": {
