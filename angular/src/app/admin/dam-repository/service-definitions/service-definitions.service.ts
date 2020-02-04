@@ -8,6 +8,8 @@ import { DamConfigEntityType } from '../shared/dam/dam-config-entity-type.enum';
 import { DamConfigService } from '../shared/dam/dam-config.service';
 import { TargetAdapterVariables } from '../target-adapters/target-adapter-variables.model';
 
+import { DamRoleCategories } from './service-definitions.constant';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -23,6 +25,10 @@ export class ServiceDefinitionService extends DamConfigService {
       `${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/dam/service-templates/${serviceTemplateId}/variables`,
       {params}
     );
+  }
+
+  getDamRoleCategories(): string[] {
+    return Object.values(DamRoleCategories);
   }
 
 }
