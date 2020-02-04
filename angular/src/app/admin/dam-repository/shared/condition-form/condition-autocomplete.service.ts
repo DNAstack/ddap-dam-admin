@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import AuthorityLevel = PassportVisa.AuthorityLevel;
@@ -13,12 +13,13 @@ import { PassportVisa } from '../passport-visa/passport-visa.constant';
   providedIn: 'root',
 })
 export class ConditionAutocompleteService {
+  private autocompleteValuesForType = new Subject<any>();
+  fetchAutocompleteValuesForType$ = this.autocompleteValuesForType.asObservable();
 
   constructor(private claimDefinitionsStore: ClaimDefinitionsStore,
               private claimDefService: ClaimDefinitionService,
               private trustedSourcesStore: TrustedSourcesStore) {
   }
-
   getTypeValues(): Observable<string[]> {
     return this.claimDefinitionsStore.getAsList(pick('name'))
       .pipe(
@@ -63,6 +64,10 @@ export class ConditionAutocompleteService {
       .pipe(
         map(makeDistinct)
       );
+  }
+
+  setAutocompleteValuesForType(data) {
+    this.autocompleteValuesForType.next(data);
   }
 
 }
