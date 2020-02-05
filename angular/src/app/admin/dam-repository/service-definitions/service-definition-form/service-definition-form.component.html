@@ -250,9 +250,8 @@
                        secondaryPlaceholder="Add Dam Role Categories"
                        placeholder="+ Dam Role Category"
                        modelAsStrings="true"
-                       [attr.data-se]="'inp-role-' + role.key + '-dam-category'"
-                       [onlyFromAutocomplete]="true">
-              <tag-input-dropdown [showDropdownIfEmpty]="true"
+                       [attr.data-se]="'inp-role-' + role.key + '-dam-category'">
+              <tag-input-dropdown [showDropdownIfEmpty]="showAutocompleteDropdown(role.value.get('damRoleCategories'))"
                                   [autocompleteItems]="serviceDefinitionService.getDamRoleCategories()">
               </tag-input-dropdown>
             </tag-input>

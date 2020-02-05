@@ -110,6 +110,10 @@ export class ServiceDefinitionFormComponent implements OnInit {
     });
   }
 
+  showAutocompleteDropdown({ value }): boolean {
+    return !value || value.length < 1;
+  }
+
   private getInterfacesModel(interfaces: { [ key: string]: string }) {
     const interfacesModel = {};
     if (interfaces) {
