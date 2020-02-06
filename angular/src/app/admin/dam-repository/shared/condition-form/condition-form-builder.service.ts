@@ -11,7 +11,6 @@ import ICondition = common.ConditionSet;
 import IConditionClause = common.Condition;
 
 export abstract class ConditionFormBuilder {
-
   constructor(protected formBuilder: FormBuilder,
               protected autocompleteService: ConditionAutocompleteService) {
   }
@@ -40,7 +39,6 @@ export abstract class ConditionFormBuilder {
       by: this.buildPrefixValuePairForm(_get(clause, 'by')),
       _autocomplete_values_for_type: [],
     });
-
     this.buildAutocompleteForValueField(form);
     if (clause) {
       this.setAutocompleteValuesForType(form, _get(clause, 'type'));
@@ -67,6 +65,7 @@ export abstract class ConditionFormBuilder {
   private setAutocompleteValuesForType(form: FormGroup, type: string) {
     this.autocompleteService.getValuesForType(type)
       .subscribe((values) => {
+        this.autocompleteService.setAutocompleteValuesForType(values);
         form.get('_autocomplete_values_for_type').setValue(values);
       });
   }

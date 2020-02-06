@@ -7,6 +7,7 @@ import ConditionPrefix = PassportVisa.ConditionPrefix;
 import IConditionSet = common.IConditionSet;
 import ICondition = common.ICondition;
 import { TagModelClass } from 'ngx-chips/core/accessor';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { common } from '../../../../shared/proto/dam-service';
 import { PassportVisa } from '../passport-visa/passport-visa.constant';
@@ -21,6 +22,10 @@ import { ConditionFormBuilder } from './condition-form-builder.service';
 })
 export class ConditionFormComponent implements OnInit {
 
+  get conditions() {
+    return this.form.get(this.anyOfFieldName) as FormArray;
+  }
+
   @Input()
   entity: EntityModel;
   @Input()
@@ -33,15 +38,17 @@ export class ConditionFormComponent implements OnInit {
   label?: string;
   @Input()
   showTrustedSources = false;
+  @Input()
+  showVariables = false;
+  @Input()
+  variableDefinitions;
+
 
   isExpanded: Function = isExpanded;
   trustedSources: any;
   trustedSourcesValues: string[];
   prefixes: string[] = Object.values(ConditionPrefix);
-
-  get conditions() {
-    return this.form.get(this.anyOfFieldName) as FormArray;
-  }
+  autocompleteValuesForType: any;
 
   constructor(public autocompleteService: ConditionAutocompleteService) {
   }
@@ -59,7 +66,9 @@ export class ConditionFormComponent implements OnInit {
           this.trustedSourcesValues = sources;
         });
     }
-
+    if (this.showVariables) {
+      this.subscribeToAutocompleteValuesForType();
+    }
   }
 
   getModel(): IConditionSet[] {
@@ -137,6 +146,38 @@ export class ConditionFormComponent implements OnInit {
     if (ConditionFormComponent.containsVariable(clauseValue.value)) {
       formGroup.get('value.prefix').patchValue('split_pattern');
     }
+  }
+
+  onValueChange(val) {
+    this.updateAutocompleteItems(val);
+  }
+
+  updateAutocompleteItems = (text: string): Observable<string[]> => {
+    const items = [];
+    const bSub = new BehaviorSubject<any>([]);
+    if (this.variableNames() && this.variableNames().length > 0 && text.length > 0) {
+      this.variableNames().forEach(variable => {
+        items.push(`${text}\${${variable}}`);
+      });
+      bSub.next(this.autocompleteValuesForType.concat(items));
+    } else {
+      bSub.next(this.autocompleteValuesForType);
+    }
+    return bSub;
+  }
+
+  variableNames() {
+    const {value} = this.variableDefinitions;
+    return Object.entries(value)
+      .map(([_, variableData]) => {
+        return variableData ? variableData['id'] : '';
+    });
+  }
+
+  private subscribeToAutocompleteValuesForType() {
+    this.autocompleteService.fetchAutocompleteValuesForType$.subscribe((values) => {
+      this.autocompleteValuesForType = values;
+    });
   }
 
   private static containsVariable(value: string) {

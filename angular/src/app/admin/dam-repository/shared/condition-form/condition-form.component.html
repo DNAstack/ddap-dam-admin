@@ -172,19 +172,38 @@
                     </mat-button-toggle-group>
                     <div class="col">
                       <ng-container *ngIf="clause.get('value.prefix').value as prefix">
-                        <tag-input *ngIf="clause.get('_autocomplete_values_for_type').value as autocompleteValues"
-                                   formControlName="value"
-                                   theme="minimal"
-                                   maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
-                                   secondaryPlaceholder="Add Value"
-                                   placeholder="+ Value"
-                                   (onAdd)="addValue($event, valuePrefixGroup, clause)"
-                                   [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
-                                   modelAsStrings="true">
-                          <tag-input-dropdown [showDropdownIfEmpty]="showAutocompleteDropdown(prefix, clause.get('value.value'))"
-                                              [autocompleteItems]="autocompleteValues">
-                          </tag-input-dropdown>
-                        </tag-input>
+                        <ng-container *ngIf="!showVariables">
+                          <tag-input *ngIf="clause.get('_autocomplete_values_for_type').value as autocompleteValues"
+                                     formControlName="value"
+                                     theme="minimal"
+                                     maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
+                                     secondaryPlaceholder="Add Value"
+                                     placeholder="+ Value"
+                                     (onAdd)="addValue($event, valuePrefixGroup, clause)"
+                                     [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
+                                     modelAsStrings="true">
+                            <tag-input-dropdown
+                              [showDropdownIfEmpty]="showAutocompleteDropdown(prefix, clause.get('value.value'))"
+                              [autocompleteItems]="autocompleteValues">
+                            </tag-input-dropdown>
+                          </tag-input>
+                        </ng-container>
+                        <ng-container *ngIf="showVariables">
+                          <tag-input *ngIf="clause.get('_autocomplete_values_for_type').value as autocompleteValues"
+                                     formControlName="value"
+                                     theme="minimal"
+                                     maxItems="{{ prefix === 'split_pattern' ? 100 : 1 }}"
+                                     secondaryPlaceholder="Add Value"
+                                     placeholder="+ Value"
+                                     (onAdd)="addValue($event, valuePrefixGroup, clause)"
+                                     (onTextChange)="onValueChange($event)"
+                                     [attr.data-se]="'inp-condition-' + clauseIndex + '-value-value'"
+                                     modelAsStrings="true">
+                            <tag-input-dropdown
+                              [autocompleteObservable]="updateAutocompleteItems">
+                            </tag-input-dropdown>
+                          </tag-input>
+                        </ng-container>
                       </ng-container>
                       <div *ngIf="clause.get('value') as control"
                            class="field-error">
