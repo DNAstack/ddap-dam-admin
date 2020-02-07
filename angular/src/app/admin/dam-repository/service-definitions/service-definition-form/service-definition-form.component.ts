@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { alignControlsWithModelDefinitions, EntityModel, isExpanded, removeInternalFields } from 'ddap-common-lib';
 import { dam } from 'src/app/shared/proto/dam-service';
 
 import { TargetAdaptersService } from '../../target-adapters/target-adapters.service';
 import { ServiceDefinitionService } from '../service-definitions.service';
+import { VariablesDialogComponent } from '../variables-dialog/variables-dialog.component';
 
 import { ServiceDefinitionFormBuilder } from './service-definition-form-builder.service';
 import ServiceTemplate = dam.v1.ServiceTemplate;
@@ -32,6 +34,10 @@ export class ServiceDefinitionFormComponent implements OnInit {
            : null;
   }
 
+  get itemFormat() {
+    return this.form.get('itemFormat') as FormControl;
+  }
+
   @Input()
   serviceTemplate?: EntityModel = new EntityModel( '' , ServiceTemplate.create());
 
@@ -41,8 +47,10 @@ export class ServiceDefinitionFormComponent implements OnInit {
   roleCounter = 1;
   targetAdapters: ITargetAdapter[];
   requirements: object;
+  variables: string[] = [];
 
   constructor(private formBuilder: FormBuilder,
+              public dialog: MatDialog,
               private serviceDefinitionFormBuilder: ServiceDefinitionFormBuilder,
               private serviceDefinitionService: ServiceDefinitionService,
               private targetAdaptersService: TargetAdaptersService) {
@@ -112,6 +120,26 @@ export class ServiceDefinitionFormComponent implements OnInit {
 
   showAutocompleteDropdown({ value }): boolean {
     return !value || value.length < 1;
+  }
+
+  itemFormatChange() {
+    const variables = this.selectedTargetAdapter['itemFormats'][this.itemFormat.value]['variables'];
+    if (variables) {
+      this.variables = Object.keys(variables);
+    }
+  }
+
+  showVariables(interfaceKey) {
+    this.dialog.open(VariablesDialogComponent, {
+      data: {variables: this.variables, updateVariable: this.updateVariable, interfaceKey},
+    });
+  }
+
+  updateVariable = (selectedVariable, interfaceKey) => {
+    if (this.form.get(`interfaces.${interfaceKey}`)) {
+      const interfaceValue = this.form.get(`interfaces.${interfaceKey}.value`).value || '';
+      this.form.get(`interfaces.${interfaceKey}.value`).patchValue(interfaceValue + '${' + selectedVariable + '}');
+    }
   }
 
   private getInterfacesModel(interfaces: { [ key: string]: string }) {

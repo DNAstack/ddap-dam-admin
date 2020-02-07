@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Choose variables</h2>
+
+<mat-dialog-content>
+  <p>Please choose a variable from the following options for the selected item format</p>
+  <p><i>${{'{'}}variable_name} will be inserted to your interface value</i></p>
+  <mat-radio-group *ngIf="data['variables'].length > 0"
+                   class="variables-group"
+                   [(ngModel)]="selectedVariable">
+    <mat-radio-button *ngFor="let variable of data['variables']" [value]="variable">{{variable}}</mat-radio-button>
+  </mat-radio-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button
+          mat-dialog-close
+          class="uppercase"
+          data-se="cancel-btn">
+    Cancel
+  </button>
+  <button mat-button
+          [mat-dialog-close]="true"
+          color="warn"
+          class="uppercase"
+          data-se="accept-btn">
+    select
+  </button>
+</mat-dialog-actions>

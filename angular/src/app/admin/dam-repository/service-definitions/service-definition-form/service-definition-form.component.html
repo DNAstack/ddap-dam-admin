@@ -50,6 +50,7 @@
   <mat-form-field *ngIf="selectedTargetAdapter">
     <mat-label>Item Format</mat-label>
     <mat-select formControlName="itemFormat"
+                (selectionChange)="itemFormatChange()"
                 data-se="inp-item-format"
                 required>
       <mat-option *ngFor="let itemFormat of selectedTargetAdapter.itemFormats | keyvalue"
@@ -119,6 +120,10 @@
                    formControlName="value"
                    placeholder="Interface Value"
                    [attr.data-se]="'inp-interface-' + interfaceObj.key + '-value'"/>
+            <mat-hint *ngIf="itemFormat.value">
+              click here to view available variables ->
+              <mat-icon class="icon icon-clients" (click)="showVariables(interfaceObj.key)"></mat-icon>
+            </mat-hint>
           </mat-form-field>
         </div>
       </ng-container>
