@@ -6,7 +6,8 @@ import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.Assume;
 import org.junit.Test;
 
-import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static com.dnastack.ddap.common.fragments.NavBar.damClientLink;
 
@@ -41,8 +42,11 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
 
     @Test
     public void editClientApplication() {
-        // DAM functionality for PUT is broken, ignoring until sorted out
-        Assume.assumeTrue(Instant.now().isAfter(Instant.ofEpochSecond(1581125077))); // Feb 7, 2020
+        // FIXME: DAM functionality for PUT is broken, ignoring until sorted out
+        Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
+            2020, 2, 29, 12, 0, 0,0,
+            ZoneId.of("America/Toronto"))
+        ));
 
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damClientLink());

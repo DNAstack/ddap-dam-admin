@@ -11,7 +11,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static java.lang.String.format;
@@ -35,11 +36,13 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
 
     @Test
     public void testScopes() throws Exception {
-        // FIXME disabled until after hydra update
-        Assume.assumeTrue(Instant.now().isAfter(Instant.ofEpochSecond(1581125077))); // Feb 7, 2020
+        // FIXME: questionable if necessary at all. Currently userinfo returns only: `sub` and `sid`
+        Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
+            2020, 2, 29, 12, 0, 0,0,
+            ZoneId.of("America/Toronto"))
+        ));
         String requestedScope = "link";
         Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
-        String icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "openid");
         String damToken = fetchRealPersonaDamToken(TestingPersona.USER_WITH_ACCESS, REALM);
         String refreshToken = fetchRealPersonaRefreshToken(TestingPersona.USER_WITH_ACCESS, REALM);
 
@@ -49,7 +52,6 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
                 .log().cookies()
                 .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-                .cookie("ic_access", icToken)
                 .cookie("dam_access", damToken)
                 .cookie("dam_refresh", refreshToken)
                 .redirects().follow(false)
@@ -64,7 +66,6 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
                 .body("scopes", not(contains("link")));
         // @formatter:on
 
-        icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "openid", requestedScope);
         damToken = fetchRealPersonaDamToken(TestingPersona.USER_WITH_ACCESS, REALM, "openid", requestedScope);
 
         // @formatter:off
@@ -73,7 +74,6 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
                 .log().cookies()
                 .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-                .cookie("ic_access", icToken)
                 .cookie("dam_access", damToken)
                 .cookie("dam_refresh", refreshToken)
                 .redirects().follow(false)

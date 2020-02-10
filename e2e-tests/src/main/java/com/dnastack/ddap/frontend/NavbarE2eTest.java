@@ -13,7 +13,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
 import static com.dnastack.ddap.common.TestingPersona.USER_WITHOUT_ACCESS;
@@ -67,7 +68,11 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
 
     @Test
     public void testProfileNameAndDescriptionLinkNavigation() {
-        Assume.assumeTrue(Instant.now().isAfter(Instant.ofEpochSecond(1581125077))); // Feb 7, 2020
+        // FIXME: Skipping until SCIM endpoints implemented for DAM
+        Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
+            2020, 2, 29, 12, 0, 0,0,
+            ZoneId.of("America/Toronto"))
+        ));
         ddapPage = doBrowserLogin(REALM, ADMINISTRATOR, AdminDdapPage::new);
 
         // check profile name
