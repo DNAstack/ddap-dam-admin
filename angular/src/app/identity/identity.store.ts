@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { EntityModel, Store } from 'ddap-common-lib';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Store } from 'ddap-common-lib';
+import { Observable } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
-import { Account } from './account.model';
+import { common } from '../shared/proto/ic-service';
+
 import { Identity } from './identity.model';
 import { IdentityService } from './identity.service';
+import ConnectedAccount = common.ConnectedAccount;
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +24,14 @@ export class IdentityStore extends Store<Identity> {
       .pipe(
         pluck('account'),
         map((account: any) => {
-          const username = account.profile.username;
-          const primaryAccount = account.connectedAccounts.find((connectedAccount: Account) => {
-            return connectedAccount.profile.username === username;
-          });
-          return primaryAccount.loginHint;
+          if ('connectedAccounts' in account) {
+            const primaryAccount: any = account.connectedAccounts.find((connectedAccount: ConnectedAccount) => {
+              return connectedAccount.primary;
+            });
+            // If no account is marked primary select first one
+            return primaryAccount ? primaryAccount.loginHint : account.connectedAccounts[0]['loginHint'];
+          }
+          // If there is no connected account we can't select loginHint
         })
       );
   }
