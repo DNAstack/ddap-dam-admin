@@ -120,10 +120,15 @@
                    formControlName="value"
                    placeholder="Interface Value"
                    [attr.data-se]="'inp-interface-' + interfaceObj.key + '-value'"/>
-            <mat-hint *ngIf="itemFormat.value">
-              click here to view available variables ->
-              <mat-icon class="icon icon-clients" (click)="showVariables(interfaceObj.key)"></mat-icon>
-            </mat-hint>
+            <button *ngIf="itemFormat.value"
+                    mat-button
+                    matSuffix
+                    color="primary"
+                    type="button"
+                    class="uppercase add-variable"
+                    (click)="showVariables(interfaceObj.key)">
+              INSERT VARIABLE
+            </button>
           </mat-form-field>
         </div>
       </ng-container>
