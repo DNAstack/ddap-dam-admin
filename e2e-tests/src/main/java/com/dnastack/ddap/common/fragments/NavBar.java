@@ -142,9 +142,9 @@ public class NavBar {
         return realmInput.getAttribute("value");
     }
 
-    public ICLoginPage logOut() {
+    public AnyDdapPage logOut() {
         driver.findElement(DdapBy.se("nav-logout")).click();
-        return new ICLoginPage(driver);
+        return new AnyDdapPage(driver);
     }
 
 }

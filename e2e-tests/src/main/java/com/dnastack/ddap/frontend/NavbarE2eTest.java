@@ -3,7 +3,7 @@ package com.dnastack.ddap.frontend;
 import com.dnastack.ddap.common.TestingPersona;
 import com.dnastack.ddap.common.page.AdminDdapPage;
 import com.dnastack.ddap.common.page.AdminListPage;
-import com.dnastack.ddap.common.page.ICLoginPage;
+import com.dnastack.ddap.common.page.AnyDdapPage;
 import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -49,24 +49,20 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
 
     @Test
     public void logoutShouldGoToIcLoginForCurrentRealmAndRemoveCookies() {
-        // Disable until we sort out cookie names after hydra update
-        Assume.assumeTrue(Instant.now().isAfter(Instant.ofEpochSecond(1581125077))); // Feb 7, 2020
         ddapPage = doBrowserLogin(REALM, ADMINISTRATOR, AdminDdapPage::new);
 
         // check if cookies are present on landing page
-        assertThat(driver.manage().getCookieNamed("ic_identity"), notNullValue());
-        assertThat(driver.manage().getCookieNamed("ic_access"), notNullValue());
-        assertThat(driver.manage().getCookieNamed("ic_refresh"), notNullValue());
+        assertThat(driver.manage().getCookieNamed("dam_identity"), notNullValue());
+        assertThat(driver.manage().getCookieNamed("dam_access"), notNullValue());
+        assertThat(driver.manage().getCookieNamed("dam_refresh"), notNullValue());
 
-        ICLoginPage icLoginPage = ddapPage.getNavBar().logOut();
+        AnyDdapPage landingPage = ddapPage.getNavBar().logOut();
         ddapPage.waitForInflightRequests();
-        assertThat(icLoginPage.getRealm(), is(REALM));
 
         // check if cookies are not present on landing page without logging in
-        driver.get(getUrlWithBasicCredentials(DDAP_BASE_URL));
-        assertThat(driver.manage().getCookieNamed("ic_identity"), nullValue());
-        assertThat(driver.manage().getCookieNamed("ic_access"), nullValue());
-        assertThat(driver.manage().getCookieNamed("ic_refresh"), nullValue());
+        assertThat(driver.manage().getCookieNamed("dam_identity"), nullValue());
+        assertThat(driver.manage().getCookieNamed("dam_access"), nullValue());
+        assertThat(driver.manage().getCookieNamed("dam_refresh"), nullValue());
     }
 
     @Test

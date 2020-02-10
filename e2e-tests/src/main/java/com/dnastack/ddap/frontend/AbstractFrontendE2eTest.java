@@ -19,16 +19,11 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static java.lang.String.format;
 
 @Slf4j
 public abstract class AbstractFrontendE2eTest extends AbstractBaseE2eTest {
 
     protected static final boolean HEADLESS = Boolean.parseBoolean(optionalEnv("HEADLESS", "true"));
-    protected static final Pattern URL_PARSE_PATTERN = Pattern.compile("^(https?)://(.*)$");
     protected static WebDriver driver;
     protected static AnyDdapPage ddapPage;
 
@@ -78,18 +73,6 @@ public abstract class AbstractFrontendE2eTest extends AbstractBaseE2eTest {
     public void afterEach() {
         String testName = this.getClass().getSimpleName() + "." + name.getMethodName() + ".png";
         ScreenshotUtil.capture(testName, driver);
-    }
-
-    protected static String getUrlWithBasicCredentials(String original) {
-        final Matcher matcher = URL_PARSE_PATTERN.matcher(original);
-        if(DDAP_USERNAME == null && DDAP_PASSWORD == null){
-            return original;
-        }
-        if (matcher.find()) {
-            return format("%s://%s:%s@%s", matcher.group(1), DDAP_USERNAME, DDAP_PASSWORD, matcher.group(2));
-        } else {
-            throw new IllegalArgumentException("Could not parse url: " + original);
-        }
     }
 
 }
