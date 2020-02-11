@@ -1,0 +1,10 @@
+<ddaplib-header icon="clients" label="Tokens"></ddaplib-header>
+
+<ddaplib-main>
+  <ng-template [ngIf]="tokens && tokens.length > 0" [ngIfElse]="emptyTokens">
+
+  </ng-template>
+  <ng-template #emptyTokens>
+    <p>No Tokens available to display at the moment. Please try again later. </p>
+  </ng-template>
+</ddaplib-main>

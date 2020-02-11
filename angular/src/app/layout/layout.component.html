@@ -129,6 +129,12 @@
               <mat-icon class="icon icon-identities"></mat-icon>
               <h4 mat-line>Whitelists</h4>
             </mat-list-item>
+            <mat-list-item [routerLink]="['admin', 'dam', 'tokens']"
+              [routerLinkActive]="['active-nav-link']"
+              data-se="nav-tokens">
+              <mat-icon class="icon icon-clients"></mat-icon>
+              <h4 mat-line>Tokens</h4>
+            </mat-list-item>
           </mat-nav-list>
         </mat-expansion-panel>
       </mat-accordion>

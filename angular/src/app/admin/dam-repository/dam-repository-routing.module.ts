@@ -55,6 +55,11 @@ export const routes: Routes = [
         loadChildren: () => import('./whitelists/whitelists.module')
           .then(mod => mod.WhitelistsModule),
       },
+      {
+        path: 'tokens',
+        loadChildren: () => import('./tokens/tokens.module')
+          .then(mod => mod.TokensModule),
+      },
     ],
   },
 ];
