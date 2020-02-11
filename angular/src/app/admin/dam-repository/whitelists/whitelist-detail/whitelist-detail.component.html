@@ -1,0 +1,12 @@
+<ng-container *ngIf="whitelist$ | async as whitelist">
+  <ddaplib-header [backLink]="['..']" [label]="whitelist.name">
+  </ddaplib-header>
+</ng-container>
+
+<ddaplib-main>
+  <ng-container *ngIf="whitelist$ | async as whitelist">
+    <ddap-whitelist-form [whitelist]="whitelist"
+                         [editable]="false">
+    </ddap-whitelist-form>
+  </ng-container>
+</ddaplib-main>

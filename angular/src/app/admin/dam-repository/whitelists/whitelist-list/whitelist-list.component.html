@@ -1,0 +1,42 @@
+<ddaplib-header icon="identities" label="Whitelists">
+  <ddaplib-header-add-btn [navigateTo]="['manage', 'add']"
+                          [label]="'add whitelist'">
+  </ddaplib-header-add-btn>
+</ddaplib-header>
+
+<ddaplib-main>
+  <ddaplib-entity-description>
+    Explicitly allow users on whitelists to access resources.
+  </ddaplib-entity-description>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let entity of whitelists$ | async">
+      <mat-expansion-panel-header collapsedHeight="5rem"
+                                  expandedHeight="5rem">
+        <mat-panel-title>
+          {{ entity.name }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-list dense>
+        <mat-list-item *ngFor="let user of entity.users">
+          {{ user.email }}
+        </mat-list-item>
+      </mat-list>
+
+      <mat-action-row>
+        <button mat-button
+                color="warn"
+                class="uppercase"
+                (click)="deleteWhitelist(entity.name)">
+          Delete
+        </button>
+        <button mat-button
+                [routerLink]="[entity.name]"
+                color="primary"
+                class="uppercase">
+          View
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+</ddaplib-main>

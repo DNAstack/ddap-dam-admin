@@ -123,6 +123,12 @@
               <mat-icon class="icon icon-settings"></mat-icon>
               <h4 mat-line>Options</h4>
             </mat-list-item>
+            <mat-list-item [routerLink]="['admin', 'dam', 'whitelists']"
+                           [routerLinkActive]="['active-nav-link']"
+                           data-se="nav-whitelists">
+              <mat-icon class="icon icon-identities"></mat-icon>
+              <h4 mat-line>Whitelists</h4>
+            </mat-list-item>
           </mat-nav-list>
         </mat-expansion-panel>
       </mat-accordion>

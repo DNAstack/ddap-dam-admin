@@ -1,0 +1,21 @@
+<ddaplib-header [backLink]="['../..']" label="Add Whitelist">
+</ddaplib-header>
+
+<ddaplib-main>
+  <ddap-whitelist-form #whitelistForm>
+  </ddap-whitelist-form>
+</ddaplib-main>
+
+<div class="ddap-form-toolbar">
+  <ddaplib-form-footer-error [showError]="!isFormValid && isFormValidated"
+                          [message]="formErrorMessage">
+  </ddaplib-form-footer-error>
+  <button mat-flat-button
+          (click)="save()"
+          data-se="btn-save"
+          type="submit"
+          color="primary"
+          class="uppercase">
+    Add Whitelist
+  </button>
+</div>

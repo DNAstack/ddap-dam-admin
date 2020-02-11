@@ -1,0 +1,75 @@
+<form class="ddap-form"
+      novalidate
+      [formGroup]="form">
+  <div class="row">
+    <mat-form-field class="col">
+      <input matInput
+             placeholder="Name"
+             formControlName="name"
+             data-se="inp-name"
+             [readonly]="whitelist?.name.length > 0"
+             required>
+      <mat-error *ngIf="form.get('name').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
+    </mat-form-field>
+  </div>
+
+  <h3>
+    <span>Users</span>
+    <div *ngIf="editable">
+      <button mat-button
+              color="primary"
+              class="uppercase"
+              type="button"
+              data-se="btn-add-user"
+              (click)="addUser()">
+        Add User
+      </button>
+    </div>
+  </h3>
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="users">
+    <mat-expansion-panel #userExpansionPanel
+                         *ngFor="let user of users.controls; let i=index"
+                         [expanded]="isExpanded(user, userExpansionPanel)"
+                         [attr.data-se]="'user-' + i">
+      <mat-expansion-panel-header collapsedHeight="5rem"
+                                  expandedHeight="5rem">
+        <ng-container *ngIf="user">
+          <mat-panel-title>
+            <span>{{ user.get('email').value || 'User' }}</span>
+          </mat-panel-title>
+          <div class="invalid-warning" *ngIf="user.invalid">
+            <mat-icon class="icon icon-warning"
+                      matTooltip="User is invalid">
+            </mat-icon>
+          </div>
+        </ng-container>
+      </mat-expansion-panel-header>
+      <ng-container [formGroupName]="i">
+        <div class="row">
+          <mat-form-field class="col">
+            <input matInput
+                   formControlName="email"
+                   placeholder="Email"
+                   data-se="inp-email"
+                   [readonly]="!editable"
+                   required>
+          </mat-form-field>
+        </div>
+      </ng-container>
+
+      <div *ngIf="editable"
+           class="footer">
+        <button mat-button
+                type="button"
+                color="warn"
+                class="uppercase"
+                (click)="removeUser(i)">
+          Remove User
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <ng-content></ng-content>
+</form>
