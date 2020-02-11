@@ -70,3 +70,11 @@ mat-expansion-panel {
     }
   }
 }
+.variable-tag-input-container {
+  tag-input {
+    padding-bottom: 0;
+  }
+  mat-hint {
+    font-size: 75%;
+  }
+}

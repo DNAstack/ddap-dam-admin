@@ -141,7 +141,7 @@
               formArrayName="variables">
             <ng-container [formGroupName]="i">
               <div class="line"></div>
-              <mat-form-field class="col">
+              <mat-form-field class="col" *ngIf="variable.get('type').value !== 'split_pattern'">
                 <input matInput
                        [attr.data-se]="'inp-view-target-adapter-variable-' + variable.get('name').value"
                        [placeholder]="variable.get('label').value"
@@ -152,6 +152,19 @@
                   {{ variable.get('label').value }} must follow regex pattern {{ variable.get('regexp').value }}
                 </mat-error>
               </mat-form-field>
+              <div class="col variable-tag-input-container" *ngIf="variable.get('type').value === 'split_pattern'">
+                <tag-input [secondaryPlaceholder]="variable.get('label').value"
+                           [placeholder]="'+' + variable.get('label').value"
+                           editable="true"
+                           formControlName="value"
+                           inputClass="variable-tag-input"
+                           [attr.data-se]="'inp-view-target-adapter-variable-' + variable.get('name').value"
+                           modelAsStrings="true"></tag-input>
+                <mat-hint>{{ variable.get('description').value }}</mat-hint>
+                <mat-error *ngIf="variable.get('value').invalid">
+                  {{ variable.get('label').value }} must follow regex pattern {{ variable.get('regexp').value }}
+                </mat-error>
+              </div>
             </ng-container>
           </li>
         </ul>

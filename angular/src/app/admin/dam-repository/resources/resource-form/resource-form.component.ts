@@ -127,6 +127,9 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
     // Don't send optional variables to the server
       .filter((variable) => variable.value !== '')
       .map((variable) => {
+        if (Array.isArray(variable.value )) {
+          variable.value = variable.value.join(';');
+        }
         return {
           [variable.name]: variable.value,
         };

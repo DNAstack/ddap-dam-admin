@@ -119,14 +119,15 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     this.getVariablesBySelectedTemplate().subscribe((vars) => {
       const varArray: FormArray = this.formBuilder.array([]);
       Object.entries(vars).forEach(([key, value]: any) => {
-        const { ui, regexp, optional } = value;
+        const { ui, regexp, optional, type } = value;
         varArray.push(this.formBuilder.group({
           name: [key],
           label: [ui.label],
           description: [ui.description],
           optional: [optional],
           regexp: [regexp],
-          value: [this.getValueForVariable(key), regexp && !optional ? [Validators.pattern(regexp)] : []],
+          type: [type],
+          value: [this.getValueForVariable(key, type), regexp && !optional ? [Validators.pattern(regexp)] : []],
         }));
       });
 
@@ -160,8 +161,12 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     return _get(this.view, `dto.roles[${roleId}].policies`, []);
   }
 
-  private getValueForVariable(variableId: string): string {
-    return _get(this.view, `dto.items[0].vars[${variableId}]`, '');
+  private getValueForVariable(variableId: string, variableType: string): string | string[] {
+    let variableValue = _get(this.view, `dto.items[0].vars[${variableId}]`, '');
+    if (variableType === 'split_pattern' && variableValue.length > 0) {
+      variableValue = variableValue.split(';');
+    }
+    return variableValue;
   }
 
   private equalToSelectedTemplateName = (template) => template.name === this.viewForm.get('serviceTemplate').value;
