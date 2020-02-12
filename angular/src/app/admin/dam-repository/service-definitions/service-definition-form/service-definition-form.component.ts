@@ -124,6 +124,9 @@ export class ServiceDefinitionFormComponent implements OnInit {
   }
 
   itemFormatChange() {
+    if (!this.selectedTargetAdapter) {
+      return;
+    }
     const variables = this.selectedTargetAdapter['itemFormats'][this.itemFormat.value]['variables'];
     if (variables) {
       this.variables = Object.keys(variables);

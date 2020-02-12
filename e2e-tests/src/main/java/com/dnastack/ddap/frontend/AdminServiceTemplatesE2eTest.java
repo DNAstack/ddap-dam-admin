@@ -30,7 +30,9 @@ public class AdminServiceTemplatesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.enterButton(DdapBy.se("btn-add-interface"));
         adminManagePage.clearField(DdapBy.se("inp-interface-UNDEFINED_INTERFACE_1-name"));
         adminManagePage.fillField(DdapBy.se("inp-interface-UNDEFINED_INTERFACE_1-name"), "http:beacon");
-        adminManagePage.fillField(DdapBy.se("inp-interface-UNDEFINED_INTERFACE_1-value"), "${url}");
+        adminManagePage.enterButton(DdapBy.se("inp-interface-UNDEFINED_INTERFACE_1-insert-variable"));
+        adminManagePage.clickCheckbox(DdapBy.se("var-url"));
+        adminManagePage.enterButton(DdapBy.se("select-variable-btn"));
 
         // Add role
         adminManagePage.enterButton(DdapBy.se("btn-add-role"));

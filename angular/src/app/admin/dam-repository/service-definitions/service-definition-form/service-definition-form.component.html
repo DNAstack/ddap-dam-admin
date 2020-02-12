@@ -126,6 +126,7 @@
                     color="primary"
                     type="button"
                     class="uppercase add-variable"
+                    [attr.data-se]="'inp-interface-' + interfaceObj.key + '-insert-variable'"
                     (click)="showVariables(interfaceObj.key)">
               INSERT VARIABLE
             </button>

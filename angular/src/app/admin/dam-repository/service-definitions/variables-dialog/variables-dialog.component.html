@@ -6,7 +6,9 @@
   <mat-radio-group *ngIf="data['variables'].length > 0"
                    class="variables-group"
                    [(ngModel)]="selectedVariable">
-    <mat-radio-button *ngFor="let variable of data['variables']" [value]="variable">{{variable}}</mat-radio-button>
+    <mat-radio-button *ngFor="let variable of data['variables']"
+                      [value]="variable"
+                      [attr.data-se]="'var-' + variable">{{variable}}</mat-radio-button>
   </mat-radio-group>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
@@ -20,7 +22,7 @@
           [mat-dialog-close]="true"
           color="warn"
           class="uppercase"
-          data-se="accept-btn">
+          data-se="select-variable-btn">
     select
   </button>
 </mat-dialog-actions>
