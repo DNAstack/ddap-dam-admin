@@ -61,6 +61,7 @@ export class ServiceDefinitionFormComponent implements OnInit {
       .subscribe((targetAdapters: ITargetAdapter[]) => {
         this.targetAdapters = targetAdapters;
         this.targetAdapterChange();
+        this.itemFormatChange();
       });
 
     this.form = this.serviceDefinitionFormBuilder.buildForm(this.serviceTemplate);
