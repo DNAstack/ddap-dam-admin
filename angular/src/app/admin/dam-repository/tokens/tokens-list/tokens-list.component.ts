@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import _get from 'lodash.get';
 import _pick from 'lodash.pick';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { TokensService } from '../tokens.service';
 
@@ -11,17 +13,18 @@ import { TokensService } from '../tokens.service';
 })
 export class TokensListComponent implements OnInit {
 
-  tokens: any[];
+  tokens$: Observable<any[]>;
+  private readonly refreshTokens$ = new BehaviorSubject(undefined);
   constructor(private tokensService: TokensService) { }
 
   ngOnInit() {
-    this.tokensService.getTokens().subscribe(({tokens}) => {
-      this.tokens = tokens;
-    });
+    this.tokens$ = this.refreshTokens$.pipe(
+      switchMap(() => this.tokensService.getTokens())
+    );
   }
 
   revokeToken(token: any) {
-    this.tokensService.revokeToken(token.name).subscribe();
+    this.tokensService.revokeToken(token.name).subscribe(() => this.refreshTokens$.next(undefined));
   }
 
   getClientData(token: any) {

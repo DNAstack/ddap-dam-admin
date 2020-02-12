@@ -1,8 +1,8 @@
 <ddaplib-header icon="clients" label="Tokens"></ddaplib-header>
 
 <ddaplib-main>
-  <ng-template [ngIf]="tokens && tokens.length > 0" [ngIfElse]="emptyTokens">
-    <mat-expansion-panel *ngFor="let token of tokens">
+  <ng-container *ngIf="(tokens$ | async) as tokensData">
+    <mat-expansion-panel *ngFor="let token of tokensData['tokens']">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
         <mat-panel-title>{{ token.name }}</mat-panel-title>
@@ -27,8 +27,5 @@
         </button>
       </mat-action-row>
     </mat-expansion-panel>
-  </ng-template>
-  <ng-template #emptyTokens>
-    <p>No active tokens available to display at the moment. Please try again later. </p>
-  </ng-template>
+  </ng-container>
 </ddaplib-main>
