@@ -1,0 +1,11 @@
+@import '~ddap-common-lib/styles/modules/colors';
+
+.fg-1 {
+  flex: 1;
+  padding: 0.5rem;
+  border-right: 1px solid $color-faded-grey;
+}
+.fg-2 {
+  flex: 2;
+  padding: 0.5rem;
+}

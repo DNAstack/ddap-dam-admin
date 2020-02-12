@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import _get from 'lodash.get';
+import _pick from 'lodash.pick';
 
 import { TokensService } from '../tokens.service';
 
@@ -13,13 +15,20 @@ export class TokensListComponent implements OnInit {
   constructor(private tokensService: TokensService) { }
 
   ngOnInit() {
-    this.tokensService.getTokens().subscribe(tokens => {
+    this.tokensService.getTokens().subscribe(({tokens}) => {
       this.tokens = tokens;
     });
   }
 
-  revokeToken(tokenId: string) {
-    this.tokensService.revokeToken(tokenId).subscribe();
+  revokeToken(token: any) {
+    this.tokensService.revokeToken(token.name).subscribe();
   }
 
+  getClientData(token: any) {
+    return _get(token, 'client');
+  }
+
+  getTokenData(token: any) {
+    return _pick(token, ['aud', 'exp', 'iat', 'scope', 'target']);
+  }
 }
