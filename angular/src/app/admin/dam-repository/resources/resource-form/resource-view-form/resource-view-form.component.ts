@@ -141,7 +141,7 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     return this.serviceDefinitionService.getTargetAdapterVariables(serviceTemplateId);
   }
 
-  policyAdd($event, roleId) {
+  policyAdd($event, roleId, tagInput) {
     const { name } = $event;
     const variables = this.policiesDetail[name];
     const policyVarsForm = this.policyVarsForm();
@@ -149,12 +149,16 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
       policyVarsForm.varsFormGroup = this.createPolicyVariablesForm(variables, this.getPolicyDetails(name, roleId));
       const dialogRef = this.dialog.open(PolicyVariableDialogComponent, {
         width: '30rem',
+        restoreFocus: false,
         data: {
           onClick: () => this.addPolicyVariables(policyVarsForm, name, roleId, dialogRef),
           variables,
           varsFormGroup : policyVarsForm.varsFormGroup,
+          tagInput: tagInput,
         },
       });
+
+      dialogRef.afterClosed().subscribe(() => tagInput.selectedTag = undefined);
     }
   }
 

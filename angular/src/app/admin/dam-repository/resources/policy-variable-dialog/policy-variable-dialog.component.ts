@@ -21,7 +21,9 @@ export class PolicyVariableDialogComponent implements OnInit {
   }
 
   onSave(): void {
-    this.data.onClick();
+    if (this.data['varsFormGroup'].valid) {
+      this.data.onClick();
+    }
   }
 
 }

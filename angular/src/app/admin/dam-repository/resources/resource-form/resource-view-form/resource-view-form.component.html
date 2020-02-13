@@ -217,12 +217,13 @@
                 <div class="col"
                      [formGroupName]="role.key">
                   <tag-input formControlName="policies"
+                             #policiesInput
                              [attr.data-se]="'view-role-policies-' + role.key"
                              secondaryPlaceholder="Add Policy"
                              placeholder="+ Policy"
                              editable="true"
-                             (onSelect)="policyAdd($event, role.key, policies)"
-                             (onAdd)="policyAdd($event, role.key)"
+                             (onSelect)="policyAdd($event, role.key, policiesInput)"
+                             (onAdd)="policyAdd($event, role.key, policiesInput)"
                              [identifyBy]="'name'"
                              [displayBy]="'name'">
                     <tag-input-dropdown [autocompleteItems]="policies"></tag-input-dropdown>
