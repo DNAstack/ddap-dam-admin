@@ -48,6 +48,7 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   templatesSubscription: Subscription;
   policyValues$: Observable<string[]>;
   policiesDetail: object = {};
+  showVariableHint = false;
 
   constructor(private formBuilder: FormBuilder,
               private resourceFormBuilder: ResourceFormBuilder,

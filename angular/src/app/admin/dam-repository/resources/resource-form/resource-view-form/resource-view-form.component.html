@@ -214,7 +214,7 @@
             <div class="row"
                  formGroupName="roles">
               <ng-container *ngIf="policyValues$ | async as policies">
-                <div class="col"
+                <div class="col policy-tag-input"
                      [formGroupName]="role.key">
                   <tag-input formControlName="policies"
                              #policiesInput
@@ -226,11 +226,20 @@
                              (onAdd)="policyAdd($event, role.key, policiesInput)"
                              [identifyBy]="'name'"
                              [displayBy]="'name'">
+                    <ng-template let-selected="item" let-index="index">
+                      <div class="policy-tag-wrapper" [class.variables]="policiesDetail[selected.name]">
+                        {{selected.name}}
+                        <mat-icon class="policy-close-tag icon icon-close"
+                                  (click)="policiesInput.removeItem(selected, index)"></mat-icon>
+                      </div>
+                    </ng-template>
                     <tag-input-dropdown [autocompleteItems]="policies"></tag-input-dropdown>
                   </tag-input>
                   <mat-error *ngIf="viewForm.get('roles.'+role.key+'.policies').invalid" data-se="resources-policy-error">
                     {{ viewForm.get('roles.'+role.key+'.policies').errors?.serverError }}
                   </mat-error>
+                  <mat-hint class="roles-hint-text">Policies in <span>this</span> color indicate that you can add variables data by clicking on them</mat-hint>
+
                 </div>
               </ng-container>
             </div>

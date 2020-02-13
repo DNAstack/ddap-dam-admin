@@ -31,6 +31,10 @@ mat-expansion-panel {
       width: 3rem;
       height: 3rem;
       border-radius: 50%;
+
+      &.policy-close-tag {
+        width: 1rem;
+      }
     }
 
     .mat-button[disabled][disabled].default-role-btn {
@@ -77,4 +81,34 @@ mat-expansion-panel {
   mat-hint {
     font-size: 75%;
   }
+}
+
+.policy-tag-wrapper {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+  padding-right: 1rem;
+
+  .policy-close-tag {
+    position: absolute;
+    right: 0;
+    font-size: 1rem;
+    top: -0.4rem;
+  }
+
+  &.variables {
+    color: $primary-color;
+  }
+}
+
+.roles-hint-text {
+  font-size: 75%;
+  span {
+    color: $primary-color;
+  }
+}
+
+.policy-tag-input tag-input {
+  padding-bottom: 0;
 }
