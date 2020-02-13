@@ -127,7 +127,8 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
           optional: [optional],
           regexp: [regexp],
           type: [type],
-          value: [this.getValueForVariable(key, type), regexp && !optional ? [Validators.pattern(regexp)] : []],
+          value: [this.getValueForVariable(key, type),
+            (regexp && !optional && (type !== 'split_pattern')) ? [Validators.pattern(regexp)] : []],
         }));
       });
 
@@ -155,6 +156,10 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
         },
       });
     }
+  }
+
+  splitPatternValidators(pattern) {
+    return [Validators.pattern(pattern)];
   }
 
   private getPoliciesForRole(roleId: string): string[] {
@@ -219,4 +224,5 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
       },
     };
   }
+
 }

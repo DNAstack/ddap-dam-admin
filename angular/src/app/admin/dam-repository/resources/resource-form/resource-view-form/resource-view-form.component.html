@@ -159,6 +159,8 @@
                            formControlName="value"
                            inputClass="variable-tag-input"
                            [attr.data-se]="'inp-view-target-adapter-variable-' + variable.get('name').value"
+                           [validators]="splitPatternValidators(variable.get('regexp').value)"
+                           [errorMessages]="{'pattern': 'Please enter a value that matches ' + variable.get('regexp').value}"
                            modelAsStrings="true"></tag-input>
                 <mat-hint>{{ variable.get('description').value }}</mat-hint>
                 <mat-error *ngIf="variable.get('value').invalid">
