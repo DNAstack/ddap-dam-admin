@@ -68,7 +68,7 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
 
     @Test
     public void testProfileNameAndDescriptionLinkNavigation() {
-        // FIXME: Skipping until SCIM endpoints implemented for DAM
+        // FIXME: DISCO-2686
         Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
             2020, 2, 29, 12, 0, 0,0,
             ZoneId.of("America/Toronto"))

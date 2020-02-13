@@ -36,7 +36,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
 
     @Test
     public void testScopes() throws Exception {
-        // FIXME: questionable if necessary at all. Currently userinfo returns only: `sub` and `sid`
+        // FIXME: DISCO-2686
         Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
             2020, 2, 29, 12, 0, 0,0,
             ZoneId.of("America/Toronto"))

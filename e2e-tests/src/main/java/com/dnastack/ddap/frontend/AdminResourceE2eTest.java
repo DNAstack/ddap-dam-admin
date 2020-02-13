@@ -3,7 +3,6 @@ package com.dnastack.ddap.frontend;
 import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AdminManagePage;
 import com.dnastack.ddap.common.util.DdapBy;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -207,7 +206,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists("policy-with-variables");
     }
 
-    // TODO: Update with DISCO-2396
     @Test
     public void createInvalidResourceShowsServerSideError() {
         AdminListPage adminListPage = ddapPage.getNavBar()
@@ -246,7 +244,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         assertThat(errorField.getText(), containsString("is not defined"));
     }
 
-    // TODO: Update with DISCO-2396
     @Test
     public void editInvalidResourceShowsServerSideError() {
         AdminListPage adminListPage = ddapPage.getNavBar()
@@ -272,8 +269,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         assertThat(errorField.getText(), containsString("is not defined"));
     }
 
-    // TODO: Update with DISCO-2396
-    @Ignore
     @Test
     public void editInvalidPersonaAccessShowsValidationMessage() {
         AdminListPage adminListPage = ddapPage.getNavBar()

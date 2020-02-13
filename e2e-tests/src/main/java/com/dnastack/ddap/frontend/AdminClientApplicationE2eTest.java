@@ -42,7 +42,7 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
 
     @Test
     public void editClientApplication() {
-        // FIXME: DAM functionality for PUT is broken, ignoring until sorted out
+        // FIXME: DISCO-2660
         Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
             2020, 2, 29, 12, 0, 0,0,
             ZoneId.of("America/Toronto"))
