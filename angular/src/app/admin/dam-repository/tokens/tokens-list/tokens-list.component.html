@@ -3,9 +3,10 @@
 <ddaplib-main>
   <ng-container *ngIf="(tokens$ | async) as tokensData">
     <mat-expansion-panel *ngFor="let token of tokensData['tokens']">
-      <mat-expansion-panel-header collapsedHeight="5rem"
+      <mat-expansion-panel-header [attr.data-se]="'token-'+token.name"
+                                  collapsedHeight="5rem"
                                   expandedHeight="5rem">
-        <mat-panel-title>{{ token.name }}</mat-panel-title>
+        <mat-panel-title data-se="entity-title">{{ token.name }}</mat-panel-title>
         <mat-panel-description>{{ token.metadata.client_desc }}</mat-panel-description>
       </mat-expansion-panel-header>
       <mat-divider></mat-divider>

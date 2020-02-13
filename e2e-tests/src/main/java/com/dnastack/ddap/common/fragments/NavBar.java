@@ -74,6 +74,10 @@ public class NavBar {
         return new NavLink("Passport Issuers", DdapBy.se("nav-passport-issuers"), damPanelSelectorLink());
     }
 
+    public static NavLink damTokensLink() {
+        return new NavLink("Tokens", DdapBy.se("nav-tokens"), damPanelSelectorLink());
+    }
+
     public NavBar(WebDriver driver) {
         this.driver = driver;
     }
