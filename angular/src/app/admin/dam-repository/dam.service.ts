@@ -4,7 +4,7 @@ import { realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { UserDamInfoAccess } from '../../layout/user-dam-info-access.model';
+import { UserDamInfoAccess } from '../../shared/user-dam-info-access.model';
 
 @Injectable({
   providedIn: 'root',

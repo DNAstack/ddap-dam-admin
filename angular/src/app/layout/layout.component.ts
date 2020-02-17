@@ -10,8 +10,7 @@ import { IdentityService } from '../identity/identity.service';
 import { IdentityStore } from '../identity/identity.store';
 import { Profile } from '../identity/profile.model';
 import { RealmService } from '../shared/realm/realm.service';
-
-import { UserDamInfoAccess } from './user-dam-info-access.model';
+import { UserDamInfoAccess } from '../shared/user-dam-info-access.model';
 
 const refreshRepeatTimeoutInMs = 600000;
 
