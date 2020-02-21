@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { defaultRealm, RealmGuard } from 'ddap-common-lib';
 
-import { LayoutComponent } from './layout/layout.component';
+import { LayoutComponent } from './shared/layout/layout.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: `/${defaultRealm}` },

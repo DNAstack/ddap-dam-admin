@@ -27,11 +27,13 @@ import { DdapFormModule, DdapLayoutModule } from 'ddap-common-lib';
 import { TagInputModule } from 'ngx-chips';
 import { ClipboardModule } from 'ngx-clipboard';
 
+import { LayoutComponent } from './layout/layout.component';
 import { MetadataFilterPipe } from './metadata-list/metadata-filter.pipe';
 import { MetadataListComponent } from './metadata-list/metadata-list.component';
 
 @NgModule({
   declarations: [
+    LayoutComponent,
     MetadataListComponent,
     MetadataFilterPipe,
   ],
