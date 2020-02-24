@@ -3,6 +3,7 @@ import { MatRadioModule } from '@angular/material/radio';
 
 import { DamRepositorySharedModule } from '../shared/shared.module';
 
+import { ServiceDefinitionAccessComponent } from './service-definition-access/service-definition-access.component';
 import { ServiceDefinitionDetailComponent } from './service-definition-detail/service-definition-detail.component';
 import { ServiceDefinitionFormComponent } from './service-definition-form/service-definition-form.component';
 import { ServiceDefinitionListComponent } from './service-definition-list/service-definition-list.component';
@@ -17,6 +18,7 @@ import { VariablesDialogComponent } from './variables-dialog/variables-dialog.co
     ServiceDefinitionDetailComponent,
     ServiceDefinitionFormComponent,
     VariablesDialogComponent,
+    ServiceDefinitionAccessComponent,
   ],
   imports: [
     DamRepositorySharedModule,
