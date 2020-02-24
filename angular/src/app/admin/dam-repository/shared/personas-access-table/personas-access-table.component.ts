@@ -4,7 +4,7 @@ import _get from 'lodash.get';
 import { Observable } from 'rxjs';
 
 import { flatten } from '../../../../shared/util';
-import { PersonasStore } from '../../personas/personas.store';
+import { PersonasStore } from '../../advanced/personas/personas.store';
 
 import { ViewRole } from './view-role.model';
 

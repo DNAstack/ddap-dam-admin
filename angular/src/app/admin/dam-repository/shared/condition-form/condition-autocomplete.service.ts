@@ -3,9 +3,9 @@ import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import AuthorityLevel = PassportVisa.AuthorityLevel;
-import { ClaimDefinitionService } from '../../claim-definitions/claim-definitions.service';
-import { ClaimDefinitionsStore } from '../../claim-definitions/claim-definitions.store';
-import { TrustedSourcesStore } from '../../trusted-sources/trusted-sources.store';
+import { ClaimDefinitionService } from '../../advanced/claim-definitions/claim-definitions.service';
+import { ClaimDefinitionsStore } from '../../advanced/claim-definitions/claim-definitions.store';
+import { TrustedSourcesStore } from '../../advanced/trusted-sources/trusted-sources.store';
 import { flatten, makeDistinct, pick } from '../autocomplete.util';
 import { PassportVisa } from '../passport-visa/passport-visa.constant';
 
@@ -13,7 +13,8 @@ import { PassportVisa } from '../passport-visa/passport-visa.constant';
   providedIn: 'root',
 })
 export class ConditionAutocompleteService {
-  private autocompleteValuesForType = new Subject<any>();
+
+  autocompleteValuesForType = new Subject<any>();
   fetchAutocompleteValuesForType$ = this.autocompleteValuesForType.asObservable();
 
   constructor(private claimDefinitionsStore: ClaimDefinitionsStore,

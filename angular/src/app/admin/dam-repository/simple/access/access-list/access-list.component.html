@@ -1,0 +1,21 @@
+<ddaplib-header icon="policies" label="Access">
+</ddaplib-header>
+
+<ddaplib-main>
+  <ddaplib-entity-description>
+    THIS IS WORK IN PROGRESS. NOT EXPECTED TO WORK.
+  </ddaplib-entity-description>
+
+  <mat-list>
+    <mat-list-item [routerLink]="['manage', 'gcs']">
+      Configure read-only access to objects in Google Cloud Storage
+    </mat-list-item>
+    <mat-list-item [routerLink]="['manage', 'bq']">
+      Configure read-only access to tables in BigQuery
+    </mat-list-item>
+    <mat-list-item [routerLink]="['manage', 'beacon']">
+      Configure access to proxy protected beacon
+    </mat-list-item>
+  </mat-list>
+
+</ddaplib-main>
