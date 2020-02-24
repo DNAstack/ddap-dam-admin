@@ -25,6 +25,7 @@ export class LayoutComponent implements OnInit {
   userDamInfoAccess: UserDamInfoAccess;
   realm: string;
   loginPath: string;
+  simplifiedView: boolean;
 
   constructor(public loader: LoadingBarService,
               private activatedRoute: ActivatedRoute,
@@ -47,6 +48,8 @@ export class LayoutComponent implements OnInit {
       });
 
     this.determineAdminAccessForDam();
+
+    this.simplifiedView = this.router.url.includes('dam/simple');
 
     this.activatedRoute.root.firstChild.params.subscribe((params) => {
       this.realm = params.realmId;
@@ -77,6 +80,10 @@ export class LayoutComponent implements OnInit {
         this.deleteRealm(dialogData.realm);
       }
     }
+  }
+
+  toggleSimplifiedView() {
+    this.simplifiedView = !this.simplifiedView;
   }
 
   private determineAdminAccessForDam() {

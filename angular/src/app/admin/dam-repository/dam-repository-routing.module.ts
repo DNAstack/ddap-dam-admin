@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'advanced',
     children: [
       {
         path: 'access-policies',
@@ -59,6 +59,16 @@ export const routes: Routes = [
         path: 'tokens',
         loadChildren: () => import('./tokens/tokens.module')
           .then(mod => mod.TokensModule),
+      },
+    ],
+  },
+  {
+    path: 'simple',
+    children: [
+      {
+        path: 'access-policies',
+        loadChildren: () => import('./access-policies/access-policies.module')
+          .then(mod => mod.AccessPoliciesModule),
       },
     ],
   },

@@ -40,3 +40,23 @@ mat-sidenav-container {
 .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
   color: $navbar-font-main-color;
 }
+
+.settings-view-toggle {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+
+  mat-list-item {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-top: 1px solid $navbar-font-subtle-color;
+
+    ::ng-deep .mat-list-item-content {
+      flex-direction: row;
+    }
+  }
+
+  mat-icon {
+    color: $navbar-font-subtle-color;
+  }
+}
