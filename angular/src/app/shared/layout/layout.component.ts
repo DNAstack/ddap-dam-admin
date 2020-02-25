@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { ViewControllerService } from 'ddap-common-lib';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 
@@ -27,6 +28,7 @@ export class LayoutComponent implements OnInit {
   realm: string;
   loginPath: string;
   simplifiedView: boolean;
+  groupName: string;
 
   constructor(public loader: LoadingBarService,
               private activatedRoute: ActivatedRoute,
@@ -35,6 +37,7 @@ export class LayoutComponent implements OnInit {
               private damService: DamService,
               private realmService: RealmService,
               private router: Router,
+              private viewControllerService: ViewControllerService,
               public appConfigService: AppConfigService) {
   }
 

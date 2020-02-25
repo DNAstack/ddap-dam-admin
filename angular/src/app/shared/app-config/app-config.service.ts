@@ -12,35 +12,19 @@ export class AppConfigService {
   private registerModules() {
     this.viewController
       .registerModule({
-        key: 'simplified',
-        name: 'Simplified Settings',
-        iconClasses: 'icon',
-        routerLink: 'admin/dam/simple',
-        isApp: true,
-      })
-      .registerModule({
         key: 'simple-access',
         name: 'Access',
         iconClasses: 'icon icon-policies',
         routerLink: 'admin/dam/simple/access',
-        parentKey: 'simplified',
+        group: 'simplified',
         isApp: false,
-      });
-
-    this.viewController
-      .registerModule({
-        key: 'advanced',
-        name: 'Advanced Settings',
-        iconClasses: 'icon',
-        routerLink: 'admin/dam/advanced',
-        isApp: true,
       })
       .registerModule({
         key: 'advanced-resources',
         name: 'Resources',
         iconClasses: 'icon icon-resource',
         routerLink: 'admin/dam/advanced/resources',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -48,7 +32,7 @@ export class AppConfigService {
         name: 'Access Policies',
         iconClasses: 'icon icon-policies',
         routerLink: 'admin/dam/advanced/access-policies',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -56,7 +40,7 @@ export class AppConfigService {
         name: 'Service Definitions',
         iconClasses: 'icon icon-clients',
         routerLink: 'admin/dam/advanced/service-definitions',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -64,7 +48,7 @@ export class AppConfigService {
         name: 'Trusted Sources',
         iconClasses: 'icon icon-trusted',
         routerLink: 'admin/dam/advanced/trusted-sources',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -72,7 +56,7 @@ export class AppConfigService {
         name: 'Passport Issuers',
         iconClasses: 'icon icon-passport',
         routerLink: 'admin/dam/advanced/passport-issuers',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -80,7 +64,7 @@ export class AppConfigService {
         name: 'Claim Definitions',
         iconClasses: 'icon icon-claims',
         routerLink: 'admin/dam/advanced/claim-definitions',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -88,7 +72,7 @@ export class AppConfigService {
         name: 'Test Personas',
         iconClasses: 'icon icon-tests',
         routerLink: 'admin/dam/advanced/test-personas',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -96,7 +80,7 @@ export class AppConfigService {
         name: 'Client Applications',
         iconClasses: 'icon icon-apps',
         routerLink: 'admin/dam/advanced/client-applications',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -104,7 +88,7 @@ export class AppConfigService {
         name: 'Options',
         iconClasses: 'icon icon-settings',
         routerLink: 'admin/dam/advanced/options',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -112,7 +96,7 @@ export class AppConfigService {
         name: 'Whitelists',
         iconClasses: 'icon icon-identities',
         routerLink: 'admin/dam/advanced/whitelists',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       })
       .registerModule({
@@ -120,7 +104,7 @@ export class AppConfigService {
         name: 'Tokens',
         iconClasses: 'icon icon-clients',
         routerLink: 'admin/dam/advanced/tokens',
-        parentKey: 'advanced',
+        group: 'advanced',
         isApp: false,
       });
   }
