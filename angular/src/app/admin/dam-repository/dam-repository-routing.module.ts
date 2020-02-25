@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { LayoutComponent } from '../../shared/layout/layout.component';
+
 export const routes: Routes = [
   {
     path: 'advanced',

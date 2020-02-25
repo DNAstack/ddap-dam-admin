@@ -23,7 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { DdapFormModule, DdapLayoutModule } from 'ddap-common-lib';
+import { DdapFormModule, DdapLayoutModule, MenuModule } from 'ddap-common-lib';
 import { TagInputModule } from 'ngx-chips';
 import { ClipboardModule } from 'ngx-clipboard';
 
@@ -69,6 +69,7 @@ import { MetadataListComponent } from './metadata-list/metadata-list.component';
 
     DdapLayoutModule,
     DdapFormModule,
+    MenuModule,
   ],
   exports: [
     CommonModule,

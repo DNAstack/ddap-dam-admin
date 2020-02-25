@@ -9,6 +9,7 @@ import { Identity } from '../../identity/identity.model';
 import { IdentityService } from '../../identity/identity.service';
 import { IdentityStore } from '../../identity/identity.store';
 import { Profile } from '../../identity/profile.model';
+import { AppConfigService } from '../app-config/app-config.service';
 import { RealmService } from '../realm/realm.service';
 import { UserDamInfoAccess } from '../user-dam-info-access.model';
 
@@ -33,7 +34,8 @@ export class LayoutComponent implements OnInit {
               private identityStore: IdentityStore,
               private damService: DamService,
               private realmService: RealmService,
-              private router: Router) {
+              private router: Router,
+              public appConfigService: AppConfigService) {
   }
 
   ngOnInit() {
