@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -6,10 +6,18 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './access-manage.component.html',
   styleUrls: ['./access-manage.component.scss'],
 })
-export class AccessManageComponent {
+export class AccessManageComponent implements OnInit {
 
-  constructor(protected route: ActivatedRoute,
+  serviceTemplate: string;
+
+  constructor(protected activatedRoute: ActivatedRoute,
               protected router: Router) {
+  }
+
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      this.serviceTemplate = params.serviceTemplate;
+    });
   }
 
 }

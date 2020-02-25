@@ -1,5 +1,71 @@
 <form class="ddap-form"
       novalidate
+      *ngIf="form"
       [formGroup]="form">
+  <div class="row">
+    <mat-form-field class="col">
+      <input matInput
+             placeholder="Collection Name"
+             formControlName="collection"
+             data-se="inp-collection"
+             required>
+      <mat-error *ngIf="form.get('collection').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
+    </mat-form-field>
+  </div>
 
+  <div class="row"
+       formGroupName="variables"
+       *ngFor="let variable of variables | keyvalue">
+    <mat-form-field class="col">
+      <input matInput
+             [attr.data-se]="'inp-variable-' + variable.key"
+             [placeholder]="variable.value.ui.label"
+             [required]="!variable.value.optional"
+             [formControlName]="variable.key">
+      <mat-hint>{{ variable.value.ui.description }}</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <h3>
+    <mat-icon class="icon icon-clients"></mat-icon>
+    <span>Access tier</span>
+  </h3>
+
+  <div>
+    <label id="access-level-radio-group-label">Select access level</label>
+    <mat-radio-group #accessLevelRadioGroup="matRadioGroup"
+                     aria-labelledby="access-level-radio-group-label"
+                     [formControl]="accessLevelRadio"
+                     class="access-radio-group">
+      <mat-radio-button [value]="'READ'">
+        List and read
+      </mat-radio-button>
+      <mat-radio-button [value]="'WRITE'">
+        Read and write
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div>
+    <label id="access-policy-radio-group-label">Select access policy type</label>
+    <mat-radio-group #accessPolicyRadioGroup="matRadioGroup"
+                     aria-labelledby="access-policy-radio-group-label"
+                     [formControl]="accessPolicyRadio"
+                     class="access-radio-group">
+      <mat-radio-button [value]="'CONTROL_ACCESS_GRANT'">
+        Allow access to anyone with the control access grant
+      </mat-radio-button>
+      <mat-radio-button [value]="'RESEARCHER_STATUS'">
+        Allow access to researchers from institution
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="row">
+    <mat-form-field class="col">
+      <input matInput
+             placeholder="Access Policy Value URL"
+             formControlName="accessPolicyValue"
+             data-se="inp-access-policy-value"
+             required>
+    </mat-form-field>
+  </div>
 </form>

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { DamRepositorySharedModule } from '../../shared/shared.module';
 
@@ -13,9 +14,10 @@ import { AccessesRoutingModule } from './accesses-routing.module';
     AccessManageComponent,
     AccessFormComponent,
   ],
-  imports: [
-    DamRepositorySharedModule,
-    AccessesRoutingModule,
-  ],
+    imports: [
+        DamRepositorySharedModule,
+        AccessesRoutingModule,
+        MatRadioModule,
+    ],
 })
 export class AccessesModule { }

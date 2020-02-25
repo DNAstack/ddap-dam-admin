@@ -6,9 +6,7 @@ import { AccessManageComponent } from './access-manage/access-manage.component';
 
 export const routes: Routes = [
   { path: '', component: AccessListComponent },
-  { path: 'manage/gcs', pathMatch: 'full', component: AccessManageComponent },
-  { path: 'manage/bq', pathMatch: 'full', component: AccessManageComponent },
-  { path: 'manage/beacon', pathMatch: 'full', component: AccessManageComponent },
+  { path: 'manage/:serviceTemplate', pathMatch: 'full', component: AccessManageComponent },
 ];
 
 @NgModule({
