@@ -11,6 +11,18 @@ export class AppConfigService {
 
   private registerModules() {
     this.viewController
+      .registerGroup({
+        key: 'simplified',
+        name: 'Simplified Settings',
+        collapsible: false,
+        collapsibleByDefault: false,
+      }).registerGroup({
+        key: 'advanced',
+        name: 'Advanced Settings',
+        collapsible: true,
+        collapsibleByDefault: true,
+      });
+    this.viewController
       .registerModule({
         key: 'simple-access',
         name: 'Access',

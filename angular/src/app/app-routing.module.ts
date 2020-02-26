@@ -5,7 +5,7 @@ import { defaultRealm, RealmGuard } from 'ddap-common-lib';
 import { LayoutComponent } from './shared/layout/layout.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: `/${defaultRealm}/admin/dam/advanced` },
+  { path: '', pathMatch: 'full', redirectTo: `/${defaultRealm}` },
   {
     path: ':realmId',
     component: LayoutComponent,
