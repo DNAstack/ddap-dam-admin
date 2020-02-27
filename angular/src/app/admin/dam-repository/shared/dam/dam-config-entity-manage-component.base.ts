@@ -10,7 +10,7 @@ export class DamConfigEntityManageComponentBase extends DamConfigEntityFormCompo
   constructor(protected route: ActivatedRoute,
               protected router: Router,
               protected validationService: FormValidationService,
-              protected damConfigStore: DamConfigStore ) {
+              protected damConfigStore: DamConfigStore) {
     super(route, router, validationService);
   }
 

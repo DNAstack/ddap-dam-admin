@@ -7,6 +7,8 @@ import { dam } from '../../../../../shared/proto/dam-service';
 import { ServiceDefinitionService } from '../../../advanced/service-definitions/service-definitions.service';
 import { TargetAdapterVariables } from '../../../advanced/target-adapters/target-adapter-variables.model';
 import { ConditionFormComponent } from '../../../shared/condition-form/condition-form.component';
+import { AccessLevel } from '../../shared/access-level.enum';
+import { AccessPolicyType } from '../../shared/access-policy-type.enum';
 
 import { AccessFormBuilder } from './access-form-builder.service';
 
@@ -22,13 +24,12 @@ export class AccessFormComponent implements OnInit, Form {
   @Input()
   serviceTemplate: string;
 
-  accessLevelRadio: FormControl = new FormControl('READ');
-  accessPolicyRadio: FormControl = new FormControl('CONTROL_ACCESS_GRANT');
+  accessLevelRadio: FormControl = new FormControl(AccessLevel.read);
+  accessPolicyRadio: FormControl = new FormControl(AccessPolicyType.controlAccessGrants);
 
   form: FormGroup;
   isExpanded: Function = isExpanded;
   variables: TargetAdapterVariables;
-
 
   constructor(private accessFormBuilder: AccessFormBuilder,
               private serviceDefinitionService: ServiceDefinitionService) {
@@ -50,6 +51,8 @@ export class AccessFormComponent implements OnInit, Form {
     return this.form.valid;
   }
 
-
+  getModel(): any {
+    return this.form.value;
+  }
 
 }

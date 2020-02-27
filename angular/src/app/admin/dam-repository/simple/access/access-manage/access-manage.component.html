@@ -1,4 +1,4 @@
-<ddaplib-header [backLink]="['../..']" label="Add Access">
+<ddaplib-header [backLink]="['../..']" label="Configure resources">
 </ddaplib-header>
 
 <ddaplib-main>
@@ -6,3 +6,16 @@
                     [serviceTemplate]="serviceTemplate">
   </ddap-access-form>
 </ddaplib-main>
+
+<div class="ddap-form-toolbar">
+  <ddaplib-form-footer-error>
+  </ddaplib-form-footer-error>
+  <button mat-flat-button
+          (click)="save()"
+          data-se="btn-save"
+          type="submit"
+          color="primary"
+          class="uppercase">
+    Set up resources
+  </button>
+</div>

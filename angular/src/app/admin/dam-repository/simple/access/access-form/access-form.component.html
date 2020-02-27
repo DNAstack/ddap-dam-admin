@@ -26,6 +26,17 @@
     </mat-form-field>
   </div>
 
+  <div class="row"
+       *ngIf="serviceTemplate === 'beacon'">
+    <mat-form-field class="col">
+      <input matInput
+             placeholder="Audience"
+             formControlName="aud"
+             data-se="inp-aud"
+             required>
+    </mat-form-field>
+  </div>
+
   <h3>
     <mat-icon class="icon icon-clients"></mat-icon>
     <span>Access tier</span>
@@ -37,10 +48,10 @@
                      aria-labelledby="access-level-radio-group-label"
                      [formControl]="accessLevelRadio"
                      class="access-radio-group">
-      <mat-radio-button [value]="'READ'">
+      <mat-radio-button [value]="'Read'">
         List and read
       </mat-radio-button>
-      <mat-radio-button [value]="'WRITE'">
+      <mat-radio-button [value]="'Write'">
         Read and write
       </mat-radio-button>
     </mat-radio-group>
@@ -51,10 +62,10 @@
                      aria-labelledby="access-policy-radio-group-label"
                      [formControl]="accessPolicyRadio"
                      class="access-radio-group">
-      <mat-radio-button [value]="'CONTROL_ACCESS_GRANT'">
+      <mat-radio-button [value]="'ControlledAccessGrants'">
         Allow access to anyone with the control access grant
       </mat-radio-button>
-      <mat-radio-button [value]="'RESEARCHER_STATUS'">
+      <mat-radio-button [value]="'ResearcherStatus'">
         Allow access to researchers from institution
       </mat-radio-button>
     </mat-radio-group>

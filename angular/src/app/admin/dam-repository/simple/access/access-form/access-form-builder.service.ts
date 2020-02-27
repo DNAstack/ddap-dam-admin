@@ -17,6 +17,7 @@ export class AccessFormBuilder {
       collection: ['', [Validators.pattern(nameConstraintPattern)]],
       variables: this.buildVariablesForm(variables),
       accessPolicyValue: ['', [Validators.required, FormValidators.url]],
+      aud: ['', []],
     });
   }
 
