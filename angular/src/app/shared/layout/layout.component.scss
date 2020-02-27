@@ -6,11 +6,26 @@ mat-sidenav-container {
 
 
   .credentials-username {
+    // FIXME move this image to menu component
+    display: flex;
+    align-items: center;
+
     img {
-      width: 24px;
+      width: 34px;
       border-radius: 50%;
       vertical-align: middle;
       margin-right: 16px;
+    }
+
+    .account-info-label {
+      display: block;
+      margin-top: -0.5rem;
+    }
+
+    .account-info-sublabel {
+      display: block;
+      margin-top: -2rem;
+      font-size: 0.75rem;
     }
   }
 
