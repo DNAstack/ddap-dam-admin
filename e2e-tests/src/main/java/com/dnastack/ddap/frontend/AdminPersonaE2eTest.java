@@ -36,7 +36,7 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-by"), "peer");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
-        adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
+        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
 
         adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
         adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "faculty@uni-heidelberg.de");
