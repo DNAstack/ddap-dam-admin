@@ -49,10 +49,12 @@
                      aria-labelledby="access-level-radio-group-label"
                      [formControl]="accessLevelRadio"
                      class="access-radio-group">
-      <mat-radio-button [value]="'Read'">
+      <mat-radio-button [value]="'Read'"
+                        data-se="radio-access-level-Read">
         List and read
       </mat-radio-button>
-      <mat-radio-button [value]="'Write'">
+      <mat-radio-button [value]="'Write'"
+                        data-se="radio-access-level-Write">
         Read and write
       </mat-radio-button>
     </mat-radio-group>
@@ -63,10 +65,12 @@
                      aria-labelledby="access-policy-radio-group-label"
                      [formControl]="accessPolicyRadio"
                      class="access-radio-group">
-      <mat-radio-button [value]="'ControlledAccessGrants'">
+      <mat-radio-button [value]="'ControlledAccessGrants'"
+                        data-se="radio-access-policy-ControlledAccessGrants">
         Allow access to anyone with the control access grant
       </mat-radio-button>
-      <mat-radio-button [value]="'ResearcherStatus'">
+      <mat-radio-button [value]="'ResearcherStatus'"
+                        data-se="radio-access-policy-ResearcherStatus">
         Allow access to researchers from institution
       </mat-radio-button>
     </mat-radio-group>

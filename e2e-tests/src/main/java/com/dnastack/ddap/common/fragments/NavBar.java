@@ -3,10 +3,8 @@ package com.dnastack.ddap.common.fragments;
 import com.dnastack.ddap.common.util.DdapBy;
 import com.dnastack.ddap.common.page.*;
 import lombok.Value;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -16,6 +14,7 @@ import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
+@Slf4j
 public class NavBar {
 
     private WebDriver driver;
@@ -78,6 +77,18 @@ public class NavBar {
         return new NavLink("Tokens", DdapBy.se("nav-tokens"), damPanelSelectorLink());
     }
 
+    public static NavLink simplifiedAdminPanelToggle() {
+        return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-simplified-toggle']")), null);
+    }
+
+    public static NavLink advancedAdminPanelToggle() {
+        return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-advanced-toggle']")), null);
+    }
+
+    public static NavLink simplifiedAccessLink() {
+        return new NavLink("Access", DdapBy.se("nav-simplified-access"), null);
+    }
+
     public NavBar(WebDriver driver) {
         this.driver = driver;
     }
@@ -123,6 +134,16 @@ public class NavBar {
         return goTo(navItem, AdminOptionPage::new);
     }
 
+    public <T> T goToSimplifiedAdmin(NavLink navItem, Function<WebDriver, T> pageFactory) {
+        try {
+            new WebDriverWait(driver, 1)
+                .until(ExpectedConditions.visibilityOfElementLocated(navItem.selector));
+        } catch (TimeoutException te) {
+            toggleSimplifiedAdminPanel();
+        }
+        return goTo(navItem, pageFactory);
+    }
+
     private WebElement getRealmInput() {
         return driver.findElement(DdapBy.se("realm-input"));
     }
@@ -149,6 +170,12 @@ public class NavBar {
     public AnyDdapPage logOut() {
         driver.findElement(DdapBy.se("nav-logout")).click();
         return new AnyDdapPage(driver);
+    }
+
+    public void toggleSimplifiedAdminPanel() {
+        if (existsInNavBar(simplifiedAdminPanelToggle())) {
+            driver.findElement(simplifiedAdminPanelToggle().selector).click();
+        }
     }
 
 }

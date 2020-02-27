@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static org.junit.Assert.assertThat;
 
@@ -136,6 +137,13 @@ public class AdminManagePage extends AdminDdapPage {
         clickSave();
         this.waitForInflightRequests();
         return new AdminListPage(driver);
+    }
+
+    public <T> T saveEntity(Function<WebDriver, T> pageFactory) {
+        this.waitForInflightRequests();
+        clickSave();
+        this.waitForInflightRequests();
+        return pageFactory.apply(driver);
     }
 
     public void clickSave() {
