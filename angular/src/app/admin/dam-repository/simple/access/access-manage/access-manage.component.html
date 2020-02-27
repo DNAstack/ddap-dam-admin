@@ -8,7 +8,8 @@
 </ddaplib-main>
 
 <div class="ddap-form-toolbar">
-  <ddaplib-form-footer-error>
+  <ddaplib-form-footer-error [showError]="!isFormValid && isFormValidated"
+                             [message]="formErrorMessage">
   </ddaplib-form-footer-error>
   <button mat-flat-button
           (click)="save()"

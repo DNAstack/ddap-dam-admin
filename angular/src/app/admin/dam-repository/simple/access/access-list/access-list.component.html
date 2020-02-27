@@ -1,20 +1,29 @@
-<ddaplib-header icon="policies" label="Access">
+<ddaplib-header icon="policies" label="Set up Resources and Access Policies">
 </ddaplib-header>
 
 <ddaplib-main>
   <ddaplib-entity-description>
-    THIS IS WORK IN PROGRESS. NOT EXPECTED TO WORK.
+    Simplified resource creation with desired access.
   </ddaplib-entity-description>
 
   <mat-list>
-    <mat-list-item [routerLink]="['manage', 'gcs']">
-      Configure read-only access to objects in Google Cloud Storage
+    <mat-list-item [routerLink]="['manage', 'gcs']"
+                   data-se="btn-create-gcs-resource">
+      <button mat-stroked-button>
+        Configure access to objects in Google Cloud Storage
+      </button>
     </mat-list-item>
-    <mat-list-item [routerLink]="['manage', 'bigquery']">
-      Configure read-only access to tables in BigQuery
+    <mat-list-item [routerLink]="['manage', 'bigquery']"
+                   data-se="btn-create-bigquery-resource">
+      <button mat-stroked-button>
+        Configure access to tables in BigQuery
+      </button>
     </mat-list-item>
-    <mat-list-item [routerLink]="['manage', 'beacon']">
-      Configure access to proxy protected beacon
+    <mat-list-item [routerLink]="['manage', 'beacon']"
+                   data-se="btn-create-beacon-resource">
+      <button mat-stroked-button>
+        Configure access to proxy protected Beacon
+      </button>
     </mat-list-item>
   </mat-list>
 
