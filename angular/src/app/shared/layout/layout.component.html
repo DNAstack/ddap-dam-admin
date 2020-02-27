@@ -45,7 +45,9 @@
         matTooltip="This is sandbox testing environment">
         Sandbox environment
       </span>
-      <app-sidenav-left *ngIf="account" [appTitle]="(userDamInfoAccess?.ui.label || 'DAM') + ' Administration'">
+      <app-sidenav-left *ngIf="account && userDamInfoAccess && userDamInfoAccess.accessible"
+                        [sideNavCollapsible]="false"
+                        [appTitle]="(userDamInfoAccess?.ui.label || 'DAM') + ' Administration'">
       </app-sidenav-left>
       <div *ngIf="account"
         class="accordion-wrapper">

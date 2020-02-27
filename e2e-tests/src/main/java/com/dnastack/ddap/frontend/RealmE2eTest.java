@@ -1,20 +1,19 @@
 package com.dnastack.ddap.frontend;
 
 import com.dnastack.ddap.common.TestingPersona;
-import com.dnastack.ddap.common.fragments.ConfirmationRealmChangeDialog;
 import com.dnastack.ddap.common.page.AdminDdapPage;
-import com.dnastack.ddap.common.page.AnyDdapPage;
+import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
 
 import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 @SuppressWarnings("Duplicates")
 public class RealmE2eTest extends AbstractFrontendE2eTest {
@@ -33,6 +32,8 @@ public class RealmE2eTest extends AbstractFrontendE2eTest {
 
     @Test
     public void realmSelectorShouldShowCurrentRealm() {
+        new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("realm-name")));
         assertThat(ddapPage.getNavBar().getRealm(), is(REALM));
     }
 
@@ -42,9 +43,9 @@ public class RealmE2eTest extends AbstractFrontendE2eTest {
         assertThat("this test is pointless unless we start on a different realm than we're going to!",
             ddapPage.getNavBar().getRealm(), is(not(otherRealm)));
 
-        ConfirmationRealmChangeDialog confirmationRealmChangeDialog = ddapPage.getNavBar().setRealm(otherRealm);
-        AnyDdapPage ddapPage = confirmationRealmChangeDialog.cancelChangeRealmDialog();
-
+        ddapPage.getNavBar().setRealmAndCancel(otherRealm);
+        ddapPage.waitForInflightRequests();
+        assertThat(ddapPage.getNavBar().getRealm(), is(REALM));
         // Wrap this with large timeout because redirect to IC and back happens here
         new WebDriverWait(driver, 10)
             .ignoring(AssertionError.class)

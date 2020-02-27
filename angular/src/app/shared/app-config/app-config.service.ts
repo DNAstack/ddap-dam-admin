@@ -24,7 +24,7 @@ export class AppConfigService {
       });
     this.viewController
       .registerModule({
-        key: 'simple-access',
+        key: 'simplified-access',
         name: 'Access',
         iconClasses: 'icon icon-policies',
         routerLink: 'admin/dam/simple/access',

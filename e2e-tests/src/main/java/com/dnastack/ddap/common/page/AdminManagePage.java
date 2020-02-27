@@ -129,7 +129,7 @@ public class AdminManagePage extends AdminDdapPage {
     }
 
     public void closeAutocompletes() {
-        driver.findElement(By.tagName("h1")).click();
+        driver.findElement(DdapBy.se("page-title")).click();
     }
 
     public AdminListPage saveEntity() {

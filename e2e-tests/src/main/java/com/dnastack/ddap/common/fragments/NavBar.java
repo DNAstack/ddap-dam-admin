@@ -148,26 +148,29 @@ public class NavBar {
         return driver.findElement(DdapBy.se("realm-input"));
     }
 
-    public ConfirmationRealmChangeDialog setRealm(String targetRealm) {
-        WebElement realmInput = getRealmInput();
+    public void setRealmAndCancel(String targetRealm) {
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.elementToBeClickable(driver.findElement(DdapBy.se("realm-menu"))));
         driver.findElement(DdapBy.se("realm-menu")).click();
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.elementToBeClickable(driver.findElement(DdapBy.se("edit-realm"))));
         driver.findElement(DdapBy.se("edit-realm")).click();
-        realmInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        realmInput.sendKeys(targetRealm, Keys.RETURN);
-
-        return new ConfirmationRealmChangeDialog(driver);
+        WebElement realmInput = getRealmInput();
+        realmInput.clear();
+        realmInput.sendKeys(targetRealm);
+        driver.findElement(DdapBy.se("cancel-realm-change")).click();
     }
 
     public String getRealm() {
-        WebElement realmInput = getRealmInput();
-        return realmInput.getAttribute("value");
+        return driver.findElement(DdapBy.se("realm-name")).getText();
     }
 
     public AnyDdapPage logOut() {
+        new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.elementToBeClickable(DdapBy.se("menu-profile-btn")));
+        driver.findElement(DdapBy.se("menu-profile-btn")).click();
+        new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.elementToBeClickable(DdapBy.se("nav-logout")));
         driver.findElement(DdapBy.se("nav-logout")).click();
         return new AnyDdapPage(driver);
     }
