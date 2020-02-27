@@ -37,7 +37,7 @@ export class LayoutComponent implements OnInit {
               private damService: DamService,
               private realmService: RealmService,
               private router: Router,
-              private viewControllerService: ViewControllerService,
+              public viewControllerService: ViewControllerService,
               public appConfigService: AppConfigService) {
   }
 
