@@ -1,62 +1,79 @@
 @import '~ddap-common-lib/styles/modules/colors';
 
-mat-sidenav-content {
-  padding: 0 2rem;
-}
-
 mat-sidenav-container {
   height: 100%;
 }
 
-.mat-drawer-side {
-  border-right: none;
-}
 
-:host {
-  .ddap-realm-select {
-    background-color: $navbar-expanded-background;
-    padding: 0.5rem 1rem;
-  }
   .credentials-username {
-    cursor: default;
+    // FIXME move this image to menu component
+    display: flex;
+    align-items: center;
 
-    span {
-      cursor: pointer;
+    img {
+      width: 34px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 16px;
+    }
+
+    .account-info-label {
+      display: block;
+      margin-top: -0.5rem;
+    }
+
+    .account-info-sublabel {
+      display: block;
+      margin-top: -2rem;
+      font-size: 0.75rem;
     }
   }
-}
 
-::ng-deep .ddap-logout {
-  span.mat-line {
-    color: $navbar-font-subtle-color;
+  :host {
+    .ddap-realm-select {
+      background-color: $navbar-expanded-background;
+      padding: 0.5rem 1rem;
+    }
+    .credentials-username {
+      cursor: default;
+
+      span {
+        cursor: pointer;
+      }
+    }
   }
-}
 
-.sandbox-warning {
-  font-size: 1rem;
-  color: $warn-color;
-}
+  ::ng-deep .ddap-logout {
+    span.mat-line {
+      color: $navbar-font-subtle-color;
+    }
+  }
 
-.mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
-  color: $navbar-font-main-color;
-}
+  .sandbox-warning {
+    font-size: 1rem;
+    color: $warn-color;
+  }
+
+  .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
+    color: $navbar-font-main-color;
+  }
 
 .settings-view-toggle {
   width: 100%;
   position: relative;
   bottom: 0;
 
-  mat-list-item {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-top: 1px solid $navbar-font-subtle-color;
+    mat-list-item {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-top: 1px solid $navbar-font-subtle-color;
 
-    ::ng-deep .mat-list-item-content {
-      flex-direction: row;
+      ::ng-deep .mat-list-item-content {
+        flex-direction: row;
+      }
+    }
+
+    mat-icon {
+      color: $navbar-font-subtle-color;
     }
   }
-
-  mat-icon {
-    color: $navbar-font-subtle-color;
-  }
-}

@@ -1,185 +1,78 @@
-<mat-progress-bar *ngIf="loader.progress$ | async"
-                  mode="determinate"
-                  [value]="loader.progress$ | async"
-                  data-se="main-progress-bar">
-</mat-progress-bar>
-<mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" [opened]="true" disableClose>
-    <header>
-      <h1 class="flex flex--column">
-        <span>DDAP</span>
-        <span *ngIf="isSandbox"
-              class="sandbox-warning"
-              matTooltip="This is sandbox testing environment">
-          Sandbox environment
-        </span>
-      </h1>
-    </header>
-
-    <mat-nav-list>
-      <div *ngIf="isSandbox"
-           class="ddap-realm-select">
-        <ddaplib-realm-input (onAcknowledge)="onAcknowledge($event)"
-                             actions="['edit', 'delete']">
-        </ddaplib-realm-input>
-      </div>
-
-      <div *ngIf="account"
-           class="ddap-logout">
-        <mat-list-item class="credentials-username"
-                       data-se="nav-account">
-          <h4 mat-line>{{ account?.profile?.name || '&nbsp;' }}</h4>
-          <span mat-line
-                data-se="nav-logout"
-                (click)="logout()">Log Out</span>
-          <div class="credentials-picture">
-            <img matListAvatar
-                 [src]="account?.profile?.picture || '/assets/images/placeholder_identity.png'"
-                 alt="Profile picture">
-          </div>
-        </mat-list-item>
-      </div>
-      <a [href]="loginPath"
-         *ngIf="!account"
-         data-se="nav-login">
-        <mat-list-item class="credentials-username"
-                       data-se="nav-account">
-          <h4 mat-line>Log In</h4>
-          <div class="credentials-picture">
-            <img matListAvatar
-                 [src]="account?.profile?.picture || '/assets/images/placeholder_identity.png'"
-                 alt="Profile picture">
-          </div>
-        </mat-list-item>
-      </a>
-    </mat-nav-list>
-
-    <div *ngIf="account"
-         class="accordion-wrapper">
-      <mat-accordion [multi]="false"
-                     *ngIf="userDamInfoAccess && userDamInfoAccess.accessible">
-        <mat-expansion-panel [expanded]="true"
-                             [disabled]="true"
-                             [hideToggle]="true"
-                             data-se="nav-dam-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <span>{{ userDamInfoAccess.ui.label }} Administration</span>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <mat-nav-list *ngIf="!simplifiedView"
-                        class="sub-nav">
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'resources']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-resources">
-              <mat-icon class="icon icon-resource"></mat-icon>
-              <h4 mat-line>Resources</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'access-policies']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-access-policies">
-              <mat-icon class="icon icon-policies"></mat-icon>
-              <h4 mat-line>Access Policies</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'service-definitions']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-service-definitions">
-              <mat-icon class="icon icon-clients"></mat-icon>
-              <h4 mat-line>Service Definitions</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'trusted-sources']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-trusted-sources">
-              <mat-icon class="icon icon-trusted"></mat-icon>
-              <h4 mat-line>Trusted Sources</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'passport-issuers']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-passport-issuers">
-              <mat-icon class="icon icon-passport"></mat-icon>
-              <h4 mat-line>Passport Issuers</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'claim-definitions']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-claim-definitions">
-              <mat-icon class="icon icon-claims"></mat-icon>
-              <h4 mat-line>Claim Definitions</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'test-personas']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-test-personas">
-              <mat-icon class="icon icon-tests"></mat-icon>
-              <h4 mat-line>Test Personas</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'client-applications']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-client-applications">
-              <mat-icon class="icon icon-apps"></mat-icon>
-              <h4 mat-line>Client Applications</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'options']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-options">
-              <mat-icon class="icon icon-settings"></mat-icon>
-              <h4 mat-line>Options</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'whitelists']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-whitelists">
-              <mat-icon class="icon icon-identities"></mat-icon>
-              <h4 mat-line>Whitelists</h4>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['admin', 'dam', 'advanced', 'tokens']"
-              [routerLinkActive]="['active-nav-link']"
-              data-se="nav-tokens">
-              <mat-icon class="icon icon-clients"></mat-icon>
-              <h4 mat-line>Tokens</h4>
-            </mat-list-item>
-          </mat-nav-list>
-
-          <mat-nav-list *ngIf="simplifiedView"
-                        class="sub-nav">
-            <mat-list-item [routerLink]="['admin', 'dam', 'simple', 'access']"
-                           [routerLinkActive]="['active-nav-link']"
-                           data-se="nav-simplified-access">
-              <mat-icon class="icon icon-policies"></mat-icon>
-              <h4 mat-line>Access</h4>
-            </mat-list-item>
-          </mat-nav-list>
-        </mat-expansion-panel>
-
-        <mat-nav-list class="settings-view-toggle">
-          <mat-list-item data-se="nav-simplified-toggle"
-                         (click)="toggleSimplifiedView()">
-            <h4 mat-line>{{ simplifiedView ? 'Advanced Settings' : 'Simplified Settings' }}</h4>
-            <mat-icon mat-list-icon>tune</mat-icon>
-          </mat-list-item>
-        </mat-nav-list>
-      </mat-accordion>
-    </div>
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <ddaplib-sandbox-banner *ngIf="isSandbox"></ddaplib-sandbox-banner>
-
-    <ng-container *ngIf="account; else anonymousUserLandingPage">
-      <ng-container *ngIf="isChildPage(); else authorizedUserLandingPage">
-        <router-outlet></router-outlet>
+<div class="site-container {{viewControllerService.view.leftSidebarOpened ? '' : 'zen-mode'}}">
+  <ddaplib-main-header (realmChangeAcknowledge)="onAcknowledge($event)"
+                      [realmActions]="['edit', 'delete']"
+                      [showRealmInput]="isSandbox"
+                      [siteName]="'DDAP'">
+    <ddaplib-menu-profile>
+      <ng-container *ngIf="account">
+        <button class="credentials-username"
+                mat-menu-item
+                data-se="nav-account">
+          <img [src]="account.profile?.picture || '/assets/images/placeholder_identity.png'"
+               alt="Profile picture" />
+          <span class="account-info">
+            <span class="account-info-label">
+              {{ account.profile?.name || 'Monica Valluri' }}
+            </span>
+            <span class="account-info-sublabel"
+                  data-se="nav-logout"
+              (click)="logout()">Log Out</span>
+          </span>
+        </button>
       </ng-container>
-    </ng-container>
-    <ng-template #authorizedUserLandingPage>
-      <ddaplib-landing-info-card [title]="'Data Access Manager Administration'">
-        This portal is for <b>DAM (Data Access Manager) administration</b>.
-      </ddaplib-landing-info-card>
-    </ng-template>
-    <ng-template #anonymousUserLandingPage>
-      <ddaplib-landing-info-card [title]="'Data Access Manager Administration'">
-            This portal is for <b>DAM (Data Access Manager) administration</b>.
-            To proceed please log in by clicking <b>Log In</b> in navigation menu or click
-            <a [href]="loginPath" class="btn-link"><b>here</b></a>.
-      </ddaplib-landing-info-card>
-    </ng-template>
+      <a [href]="loginPath"
+        *ngIf="!account"
+        mat-menu-item
+        data-se="nav-login">
+        <mat-icon>perm_identity</mat-icon>
+        <span data-se="nav-account">Log In</span>
+      </a>
+    </ddaplib-menu-profile>
+  </ddaplib-main-header>
+  <mat-progress-bar *ngIf="loader.progress$ | async"
+    mode="determinate"
+    color="accent"
+    [value]="loader.progress$ | async"
+    data-se="main-progress-bar">
+  </mat-progress-bar>
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav
+      mode="side"
+      [opened]="true">
+      <span *ngIf="isSandbox"
+        class="sandbox-warning"
+        style="position: absolute; left: 1rem; font-size: 0.75rem;"
+        matTooltip="This is sandbox testing environment">
+        Sandbox environment
+      </span>
+      <app-sidenav-left *ngIf="account" [appTitle]="(userDamInfoAccess?.ui.label || 'DAM') + ' Administration'">
+      </app-sidenav-left>
+      <div *ngIf="account"
+        class="accordion-wrapper">
+      </div>
+    </mat-sidenav>
 
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    <mat-sidenav-content>
+      <ddaplib-sandbox-banner *ngIf="isSandbox"></ddaplib-sandbox-banner>
+
+      <ng-container *ngIf="account; else anonymousUserLandingPage">
+        <ng-container *ngIf="isChildPage(); else authorizedUserLandingPage">
+          <router-outlet></router-outlet>
+        </ng-container>
+      </ng-container>
+      <ng-template #authorizedUserLandingPage>
+        <ddaplib-landing-info-card [title]="'Data Access Manager Administration'">
+          This portal is for <b>DAM (Data Access Manager) administration</b>.
+        </ddaplib-landing-info-card>
+      </ng-template>
+      <ng-template #anonymousUserLandingPage>
+        <ddaplib-landing-info-card [title]="'Data Access Manager Administration'">
+          This portal is for <b>DAM (Data Access Manager) administration</b>.
+          To proceed please log in by clicking <b>Log In</b> in navigation menu or click
+          <a [href]="loginPath" class="btn-link"><b>here</b></a>.
+        </ddaplib-landing-info-card>
+      </ng-template>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
