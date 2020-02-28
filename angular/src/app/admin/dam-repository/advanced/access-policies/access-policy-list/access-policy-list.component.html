@@ -42,7 +42,7 @@
     </ng-container>
     <!-- Condition Definition -->
     <ng-container matColumnDef="conditions">
-      <th mat-header-cell *matHeaderCellDef>Condition</th>
+      <th mat-header-cell *matHeaderCellDef>Conditions</th>
       <td mat-cell *matCellDef="let model">
         <span *ngFor="let conditionAnyOf of model.dto.anyOf">
           <ng-container *ngFor="let conditionAllOf of conditionAnyOf.allOf">

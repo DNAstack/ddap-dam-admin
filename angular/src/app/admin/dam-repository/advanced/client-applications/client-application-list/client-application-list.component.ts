@@ -12,6 +12,8 @@ import { ClientApplicationsStore } from '../client-applications.store';
 })
 export class ClientApplicationListComponent extends DamConfigEntityListComponentBase<ClientApplicationsStore> implements OnInit {
 
+  displayedColumns: string[] = ['label', 'description', 'clientId', 'scope', 'redirectUris', 'grantTypes', 'responseTypes'];
+
   constructor(protected route: ActivatedRoute,
               protected damConfigStore: DamConfigStore,
               protected clientApplicationsStore: ClientApplicationsStore) {

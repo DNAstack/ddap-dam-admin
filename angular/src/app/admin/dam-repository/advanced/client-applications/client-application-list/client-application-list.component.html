@@ -9,10 +9,74 @@
     Clients are applications that can access the DAM on behalf of a user. Only make a service a client of
     a DAM if you trust it to modify the system configuration and handle access tokens for data sources and services.
   </ddaplib-entity-description>
-  <ddaplib-entity-list
-    [headerTitle]="'client application'"
-    [descriptionLabel]="'description'"
-    [descriptionProperty]="'ui.description'"
-    [entityList]="entities$">
-  </ddaplib-entity-list>
+
+  <table mat-table [dataSource]="entities$ | async"
+         class="table--base mat-elevation-z1">
+    <!-- Label Definition -->
+    <ng-container matColumnDef="label">
+      <th mat-header-cell *matHeaderCellDef>Label</th>
+      <td mat-cell *matCellDef="let model"
+          class="table--link"
+          [routerLink]="[model.name]">
+        {{ model.dto.ui.label }}
+      </td>
+    </ng-container>
+    <!-- Description Definition -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.ui.description }}</td>
+    </ng-container>
+    <!-- Client ID Definition -->
+    <ng-container matColumnDef="clientId">
+      <th mat-header-cell *matHeaderCellDef>Client ID</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.clientId }}</td>
+    </ng-container>
+    <!-- Scope Definition -->
+    <ng-container matColumnDef="scope">
+      <th mat-header-cell *matHeaderCellDef>Scope</th>
+      <td mat-cell *matCellDef="let model">
+        <span *ngFor="let scope of model.dto.scope.split(' ')">
+          {{ scope }}
+          <br/>
+        </span>
+      </td>
+    </ng-container>
+    <!-- Redirect URI Definition -->
+    <ng-container matColumnDef="redirectUris">
+      <th mat-header-cell *matHeaderCellDef>Redirect URIs</th>
+      <td mat-cell *matCellDef="let model">
+        <a *ngFor="let redirectUri of model.dto.redirectUris"
+           [href]="redirectUri"
+           target="_blank"
+           rel="noopener noreferrer">
+          {{ redirectUri }}
+          <br/>
+        </a>
+      </td>
+    </ng-container>
+    <!-- Grant Type Definition -->
+    <ng-container matColumnDef="grantTypes">
+      <th mat-header-cell *matHeaderCellDef>Grant Types</th>
+      <td mat-cell *matCellDef="let model">
+        <span *ngFor="let grantType of model.dto.grantTypes">
+          {{ grantType }}
+          <br/>
+        </span>
+      </td>
+    </ng-container>
+    <!-- Response Type Definition -->
+    <ng-container matColumnDef="responseTypes">
+      <th mat-header-cell *matHeaderCellDef>Response Types</th>
+      <td mat-cell *matCellDef="let model">
+        <span *ngFor="let responseType of model.dto.responseTypes">
+          {{ responseType }}
+          <br/>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </ddaplib-main>
