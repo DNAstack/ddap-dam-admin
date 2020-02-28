@@ -12,6 +12,8 @@ import { ClaimDefinitionsStore } from '../claim-definitions.store';
 })
 export class ClaimDefinitionListComponent extends DamConfigEntityListComponentBase<ClaimDefinitionsStore> implements OnInit {
 
+  displayedColumns: string[] = ['label', 'description', 'infoUrl'];
+
   constructor(protected route: ActivatedRoute,
               protected damConfigStore: DamConfigStore,
               protected claimDefinitionsStore: ClaimDefinitionsStore) {

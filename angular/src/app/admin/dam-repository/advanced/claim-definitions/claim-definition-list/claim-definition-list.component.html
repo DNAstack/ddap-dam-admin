@@ -10,10 +10,35 @@
     <ddaplib-entity-description-link [path]="'../access-policies'">access policies</ddaplib-entity-description-link>.
     You must define a claim definition here before it can be referenced in a policy.
   </ddaplib-entity-description>
-  <ddaplib-entity-list
-    [headerTitle]="'claim definitions'"
-    [descriptionLabel]="'description'"
-    [descriptionProperty]="'ui.description'"
-    [entityList]="entities$">
-  </ddaplib-entity-list>
+
+  <table mat-table [dataSource]="entities$ | async"
+         class="table--base mat-elevation-z1">
+    <!-- Label Definition -->
+    <ng-container matColumnDef="label">
+      <th mat-header-cell *matHeaderCellDef>Label</th>
+      <td mat-cell *matCellDef="let model"
+          class="table--link"
+          [routerLink]="[model.name]">
+        {{ model.dto.ui.label }}
+      </td>
+    </ng-container>
+    <!-- Description Definition -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.ui.description }}</td>
+    </ng-container>
+    <!-- Info URL Definition -->
+    <ng-container matColumnDef="infoUrl">
+      <th mat-header-cell *matHeaderCellDef>Info URL</th>
+      <td mat-cell *matCellDef="let model">
+        <a [href]="model.dto.ui.infoUrl"
+           target="_blank"
+           rel="noopener noreferrer">{{ model.dto.ui.infoUrl }}</a>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </ddaplib-main>

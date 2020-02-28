@@ -12,7 +12,7 @@ import { AccessPoliciesStore } from '../access-policies.store';
 })
 export class AccessPolicyListComponent extends DamConfigEntityListComponentBase<AccessPoliciesStore> implements OnInit {
 
-  displayedColumns: string[] = ['label', 'description', 'variableDefinitions', 'anyOf'];
+  displayedColumns: string[] = ['label', 'description', 'variableDefinitions', 'conditions', 'infoUrl'];
 
   constructor(protected route: ActivatedRoute,
               protected damConfigStore: DamConfigStore,
