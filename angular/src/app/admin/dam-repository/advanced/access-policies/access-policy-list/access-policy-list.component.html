@@ -10,11 +10,55 @@
     Once you have created a policy, you can map it onto a dataset by creating a
     <ddaplib-entity-description-link [path]="'../resources'">resources</ddaplib-entity-description-link>.
   </ddaplib-entity-description>
-  <ddaplib-entity-list
-    [headerTitle]="'access policy'"
-    [descriptionLabel]="'description'"
-    [descriptionProperty]="'ui.description'"
-    [listType]="'policies'"
-    [entityList]="entities$">
-  </ddaplib-entity-list>
+
+  <table mat-table [dataSource]="entities$ | async"
+         class="table--base mat-elevation-z1">
+    <!-- Label Definition -->
+    <ng-container matColumnDef="label">
+      <th mat-header-cell *matHeaderCellDef>Label</th>
+      <td mat-cell *matCellDef="let model"
+          class="table--link"
+          [routerLink]="[model.name]">
+        {{ model.dto.ui.label }}
+      </td>
+    </ng-container>
+    <!-- Description Definition -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.ui.description }}</td>
+    </ng-container>
+    <!-- Variable Definition Definition -->
+    <ng-container matColumnDef="variableDefinitions">
+      <th mat-header-cell *matHeaderCellDef>Variable Definition</th>
+      <td mat-cell *matCellDef="let model">
+        <span *ngFor="let variable of model.dto.variableDefinitions | keyvalue">
+          {{ variable.key }}:
+          <span class="text-style--italic text-size--small text-color--subtle-darker">
+            {{ variable.value.ui.description }}
+          </span>
+          <br/>
+        </span>
+      </td>
+    </ng-container>
+    <!-- Any Of Definition -->
+    <ng-container matColumnDef="anyOf">
+      <th mat-header-cell *matHeaderCellDef>Condition</th>
+      <td mat-cell *matCellDef="let model">
+        <span *ngFor="let conditionAnyOf of model.dto.anyOf">
+          <ng-container *ngFor="let conditionAllOf of conditionAnyOf.allOf">
+            {{ conditionAllOf.type }}: <br/>
+            <span *ngIf="conditionAllOf.value"
+                  class="text-style--italic text-size--small text-color--subtle-darker">
+              Value: {{ conditionAllOf.value }}
+              <br/>
+            </span>
+          </ng-container>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </ddaplib-main>
