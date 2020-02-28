@@ -10,10 +10,61 @@
     <ddaplib-entity-description-link [path]="'../claim-definitions'">claims</ddaplib-entity-description-link>
     from upstream identity providers.
   </ddaplib-entity-description>
-  <ddaplib-entity-list
-    [headerTitle]="'passport issuer'"
-    [descriptionProperty]="'issuer'"
-    [descriptionLabel]="'issuer'"
-    [entityList]="entities$">
-  </ddaplib-entity-list>
+
+  <table mat-table [dataSource]="entities$ | async"
+         class="table--base mat-elevation-z1">
+    <!-- Label Definition -->
+    <ng-container matColumnDef="label">
+      <th mat-header-cell *matHeaderCellDef>Label</th>
+      <td mat-cell *matCellDef="let model"
+          class="table--link"
+          [routerLink]="[model.name]">
+        {{ model.dto.ui.label }}
+      </td>
+    </ng-container>
+    <!-- Description Definition -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.ui.description }}</td>
+    </ng-container>
+    <!-- Client ID Definition -->
+    <ng-container matColumnDef="clientId">
+      <th mat-header-cell *matHeaderCellDef>Client ID</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.clientId }}</td>
+    </ng-container>
+    <!-- Issuer Definition -->
+    <ng-container matColumnDef="issuer">
+      <th mat-header-cell *matHeaderCellDef>Issuer</th>
+      <td mat-cell *matCellDef="let model">
+        <a [href]="model.dto.issuer"
+           target="_blank"
+           rel="noopener noreferrer">{{ model.dto.issuer }}
+        </a>
+      </td>
+    </ng-container>
+    <!-- Auth URL Definition -->
+    <ng-container matColumnDef="authUrl">
+      <th mat-header-cell *matHeaderCellDef>Auth URL</th>
+      <td mat-cell *matCellDef="let model">
+        <a [href]="model.dto.authUrl"
+           target="_blank"
+           rel="noopener noreferrer">{{ model.dto.authUrl }}
+        </a>
+      </td>
+    </ng-container>
+    <!-- Token URL Definition -->
+    <ng-container matColumnDef="tokenUrl">
+      <th mat-header-cell *matHeaderCellDef>Token URL</th>
+      <td mat-cell *matCellDef="let model">
+        <a [href]="model.dto.tokenUrl"
+           target="_blank"
+           rel="noopener noreferrer">{{ model.dto.tokenUrl }}
+        </a>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </ddaplib-main>
