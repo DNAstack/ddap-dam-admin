@@ -65,6 +65,27 @@
            rel="noopener noreferrer">{{ model.dto.ui.infoUrl }}</a>
       </td>
     </ng-container>
+    <!-- More Actions Column -->
+    <ng-container matColumnDef="moreActions" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let model"
+          class="table--actions">
+        <mat-icon [matMenuTriggerFor]="moreActionsMenu"
+                  [matMenuTriggerData]="{ id: model.name }">
+          more_vert
+        </mat-icon>
+      </td>
+    </ng-container>
+
+    <mat-menu #moreActionsMenu="matMenu">
+      <ng-template matMenuContent
+                   let-id="id">
+        <button mat-menu-item
+                [routerLink]="[id]">
+          Edit
+        </button>
+      </ng-template>
+    </mat-menu>
 
     <!-- Header and Row Declarations -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

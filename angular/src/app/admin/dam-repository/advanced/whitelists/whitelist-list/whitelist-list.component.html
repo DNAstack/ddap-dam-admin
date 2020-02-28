@@ -46,6 +46,10 @@
       <ng-template matMenuContent
                    let-id="id">
         <button mat-menu-item
+                [routerLink]="[id]">
+          Edit
+        </button>
+        <button mat-menu-item
                 class="color--warn"
                 (click)="deleteWhitelist(id)">
           Delete

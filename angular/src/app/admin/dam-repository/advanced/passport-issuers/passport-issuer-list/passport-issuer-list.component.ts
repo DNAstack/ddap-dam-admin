@@ -12,7 +12,7 @@ import { PassportIssuersStore } from '../passport-issuers.store';
 })
 export class PassportIssuerListComponent extends DamConfigEntityListComponentBase<PassportIssuersStore> implements OnInit {
 
-  displayedColumns: string[] = ['label', 'description', 'clientId', 'issuer', 'authUrl', 'tokenUrl'];
+  displayedColumns: string[] = ['label', 'description', 'clientId', 'issuer', 'authUrl', 'tokenUrl', 'moreActions'];
 
   constructor(protected route: ActivatedRoute,
               protected damConfigStore: DamConfigStore,
