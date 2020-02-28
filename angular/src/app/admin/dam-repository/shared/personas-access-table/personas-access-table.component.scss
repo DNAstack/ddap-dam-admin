@@ -2,6 +2,8 @@
 
 
 mat-table {
+  padding: 0.5rem 1rem;
+
   mat-header-cell:first-child,
   mat-cell:first-child {
     align-items: start;

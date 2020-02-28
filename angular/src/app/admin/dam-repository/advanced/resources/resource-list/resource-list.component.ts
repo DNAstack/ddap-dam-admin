@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -9,17 +10,23 @@ import { ResourcesStore } from '../resources.store';
   selector: 'ddap-resource-list',
   templateUrl: './resource-list.component.html',
   styleUrls: ['./resource-list.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0', maxHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class ResourceListComponent extends DamConfigEntityListComponentBase<ResourcesStore> implements OnInit {
+
+  expandedRow: string;
+  displayedColumns: string[] = ['label', 'description', 'views', 'moreActions'];
 
   constructor(protected route: ActivatedRoute,
               protected damConfigStore: DamConfigStore,
               protected resourcesStore: ResourcesStore) {
     super(route, damConfigStore, resourcesStore);
-  }
-
-  displayableMetadata(ui: any[]): boolean {
-    return !ui.every(({value}) => value === null || value === '');
   }
 
 }
