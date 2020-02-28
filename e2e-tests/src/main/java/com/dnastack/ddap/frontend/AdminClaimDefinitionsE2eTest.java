@@ -36,7 +36,7 @@ public class AdminClaimDefinitionsE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists("Accepted Terms and Policies");
         adminListPage.assertListItemDoNotExist("Acc3pt3d T3rms and Policies Edited");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Accepted Terms and Policies", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("Accepted Terms and Policies");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
         adminManagePage.fillField(DdapBy.se("inp-label"), "Acc3pt3d T3rms and Policies Edited");
@@ -54,7 +54,7 @@ public class AdminClaimDefinitionsE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.assertListItemExists("Affiliation and Role");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Affiliation and Role", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("Affiliation and Role");
 
         adminListPage = adminManagePage.deleteEntity();
 

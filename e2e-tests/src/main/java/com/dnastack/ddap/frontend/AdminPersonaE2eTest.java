@@ -54,7 +54,7 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists("John Persona");
         adminListPage.assertListItemDoNotExist("Cooler John");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("John Persona", "Edit Persona");
+        AdminManagePage adminManagePage = adminListPage.clickView("John Persona");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
         adminManagePage.fillField(DdapBy.se("inp-label"), "Cooler John");
@@ -85,7 +85,7 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.assertListItemExists("Undergrad Candice");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Undergrad Candice", "Edit Persona");
+        AdminManagePage adminManagePage = adminListPage.clickView("Undergrad Candice");
 
         adminListPage = adminManagePage.deleteEntity();
 
@@ -135,7 +135,7 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.assertListItemExists("Dr. Joe (Elixir)");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Dr. Joe (Elixir)", "Edit Persona");
+        AdminManagePage adminManagePage = adminListPage.clickView("Dr. Joe (Elixir)");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
 

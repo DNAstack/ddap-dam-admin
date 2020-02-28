@@ -6,7 +6,8 @@
     <!-- Name Definition -->
     <ng-container matColumnDef="name" sticky>
       <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let token">
+      <td mat-cell *matCellDef="let token"
+          data-se="entity-title">
         {{ token.name }}
       </td>
     </ng-container>

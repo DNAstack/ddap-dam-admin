@@ -40,7 +40,7 @@ public class AdminTrustedSourcesE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists("test-source-name");
         adminListPage.assertListItemDoNotExist("t3st-source-nam3");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("test-source", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("test-source");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
         adminManagePage.fillField(DdapBy.se("inp-label"), "t3st-source-nam3");
@@ -58,7 +58,7 @@ public class AdminTrustedSourcesE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.assertListItemExists("delete_me");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("delete_me", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("delete_me");
 
         adminListPage = adminManagePage.deleteEntity();
 

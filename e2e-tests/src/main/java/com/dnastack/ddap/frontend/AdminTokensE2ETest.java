@@ -14,17 +14,4 @@ public class AdminTokensE2ETest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists("access-token");
     }
 
-    @Test
-    public void revokeToken() {
-        AdminListPage adminListPage = ddapPage.getNavBar().goTo(damTokensLink(), AdminListPage::new);
-        adminListPage.assertListItemExists("access-token");
-
-        adminListPage.clickView("access-token", "Revoke Token");
-
-        adminListPage.waitForInflightRequests();
-        // doing this for now as we have mock data
-        adminListPage.assertListItemExists("access-token");
-        // TODO: Update this after integration with real token endpoint
-        // adminListPage.assertListItemDoNotExist("access-token");
-    }
 }

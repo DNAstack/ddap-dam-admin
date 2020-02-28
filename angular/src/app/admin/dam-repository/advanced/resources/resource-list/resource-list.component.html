@@ -19,6 +19,7 @@
       <th mat-header-cell *matHeaderCellDef>Label</th>
       <td mat-cell *matCellDef="let model"
           class="table--link"
+          data-se="entity-title"
           [routerLink]="[model.name]">
         {{ model.dto.ui.label }}
       </td>
@@ -42,6 +43,7 @@
         </span>
       </td>
     </ng-container>
+    <!-- TODO: does not look very natural, probably will be moved or removed -->
     <!-- Expanded Detail Definition -->
     <ng-container matColumnDef="expandedDetail">
       <td mat-cell *matCellDef="let model" [attr.colspan]="displayedColumns.length"

@@ -83,7 +83,7 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists("Edit Me Policy");
         adminListPage.assertListItemDoNotExist("Cooler Policy");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Edit Me Policy", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("Edit Me Policy");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
         adminManagePage.fillField(DdapBy.se("inp-label"), "Cooler Policy");
@@ -101,7 +101,7 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.assertListItemExists("Delete Me Policy");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Delete Me Policy", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("Delete Me Policy");
 
         adminListPage = adminManagePage.deleteEntity();
 

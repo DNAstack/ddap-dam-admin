@@ -22,16 +22,9 @@ public class AdminListPage extends AdminDdapPage {
         return new AdminManagePage(driver);
     }
 
-    public AdminManagePage clickView(String resourceName, String buttonText) {
-        driver.findElement(getLine(resourceName))
+    public AdminManagePage clickView(String resourceName) {
+        driver.findElement(DdapBy.seAndText("entity-title", resourceName))
                 .click();
-
-        final WebElement viewButton = driver.findElement(getButton(resourceName, buttonText));
-        // need to wait for button to become visible.
-        new WebDriverWait(driver, 5).until(d -> viewButton.isDisplayed());
-
-        viewButton.click();
-
         return new AdminManagePage(driver);
     }
 
@@ -53,15 +46,8 @@ public class AdminListPage extends AdminDdapPage {
     }
 
     private By getLine(String resourceName) {
-        return By.xpath(format("//mat-expansion-panel[descendant::*[contains(text(), '%s') and @data-se='entity-title']]",
+        return By.xpath(format("//td[descendant::*[contains(text(), '%s') and @data-se='entity-title']]",
                 resourceName
-        ));
-    }
-
-    private By getButton(String resourceName, String buttonText) {
-        return By.xpath(format("//mat-expansion-panel[descendant::*[contains(text(), '%s') and @data-se='entity-title']]//button[descendant::*[contains(text(), '%s')]]",
-                resourceName,
-                buttonText
         ));
     }
 }

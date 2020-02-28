@@ -54,7 +54,7 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
         adminListPage.assertListItemExists("edit-me");
         adminListPage.assertListItemDoNotExist("dnstck edit-me");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("edit-me", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("edit-me");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
         adminManagePage.fillField(DdapBy.se("inp-label"), "dnstck edit-me");
@@ -72,7 +72,7 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
 
         adminListPage.assertListItemExists("delete-me");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("delete-me", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("delete-me");
 
         adminListPage = adminManagePage.deleteEntity();
 

@@ -65,7 +65,7 @@ public class AdminServiceTemplatesE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists("Edit Me");
         adminListPage.assertListItemDoNotExist("Cooler Service Definition");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Edit Me", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("Edit Me");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
         adminManagePage.fillField(DdapBy.se("inp-label"), "Cooler Service Definition");
@@ -83,7 +83,7 @@ public class AdminServiceTemplatesE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.assertListItemExists("Delete Me");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Delete Me", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("Delete Me");
 
         adminListPage = adminManagePage.deleteEntity();
 

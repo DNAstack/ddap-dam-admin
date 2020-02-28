@@ -254,7 +254,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         waitForAccessTablesToLoad();
         adminListPage.assertListItemExists(resourceToEdit);
 
-        AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit, "Edit Resource");
+        AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit);
         adminManagePage.toggleExpansionPanel("view-discovery-access");
 
         // Invalid part
@@ -278,7 +278,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         waitForAccessTablesToLoad();
         adminListPage.assertListItemExists(resourceToEdit);
 
-        AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit, "Edit Resource");
+        AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit);
         WebElement userWithAccessCheckbox = adminManagePage.findCheckedCheckbox("discovery-access/discovery/test_user_with_access");
 
         userWithAccessCheckbox.click();
@@ -298,7 +298,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         waitForAccessTablesToLoad();
         adminListPage.assertListItemExists(resourceToEdit);
 
-        AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit, "Edit Resource");
+        AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit);
         adminManagePage.toggleExpansionPanel("view-discovery-access");
 
         adminManagePage.findCheckedCheckbox("discovery-access/discovery/test_user_with_access");
@@ -326,7 +326,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         waitForAccessTablesToLoad();
         adminListPage.assertListItemExists(resourceToEdit);
 
-        AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit, "Edit Resource");
+        AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit);
         adminManagePage.toggleExpansionPanel("view-gcs-file-access");
 
         adminManagePage.findCheckedCheckbox("discovery-access/discovery/test_user_with_access");
@@ -351,7 +351,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         waitForAccessTablesToLoad();
         adminListPage.assertListItemExists(resourceToDelete);
 
-        AdminManagePage adminManagePage = adminListPage.clickView(resourceToDelete, "Edit Resource");
+        AdminManagePage adminManagePage = adminListPage.clickView(resourceToDelete);
 
         adminListPage = adminManagePage.deleteEntity();
 

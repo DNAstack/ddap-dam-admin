@@ -39,7 +39,7 @@ public class AdminPassportIssuersE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists("edit-me");
         adminListPage.assertListItemDoNotExist("full-passport-issu3r");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("edit-me", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("edit-me");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
         adminManagePage.fillField(DdapBy.se("inp-label"), "full-passport-issu3r");
@@ -57,7 +57,7 @@ public class AdminPassportIssuersE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.assertListItemExists("delete-me");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("delete-me", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("delete-me");
 
         adminListPage = adminManagePage.deleteEntity();
 
@@ -75,7 +75,7 @@ public class AdminPassportIssuersE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.assertListItemExists("nih");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("nih", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("nih");
 
         adminManagePage.clickButton(DdapBy.se("btn-delete"));
         ConfirmationRemovalDialog dialog = new ConfirmationRemovalDialog(driver);
