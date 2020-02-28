@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import _get from 'lodash.get';
-import _pick from 'lodash.pick';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { pluck, switchMap } from 'rxjs/operators';
 
+import { common } from '../../../../../shared/proto/dam-service';
 import { TokensService } from '../tokens.service';
+
+import ITokenMetadata = common.ITokenMetadata;
 
 @Component({
   selector: 'ddap-tokens-list',
@@ -13,25 +14,27 @@ import { TokensService } from '../tokens.service';
 })
 export class TokensListComponent implements OnInit {
 
-  tokens$: Observable<any[]>;
+  displayedColumns: string[] = ['name', 'description', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions'];
+
+  tokens$: Observable<ITokenMetadata[]>;
   private readonly refreshTokens$ = new BehaviorSubject(undefined);
-  constructor(private tokensService: TokensService) { }
+
+  constructor(private tokensService: TokensService) {
+  }
 
   ngOnInit() {
     this.tokens$ = this.refreshTokens$.pipe(
-      switchMap(() => this.tokensService.getTokens())
+      switchMap(() => this.tokensService.getTokens()
+        .pipe(
+          pluck('tokens')
+        )
+      )
     );
   }
 
-  revokeToken(token: any) {
-    this.tokensService.revokeToken(token.name).subscribe(() => this.refreshTokens$.next(undefined));
+  revokeToken(tokenId: string) {
+    this.tokensService.revokeToken(tokenId)
+      .subscribe(() => this.refreshTokens$.next(undefined));
   }
 
-  getClientData(token: any) {
-    return _get(token, 'client');
-  }
-
-  getTokenData(token: any) {
-    return _pick(token, ['aud', 'exp', 'iat', 'scope', 'target']);
-  }
 }
