@@ -12,11 +12,62 @@
     <ddaplib-entity-description-link [path]="'../resources'">resources</ddaplib-entity-description-link>)
     to target roles (used to configure access on the target data source or service).
   </ddaplib-entity-description>
-  <ddaplib-entity-list
-    [headerTitle]="'service definition'"
-    [descriptionProperty]="'targetAdapter'"
-    [descriptionLabel]="'target adapter'"
-    [listType]="'service'"
-    [entityList]="entities$">
-  </ddaplib-entity-list>
+
+  <table mat-table [dataSource]="entities$ | async"
+         class="table--base mat-elevation-z1">
+    <!-- Label Definition -->
+    <ng-container matColumnDef="label">
+      <th mat-header-cell *matHeaderCellDef>Label</th>
+      <td mat-cell *matCellDef="let model"
+          class="table--link"
+          [routerLink]="[model.name]">
+        {{ model.dto.ui.label }}
+      </td>
+    </ng-container>
+    <!-- Description Definition -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.ui.description }}</td>
+    </ng-container>
+    <!-- Target Adapter Definition -->
+    <ng-container matColumnDef="targetAdapter">
+      <th mat-header-cell *matHeaderCellDef>Target Adapter</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.targetAdapter }}</td>
+    </ng-container>
+    <!-- Item Format Definition -->
+    <ng-container matColumnDef="itemFormat">
+      <th mat-header-cell *matHeaderCellDef>Item Format</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.itemFormat }}</td>
+    </ng-container>
+    <!-- Interface Definition -->
+    <ng-container matColumnDef="interfaces">
+      <th mat-header-cell *matHeaderCellDef>Interface</th>
+      <td mat-cell *matCellDef="let model">
+        <span *ngFor="let interface of model.dto.interfaces | keyvalue">
+          {{ interface.key }}:
+          <span class="text-style--italic text-size--small text-color--subtle-darker">
+            {{ interface.value }}
+          </span>
+          <br/>
+        </span>
+      </td>
+    </ng-container>
+    <!-- Role Definition -->
+    <ng-container matColumnDef="roles">
+      <th mat-header-cell *matHeaderCellDef>Role</th>
+      <td mat-cell *matCellDef="let model">
+        <span *ngFor="let role of model.dto.roles | keyvalue">
+          {{ role.value.ui.label }}:
+          <span class="text-style--italic text-size--small text-color--subtle-darker">
+            {{ role.value.ui.description }}
+          </span>
+          <br/>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </ddaplib-main>

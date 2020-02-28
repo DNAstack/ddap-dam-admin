@@ -12,6 +12,8 @@ import { ServiceDefinitionsStore } from '../service-definitions.store';
 })
 export class ServiceDefinitionListComponent extends DamConfigEntityListComponentBase<ServiceDefinitionsStore> implements OnInit {
 
+  displayedColumns: string[] = ['label', 'description', 'targetAdapter', 'itemFormat', 'interfaces', 'roles'];
+
   constructor(protected route: ActivatedRoute,
               protected damConfigStore: DamConfigStore,
               protected serviceDefinitionsStore: ServiceDefinitionsStore) {
