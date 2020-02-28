@@ -8,15 +8,50 @@
   <ddaplib-entity-description>
     Trusted Sources are sources of GA4GH
     <ddaplib-entity-description-link [path]="'../claim-definitions'">claims</ddaplib-entity-description-link>
-    in researcher identity tokens.
-    Typical <ddaplib-entity-description-link [path]="'../access-policies'">access policies</ddaplib-entity-description-link>
-    place restrictions on the value and source
-    of claims.
+    in researcher identity tokens. Typical
+    <ddaplib-entity-description-link [path]="'../access-policies'">access policies</ddaplib-entity-description-link>
+    place restrictions on the value and source of claims.
   </ddaplib-entity-description>
-  <ddaplib-entity-list
-    [headerTitle]="'trusted source'"
-    [descriptionProperty]="'sources'"
-    [descriptionLabel]="'sources'"
-    [entityList]="entities$">
-  </ddaplib-entity-list>
+
+  <table mat-table [dataSource]="entities$ | async"
+         class="table--base mat-elevation-z1">
+    <!-- Label Definition -->
+    <ng-container matColumnDef="label">
+      <th mat-header-cell *matHeaderCellDef>Label</th>
+      <td mat-cell *matCellDef="let model"
+          class="table--link"
+          [routerLink]="[model.name]">
+        {{ model.dto.ui.label }}
+      </td>
+    </ng-container>
+    <!-- Description Definition -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let model">{{ model.dto.ui.description }}</td>
+    </ng-container>
+    <!-- Sources Definition -->
+    <ng-container matColumnDef="sources">
+      <th mat-header-cell *matHeaderCellDef>Sources</th>
+      <td mat-cell *matCellDef="let model">
+        <span *ngFor="let source of model.dto.sources">
+          {{ source }}
+          <br/>
+        </span>
+      </td>
+    </ng-container>
+    <!-- Claims Definition -->
+    <ng-container matColumnDef="claims">
+      <th mat-header-cell *matHeaderCellDef>Claims</th>
+      <td mat-cell *matCellDef="let model">
+        <span *ngFor="let claim of model.dto.claims">
+          {{ claim }}
+          <br/>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </ddaplib-main>

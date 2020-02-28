@@ -12,6 +12,8 @@ import { TrustedSourcesStore } from '../trusted-sources.store';
 })
 export class TrustedSourcesListComponent extends DamConfigEntityListComponentBase<TrustedSourcesStore> implements OnInit {
 
+  displayedColumns: string[] = ['label', 'description', 'sources', 'claims'];
+
   constructor(protected route: ActivatedRoute,
               protected damConfigStore: DamConfigStore,
               protected trustedSourcesStore: TrustedSourcesStore) {
