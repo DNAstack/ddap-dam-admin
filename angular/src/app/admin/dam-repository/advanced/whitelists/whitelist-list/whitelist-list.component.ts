@@ -12,6 +12,8 @@ import { WhitelistsService } from '../whitelists.service';
 })
 export class WhitelistListComponent implements OnInit {
 
+  displayedColumns: string[] = ['name', 'users', 'moreActions'];
+
   whitelists$: Observable<any[]>;
 
   private readonly refreshWhitelists$ = new BehaviorSubject<any>([]);

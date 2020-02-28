@@ -8,35 +8,53 @@
   <ddaplib-entity-description>
     Explicitly allow users on whitelists to access resources.
   </ddaplib-entity-description>
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let entity of whitelists$ | async">
-      <mat-expansion-panel-header collapsedHeight="5rem"
-                                  expandedHeight="5rem">
-        <mat-panel-title>
-          {{ entity.name }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
 
-      <mat-list dense>
-        <mat-list-item *ngFor="let user of entity.users">
+  <table mat-table [dataSource]="whitelists$ | async"
+         class="table--base mat-elevation-z1">
+    <!-- Name Definition -->
+    <ng-container matColumnDef="name" sticky>
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let whitelist"
+          class="table--link"
+          [routerLink]="[whitelist.name]">
+        {{ whitelist.name }}
+      </td>
+    </ng-container>
+    <!-- User Definition -->
+    <ng-container matColumnDef="users">
+      <th mat-header-cell *matHeaderCellDef>Users</th>
+      <td mat-cell *matCellDef="let whitelist">
+        <span *ngFor="let user of whitelist.users">
           {{ user.email }}
-        </mat-list-item>
-      </mat-list>
+          <br/>
+        </span>
+      </td>
+    </ng-container>
+    <!-- More Actions Column -->
+    <ng-container matColumnDef="moreActions" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let whitelist"
+          class="table--actions">
+        <mat-icon [matMenuTriggerFor]="moreActionsMenu"
+                  [matMenuTriggerData]="{ id: whitelist.name }">
+          more_vert
+        </mat-icon>
+      </td>
+    </ng-container>
 
-      <mat-action-row>
-        <button mat-button
-                color="warn"
-                class="uppercase"
-                (click)="deleteWhitelist(entity.name)">
+    <mat-menu #moreActionsMenu="matMenu">
+      <ng-template matMenuContent
+                   let-id="id">
+        <button mat-menu-item
+                class="color--warn"
+                (click)="deleteWhitelist(id)">
           Delete
         </button>
-        <button mat-button
-                [routerLink]="[entity.name]"
-                color="primary"
-                class="uppercase">
-          View
-        </button>
-      </mat-action-row>
-    </mat-expansion-panel>
-  </mat-accordion>
+      </ng-template>
+    </mat-menu>
+
+    <!-- Header and Row Declarations -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </ddaplib-main>

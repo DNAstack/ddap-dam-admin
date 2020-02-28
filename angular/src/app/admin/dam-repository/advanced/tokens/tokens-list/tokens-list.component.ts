@@ -17,6 +17,7 @@ export class TokensListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'description', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions'];
 
   tokens$: Observable<ITokenMetadata[]>;
+
   private readonly refreshTokens$ = new BehaviorSubject(undefined);
 
   constructor(private tokensService: TokensService) {
