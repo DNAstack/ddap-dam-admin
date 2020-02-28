@@ -12,6 +12,8 @@ import { PersonasStore } from '../personas.store';
 })
 export class PersonaListComponent extends DamConfigEntityListComponentBase<PersonasStore> implements OnInit {
 
+  displayedColumns: string[] = ['label', 'description', 'standardClaims', 'ga4ghClaims', 'moreActions'];
+
   constructor(protected route: ActivatedRoute,
               protected damConfigStore: DamConfigStore,
               protected personasStore: PersonasStore) {
