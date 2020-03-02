@@ -17,7 +17,7 @@ public class AdminDamOptionsE2eTest extends AbstractAdminFrontendE2eTest {
                                                 .goToAdminOptionPage(damOptionsLink());
 
         assertThat(adminListPage.getOptionNames(), hasItem("Read Only Master Realm"));
-        adminListPage.submitOption("Read Only Master Realm", "foobar");
+        adminListPage.submitOption("Read Only Master Realm", "readOnlyMasterRealm", "foobar");
         adminListPage.assertError("Read Only Master Realm", 5, containsString("boolean"));
     }
 
@@ -28,7 +28,7 @@ public class AdminDamOptionsE2eTest extends AbstractAdminFrontendE2eTest {
 
         assertThat(adminListPage.getOptionNames(), hasItem("Read Only Master Realm"));
         final String oldValue = adminListPage.getOptionValue("Read Only Master Realm");
-        adminListPage.submitOption("Read Only Master Realm", oldValue);
+        adminListPage.submitOption("Read Only Master Realm", "readOnlyMasterRealm", oldValue);
         adminListPage.assertNoError("Read Only Master Realm", 5);
     }
 
@@ -39,7 +39,7 @@ public class AdminDamOptionsE2eTest extends AbstractAdminFrontendE2eTest {
 
         assertThat(adminListPage.getOptionNames(), hasItem("GCP Managed Keys Per Account"));
         final String oldValue = adminListPage.getOptionValue("GCP Managed Keys Per Account");
-        adminListPage.submitOption("GCP Managed Keys Per Account", oldValue);
+        adminListPage.submitOption("GCP Managed Keys Per Account", "gcpManagedKeysPerAccount", oldValue);
         adminListPage.assertNoError("GCP Managed Keys Per Account", 5);
     }
 
@@ -50,7 +50,7 @@ public class AdminDamOptionsE2eTest extends AbstractAdminFrontendE2eTest {
 
         assertThat(adminListPage.getOptionNames(), hasItem("GCP Service Account Project"));
         final String oldValue = adminListPage.getOptionValue("GCP Service Account Project");
-        adminListPage.submitOption("GCP Service Account Project", oldValue);
+        adminListPage.submitOption("GCP Service Account Project", "gcpServiceAccountProject", oldValue);
         adminListPage.assertNoError("GCP Service Account Project", 5);
     }
 }

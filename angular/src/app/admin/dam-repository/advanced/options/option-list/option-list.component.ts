@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { OptionService } from '../options.service';
 
@@ -9,31 +10,34 @@ import { OptionService } from '../options.service';
 })
 export class OptionListComponent implements OnInit {
 
-  options: any;
+  displayedColumns: string[] = ['label', 'description', 'type', 'defaultValue', 'value', 'moreActions'];
+
+  options$: Observable<any>;
   error: string;
+  currentlyEditing: string;
 
   constructor(public optionService: OptionService) {
   }
 
   ngOnInit() {
-    this.optionService.get()
-      .subscribe((options) => {
-          this.options = options;
-        }, this.handleError
-      );
+    this.options$ = this.optionService.get();
   }
 
-  updateOptionValue({ optionKey, newValue }) {
+  updateOptionValue(options, optionKey, newValue) {
     this.error = null;
-    const newOptions = this.cloneOptions();
+    const newOptions = this.cloneOptions(options);
     const oldValue = newOptions[optionKey];
     try {
       const convertedNewValue = typeof oldValue !== 'string' ? JSON.parse(newValue) : newValue;
       newOptions[optionKey] = convertedNewValue;
+
       this.optionService.update(newOptions)
         .subscribe(
-          () => this.options[optionKey] = convertedNewValue,
-          this.handleError
+          () => {
+            options[optionKey] = convertedNewValue;
+            this.currentlyEditing = null;
+          },
+          ({error}) => this.error = error.substring(error.lastIndexOf(':') + 1)
         );
     } catch (e) {
       // The only type of error we expect here a syntax error.
@@ -41,19 +45,9 @@ export class OptionListComponent implements OnInit {
     }
   }
 
-  private cloneOptions(): object {
-    return Object.assign({}, this.options);
+  private cloneOptions(options): object {
+    return Object.assign({}, options);
   }
 
-  private handleError = ({ error }) => {
-    if (error instanceof Object) {
-      const { details } = error;
-      details.forEach(errorDetail => {
-        this.error = errorDetail['description'];
-      });
-    } else {
-    //  TODO: show a global error
-    }
-  }
 
 }

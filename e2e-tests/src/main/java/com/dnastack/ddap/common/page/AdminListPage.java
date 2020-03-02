@@ -8,8 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static java.lang.String.format;
-
 public class AdminListPage extends AdminDdapPage {
 
     public AdminListPage(WebDriver driver) {
@@ -24,7 +22,7 @@ public class AdminListPage extends AdminDdapPage {
 
     public AdminManagePage clickView(String resourceName) {
         driver.findElement(DdapBy.seAndText("entity-title", resourceName))
-                .click();
+            .click();
         return new AdminManagePage(driver);
     }
 
@@ -45,9 +43,4 @@ public class AdminListPage extends AdminDdapPage {
                 .until(ExpectedConditions.invisibilityOfElementLocated(DdapBy.seAndText("entity-title", title)));
     }
 
-    private By getLine(String resourceName) {
-        return By.xpath(format("//td[descendant::*[contains(text(), '%s') and @data-se='entity-title']]",
-                resourceName
-        ));
-    }
 }
