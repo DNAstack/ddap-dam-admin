@@ -44,7 +44,7 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
     public void editClientApplication() {
         // FIXME: DISCO-2660
         Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
-            2020, 2, 29, 12, 0, 0,0,
+            2020, 3, 31, 12, 0, 0,0,
             ZoneId.of("America/Toronto"))
         ));
 
