@@ -9,21 +9,24 @@ mat-sidenav-container {
   align-items: center;
 
   img {
+    display: flex;
     width: 34px;
     border-radius: 50%;
     vertical-align: middle;
     margin-right: 16px;
   }
+  .account-info {
+    display: flex;
+    flex-direction: column;
 
-  .account-info-label {
-    display: block;
-    margin-top: -0.5rem;
-  }
+    .account-info-label {
+      line-height: 1rem;
+    }
 
-  .account-info-sublabel {
-    display: block;
-    margin-top: -2rem;
-    font-size: 0.75rem;
+    .account-info-sublabel {
+      line-height: 1rem;
+      font-size: 0.75rem;
+    }
   }
 }
 
