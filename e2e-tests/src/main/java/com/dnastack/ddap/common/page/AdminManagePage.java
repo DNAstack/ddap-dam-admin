@@ -4,7 +4,6 @@ import com.dnastack.ddap.common.util.DdapBy;
 import com.dnastack.ddap.common.util.WebPageScroller;
 import org.hamcrest.Matcher;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -37,8 +36,7 @@ public class AdminManagePage extends AdminDdapPage {
         WebElement button = new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.elementToBeClickable(fieldSelector));
         WebPageScroller.scrollTo(driver, button);
-        Actions actions = new Actions(driver);
-        actions.moveToElement(button).click().build().perform();
+        button.click();
     }
 
     public void fillFieldFromDropdown(By fieldSelector, String fieldValue) {
@@ -73,8 +71,8 @@ public class AdminManagePage extends AdminDdapPage {
     }
 
     public void fillTagField(By fieldSelector, String value) {
-        WebElement tagInput = new WebDriverWait(driver,
-                                                5).until(ExpectedConditions.elementToBeClickable(fieldSelector));
+        WebElement tagInput = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(fieldSelector));
         WebPageScroller.scrollTo(driver, tagInput);
         tagInput.click();
         tagInput.findElement(By.tagName("input")).sendKeys(value, Keys.ENTER);

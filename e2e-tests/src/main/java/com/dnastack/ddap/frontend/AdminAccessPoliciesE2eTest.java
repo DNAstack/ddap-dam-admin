@@ -23,7 +23,7 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
-        adminManagePage.fillField(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
+        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
         adminManagePage.waitForInflightRequests();
         adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
         adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "faculty@uni-heidelberg.de");
