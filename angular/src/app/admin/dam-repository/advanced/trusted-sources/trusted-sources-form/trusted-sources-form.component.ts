@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import TrustedSource = dam.v1.TrustedSource;
 import { Form, isExpanded } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
@@ -37,19 +37,21 @@ export class TrustedSourcesFormComponent implements OnInit, Form {
   }
 
   addSource(): void {
+    const firstControl = this.getFirstControl(this.sources);
+    if (firstControl && !firstControl.value) {
+      // Skip if recently added was not touched
+      return;
+    }
     this.sources.insert(0, this.trustedSourcesFormBuilder.buildStringControl());
   }
 
-  removeSource(index: number): void {
-    this.sources.removeAt(index);
-  }
-
   addClaim(): void {
+    const firstControl = this.getFirstControl(this.claims);
+    if (firstControl && !firstControl.value) {
+      // Skip if recently added was not touched
+      return;
+    }
     this.claims.insert(0, this.trustedSourcesFormBuilder.buildStringControl());
-  }
-
-  removeClaim(index: number): void {
-    this.claims.removeAt(index);
   }
 
   getModel(): EntityModel {
@@ -71,6 +73,8 @@ export class TrustedSourcesFormComponent implements OnInit, Form {
     return this.form.valid;
   }
 
-
+  private getFirstControl(formControls: FormArray): AbstractControl {
+    return formControls.at(0);
+  }
 
 }
