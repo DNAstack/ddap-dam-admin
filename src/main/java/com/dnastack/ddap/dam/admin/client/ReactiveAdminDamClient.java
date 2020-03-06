@@ -7,7 +7,6 @@ import com.dnastack.ddap.common.client.WebClientFactory;
 import com.dnastack.ddap.common.config.DamProperties;
 import dam.v1.DamService;
 import dam.v1.DamService.DamConfig;
-import dam.v1.DamService.TargetAdaptersResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriTemplate;
@@ -58,8 +57,8 @@ public class ReactiveAdminDamClient {
             .flatMap(json -> ProtobufDeserializer.fromJsonToMono(json, DamConfig.getDefaultInstance()));
     }
 
-    public Mono<TargetAdaptersResponse> getTargetAdapters(String realm, String damToken, String refreshToken) {
-        final UriTemplate template = new UriTemplate("/dam/v1alpha/{realm}/targetAdapters" +
+    public Mono<DamService.ServicesResponse> getServiceDescriptors(String realm, String damToken, String refreshToken) {
+        final UriTemplate template = new UriTemplate("/dam/v1alpha/{realm}/services" +
             "?client_id={clientId}" +
             "&client_secret={clientSecret}");
         final Map<String, Object> variables = new HashMap<>();
@@ -73,7 +72,7 @@ public class ReactiveAdminDamClient {
             .header(AUTHORIZATION, "Bearer " + damToken)
             .retrieve()
             .bodyToMono(String.class)
-            .flatMap(json -> ProtobufDeserializer.fromJsonToMono(json, TargetAdaptersResponse.getDefaultInstance()));
+            .flatMap(json -> ProtobufDeserializer.fromJsonToMono(json, DamService.ServicesResponse.getDefaultInstance()));
     }
 
 }

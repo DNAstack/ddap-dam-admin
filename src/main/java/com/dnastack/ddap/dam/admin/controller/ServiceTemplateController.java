@@ -40,8 +40,8 @@ public class ServiceTemplateController {
                                                               @PathVariable String serviceTemplateId) {
         Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(DAM.cookieName(TokenKind.ACCESS), DAM.cookieName(TokenKind.REFRESH)));
         return getServiceTemplate(damClient, realm, tokens, serviceTemplateId)
-            .flatMap(serviceTemplate -> getItemFormatForServiceTemplate(damClient, realm, tokens, serviceTemplate)
-                .map(ItemFormat::getVariablesMap));
+                .flatMap(serviceTemplate -> getServiceDescriptorForServiceTemplate(damClient, realm, tokens, serviceTemplate)
+                        .map(ServiceDescriptor::getItemVariablesMap));
     }
 
     private Mono<ServiceTemplate> getServiceTemplate(ReactiveAdminDamClient damClient,
@@ -58,39 +58,26 @@ public class ServiceTemplateController {
             });
     }
 
-    private Mono<ItemFormat> getItemFormatForServiceTemplate(ReactiveAdminDamClient damClient,
-                                                             String realm,
-                                                             Map<CookieName, UserTokenCookiePackager.CookieValue> tokens,
-                                                             ServiceTemplate serviceTemplate) {
-        String targetAdapterId = serviceTemplate.getTargetAdapter();
-        String itemFormatId = serviceTemplate.getItemFormat();
+    private Mono<ServiceDescriptor> getServiceDescriptorForServiceTemplate(ReactiveAdminDamClient damClient,
+                                                                    String realm,
+                                                                    Map<CookieName, UserTokenCookiePackager.CookieValue> tokens,
+                                                                    ServiceTemplate serviceTemplate) {
+        String targetAdapterId = serviceTemplate.getServiceName();
 
-        return damClient.getTargetAdapters(realm, tokens.get(DAM.cookieName(TokenKind.ACCESS)).getClearText(), tokens.get(DAM.cookieName(TokenKind.REFRESH)).getClearText())
-            .map(targetAdaptersResponse -> {
-                TargetAdapter targetAdapter = getDamTargetAdapter(targetAdapterId, targetAdaptersResponse);
-                return getDamItemFormat(targetAdapterId, itemFormatId, targetAdapter);
-            });
+        return damClient.getServiceDescriptors(realm,
+                                               tokens.get(DAM.cookieName(TokenKind.ACCESS)).getClearText(),
+                                               tokens.get(DAM.cookieName(TokenKind.REFRESH)).getClearText())
+                        .map(servicesResponse -> getDamTargetAdapter(targetAdapterId, servicesResponse));
     }
 
-    private ItemFormat getDamItemFormat(String targetAdapterId, String itemFormatId, TargetAdapter targetAdapter) {
-        ItemFormat itemFormat = targetAdapter.getItemFormatsMap().get(itemFormatId);
-        if (itemFormat == null) {
+    private ServiceDescriptor getDamTargetAdapter(String targetAdapterId, ServicesResponse servicesResponse) {
+        ServiceDescriptor serviceDescriptor = servicesResponse.getServicesMap().get(targetAdapterId);
+        if (serviceDescriptor == null) {
             throw new IllegalStateException(format(
-                "Could not find itemFormat [%s] in targetAdapter [%s] referenced from service template",
-                itemFormatId,
+                "Could not find serviceDescriptor [%s] referenced from service template",
                 targetAdapterId));
         }
-        return itemFormat;
-    }
-
-    private TargetAdapter getDamTargetAdapter(String targetAdapterId, TargetAdaptersResponse targetAdaptersResponse) {
-        TargetAdapter targetAdapter = targetAdaptersResponse.getTargetAdaptersMap().get(targetAdapterId);
-        if (targetAdapter == null) {
-            throw new IllegalStateException(format(
-                "Could not find targetAdapter [%s] referenced from service template",
-                targetAdapterId));
-        }
-        return targetAdapter;
+        return serviceDescriptor;
     }
 
 }

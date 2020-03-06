@@ -1,15 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Form } from 'ddap-common-lib';
-import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
+import { EntityModel, Form, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable } from 'rxjs';
 
 import { dam } from '../../../../../shared/proto/dam-service';
 import { pick } from '../../../shared/autocomplete.util';
-import TrustedPassportIssuer = dam.v1.TrustedPassportIssuer;
 import { PassportTranslatorsService } from '../../passport-translators/passport-translators.service';
 import { PassportIssuersStore } from '../passport-issuers.store';
+import TrustedIssuer = dam.v1.TrustedIssuer;
 
 @Component({
   selector: 'ddap-passport-issuer-form',
@@ -20,7 +19,7 @@ import { PassportIssuersStore } from '../passport-issuers.store';
 export class PassportIssuerFormComponent implements OnInit, Form {
 
   @Input()
-  passportIssuer?: EntityModel = new EntityModel('', TrustedPassportIssuer.create());
+  passportIssuer?: EntityModel = new EntityModel('', TrustedIssuer.create());
 
   form: FormGroup;
 
@@ -53,7 +52,7 @@ export class PassportIssuerFormComponent implements OnInit, Form {
 
   getModel(): EntityModel {
     const {id, ui, issuer, translateUsing} = this.form.value;
-    const clientApplication: TrustedPassportIssuer = TrustedPassportIssuer.create({
+    const clientApplication: TrustedIssuer = TrustedIssuer.create({
       ui,
       issuer,
       translateUsing,

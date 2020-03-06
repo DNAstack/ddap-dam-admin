@@ -9,9 +9,8 @@ import { getRoleName } from './access-level-role.mapper';
 import { AccessLevel } from './access-level.enum';
 import { controlAccessGrantsPolicyId, researcherStatusPolicyId } from './access-policy-builder.service';
 import { AccessPolicyType } from './access-policy-type.enum';
-
-import IAccessRole = dam.v1.IAccessRole;
-import AccessRole = dam.v1.AccessRole;
+import IViewRole = dam.v1.IViewRole;
+import ViewRole = dam.v1.ViewRole;
 
 @Injectable({
   providedIn: 'root',
@@ -74,14 +73,14 @@ export class ResourceBuilderService {
     return new EntityModel(id, accessPolicy);
   }
 
-  private buildAccessRole(accessPolicyId: string, accessPolicyValue: string): IAccessRole {
-    return AccessRole.create({
+  private buildAccessRole(accessPolicyId: string, accessPolicyValue: string): IViewRole {
+    return ViewRole.create({
       policies: [
         {
           name: accessPolicyId === AccessPolicyType.controlAccessGrants
                 ? controlAccessGrantsPolicyId
                 : researcherStatusPolicyId,
-          vars: {
+          args: {
             URL: accessPolicyValue,
           },
         },

@@ -1,4 +1,3 @@
-import TrustedPassportIssuer = dam.v1.TrustedPassportIssuer;
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
@@ -8,6 +7,7 @@ import { dam } from '../../../../../shared/proto/dam-service';
 import { DamConfigEntityFormComponentBase } from '../../../shared/dam/dam-config-entity-form-component.base';
 import { PassportIssuerFormComponent } from '../passport-issuer-form/passport-issuer-form.component';
 import { PassportIssuerService } from '../passport-issuers.service';
+import TrustedIssuer = dam.v1.TrustedIssuer;
 
 @Component({
   selector: 'ddap-passport-issuer-manage',
@@ -20,7 +20,7 @@ export class PassportIssuerManageComponent extends DamConfigEntityFormComponentB
   @ViewChild(PassportIssuerFormComponent, { static: false })
   passportIssuerForm: PassportIssuerFormComponent;
 
-  passportIssuer: TrustedPassportIssuer;
+  passportIssuer: TrustedIssuer;
 
   constructor(protected route: ActivatedRoute,
               protected router: Router,
@@ -30,7 +30,7 @@ export class PassportIssuerManageComponent extends DamConfigEntityFormComponentB
   }
 
   ngOnInit(): void {
-    this.passportIssuer = TrustedPassportIssuer.create({});
+    this.passportIssuer = TrustedIssuer.create({});
   }
 
   save() {
@@ -45,7 +45,7 @@ export class PassportIssuerManageComponent extends DamConfigEntityFormComponentB
   }
 
   handleError = ({ error }) => {
-    this.displayFieldErrorMessage(error, 'trustedPassportIssuer', this.passportIssuerForm.form);
+    this.displayFieldErrorMessage(error, 'trustedIssuer', this.passportIssuerForm.form);
   }
 
 }

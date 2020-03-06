@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
-import TrustedSource = dam.v1.TrustedSource;
-import { Form, isExpanded } from 'ddap-common-lib';
-import { EntityModel } from 'ddap-common-lib';
+import { EntityModel, Form, isExpanded } from 'ddap-common-lib';
 
 import { dam } from '../../../../../shared/proto/dam-service';
 
 import { TrustedSourcesFormBuilder } from './trusted-sources-form-builder.service';
+import TrustedSource = dam.v1.TrustedSource;
 
 @Component({
   selector: 'ddap-trusted-sources-form',
@@ -55,9 +54,9 @@ export class TrustedSourcesFormComponent implements OnInit, Form {
   }
 
   getModel(): EntityModel {
-    const {id, sources, claims, ui} = this.form.value;
+    const {id, sources, visaTypes, ui} = this.form.value;
     const trustedSources = TrustedSource.create({
-      claims,
+      visaTypes,
       sources,
       ui,
     });
