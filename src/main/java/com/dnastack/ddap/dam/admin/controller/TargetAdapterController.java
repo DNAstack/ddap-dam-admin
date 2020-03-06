@@ -33,12 +33,12 @@ public class TargetAdapterController {
     }
 
     @GetMapping
-    public Mono<Map<String, DamService.TargetAdapter>> getTargetAdapters(@PathVariable String realm,
+    public Mono<Map<String, DamService.ServiceDescriptor>> getTargetAdapters(@PathVariable String realm,
                                                                          ServerHttpRequest request) {
         Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(DAM.cookieName(TokenKind.ACCESS), DAM.cookieName(TokenKind.REFRESH)));
 
-        return damClient.getTargetAdapters(realm, tokens.get(DAM.cookieName(TokenKind.ACCESS)).getClearText(), tokens.get(DAM.cookieName(TokenKind.REFRESH)).getClearText())
-            .map(DamService.TargetAdaptersResponse::getTargetAdaptersMap);
+        return damClient.getServiceDescriptors(realm, tokens.get(DAM.cookieName(TokenKind.ACCESS)).getClearText(), tokens.get(DAM.cookieName(TokenKind.REFRESH)).getClearText())
+            .map(DamService.ServicesResponse::getServicesMap);
     }
 
 }

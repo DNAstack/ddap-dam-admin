@@ -17,7 +17,7 @@ export class ClaimDefinitionService extends DamConfigService {
   constructor(protected http: HttpClient,
               protected route: ActivatedRoute,
               protected errorHandler: ErrorHandlerService) {
-    super(DamConfigEntityType.claimDefinitions, http);
+    super(DamConfigEntityType.visaTypes, http);
   }
 
   public isExpiring({ exp }: any): boolean {

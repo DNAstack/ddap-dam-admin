@@ -37,15 +37,12 @@ public class AutoCompleteController {
         this.damClient = damClient;
     }
 
-    //Reading the realm config
-    //Iterate through realm config policies and find all the values in policies
     @GetMapping("/claim-value")
     public Mono<Set<String>> getClaimValues(ServerHttpRequest request,
-                                             @PathVariable String realm,
-                                             @RequestParam String claimName) {
+                                            @PathVariable String realm,
+                                            @RequestParam String claimName) {
         Set<String> result = new TreeSet<>();
 
-        // find beacons under resourceId in DAM config
         Map<CookieName, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(DAM.cookieName(TokenKind.ACCESS), DAM.cookieName(TokenKind.REFRESH)));
 
         return damClient.getConfig(realm, tokens.get(DAM.cookieName(TokenKind.ACCESS)).getClearText(), tokens.get(DAM.cookieName(TokenKind.REFRESH)).getClearText())
@@ -108,9 +105,9 @@ public class AutoCompleteController {
     private Stream<Map<String, String>> getPoliciesInResourceViews(DamConfig damConfig) {
         return damConfig.getResourcesMap().values().stream()
             .flatMap(res -> res.getViewsMap().values().stream())
-            .flatMap(view -> view.getAccessRolesMap().values().stream())
+            .flatMap(view -> view.getRolesMap().values().stream())
             .flatMap(accessRole -> accessRole.getPoliciesList().stream())
-            .map(DamService.AccessRole.AccessPolicy::getVars);
+            .map(DamService.ViewRole.ViewPolicy::getArgsMap);
     }
 
     private boolean isRegexValue(String assignmentValue) {

@@ -3,7 +3,7 @@ import { Store } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
-import { common } from '../shared/proto/ic-service';
+import { common } from '../shared/proto/dam-service';
 
 import { Identity } from './identity.model';
 import { IdentityService } from './identity.service';

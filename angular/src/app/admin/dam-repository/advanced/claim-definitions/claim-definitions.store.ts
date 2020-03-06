@@ -10,7 +10,7 @@ import { DamConfigStore } from '../../shared/dam/dam-config.store';
 export class ClaimDefinitionsStore extends DamConfigEntityStore {
 
   constructor(protected damConfigStore: DamConfigStore) {
-    super(DamConfigEntityType.claimDefinitions, damConfigStore);
+    super(DamConfigEntityType.visaTypes, damConfigStore);
   }
 
 }

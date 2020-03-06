@@ -36,7 +36,7 @@
                 (selectionChange)="targetAdapterChange()"
                 data-se="inp-target-adapter"
                 required>
-      <mat-option *ngFor="let targetAdapter of targetAdapters | keyvalue"
+      <mat-option *ngFor="let targetAdapter of serviceDescriptors | keyvalue"
                   [value]="targetAdapter.key">
         {{targetAdapter.value.ui.label}}
       </mat-option>

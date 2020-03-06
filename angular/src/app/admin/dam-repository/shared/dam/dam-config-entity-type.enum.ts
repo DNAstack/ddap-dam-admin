@@ -3,7 +3,7 @@ export enum DamConfigEntityType {
   personas = 'testPersonas',
   policies = 'policies',
   serviceTemplates = 'serviceTemplates',
-  claimDefinitions = 'claimDefinitions',
+  visaTypes = 'visaTypes',
   clients = 'clients',
   passportIssuers = 'trustedPassportIssuers',
   trustedSources = 'trustedSources',

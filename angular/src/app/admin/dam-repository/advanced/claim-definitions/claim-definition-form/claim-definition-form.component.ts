@@ -6,8 +6,7 @@ import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 import { dam } from '../../../../../shared/proto/dam-service';
-
-import ClaimDefinition = dam.v1.ClaimDefinition;
+import VisaType = dam.v1.VisaType;
 
 @Component({
   selector: 'ddap-claim-definition-form',
@@ -18,7 +17,7 @@ import ClaimDefinition = dam.v1.ClaimDefinition;
 export class ClaimDefinitionFormComponent implements OnInit, Form {
 
   @Input()
-  claimDefinition?: EntityModel = new EntityModel('', ClaimDefinition.create());
+  claimDefinition?: EntityModel = new EntityModel('', VisaType.create());
 
   form: FormGroup;
 
@@ -40,11 +39,11 @@ export class ClaimDefinitionFormComponent implements OnInit, Form {
 
   getModel(): EntityModel {
     const { id, ui } = this.form.value;
-    const claimDefinition: ClaimDefinition = ClaimDefinition.create({
+    const visaType: VisaType = VisaType.create({
       ui,
     });
 
-    return new EntityModel(id, claimDefinition);
+    return new EntityModel(id, visaType);
   }
 
   getAllForms(): FormGroup[] {

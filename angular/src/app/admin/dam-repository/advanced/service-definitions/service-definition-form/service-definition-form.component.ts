@@ -10,8 +10,7 @@ import { VariablesDialogComponent } from '../variables-dialog/variables-dialog.c
 
 import { ServiceDefinitionFormBuilder } from './service-definition-form-builder.service';
 import ServiceTemplate = dam.v1.ServiceTemplate;
-
-import ITargetAdapter = dam.v1.ITargetAdapter;
+import IServiceDescriptor = dam.v1.IServiceDescriptor;
 
 @Component({
   selector: 'ddap-service-definition-form',
@@ -28,9 +27,9 @@ export class ServiceDefinitionFormComponent implements OnInit {
     return this.form.get('roles') as FormGroup;
   }
 
-  get selectedTargetAdapter(): ITargetAdapter | null {
-    return this.targetAdapters
-           ? this.targetAdapters[this.form.get('targetAdapter').value]
+  get selectedTargetAdapter(): IServiceDescriptor | null {
+    return this.serviceDescriptors
+           ? this.serviceDescriptors[this.form.get('targetAdapter').value]
            : null;
   }
 
@@ -45,8 +44,7 @@ export class ServiceDefinitionFormComponent implements OnInit {
   isExpanded: Function = isExpanded;
   interfaceCounter = 1;
   roleCounter = 1;
-  targetAdapters: ITargetAdapter[];
-  requirements: object;
+  serviceDescriptors: IServiceDescriptor[];
   variables: string[] = [];
 
   constructor(private formBuilder: FormBuilder,
@@ -58,8 +56,8 @@ export class ServiceDefinitionFormComponent implements OnInit {
 
   ngOnInit() {
     this.targetAdaptersService.getTargetAdapters()
-      .subscribe((targetAdapters: ITargetAdapter[]) => {
-        this.targetAdapters = targetAdapters;
+      .subscribe((targetAdapters: IServiceDescriptor[]) => {
+        this.serviceDescriptors = targetAdapters;
         this.targetAdapterChange();
         this.itemFormatChange();
       });
@@ -100,12 +98,12 @@ export class ServiceDefinitionFormComponent implements OnInit {
       return;
     }
 
-    this.requirements = this.selectedTargetAdapter.requirements;
     this.updateRoleValidations();
   }
 
   isRequired(fieldName: string): boolean {
-    return this.requirements && fieldName in this.requirements;
+    // FIXME
+    return false;
   }
 
   getModel(): EntityModel {
@@ -160,8 +158,8 @@ export class ServiceDefinitionFormComponent implements OnInit {
   private updateRoleValidations() {
     Object.entries(this.roles.controls)
       .forEach(([_, roleControl]: any) => {
-        const roleValidators = (this.requirements && this.requirements['targetRole']) ? [Validators.required] : [];
-        const scopeValidators = (this.requirements && this.requirements['targetScope']) ? [Validators.required] : [];
+        const roleValidators = this.isRequired('targetRole') ? [Validators.required] : [];
+        const scopeValidators = this.isRequired('targetScope') ? [Validators.required] : [];
 
         roleControl.controls['targetRoles'].setValidators(roleValidators);
         roleControl.controls['targetScopes'].setValidators(scopeValidators);
