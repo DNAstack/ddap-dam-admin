@@ -28,7 +28,7 @@
     "@ngx-loading-bar/http-client": "^4.2.0",
     "ang-jsoneditor": "1.8.3",
     "dayjs": "^1.8.16",
-    "ddap-common-lib": "0.0.19-57-g6b99c7e",
+    "ddap-common-lib": "0.0.19-61-g1871ec7",
     "hammerjs": "^2.0.8",
     "jsoneditor": "^7.0.4",
     "lodash.get": "^4.4.2",

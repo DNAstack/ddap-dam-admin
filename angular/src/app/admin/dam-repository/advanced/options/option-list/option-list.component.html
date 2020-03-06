@@ -42,21 +42,10 @@
         <th mat-header-cell *matHeaderCellDef>Value</th>
         <td mat-cell *matCellDef="let model">
           <ng-container *ngIf="currentlyEditing === model.key; else readonlyMode">
-            <form class="flex vertical-center">
-              <mat-form-field appearance="outline">
-                <mat-label>Value</mat-label>
-                <input #valueInput="matInput"
-                       [value]="options[model.key]"
-                       [attr.data-se]="'inp-' + model.key"
-                       matInput>
-              </mat-form-field>
-              <button mat-button
-                      color="primary"
-                      (click)="updateOptionValue(options, model.key, valueInput.value)"
-                      data-se="btn-save">
-                Save
-              </button>
-            </form>
+            <ddaplib-form-field-btn-group [control]="formControls[model.key]"
+                                          [fieldName]="model.key"
+                                          (doneButtonClicked)="updateOptionValue(options, model.key, $event)">
+            </ddaplib-form-field-btn-group>
           </ng-container>
           <ng-template #readonlyMode>
             <span data-se="option-value">{{ options[model.key] }}</span>

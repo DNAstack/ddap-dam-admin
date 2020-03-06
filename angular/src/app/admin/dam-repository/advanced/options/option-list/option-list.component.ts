@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { OptionService } from '../options.service';
 
@@ -14,13 +16,22 @@ export class OptionListComponent implements OnInit {
 
   options$: Observable<any>;
   error: string;
+  formControls: { [key: string]: FormControl } = {};
   currentlyEditing: string;
 
   constructor(public optionService: OptionService) {
   }
 
   ngOnInit() {
-    this.options$ = this.optionService.get();
+    this.options$ = this.optionService.get()
+      .pipe(
+        tap((options: any) => {
+          Object.entries(options.descriptors)
+            .forEach(([key, _]: any) => {
+              this.formControls[key] = this.getFormControl(options, key);
+            });
+        })
+      );
   }
 
   updateOptionValue(options, optionKey, newValue) {
@@ -49,5 +60,15 @@ export class OptionListComponent implements OnInit {
     return Object.assign({}, options);
   }
 
+  private getFormControl(options, optionKey): FormControl {
+    const optionDescriptor = options.descriptors;
+    const validators = [];
+
+    if ('regexp' in optionDescriptor[optionKey]) {
+      validators.push(Validators.pattern(optionDescriptor[optionKey].regexp));
+    }
+
+    return new FormControl(options[optionKey], validators);
+  }
 
 }
