@@ -63,6 +63,10 @@ public class AdminManagePage extends AdminDdapPage {
         }
     }
 
+    public void fillFieldFromTable(By fieldSelector, String value) {
+        fillField(fieldSelector, value);
+        enterButton(DdapBy.se("btn-done"));
+    }
 
     public void fillFieldWithFirstValueFromDropdown(By fieldSelector) {
         fillFieldFromDropdown(fieldSelector, null);

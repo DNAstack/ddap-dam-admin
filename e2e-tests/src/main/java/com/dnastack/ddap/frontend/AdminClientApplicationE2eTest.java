@@ -26,14 +26,14 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
         adminManagePage.fillField(DdapBy.se("inp-scope"), "openid ga4gh_passport_v1 account_admin identities profile offline_access");
 
+        adminManagePage.enterButton(DdapBy.se("btn-add-redirectUri"));
+        adminManagePage.fillFieldFromTable(DdapBy.se("inp-redirectUris"), "http://localhost:8087");
+
         adminManagePage.enterButton(DdapBy.se("btn-add-grantType"));
-        adminManagePage.fillField(DdapBy.se("inp-grantType"), "authorization_code");
+        adminManagePage.fillFieldFromTable(DdapBy.se("inp-grantTypes"), "authorization_code");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-responseType"));
-        adminManagePage.fillField(DdapBy.se("inp-responseType"), "code");
-
-        adminManagePage.enterButton(DdapBy.se("btn-add-redirectUri"));
-        adminManagePage.fillField(DdapBy.se("inp-redirectUri"), "http://localhost:8087");
+        adminManagePage.fillFieldFromTable(DdapBy.se("inp-responseTypes"), "code");
 
         adminListPage = adminManagePage.saveEntity();
 

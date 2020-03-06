@@ -38,7 +38,7 @@ public class AdminOptionPage extends AdminDdapPage {
         input.sendKeys(selectAll);
         input.sendKeys(Keys.DELETE);
         input.sendKeys(optionValue);
-        final WebElement updateButton = row.findElement(DdapBy.se("btn-save"));
+        final WebElement updateButton = row.findElement(DdapBy.se("btn-done"));
         updateButton.click();
 
         return this;
