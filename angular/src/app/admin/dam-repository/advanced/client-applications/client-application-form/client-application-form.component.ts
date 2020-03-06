@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Form, FormValidators, isExpanded } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
 
@@ -41,27 +41,30 @@ export class ClientApplicationFormComponent implements OnInit, Form {
   }
 
   addRedirectUri(): void {
+    const firstControl = this.getFirstControl(this.redirectUris);
+    if (firstControl && !firstControl.value) {
+      // Skip if recently added was not touched
+      return;
+    }
     this.redirectUris.insert(0, this.clientApplicationFormBuilder.buildStringControl(null, [Validators.required, FormValidators.url]));
   }
 
-  removeRedirectUri(index: number): void {
-    this.redirectUris.removeAt(index);
-  }
-
   addGrantType(): void {
+    const firstControl = this.getFirstControl(this.grantTypes);
+    if (firstControl && !firstControl.value) {
+      // Skip if recently added was not touched
+      return;
+    }
     this.grantTypes.insert(0, this.clientApplicationFormBuilder.buildStringControl(null, [Validators.required]));
   }
 
-  removeGrantType(index: number): void {
-    this.grantTypes.removeAt(index);
-  }
-
   addResponseType(): void {
+    const firstControl = this.getFirstControl(this.responseTypes);
+    if (firstControl && !firstControl.value) {
+      // Skip if recently added was not touched
+      return;
+    }
     this.responseTypes.insert(0, this.clientApplicationFormBuilder.buildStringControl(null, [Validators.required]));
-  }
-
-  removeResponseType(index: number): void {
-    this.responseTypes.removeAt(index);
   }
 
   getModel(): EntityModel {
@@ -79,6 +82,10 @@ export class ClientApplicationFormComponent implements OnInit, Form {
 
   isValid(): boolean {
     return this.form.valid;
+  }
+
+  private getFirstControl(formControls: FormArray): AbstractControl {
+    return formControls.at(0);
   }
 
 }
