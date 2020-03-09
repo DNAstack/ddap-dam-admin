@@ -252,7 +252,7 @@
             {
               "args": {
                 "url": "https://gatekeeper-cafe-variome.$$E2E_TEST_NAMESPACE$$.dnastack.com/beacon/query",
-                "aud": "https://ga4gh-apis-beacon.dnastack.com"
+                "aud": "."
               }
             }
           ],
@@ -386,7 +386,7 @@
             {
               "args": {
                 "url": "https://gatekeeper-cafe-variome.$$E2E_TEST_NAMESPACE$$.dnastack.com/beacon/query",
-                "aud": "https://ga4gh-apis-beacon.dnastack.com"
+                "aud": "."
               }
             }
           ],

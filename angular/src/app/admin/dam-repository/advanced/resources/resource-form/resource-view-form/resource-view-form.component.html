@@ -48,51 +48,53 @@
         <mat-error *ngIf="viewForm.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
       </mat-form-field>
     </div>
-    <div class="row">
-      <mat-form-field class="col">
-        <input matInput
-               placeholder="Version"
-               formControlName="version"
-               data-se="inp-view-version"
-               required>
-      </mat-form-field>
-    </div>
-    <div class="row">
-      <mat-form-field class="col">
-        <input matInput
-               placeholder="Audience"
-               formControlName="aud"
-               data-se="inp-view-aud">
-      </mat-form-field>
-    </div>
-    <div class="row">
-      <mat-form-field class="col">
-        <input matInput
-               placeholder="Geo Location"
-               formControlName="geoLocation"
-               data-se="inp-view-geolocation">
-      </mat-form-field>
-      <mat-form-field class="col">
-        <input matInput
-               placeholder="Topic"
-               formControlName="topic"
-               data-se="inp-view-topic">
-      </mat-form-field>
-    </div>
-    <div class="row">
-      <mat-form-field class="col">
-        <input matInput
-               placeholder="Partition"
-               formControlName="partition"
-               data-se="inp-view-partition">
-      </mat-form-field>
-      <mat-form-field class="col">
-        <input matInput
-               placeholder="Fidelity"
-               formControlName="fidelity"
-               data-se="inp-view-fidelity">
-      </mat-form-field>
-    </div>
+    <ng-container formGroupName="labels">
+      <div class="row">
+        <mat-form-field class="col">
+          <input matInput
+                 placeholder="Version"
+                 formControlName="version"
+                 data-se="inp-view-version"
+                 required>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col">
+          <input matInput
+                 placeholder="Audience"
+                 formControlName="aud"
+                 data-se="inp-view-aud">
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col">
+          <input matInput
+                 placeholder="Geo Location"
+                 formControlName="geoLocation"
+                 data-se="inp-view-geolocation">
+        </mat-form-field>
+        <mat-form-field class="col">
+          <input matInput
+                 placeholder="Topic"
+                 formControlName="topic"
+                 data-se="inp-view-topic">
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col">
+          <input matInput
+                 placeholder="Partition"
+                 formControlName="partition"
+                 data-se="inp-view-partition">
+        </mat-form-field>
+        <mat-form-field class="col">
+          <input matInput
+                 placeholder="Fidelity"
+                 formControlName="fidelity"
+                 data-se="inp-view-fidelity">
+        </mat-form-field>
+      </div>
+    </ng-container>
     <div class="row">
       <div class="col">
         <tag-input formControlName="contentTypes"

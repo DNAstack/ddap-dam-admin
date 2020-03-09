@@ -105,11 +105,11 @@ export class ResourceFormComponent implements OnInit, AfterViewInit, Form {
 
   getViewModel(viewForm: FormGroup) {
     const { id, variables, roles, ...rest } = viewForm.value;
-    const vars = this.getVariables(viewForm);
+    const args = this.getVariables(viewForm);
 
     return {
       [id]: {
-        items: [{ vars }],
+        items: [{ args }],
         roles: this.sanitizeRoles(roles),
         ...rest,
       },
