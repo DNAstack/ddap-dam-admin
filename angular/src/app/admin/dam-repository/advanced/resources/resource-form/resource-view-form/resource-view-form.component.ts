@@ -117,9 +117,9 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   }
 
   rebuildVariablesForItemsForm(): void {
-    this.getVariablesBySelectedTemplate().subscribe((vars) => {
+    this.getVariablesBySelectedTemplate().subscribe((args) => {
       const varArray: FormArray = this.formBuilder.array([]);
-      Object.entries(vars).forEach(([key, value]: any) => {
+      Object.entries(args).forEach(([key, value]: any) => {
         const { ui, regexp, optional, type } = value;
         varArray.push(this.formBuilder.group({
           name: [key],
@@ -172,7 +172,7 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   }
 
   private getValueForVariable(variableId: string, variableType: string): string | string[] {
-    let variableValue = _get(this.view, `dto.items[0].vars[${variableId}]`, '');
+    let variableValue = _get(this.view, `dto.items[0].args[${variableId}]`, '');
     if (variableType === 'split_pattern' && variableValue.length > 0) {
       variableValue = variableValue.split(';');
     }
@@ -192,7 +192,7 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     const varsFormGroup = this.formBuilder.group({});
     Object.keys(variables).map(controlName => {
       varsFormGroup.addControl(controlName,
-        this.formBuilder.control((policyDetails && policyDetails['vars']) ? policyDetails['vars'][controlName] : '',
+        this.formBuilder.control((policyDetails && policyDetails['args']) ? policyDetails['args'][controlName] : '',
         [Validators.required, Validators.pattern(variables[controlName]['regexp'])]));
     });
     return varsFormGroup;
@@ -205,7 +205,7 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     const policies = this.viewForm.get(`roles.${roleId}.policies`).value;
     policies.map(policyDetail => {
       if (policyDetail['name'] === policyName) {
-        policyDetail['vars'] = policyVarsForm.varsFormGroup.value;
+        policyDetail['args'] = policyVarsForm.varsFormGroup.value;
       }
     });
     this.viewForm.get(`roles.${roleId}.policies`).patchValue(policies);

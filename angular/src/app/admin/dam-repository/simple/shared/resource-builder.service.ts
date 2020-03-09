@@ -56,7 +56,7 @@ export class ResourceBuilderService {
           },
           items: [
             {
-              vars: {...variables},
+              args: {...variables},
             },
           ],
           version: id,
