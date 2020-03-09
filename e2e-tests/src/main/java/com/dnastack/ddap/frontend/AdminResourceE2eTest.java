@@ -75,7 +75,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
-        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), ".");
+        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), "http://beacon-aud.com");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "test_whitelist");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
@@ -127,7 +127,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Version 2");
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
-        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), ".");
+        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), "http://beacon-aud.com");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + view2Role), "test_whitelist");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + view2Role));
@@ -169,7 +169,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
-        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), ".");
+        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), "http://beacon-aud.com");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "policy-with-variables");
         adminManagePage.fillField(DdapBy.se("var-TEST_VARIABLE_DATASET"), "beacon");
@@ -234,7 +234,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
-        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), ".");
+        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), "http://beacon-aud.com");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
         // This is the invalid part
         adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "NONEXISTENT_POLICY");
