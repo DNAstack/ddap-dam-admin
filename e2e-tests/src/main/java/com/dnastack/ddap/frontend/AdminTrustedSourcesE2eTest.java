@@ -25,7 +25,7 @@ public class AdminTrustedSourcesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-sources"), "https://test-source.com");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-claim"));
-        adminManagePage.fillField(DdapBy.se("inp-claims"), "ResearcherStatus");
+        adminManagePage.fillField(DdapBy.se("inp-visaTypes"), "ResearcherStatus");
 
         adminListPage = adminManagePage.saveEntity();
 
