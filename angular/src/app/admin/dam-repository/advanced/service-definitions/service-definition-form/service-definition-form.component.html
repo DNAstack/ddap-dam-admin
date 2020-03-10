@@ -32,7 +32,7 @@
 
   <mat-form-field>
     <mat-label>Target Adapter</mat-label>
-    <mat-select formControlName="targetAdapter"
+    <mat-select formControlName="serviceName"
                 (selectionChange)="targetAdapterChange()"
                 data-se="inp-target-adapter"
                 required>
@@ -41,7 +41,7 @@
         {{targetAdapter.value.ui.label}}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="form.get('targetAdapter') as control">
+    <mat-error *ngIf="form.get('serviceName') as control">
       <ng-container *ngIf="control.invalid">
         {{ control.errors?.serverError }}
       </ng-container>
@@ -206,38 +206,45 @@
             </ng-container>
           </mat-error>
         </mat-form-field>
-        <div class="row">
-          <div class="col">
-            <tag-input formControlName="targetRoles"
-                       [secondaryPlaceholder]="isRequired('targetRole') ? 'Add Target Role *' : 'Target Role'"
-                       placeholder="+ Target Role"
-                       editable="true"
-                       modelAsStrings="true"
-                       [attr.data-se]="'inp-role-' + role.key + '-target'">
-            </tag-input>
-            <mat-error *ngIf="role.value.get('targetRoles') as control">
-              <ng-container *ngIf="control.invalid">
-                {{ control.errors?.serverError }}
+        <ng-container formGroupName="serviceArgs">
+          <div class="row">
+            <div class="col">
+              <ng-container formGroupName="roles">
+                <tag-input formControlName="values"
+                           [secondaryPlaceholder]="isRequired('roles') ? 'Add Target Role *' : 'Target Role'"
+                           placeholder="+ Target Role"
+                           editable="true"
+                           modelAsStrings="true"
+                           [attr.data-se]="'inp-role-' + role.key + '-target'">
+                </tag-input>
+                <mat-error *ngIf="role.value.get('serviceArgs.roles') as control">
+                  <ng-container *ngIf="control.invalid">
+                    {{ control.errors?.serverError }}
+                  </ng-container>
+                </mat-error>
               </ng-container>
-            </mat-error>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <tag-input formControlName="targetScopes"
-                       [secondaryPlaceholder]="isRequired('targetScope') ? 'Add Target Scope *' : 'Target Scope'"
-                       placeholder="+ Target Scope"
-                       editable="true"
-                       modelAsStrings="true"
-                       [attr.data-se]="'inp-role-' + role.key + '-scope'">
-            </tag-input>
-            <mat-error *ngIf="role.value.get('targetRoles') as control">
-              <ng-container *ngIf="control.invalid">
-                {{ control.errors?.serverError }}
+          <div class="row">
+            <div class="col">
+              <ng-container formGroupName="scopes">
+                <tag-input formControlName="values"
+                           [secondaryPlaceholder]="isRequired('scopes') ? 'Add Target Scope *' : 'Target Scope'"
+                           placeholder="+ Target Scope"
+                           editable="true"
+                           modelAsStrings="true"
+                           [attr.data-se]="'inp-role-' + role.key + '-scope'">
+                </tag-input>
+                <mat-error *ngIf="role.value.get('serviceArgs.scopes') as control">
+                  <ng-container *ngIf="control.invalid">
+                    {{ control.errors?.serverError }}
+                  </ng-container>
+                </mat-error>
               </ng-container>
-            </mat-error>
+
+            </div>
           </div>
-        </div>
+        </ng-container>
         <div class="row">
           <div class="col">
             <tag-input formControlName="damRoleCategories"
