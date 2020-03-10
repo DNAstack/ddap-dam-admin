@@ -24,8 +24,7 @@ export class ServiceDefinitionFormBuilder {
         label: [_get(serviceDefinition, 'dto.ui.label'), [Validators.required]],
         description: [_get(serviceDefinition, 'dto.ui.description'), [Validators.required, Validators.maxLength(255)]],
       }),
-      targetAdapter: [_get(serviceDefinition, 'dto.targetAdapter'), [Validators.required]],
-      itemFormat: [_get(serviceDefinition, 'dto.itemFormat'), [Validators.required]],
+      targetAdapter: [_get(serviceDefinition, 'dto.serviceName'), [Validators.required]],
       interfaces: this.buildInterfacesForm(_get(serviceDefinition, 'dto.interfaces')),
       roles: this.buildServiceRolesForm(_get(serviceDefinition, 'dto.roles')),
     });

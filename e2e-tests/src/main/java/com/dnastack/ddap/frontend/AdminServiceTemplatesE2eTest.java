@@ -24,7 +24,6 @@ public class AdminServiceTemplatesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-description"), "Copy of Beacon Discovery");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-target-adapter"),
                 "Gatekeeper Token");
-        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-item-format"), "Proxy URL");
 
         // Add interface
         adminManagePage.enterButton(DdapBy.se("btn-add-interface"));
