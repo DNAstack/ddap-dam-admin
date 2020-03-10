@@ -24,7 +24,7 @@ export class TrustedSourcesFormBuilder {
         description: [_get(trustedSource, 'dto.ui.description'), [Validators.required, Validators.maxLength(255)]],
       }),
       sources: this.buildArrayForm(_get(trustedSource, 'dto.sources')),
-      claims: this.buildArrayForm(_get(trustedSource, 'dto.claims')),
+      visaTypes: this.buildArrayForm(_get(trustedSource, 'dto.visaTypes')),
     });
   }
 

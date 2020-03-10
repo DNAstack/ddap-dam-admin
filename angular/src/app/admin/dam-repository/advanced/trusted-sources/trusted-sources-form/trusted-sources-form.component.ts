@@ -19,7 +19,7 @@ export class TrustedSourcesFormComponent implements OnInit, Form {
   }
 
   get claims() {
-    return this.form.get('claims') as FormArray;
+    return this.form.get('visaTypes') as FormArray;
   }
 
   @Input()
