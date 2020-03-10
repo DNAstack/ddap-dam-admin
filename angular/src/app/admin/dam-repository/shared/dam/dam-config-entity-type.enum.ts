@@ -5,6 +5,6 @@ export enum DamConfigEntityType {
   serviceTemplates = 'serviceTemplates',
   visaTypes = 'visaTypes',
   clients = 'clients',
-  passportIssuers = 'trustedPassportIssuers',
+  passportIssuers = 'trustedIssuers',
   trustedSources = 'trustedSources',
 }
