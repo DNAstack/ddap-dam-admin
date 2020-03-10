@@ -59,7 +59,6 @@ export class ServiceDefinitionFormComponent implements OnInit {
       .subscribe((targetAdapters: IServiceDescriptor[]) => {
         this.serviceDescriptors = targetAdapters;
         this.targetAdapterChange();
-        this.itemFormatChange();
       });
 
     this.form = this.serviceDefinitionFormBuilder.buildForm(this.serviceTemplate);
@@ -98,7 +97,11 @@ export class ServiceDefinitionFormComponent implements OnInit {
       return;
     }
 
-    this.updateRoleValidations();
+    const variables = this.selectedTargetAdapter['itemVariables'];
+    if (variables) {
+      this.variables = Object.keys(variables);
+    }
+    // this.updateRoleValidations();
   }
 
   isRequired(fieldName: string): boolean {
@@ -119,16 +122,6 @@ export class ServiceDefinitionFormComponent implements OnInit {
 
   showAutocompleteDropdown({ value }): boolean {
     return !value || value.length < 1;
-  }
-
-  itemFormatChange() {
-    if (!this.selectedTargetAdapter) {
-      return;
-    }
-    const variables = this.selectedTargetAdapter['itemFormats'][this.itemFormat.value]['variables'];
-    if (variables) {
-      this.variables = Object.keys(variables);
-    }
   }
 
   showVariables(interfaceKey) {

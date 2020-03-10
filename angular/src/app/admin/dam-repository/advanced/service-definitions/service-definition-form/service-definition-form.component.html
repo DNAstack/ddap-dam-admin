@@ -47,23 +47,6 @@
       </ng-container>
     </mat-error>
   </mat-form-field>
-  <mat-form-field *ngIf="selectedTargetAdapter">
-    <mat-label>Item Format</mat-label>
-    <mat-select formControlName="itemFormat"
-                (selectionChange)="itemFormatChange()"
-                data-se="inp-item-format"
-                required>
-      <mat-option *ngFor="let itemFormat of selectedTargetAdapter.itemFormats | keyvalue"
-                  [value]="itemFormat.key">
-        {{ itemFormat.value.ui.label }}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="form.get('itemFormat') as control">
-      <ng-container *ngIf="control.invalid">
-        {{ control.errors?.serverError }}
-      </ng-container>
-    </mat-error>
-  </mat-form-field>
 
   <h3>
     <span>Interfaces</span>
@@ -120,7 +103,7 @@
                    formControlName="value"
                    placeholder="Interface Value"
                    [attr.data-se]="'inp-interface-' + interfaceObj.key + '-value'"/>
-            <button *ngIf="itemFormat.value"
+            <button *ngIf="selectedTargetAdapter"
                     mat-button
                     matSuffix
                     color="primary"
