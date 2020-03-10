@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { DamRepositorySharedModule } from '../../shared/shared.module';
 
@@ -21,10 +22,11 @@ import { ResourcesRoutingModule } from './resources-routing.module';
     ResourceAccessComponent,
     PolicyVariableDialogComponent,
   ],
-  imports: [
-    DamRepositorySharedModule,
-    ResourcesRoutingModule,
-  ],
+    imports: [
+        DamRepositorySharedModule,
+        ResourcesRoutingModule,
+        MatTabsModule,
+    ],
   entryComponents: [
     PolicyVariableDialogComponent,
   ],

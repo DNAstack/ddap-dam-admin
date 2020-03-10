@@ -4,7 +4,7 @@ mat-expansion-panel {
   h4 {
     display: flex;
     align-items: center;
-    margin-bottom: 0;
+    margin-bottom: 1rem;
 
     span {
       flex-grow: 1;
@@ -73,6 +73,10 @@ mat-expansion-panel {
       }
     }
   }
+
+  .ddap-view-policy-variables {
+    margin-bottom: 2rem;
+  }
 }
 .variable-tag-input-container {
   tag-input {
@@ -111,4 +115,17 @@ mat-expansion-panel {
 
 .policy-tag-input tag-input {
   padding-bottom: 0;
+}
+
+.tab-label {
+  display: flex;
+  align-items: center;
+
+  .invalid-warning {
+    margin-right: 0;
+  }
+
+  mat-icon {
+    margin-left: 0.5rem;
+  }
 }

@@ -4,15 +4,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { EntityModel, FormValidationService, isExpanded } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable, Subscription } from 'rxjs';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 
 import { dam } from '../../../../../../shared/proto/dam-service';
 import { AccessPoliciesStore } from '../../../access-policies/access-policies.store';
 import { ServiceDefinitionService } from '../../../service-definitions/service-definitions.service';
 import { ServiceDefinitionsStore } from '../../../service-definitions/service-definitions.store';
 import View = dam.v1.View;
-import { PolicyVariableDialogComponent } from '../../policy-variable-dialog/policy-variable-dialog.component';
 import { ResourceFormBuilder } from '../resource-form-builder.service';
+import IViewPolicy = dam.v1.ViewRole.IViewPolicy;
+import ViewPolicy = dam.v1.ViewRole.ViewPolicy;
 
 
 @Component({
@@ -27,10 +28,10 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   }
 
   get selectedTemplate(): EntityModel {
-    if (!this.templates) {
+    if (!this.serviceDefinitions) {
       return null;
     }
-    return this.templates.find(this.equalToSelectedTemplateName);
+    return this.serviceDefinitions.find(this.equalToSelectedTemplateName);
   }
 
   get variableItems() {
@@ -44,11 +45,9 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
 
   viewForm: FormGroup;
   isExpanded: Function = isExpanded;
-  templates: EntityModel[];
-  templatesSubscription: Subscription;
-  policyValues$: Observable<string[]>;
-  policiesDetail: object = {};
-  showVariableHint = false;
+  serviceDefinitions: EntityModel[];
+  serviceDefinitionStoreSubscription: Subscription;
+  policies: EntityModel[];
 
   constructor(private formBuilder: FormBuilder,
               private resourceFormBuilder: ResourceFormBuilder,
@@ -66,29 +65,24 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
 
     this.viewForm = this.resourceFormBuilder.buildViewForm(this.view);
 
-    this.templatesSubscription = this.serviceDefinitionsStore.getAsList()
-      .subscribe((templates) => {
-        this.templates = templates;
+    this.serviceDefinitionStoreSubscription = this.serviceDefinitionsStore.getAsList()
+      .subscribe((serviceDefinitions) => {
+        this.serviceDefinitions = serviceDefinitions;
         if (this.selectedTemplate) {
-          this.rebuildPoliciesForRolesForm();
+          this.addMissingRolesToFormFromServiceDefinition();
           this.rebuildVariablesForItemsForm();
         }
-        // this.subscribeToFormChanges();
+        this.subscribeToFormChanges();
       });
 
-    this.policyValues$ = this.accessPoliciesStore.getAsList()
-      .pipe(
-        map((policies: EntityModel[]) => {
-          return policies.map((policy) => {
-            this.policiesDetail[policy.name] = policy['dto']['variableDefinitions'];
-            return policy.name;
-          });
-        })
-      );
+    this.accessPoliciesStore.getAsList()
+      .subscribe((policies) => {
+        this.policies = policies;
+      });
   }
 
   ngOnDestroy(): void {
-    this.templatesSubscription.unsubscribe();
+    this.serviceDefinitionStoreSubscription.unsubscribe();
   }
 
   isDefaultRole(roleId: string) {
@@ -99,21 +93,73 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     this.viewForm.get('defaultRole').setValue(roleId);
   }
 
+  addPolicy(roleId: string) {
+    this.getPolicyControls(roleId).insert(0, this.resourceFormBuilder.buildPolicyForm());
+  }
+
+  removePolicy(roleId: string, index: number) {
+    this.getPolicyControls(roleId).removeAt(index);
+  }
+
+  addVariablesForPolicy(roleId: string, policyId: any) {
+    const policyDefinition: EntityModel = this.policies.find((policy) => policy.name === policyId);
+
+    // Reset variables for policy if it is not recognized policy name
+    if (!policyDefinition) {
+      const policyModel: IViewPolicy = ViewPolicy.create({
+        name: policyId,
+      });
+      this.getPolicyControls(roleId).setControl(policyId, this.resourceFormBuilder.buildPolicyForm(policyModel));
+      return;
+    }
+
+    const { variableDefinitions }: any = policyDefinition.dto;
+    const policyVariables = {};
+    if (variableDefinitions) {
+      Object.keys(variableDefinitions)
+        .forEach((variableKey) => {
+          policyVariables[variableKey] = null;
+        });
+    }
+    const fullPolicyModel: IViewPolicy = ViewPolicy.create({
+      name: policyId,
+      args: policyVariables,
+    });
+    this.getPolicyControls(roleId).setControl(policyId, this.resourceFormBuilder.buildPolicyForm(fullPolicyModel));
+  }
+
+  formatPolicyAutocompleteText(policyId: string): string {
+    if (!policyId || !this.policies) {
+      return;
+    }
+    const policyModel = this.policies.find((policy) => policy.name === policyId);
+    return _get(policyModel, 'dto.ui.label', policyId);
+  }
+
   serviceTemplateChange() {
-    this.rebuildPoliciesForRolesForm();
+    this.addMissingRolesToFormFromServiceDefinition();
     this.rebuildVariablesForItemsForm();
   }
 
-  rebuildPoliciesForRolesForm(): void {
-    const roles: string[] = Object.keys(_get(this.selectedTemplate, 'dto.roles', []));
-    const rolesFormGroup: FormGroup = this.formBuilder.group({});
-    roles.forEach((role) => {
-      rolesFormGroup.addControl(role, this.formBuilder.group({
-        policies: [this.getPoliciesForRole(role)],
-      }));
-    });
+  addMissingRolesToFormFromServiceDefinition() {
+    const serviceDefRoles: any[] = this.selectedTemplate.dto.roles;
 
-    this.viewForm.setControl('roles', rolesFormGroup);
+    Object.entries(serviceDefRoles)
+      .forEach(([roleKey, role]: any) => {
+      if (!this.viewForm.get(`roles.${roleKey}`)) {
+        const rolesForm = this.viewForm.get('roles') as FormGroup;
+        rolesForm.addControl(roleKey, this.resourceFormBuilder.buildRoleForm());
+      }
+    });
+  }
+
+  getPolicyControls(roleId: string): FormArray {
+    const policies = this.viewForm.get(`roles.${roleId}.policies`);
+    return policies ? policies as FormArray : this.formBuilder.array([]);
+  }
+
+  getPolicyVariables(variables: object): string[] {
+    return Object.keys(variables);
   }
 
   rebuildVariablesForItemsForm(): void {
@@ -142,33 +188,12 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     return this.serviceDefinitionService.getTargetAdapterVariables(serviceTemplateId);
   }
 
-  policyAdd($event, roleId, tagInput) {
-    const { name } = $event;
-    const variables = this.policiesDetail[name];
-    const policyVarsForm = this.policyVarsForm();
-    if (variables) {
-      policyVarsForm.varsFormGroup = this.createPolicyVariablesForm(variables, this.getPolicyDetails(name, roleId));
-      const dialogRef = this.dialog.open(PolicyVariableDialogComponent, {
-        width: '30rem',
-        restoreFocus: false,
-        data: {
-          onClick: () => this.addPolicyVariables(policyVarsForm, name, roleId, dialogRef),
-          variables,
-          varsFormGroup : policyVarsForm.varsFormGroup,
-          tagInput: tagInput,
-        },
-      });
-
-      dialogRef.afterClosed().subscribe(() => tagInput.selectedTag = undefined);
-    }
-  }
-
   splitPatternValidators(pattern) {
     return [Validators.pattern(pattern)];
   }
 
-  private getPoliciesForRole(roleId: string): string[] {
-    return _get(this.view, `dto.roles[${roleId}].policies`, []);
+  isAnyOfControlsInvalid(paths: string[]) {
+    return paths.some((path) => !this.viewForm.get(path) || this.viewForm.get(path).invalid);
   }
 
   private getValueForVariable(variableId: string, variableType: string): string | string[] {
@@ -186,48 +211,6 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
       debounceTime(300),
       tap((changed) => this.formChange.emit(changed))
     ).subscribe();
-  }
-
-  private createPolicyVariablesForm(variables, policyDetails) {
-    const varsFormGroup = this.formBuilder.group({});
-    Object.keys(variables).map(controlName => {
-      varsFormGroup.addControl(controlName,
-        this.formBuilder.control((policyDetails && policyDetails['args']) ? policyDetails['args'][controlName] : '',
-        [Validators.required, Validators.pattern(variables[controlName]['regexp'])]));
-    });
-    return varsFormGroup;
-  }
-
-  private addPolicyVariables(policyVarsForm, policyName, roleId, dialogRef) {
-    if (!this.validationService.validate(policyVarsForm)) {
-      return;
-    }
-    const policies = this.viewForm.get(`roles.${roleId}.policies`).value;
-    policies.map(policyDetail => {
-      if (policyDetail['name'] === policyName) {
-        policyDetail['args'] = policyVarsForm.varsFormGroup.value;
-      }
-    });
-    this.viewForm.get(`roles.${roleId}.policies`).patchValue(policies);
-    dialogRef.close();
-  }
-
-  private getPolicyDetails(policyName, roleId: string) {
-    return this.getPoliciesForRole(roleId).find(policy => policy['name'] === policyName);
-  }
-
-  private policyVarsForm() {
-    const varsFormGroup = this.formBuilder.group({});
-    return {
-      varsFormGroup,
-      getAllForms(): FormGroup[] {
-        return [varsFormGroup];
-      },
-
-      isValid(): boolean {
-        return varsFormGroup.valid;
-      },
-    };
   }
 
 }

@@ -11,12 +11,12 @@
     <ddap-resource-form #resourceForm
                         [resource]="entity"
                         (formChange)="executeDryRun()">
+      <ddap-resource-access #accessForm
+                            [isNewResource]="false"
+                            [resource]="resourceForm.getModel()"
+                            (formChange)="executeDryRun()">
+      </ddap-resource-access>
     </ddap-resource-form>
-    <ddap-resource-access #accessForm
-                          [isNewResource]="false"
-                          [resource]="resourceForm.getModel()"
-                          (formChange)="executeDryRun()">
-    </ddap-resource-access>
   </div>
 </ddaplib-main>
 

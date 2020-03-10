@@ -4,12 +4,12 @@
 <ddaplib-main>
   <ddap-resource-form #resourceForm
                       (formChange)="executeDryRun()">
+    <ddap-resource-access #accessForm
+                          [isNewResource]="true"
+                          [resource]="resourceForm.getModel()"
+                          (formChange)="executeDryRun()">
+    </ddap-resource-access>
   </ddap-resource-form>
-  <ddap-resource-access #accessForm
-                        [isNewResource]="true"
-                        [resource]="resourceForm.getModel()"
-                        (formChange)="executeDryRun()">
-  </ddap-resource-access>
 </ddaplib-main>
 
 <div class="ddap-form-toolbar">

@@ -16,40 +16,55 @@
       </mat-icon>
     </div>
   </mat-expansion-panel-header>
-  <ng-container [formGroup]="viewForm">
-    <div class="row">
-      <mat-form-field class="col">
-        <input matInput
-               placeholder="Name"
-               formControlName="id"
-               [readonly]="view.name.length > 0"
-               data-se="inp-view-id"
-               required>
-        <mat-error *ngIf="viewForm.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
-      </mat-form-field>
-      <mat-form-field class="col"
-                      formGroupName="ui">
-        <input matInput
-               placeholder="Display Name"
-               formControlName="label"
-               data-se="inp-view-label"
-               required>
-      </mat-form-field>
-    </div>
-    <div class="row">
-      <mat-form-field class="col"
-                      formGroupName="ui">
+
+  <mat-tab-group [formGroup]="viewForm">
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="tab-label">
+          <span>Details</span>
+          <div class="invalid-warning"
+               *ngIf="isAnyOfControlsInvalid(['id', 'ui.label', 'ui.description', 'labels.version', 'labels.aud'])">
+            <mat-icon class="icon icon-warning"
+                      matTooltip="Details are invalid">
+            </mat-icon>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="row">
+        <mat-form-field class="col">
+          <input matInput
+                 placeholder="Name"
+                 formControlName="id"
+                 [readonly]="view.name.length > 0"
+                 data-se="inp-view-id"
+                 required>
+          <mat-error *ngIf="viewForm.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
+        </mat-form-field>
+        <mat-form-field class="col"
+                        formGroupName="ui">
+          <input matInput
+                 placeholder="Display Name"
+                 formControlName="label"
+                 data-se="inp-view-label"
+                 required>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col"
+                        formGroupName="ui">
         <textarea matInput
                   placeholder="Description"
                   formControlName="description"
                   data-se="inp-view-description"
                   required>
         </textarea>
-        <mat-error *ngIf="viewForm.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
-      </mat-form-field>
-    </div>
-    <ng-container formGroupName="labels">
-      <div class="row">
+          <mat-error *ngIf="viewForm.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="row"
+           formGroupName="labels">
         <mat-form-field class="col">
           <input matInput
                  placeholder="Version"
@@ -58,7 +73,8 @@
                  required>
         </mat-form-field>
       </div>
-      <div class="row">
+      <div class="row"
+           formGroupName="labels">
         <mat-form-field class="col">
           <input matInput
                  placeholder="Audience"
@@ -66,190 +82,242 @@
                  data-se="inp-view-aud">
         </mat-form-field>
       </div>
-      <div class="row">
-        <mat-form-field class="col">
-          <input matInput
-                 placeholder="Geo Location"
-                 formControlName="geoLocation"
-                 data-se="inp-view-geolocation">
-        </mat-form-field>
-        <mat-form-field class="col">
-          <input matInput
-                 placeholder="Topic"
-                 formControlName="topic"
-                 data-se="inp-view-topic">
-        </mat-form-field>
-      </div>
-      <div class="row">
-        <mat-form-field class="col">
-          <input matInput
-                 placeholder="Partition"
-                 formControlName="partition"
-                 data-se="inp-view-partition">
-        </mat-form-field>
-        <mat-form-field class="col">
-          <input matInput
-                 placeholder="Fidelity"
-                 formControlName="fidelity"
-                 data-se="inp-view-fidelity">
-        </mat-form-field>
-      </div>
-    </ng-container>
-    <div class="row">
-      <div class="col">
-        <tag-input formControlName="contentTypes"
-                   secondaryPlaceholder="Add Content Type"
-                   placeholder="+ Content Type"
-                   editable="true"
-                   modelAsStrings="true">
-        </tag-input>
-      </div>
-    </div>
+    </mat-tab>
 
-    <h3>
-      <mat-icon class="icon icon-clients"></mat-icon>
-      <span>Service Template</span>
-    </h3>
-    <div class="row">
-      <mat-form-field class="col">
-        <mat-label>Service Template</mat-label>
-        <mat-select formControlName="serviceTemplate"
-                    data-se="inp-view-service-template"
-                    (selectionChange)="serviceTemplateChange()"
-                    required>
-          <mat-option *ngFor="let template of templates"
-                      [value]="template.name">
-            {{ template.dto.ui.label }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="viewForm.get('serviceTemplate').invalid">
-          {{ viewForm.get('serviceTemplate').errors?.serverError }}
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="ddap-view-service-template"
-         *ngIf="selectedTemplate">
-      <div class="ddap-view-service-template-variables"
-           *ngIf="viewForm.contains('variables')">
-        <h3>
-          <mat-icon class="icon icon-settings"></mat-icon>
-          <span>Target Adapter Variables</span>
-          <mat-error *ngIf="viewForm.get('variables').invalid">
-            {{ viewForm.get('variables').errors?.serverError }}
-          </mat-error>
-        </h3>
-        <ul class="timeline">
-          <li class="event row" *ngFor="let variable of variableItems.controls; let i=index"
-              formArrayName="variables">
-            <ng-container [formGroupName]="i">
-              <div class="line"></div>
-              <mat-form-field class="col" *ngIf="variable.get('type').value !== 'split_pattern'">
-                <input matInput
-                       [attr.data-se]="'inp-view-target-adapter-variable-' + variable.get('name').value"
-                       [placeholder]="variable.get('label').value"
-                       [required]="!variable.get('optional').value"
-                       formControlName="value">
-                <mat-hint>{{ variable.get('description').value }}</mat-hint>
-                <mat-error *ngIf="variable.get('value').invalid">
-                  {{ variable.get('label').value }} must follow regex pattern {{ variable.get('regexp').value }}
-                </mat-error>
-              </mat-form-field>
-              <div class="col variable-tag-input-container" *ngIf="variable.get('type').value === 'split_pattern'">
-                <tag-input [secondaryPlaceholder]="variable.get('label').value"
-                           [placeholder]="'+' + variable.get('label').value"
-                           editable="true"
-                           formControlName="value"
-                           inputClass="variable-tag-input"
-                           [attr.data-se]="'inp-view-target-adapter-variable-' + variable.get('name').value"
-                           [validators]="splitPatternValidators(variable.get('regexp').value)"
-                           [errorMessages]="{'pattern': 'Please enter a value that matches ' + variable.get('regexp').value}"
-                           modelAsStrings="true"></tag-input>
-                <mat-hint>{{ variable.get('description').value }}</mat-hint>
-                <mat-error *ngIf="variable.get('value').invalid">
-                  {{ variable.get('label').value }} must follow regex pattern {{ variable.get('regexp').value }}
-                </mat-error>
-              </div>
-            </ng-container>
-          </li>
-        </ul>
-      </div>
-      <div class="ddap-view-service-template-roles">
-        <h3>
-          <mat-icon class="icon icon-identity"></mat-icon>
-          <span>Roles</span>
-        </h3>
-        <div>
-          <mat-error *ngIf="viewForm.get('defaultRole').invalid">
-            Single role must be set as default
-          </mat-error>
-          <mat-error *ngIf="viewForm.get('roles').invalid" data-se="resources-role-error">
-            {{ viewForm.get('roles').errors?.serverError }}
-          </mat-error>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="tab-label">
+          <span>Service Definition</span>
+          <div class="invalid-warning"
+               *ngIf="isAnyOfControlsInvalid(['serviceTemplate', 'variables', 'roles'])">
+            <mat-icon class="icon icon-warning"
+                      matTooltip="Service Definition is invalid">
+            </mat-icon>
+          </div>
         </div>
-        <ul class="timeline">
-          <li class="event"
-              *ngFor="let role of selectedTemplate.dto.roles | keyvalue">
-            <div class="line"></div>
-            <h4>
-        <span>
-          {{ role.value.ui.label }}
-        </span>
-              <button *ngIf="!isDefaultRole(role.key); else defaultRole"
-                      mat-button
-                      color="primary"
-                      class="uppercase"
-                      type="button"
-                      [attr.data-se]="'btn-make-default-role-' + role.key"
-                      (click)="makeDefaultRole(role.key)">
-                Make Default
-              </button>
-              <ng-template #defaultRole>
-                <button mat-button
-                        disabled
-                        class="default-role-btn uppercase"
-                        type="button">
-                  Default
-                </button>
-              </ng-template>
-            </h4>
-            <p>{{ role.value.ui.description }}</p>
-            <div class="row"
-                 formGroupName="roles">
-              <ng-container *ngIf="policyValues$ | async as policies">
-                <div class="col policy-tag-input"
-                     [formGroupName]="role.key">
-                  <tag-input formControlName="policies"
-                             #policiesInput
-                             [attr.data-se]="'view-role-policies-' + role.key"
-                             secondaryPlaceholder="Add Policy"
-                             placeholder="+ Policy"
-                             editable="true"
-                             (onSelect)="policyAdd($event, role.key, policiesInput)"
-                             (onAdd)="policyAdd($event, role.key, policiesInput)"
-                             [identifyBy]="'name'"
-                             [displayBy]="'name'">
-                    <ng-template let-selected="item" let-index="index">
-                      <div class="policy-tag-wrapper" [class.variables]="policiesDetail[selected.name]">
-                        {{selected.name}}
-                        <mat-icon class="policy-close-tag icon icon-close"
-                                  (click)="policiesInput.removeItem(selected, index)"></mat-icon>
-                      </div>
-                    </ng-template>
-                    <tag-input-dropdown [autocompleteItems]="policies"></tag-input-dropdown>
-                  </tag-input>
-                  <mat-error *ngIf="viewForm.get('roles.'+role.key+'.policies').invalid" data-se="resources-policy-error">
-                    {{ viewForm.get('roles.'+role.key+'.policies').errors?.serverError }}
-                  </mat-error>
-                  <mat-hint class="roles-hint-text">Policies in <span>this</span> color indicate that you can add variables data by clicking on them</mat-hint>
+      </ng-template>
 
+      <h3>
+        <mat-icon class="icon icon-clients"></mat-icon>
+        <span>Service Template</span>
+      </h3>
+      <div class="row">
+        <mat-form-field class="col">
+          <mat-label>Service Template</mat-label>
+          <mat-select formControlName="serviceTemplate"
+                      data-se="inp-view-service-template"
+                      (selectionChange)="serviceTemplateChange()"
+                      required>
+            <mat-option *ngFor="let serviceDefinition of serviceDefinitions"
+                        [value]="serviceDefinition.name">
+              {{ serviceDefinition.dto.ui.label }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="viewForm.get('serviceTemplate').invalid">
+            {{ viewForm.get('serviceTemplate').errors?.serverError }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <ng-container *ngIf="selectedTemplate">
+        <div class="ddap-view-service-template-variables"
+             *ngIf="viewForm.contains('variables')">
+          <h3>
+            <mat-icon class="icon icon-settings"></mat-icon>
+            <span>Target Adapter Variables</span>
+            <mat-error *ngIf="viewForm.get('variables').invalid">
+              {{ viewForm.get('variables').errors?.serverError }}
+            </mat-error>
+          </h3>
+          <ul class="timeline">
+            <li class="event row" *ngFor="let variable of variableItems.controls; let i=index"
+                formArrayName="variables">
+              <ng-container [formGroupName]="i">
+                <div class="line"></div>
+                <mat-form-field class="col" *ngIf="variable.get('type').value !== 'split_pattern'">
+                  <input matInput
+                         [attr.data-se]="'inp-view-target-adapter-variable-' + variable.get('name').value"
+                         [placeholder]="variable.get('label').value"
+                         [required]="!variable.get('optional').value"
+                         formControlName="value">
+                  <mat-hint>{{ variable.get('description').value }}</mat-hint>
+                  <mat-error *ngIf="variable.get('value').invalid">
+                    {{ variable.get('label').value }} must follow regex pattern {{ variable.get('regexp').value }}
+                  </mat-error>
+                </mat-form-field>
+                <div class="col variable-tag-input-container" *ngIf="variable.get('type').value === 'split_pattern'">
+                  <tag-input [secondaryPlaceholder]="variable.get('label').value"
+                             [placeholder]="'+' + variable.get('label').value"
+                             editable="true"
+                             formControlName="value"
+                             inputClass="variable-tag-input"
+                             [attr.data-se]="'inp-view-target-adapter-variable-' + variable.get('name').value"
+                             [validators]="splitPatternValidators(variable.get('regexp').value)"
+                             [errorMessages]="{'pattern': 'Please enter a value that matches ' + variable.get('regexp').value}"
+                             modelAsStrings="true"></tag-input>
+                  <mat-hint>{{ variable.get('description').value }}</mat-hint>
+                  <mat-error *ngIf="variable.get('value').invalid">
+                    {{ variable.get('label').value }} must follow regex pattern {{ variable.get('regexp').value }}
+                  </mat-error>
                 </div>
               </ng-container>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="ddap-view-service-template-roles">
+          <h3>
+            <mat-icon class="icon icon-identity"></mat-icon>
+            <span>Roles</span>
+          </h3>
+          <div>
+            <mat-error *ngIf="viewForm.get('defaultRole').invalid">
+              Single role must be set as default
+            </mat-error>
+            <mat-error *ngIf="viewForm.get('roles').invalid" data-se="resources-role-error">
+              {{ viewForm.get('roles').errors?.serverError }}
+            </mat-error>
+          </div>
+          <ul class="timeline">
+            <li class="event"
+                *ngFor="let role of selectedTemplate.dto.roles | keyvalue">
+              <div class="line"></div>
+              <h4>
+              <span>
+                {{ role.value.ui.label }}
+              </span>
+                <button *ngIf="!isDefaultRole(role.key); else defaultRole"
+                        mat-button
+                        color="primary"
+                        class="uppercase"
+                        type="button"
+                        [attr.data-se]="'btn-make-default-role-' + role.key"
+                        (click)="makeDefaultRole(role.key)">
+                  Make Default
+                </button>
+                <ng-template #defaultRole>
+                  <button mat-button
+                          disabled
+                          class="default-role-btn uppercase"
+                          type="button">
+                    Default
+                  </button>
+                </ng-template>
+                <button mat-button
+                        color="primary"
+                        class="uppercase"
+                        type="button"
+                        data-se="btn-add-policy"
+                        (click)="addPolicy(role.key)">
+                  Add Access Policy
+                </button>
+              </h4>
+              <p>{{ role.value.ui.description }}</p>
+
+              <ng-container formGroupName="roles">
+                <ng-container [formGroupName]="role.key">
+                  <ng-container formArrayName="policies"
+                                *ngFor="let policyControl of getPolicyControls(role.key).controls; let i=index">
+                    <ng-container [formGroupName]="i">
+                      <div class="row">
+                        <mat-form-field class="col">
+                          <input #policyInput="matInput"
+                                 matInput
+                                 [matAutocomplete]="policiesAutocomplete"
+                                 placeholder="Policy"
+                                 formControlName="name"
+                                 (change)="addVariablesForPolicy(role.key, policyInput.value)"
+                                 [attr.data-se]="'inp-policy-' + policyControl.get('name').value"
+                                 required>
+                          <mat-autocomplete #policiesAutocomplete="matAutocomplete"
+                                            (optionSelected)="addVariablesForPolicy(role.key, $event.option.value)">
+                            <mat-option *ngFor="let policy of policies"
+                                        [value]="policy.name">
+                              {{ formatPolicyAutocompleteText(policy.name) }}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                        <button mat-button
+                                color="primary"
+                                class="uppercase"
+                                type="button"
+                                [attr.data-se]="'btn-remove-policy-' + policyControl.get('name').value"
+                                (click)="removePolicy(role.key, i)">
+                          Remove
+                        </button>
+                      </div>
+                      <div class="ddap-view-policy-variables"
+                           formGroupName="args"
+                           *ngIf="policyControl.get('args').value as policyVariables">
+                        <h4 *ngIf="(policyVariables | keyvalue).length > 0">
+                          <span>Policy Variables for {{ policyControl.get('name').value }}</span>
+                        </h4>
+                        <div class="row"
+                             *ngFor="let policyVariable of getPolicyVariables(policyVariables)">
+                          <mat-form-field class="col">
+                            <input matInput
+                                   required
+                                   [placeholder]="policyVariable"
+                                   [formControlName]="policyVariable"
+                                   [attr.data-se]="'inp-policy-variable-' + policyVariable">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+    </mat-tab>
+
+    <mat-tab label="Metadata">
+      <ng-container formGroupName="labels">
+        <div class="row">
+          <mat-form-field class="col">
+            <input matInput
+                   placeholder="Geo Location"
+                   formControlName="geoLocation"
+                   data-se="inp-view-geolocation">
+          </mat-form-field>
+          <mat-form-field class="col">
+            <input matInput
+                   placeholder="Topic"
+                   formControlName="topic"
+                   data-se="inp-view-topic">
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col">
+            <input matInput
+                   placeholder="Partition"
+                   formControlName="partition"
+                   data-se="inp-view-partition">
+          </mat-form-field>
+          <mat-form-field class="col">
+            <input matInput
+                   placeholder="Fidelity"
+                   formControlName="fidelity"
+                   data-se="inp-view-fidelity">
+          </mat-form-field>
+        </div>
+      </ng-container>
+      <div class="row">
+        <div class="col">
+          <tag-input formControlName="contentTypes"
+                     secondaryPlaceholder="Add Content Type"
+                     placeholder="+ Content Type"
+                     editable="true"
+                     modelAsStrings="true">
+          </tag-input>
+        </div>
       </div>
-    </div>
-    <ng-content></ng-content>
-  </ng-container>
+    </mat-tab>
+
+  </mat-tab-group>
+
+  <ng-content></ng-content>
 </mat-expansion-panel>
 
