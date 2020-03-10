@@ -24,7 +24,7 @@ export class ServiceDefinitionFormBuilder {
         label: [_get(serviceDefinition, 'dto.ui.label'), [Validators.required]],
         description: [_get(serviceDefinition, 'dto.ui.description'), [Validators.required, Validators.maxLength(255)]],
       }),
-      targetAdapter: [_get(serviceDefinition, 'dto.serviceName'), [Validators.required]],
+      serviceName: [_get(serviceDefinition, 'dto.serviceName'), [Validators.required]],
       interfaces: this.buildInterfacesForm(_get(serviceDefinition, 'dto.interfaces')),
       roles: this.buildServiceRolesForm(_get(serviceDefinition, 'dto.roles')),
     });
@@ -62,8 +62,14 @@ export class ServiceDefinitionFormBuilder {
   buildServiceRoleForm(serviceRoleId: string, serviceRole?: IServiceRole): FormGroup {
     return this.formBuilder.group({
       id: [serviceRoleId, [Validators.required]],
-      targetRoles: [_get(serviceRole, 'targetRoles', [])],
-      targetScopes: [_get(serviceRole, 'targetScopes', [])],
+      serviceArgs: this.formBuilder.group({
+        roles: this.formBuilder.group({
+          values: [_get(serviceRole, 'serviceArgs.roles.values', [])],
+        }),
+        scopes: this.formBuilder.group({
+          values: [_get(serviceRole, 'serviceArgs.scopes.values', [])],
+        }),
+      }),
       damRoleCategories: [_get(serviceRole, 'damRoleCategories', [])],
       ui: this.formBuilder.group({
         label: [_get(serviceRole, 'ui.label'), [Validators.required]],

@@ -29,7 +29,7 @@ export class ServiceDefinitionFormComponent implements OnInit {
 
   get selectedTargetAdapter(): IServiceDescriptor | null {
     return this.serviceDescriptors
-           ? this.serviceDescriptors[this.form.get('targetAdapter').value]
+           ? this.serviceDescriptors[this.form.get('serviceName').value]
            : null;
   }
 
