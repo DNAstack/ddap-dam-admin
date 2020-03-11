@@ -38,8 +38,8 @@ export class AccessFormComponent implements OnInit, Form {
   ngOnInit(): void {
     this.serviceDefinitionService.getTargetAdapterVariables(this.serviceTemplate)
       .subscribe((variables) => {
-        this.variables = variables;
-        this.form = this.accessFormBuilder.buildForm(variables);
+        this.variables = this.getNonExperimentalVars(variables);
+        this.form = this.accessFormBuilder.buildForm(this.variables);
       });
   }
 
@@ -55,4 +55,14 @@ export class AccessFormComponent implements OnInit, Form {
     return this.form.value;
   }
 
+  // FIXME DISCO-2745
+  private getNonExperimentalVars(variables: TargetAdapterVariables) {
+    const updatedVars = {};
+    for (const[key, value] of Object.entries(variables)) {
+      if (!value.experimental) {
+        updatedVars[key] = value;
+      }
+    }
+    return updatedVars;
+  }
 }
