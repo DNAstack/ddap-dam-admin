@@ -113,8 +113,9 @@ export class ServiceDefinitionFormComponent implements OnInit {
     alignControlsWithModelDefinitions([this.roles, this.interfaces]);
 
     const { id, roles, interfaces, ...rest } = this.form.value;
+    const updatedRoles = this.removeEmptyServiceArgs(roles);
     return new EntityModel(id, {
-      roles: removeInternalFields(roles, ['id']),
+      roles: removeInternalFields(updatedRoles, ['id']),
       interfaces: this.getInterfacesModel(interfaces),
       ...rest,
     });
@@ -160,5 +161,20 @@ export class ServiceDefinitionFormComponent implements OnInit {
         roleControl.controls['targetRoles'].updateValueAndValidity();
         roleControl.controls['targetScopes'].updateValueAndValidity();
       });
+  }
+
+  // removes empty serviceArgs TODO DISCO-2744
+  private removeEmptyServiceArgs(roles: any) {
+    for (const [role, roleDetails] of Object.entries(roles)) {
+      const serviceArgs = roleDetails['serviceArgs'];
+      if (serviceArgs) {
+        for (const[arg, argValue] of Object.entries(serviceArgs)) {
+          if (argValue['values'].length === 0) {
+           delete serviceArgs[arg];
+          }
+        }
+      }
+    }
+    return roles;
   }
 }
