@@ -59,7 +59,9 @@ export class ResourceBuilderService {
               args: {...variables},
             },
           ],
-          version: id,
+          labels: {
+            version: id,
+          },
           serviceTemplate,
           defaultRole: roleId,
           roles: {
