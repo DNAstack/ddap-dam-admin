@@ -96,8 +96,8 @@ public class AdminSimplifiedAccessE2eTest extends AbstractAdminFrontendE2eTest {
 
         String collection = "test-beacon-cag-read";
         adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
+        adminManagePage.fillField(DdapBy.se("inp-variable-aud"), "http://test.dnastack.com");
         adminManagePage.fillField(DdapBy.se("inp-variable-url"), "http://test.beacon.dnastack.com");
-        adminManagePage.fillField(DdapBy.se("inp-aud"), "http://test.dnastack.com");
         adminManagePage.fillField(DdapBy.se("inp-access-policy-value"), "http://test.dnastack.com");
 
         // Should be redirected to newly created resource detail page
