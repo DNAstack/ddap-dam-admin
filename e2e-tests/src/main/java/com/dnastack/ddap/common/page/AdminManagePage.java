@@ -109,11 +109,26 @@ public class AdminManagePage extends AdminDdapPage {
                 .until(d -> gcsReadCheckbox.getAttribute("class").contains("ng-invalid"));
     }
 
-    public void toggleExpansionPanel(String panelId) {
+    public WebElement toggleExpansionPanel(String panelId) {
         WebElement panel = driver.findElement(DdapBy.se(panelId));
         new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(panel));
         WebPageScroller.scrollTo(driver, panel);
         panel.click();
+        return panel;
+    }
+
+    public void switchToTab(String tabLabelId) {
+        WebElement tabLabel = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.visibilityOf(driver.findElement(DdapBy.se(tabLabelId))));
+        WebPageScroller.scrollTo(driver, tabLabel);
+        tabLabel.click();
+    }
+
+    public void switchToTab(WebElement view, String tabLabelId) {
+        WebElement tabLabel = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.visibilityOf(view.findElement(DdapBy.se(tabLabelId))));
+        WebPageScroller.scrollTo(driver, tabLabel);
+        tabLabel.click();
     }
 
     public void enterButton(By selector) {

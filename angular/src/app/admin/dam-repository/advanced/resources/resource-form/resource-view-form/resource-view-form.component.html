@@ -86,7 +86,8 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <div class="tab-label">
+        <div class="tab-label"
+             data-se="tab-service-definition">
           <span>Service Definition</span>
           <div class="invalid-warning"
                *ngIf="isAnyOfControlsInvalid(['serviceTemplate', 'variables', 'roles'])">
@@ -174,7 +175,7 @@
             <mat-error *ngIf="viewForm.get('defaultRole').invalid">
               Single role must be set as default
             </mat-error>
-            <mat-error *ngIf="viewForm.get('roles').invalid" data-se="resources-role-error">
+            <mat-error *ngIf="viewForm.get('roles').invalid">
               {{ viewForm.get('roles').errors?.serverError }}
             </mat-error>
           </div>
@@ -183,9 +184,7 @@
                 *ngFor="let role of selectedTemplate.dto.roles | keyvalue">
               <div class="line"></div>
               <h4>
-              <span>
-                {{ role.value.ui.label }}
-              </span>
+                <span>{{ role.value.ui.label }}</span>
                 <button *ngIf="!isDefaultRole(role.key); else defaultRole"
                         mat-button
                         color="primary"
@@ -207,12 +206,19 @@
                         color="primary"
                         class="uppercase"
                         type="button"
-                        data-se="btn-add-policy"
+                        [attr.data-se]="'btn-add-' + role.key + '-policy'"
                         (click)="addPolicy(role.key)">
                   Add Access Policy
                 </button>
               </h4>
               <p>{{ role.value.ui.description }}</p>
+
+              <div>
+                <mat-error *ngIf="viewForm.get('roles.' + role.key + '.policies').invalid"
+                           data-se="resources-role-policy-error">
+                  {{ viewForm.get('roles.' + role.key + '.policies').errors?.serverError }}
+                </mat-error>
+              </div>
 
               <ng-container formGroupName="roles">
                 <ng-container [formGroupName]="role.key">
@@ -227,7 +233,7 @@
                                  placeholder="Policy"
                                  formControlName="name"
                                  (change)="addVariablesForPolicy(role.key, policyInput.value)"
-                                 [attr.data-se]="'inp-policy-' + policyControl.get('name').value"
+                                 [attr.data-se]="'inp-' + role.key + '-policy'"
                                  required>
                           <mat-autocomplete #policiesAutocomplete="matAutocomplete"
                                             (optionSelected)="addVariablesForPolicy(role.key, $event.option.value)">
@@ -241,7 +247,7 @@
                                 color="primary"
                                 class="uppercase"
                                 type="button"
-                                [attr.data-se]="'btn-remove-policy-' + policyControl.get('name').value"
+                                [attr.data-se]="'btn-remove-' + role.key + '-policy'"
                                 (click)="removePolicy(role.key, i)">
                           Remove
                         </button>
@@ -259,7 +265,7 @@
                                    required
                                    [placeholder]="policyVariable"
                                    [formControlName]="policyVariable"
-                                   [attr.data-se]="'inp-policy-variable-' + policyVariable">
+                                   [attr.data-se]="'inp-' + role.key + '-policy-' + policyControl.get('name').value + '-variable-' + policyVariable">
                           </mat-form-field>
                         </div>
                       </div>

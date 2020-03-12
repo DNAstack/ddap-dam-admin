@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.dnastack.ddap.common.fragments.NavBar.damPoliciesLink;
 import static com.dnastack.ddap.common.fragments.NavBar.damResourceLink;
+import static java.lang.String.format;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 
@@ -35,16 +36,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
-        adminManagePage.fillField(DdapBy.se("inp-owner"), "E2E test");
-        adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
-        adminManagePage.fillField(DdapBy.se("inp-access"), "controlled");
-        adminManagePage.fillField(DdapBy.se("inp-year"), "2019");
-        adminManagePage.fillField(DdapBy.se("inp-size"), "120 GB");
-        adminManagePage.fillField(DdapBy.se("inp-tags"), "test, e2e, resource");
-        adminManagePage.fillField(DdapBy.se("inp-image-url"), "http://test-image-url.com");
-        adminManagePage.fillField(DdapBy.se("inp-info-url"), "http://test-info-url.com");
-        adminManagePage.fillField(DdapBy.se("inp-apply-url"), "http://test-apply-url.com");
-        adminManagePage.fillField(DdapBy.se("inp-troubleshoot-url"), "http://test-troubleshoot-url.com");
+
         adminListPage = adminManagePage.saveEntity();
 
         adminListPage.assertListItemExists(resourceId);
@@ -65,8 +57,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
-        adminManagePage.fillField(DdapBy.se("inp-owner"), "E2E test");
-        adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
         adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
@@ -74,10 +64,13 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
+
+        adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), "http://beacon-aud.com");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
-        adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "test_whitelist");
+        adminManagePage.enterButton(DdapBy.se(format("btn-add-%s-policy", role)));
+        adminManagePage.fillField(DdapBy.se(format("inp-%s-policy", role)), "test_whitelist");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
 
         adminManagePage.clickCheckbox(By.id(viewId + "/" + role + "/test_user_with_access"));
@@ -105,8 +98,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
-        adminManagePage.fillField(DdapBy.se("inp-owner"), "E2E test");
-        adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
         adminManagePage.fillField(DdapBy.se("inp-view-id"), view1Id);
@@ -114,10 +105,13 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View 1 Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
+
+        adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Google Cloud Storage");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-bucket"), "ga4gh-apis-controlled-access");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-project"), "ga4gh-apis");
-        adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + view1Role), "test_whitelist");
+        adminManagePage.enterButton(DdapBy.se(format("btn-add-%s-policy", view1Role)));
+        adminManagePage.fillField(DdapBy.se(format("inp-%s-policy", view1Role)), "test_whitelist");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + view1Role));
 
         adminManagePage.clickButton(DdapBy.se("btn-add-view"));
@@ -126,10 +120,13 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View 2 Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Version 2");
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
+
+        adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), "http://beacon-aud.com");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
-        adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + view2Role), "test_whitelist");
+        adminManagePage.enterButton(DdapBy.se(format("btn-add-%s-policy", view2Role)));
+        adminManagePage.fillField(DdapBy.se(format("inp-%s-policy", view2Role)), "test_whitelist");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + view2Role));
 
         adminManagePage.waitForInflightRequests();
@@ -159,8 +156,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
-        adminManagePage.fillField(DdapBy.se("inp-owner"), "E2E test");
-        adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
         adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
@@ -168,12 +163,14 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
+
+        adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), "http://beacon-aud.com");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
-        adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "policy-with-variables");
-        adminManagePage.fillField(DdapBy.se("var-TEST_VARIABLE_DATASET"), "beacon");
-        adminManagePage.clickButton(DdapBy.se("btn-save-variable-data"));
+        adminManagePage.enterButton(DdapBy.se(format("btn-add-%s-policy", role)));
+        adminManagePage.fillFieldFromDropdown(DdapBy.se(format("inp-%s-policy", role)), "policy-with-variables");
+        adminManagePage.fillField(DdapBy.se(format("inp-%s-policy-%s-variable-%s", role, "policy-with-variables", "TEST_VARIABLE_DATASET")), "beacon");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
         adminListPage = adminManagePage.saveEntity();
         adminListPage.assertListItemExists(resourceId);
@@ -224,8 +221,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
-        adminManagePage.fillField(DdapBy.se("inp-owner"), "E2E test");
-        adminManagePage.fillField(DdapBy.se("inp-max-ttl"), "7d");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
         adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
@@ -233,17 +228,20 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
         adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
+
+        adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), "http://beacon-aud.com");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
         // This is the invalid part
-        adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + role), "NONEXISTENT_POLICY");
+        adminManagePage.enterButton(DdapBy.se(format("btn-add-%s-policy", role)));
+        adminManagePage.fillField(DdapBy.se(format("inp-%s-policy", role)), "NONEXISTENT_POLICY");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
 
         adminManagePage.clickSave();
         adminListPage.waitForInflightRequests();
         final WebElement errorField = new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-policy-error")));
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-role-policy-error")));
         assertThat(errorField.getText(), containsString("NONEXISTENT_POLICY"));
         assertThat(errorField.getText(), containsString("is not defined"));
     }
@@ -259,16 +257,18 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists(resourceToEdit);
 
         AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit);
-        adminManagePage.toggleExpansionPanel("view-discovery-access");
+        WebElement view = adminManagePage.toggleExpansionPanel("view-discovery-access");
 
         // Invalid part
-        adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + newDefaultRole), "NONEXISTENT_POLICY");
+        adminManagePage.switchToTab(view, "tab-service-definition");
+        adminManagePage.enterButton(DdapBy.se(format("btn-add-%s-policy", newDefaultRole)));
+        adminManagePage.fillField(DdapBy.se(format("inp-%s-policy", newDefaultRole)), "NONEXISTENT_POLICY");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + newDefaultRole));
 
         adminManagePage.clickUpdate();
         adminManagePage.waitForInflightRequests();
         final WebElement errorField = new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-policy-error")));
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("resources-role-policy-error")));
         assertThat(errorField.getText(), containsString("NONEXISTENT_POLICY"));
         assertThat(errorField.getText(), containsString("is not defined"));
     }
@@ -303,11 +303,13 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists(resourceToEdit);
 
         AdminManagePage adminManagePage = adminListPage.clickView(resourceToEdit);
-        adminManagePage.toggleExpansionPanel("view-discovery-access");
+        WebElement view = adminManagePage.toggleExpansionPanel("view-discovery-access");
 
         adminManagePage.findCheckedCheckbox("discovery-access/discovery/test_user_with_access");
 
-        adminManagePage.fillTagField(DdapBy.se("view-role-policies-" + newDefaultRole), "test_whitelist");
+        adminManagePage.switchToTab(view, "tab-service-definition");
+        adminManagePage.enterButton(DdapBy.se(format("btn-add-%s-policy", newDefaultRole)));
+        adminManagePage.fillField(DdapBy.se(format("inp-%s-policy", newDefaultRole)), "test_whitelist");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + newDefaultRole));
 
         adminManagePage.waitForInflightRequests();
