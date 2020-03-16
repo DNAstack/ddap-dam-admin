@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineForms, FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
+import { Observable, Subject } from 'rxjs';
 
 import { DamConfigEntityManageComponentBase } from '../../../shared/dam/dam-config-entity-manage-component.base';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
@@ -23,12 +24,20 @@ export class ResourceManageComponent extends DamConfigEntityManageComponentBase 
   @ViewChild('accessForm', { static: false })
   accessForm: ResourceAccessComponent;
 
+  private errors: Subject<any> = new Subject();
+
   constructor(protected route: ActivatedRoute,
               protected router: Router,
               protected validationService: FormValidationService,
               protected damConfigStore: DamConfigStore,
               public resourceService: ResourceService) {
     super(route, router, validationService, damConfigStore);
+    this.errors
+      .subscribe(() => {
+        },
+        (error) => {
+          this.errors.next(error);
+        });
   }
 
   save(isDryRun = false) {
@@ -40,12 +49,19 @@ export class ResourceManageComponent extends DamConfigEntityManageComponentBase 
     const resourceModel: EntityModel = this.resourceForm.getModel();
     const applyModel = this.accessForm.getApplyModel(isDryRun) || {};
     const change = new ConfigModificationModel(resourceModel.dto, applyModel);
+    this.resourceService.save(resourceModel.name, change);
     return this.resourceService.save(resourceModel.name, change)
       .subscribe(() => {
         if (!isDryRun) {
           this.navigateUp('../..');
         }
-      }, (error) => this.handleError(isDryRun, error));
+      }, (error) => {
+        if (isDryRun) {
+          this.errors.next(error);
+        } else {
+          this.handleError(isDryRun, error);
+        }
+      });
   }
 
   handleError = (isDryRun: boolean, { error }) => {
