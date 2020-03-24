@@ -2,6 +2,7 @@ package com.dnastack.ddap.common.page;
 
 import com.dnastack.ddap.common.util.DdapBy;
 import com.dnastack.ddap.common.util.WebPageScroller;
+import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,6 +13,7 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertThat;
 
+@Slf4j
 public class AdminManagePage extends AdminDdapPage {
 
     public AdminManagePage(WebDriver driver) {
@@ -19,11 +21,10 @@ public class AdminManagePage extends AdminDdapPage {
     }
 
     public void clearField(By fieldSelector) {
-        String selectAll = Keys.chord(Keys.CONTROL, "a");
-        WebElement formInput = driver.findElement(fieldSelector);
-        new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(formInput));
-        formInput.sendKeys(selectAll);
-        formInput.sendKeys(Keys.DELETE);
+        WebElement formInput = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(fieldSelector));
+        WebPageScroller.scrollTo(driver, formInput);
+        formInput.clear();
     }
 
     public void fillField(By fieldSelector, String fieldValue) {

@@ -63,7 +63,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
-        adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
 
         adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
@@ -104,7 +103,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-label"), view1Id);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View 1 Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
-        adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
 
         adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Google Cloud Storage");
@@ -119,7 +117,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-label"), view2Id);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View 2 Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Version 2");
-        adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
 
         adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
@@ -162,7 +159,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
-        adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
 
         adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");
@@ -227,7 +223,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
-        adminManagePage.fillField(DdapBy.se("inp-view-aud"), "http://audience-test.com");
 
         adminManagePage.switchToTab("tab-service-definition");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Beacon Discovery Search");

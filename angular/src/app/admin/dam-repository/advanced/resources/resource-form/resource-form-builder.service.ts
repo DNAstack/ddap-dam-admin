@@ -49,7 +49,6 @@ export class ResourceFormBuilder {
         partition: [_get(view, 'dto.labels.partition')],
         fidelity: [_get(view, 'dto.labels.fidelity')],
         geoLocation: [_get(view, 'dto.labels.geoLocation')],
-        aud: [_get(view, 'dto.labels.aud')],
       }),
       ui: this.formBuilder.group({
         label: [_get(view, 'dto.ui.label'), [Validators.required]],
