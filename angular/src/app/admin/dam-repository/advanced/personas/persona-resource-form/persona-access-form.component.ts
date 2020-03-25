@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { flatten } from 'ddap-common-lib';
 import _get from 'lodash.get';
-
-import { flatten } from '../../../../../shared/util';
 
 @Component({
   selector: 'ddap-persona-access-form',
