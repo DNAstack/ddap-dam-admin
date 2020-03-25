@@ -5,6 +5,7 @@ import { ViewControllerService } from 'ddap-common-lib';
   providedIn: 'root',
 })
 export class AppConfigService {
+
   constructor(public viewController: ViewControllerService) {
     this.registerModules();
   }
@@ -120,6 +121,5 @@ export class AppConfigService {
         isApp: false,
       });
   }
-
 
 }
