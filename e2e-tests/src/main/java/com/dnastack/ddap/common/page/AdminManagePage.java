@@ -24,7 +24,13 @@ public class AdminManagePage extends AdminDdapPage {
         WebElement formInput = new WebDriverWait(driver, 5)
             .until(ExpectedConditions.elementToBeClickable(fieldSelector));
         WebPageScroller.scrollTo(driver, formInput);
+
+        // Using clear() to workaround use-cases where CTRL-A + BACKSPACE did not work.
+        // Note that no keyboard event is fired with clear() method,
+        // we are sending empty space and backspace to fire key event
         formInput.clear();
+        formInput.sendKeys(" ");
+        formInput.sendKeys(Keys.BACK_SPACE);
     }
 
     public void fillField(By fieldSelector, String fieldValue) {

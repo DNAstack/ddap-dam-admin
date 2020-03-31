@@ -115,17 +115,16 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         AdminManagePage adminManagePage = adminListPage.clickManage();
         adminManagePage.clickButton(DdapBy.se("btn-add-passport"));
 
-        adminManagePage.fillField(DdapBy.se("inp-passport-type"), "ControlledAccessGrants");
+        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-type"), "ControlledAccessGrants");
         adminManagePage.waitForInflightRequests();
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-value"), "${DATASET}");
-        adminManagePage.closeAutocompletes();
 
         adminManagePage.clearField(DdapBy.se("inp-passport-type"));
         adminManagePage.clearField(DdapBy.se("inp-passport-value"));
 
-        adminManagePage.fillField(DdapBy.se("inp-passport-type"), "ResearcherStatus");
+        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-type"), "ResearcherStatus");
+        adminManagePage.waitForInflightRequests();
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-value"), "https://www.nature.com/articles/s99999-999-9999-z");
-        adminManagePage.closeAutocompletes();
     }
 
     @Test
