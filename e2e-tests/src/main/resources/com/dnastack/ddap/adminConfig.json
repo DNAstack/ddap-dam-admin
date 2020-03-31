@@ -495,32 +495,6 @@
     }
   },
   "clients": {
-    "edit-me": {
-      "clientId": "b1aed96d-6367-4313-87a1-65eda4962a76",
-      "scope": "openid ga4gh_passport_v1 account_admin identities profile offline_access",
-      "grant_types": ["authorization_code", "refresh_token"],
-      "response_types": ["code"],
-      "ui": {
-        "description": "edit me",
-        "label": "edit-me"
-      },
-      "redirectUris": [
-        "http://localhost:8087"
-      ]
-    },
-    "delete-me": {
-      "clientId": "903cfaeb-57d9-4ef6-5659-04377794ed64",
-      "scope": "openid ga4gh_passport_v1 account_admin identities profile offline_access",
-      "grant_types": ["authorization_code", "refresh_token"],
-      "response_types": ["code"],
-      "ui": {
-        "description": "delete me",
-        "label": "delete-me"
-      },
-      "redirectUris": [
-        "http://localhost:8087"
-      ]
-    }
   },
   "serviceTemplates": {
     "beacon": {

@@ -16,6 +16,12 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
 
     @Test
     public void addClientApplication() {
+        // FIXME: modify clients is only allowed on master realm
+        Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
+            2020, 4, 20, 12, 0, 0,0,
+            ZoneId.of("America/Toronto"))
+        ));
+        
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damClientLink());
 
@@ -42,9 +48,9 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
 
     @Test
     public void editClientApplication() {
-        // FIXME: DISCO-2660
+        // FIXME: modify clients is only allowed on master realm
         Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
-            2020, 3, 31, 12, 0, 0,0,
+            2020, 4, 20, 12, 0, 0,0,
             ZoneId.of("America/Toronto"))
         ));
 
@@ -67,6 +73,12 @@ public class AdminClientApplicationE2eTest extends AbstractAdminFrontendE2eTest 
 
     @Test
     public void deleteClientApplication() {
+        // FIXME: modify clients is only allowed on master realm
+        Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
+            2020, 4, 20, 12, 0, 0,0,
+            ZoneId.of("America/Toronto"))
+        ));
+
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damClientLink());
 
