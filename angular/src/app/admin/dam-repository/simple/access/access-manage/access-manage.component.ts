@@ -46,7 +46,7 @@ export class AccessManageComponent implements OnInit {
       return;
     }
 
-    const { collection, accessPolicyValue, variables, aud } = this.accessForm.getModel();
+    const { collection, accessPolicyValue, variables } = this.accessForm.getModel();
     const accessLevel: AccessLevel = this.accessForm.accessLevelRadio.value;
     const accessPolicyId: AccessPolicyType = this.accessForm.accessPolicyRadio.value;
 
@@ -54,7 +54,7 @@ export class AccessManageComponent implements OnInit {
       .pipe(
         flatMap((_) => {
           return this.resourceBuilderService.createResource(
-            collection, this.serviceTemplate, variables, accessLevel, accessPolicyId, accessPolicyValue, aud
+            collection, this.serviceTemplate, variables, accessLevel, accessPolicyId, accessPolicyValue
           );
         })
       )

@@ -31,7 +31,7 @@ export class AccessPolicyFormBuilder extends ConditionFormBuilder {
     });
   }
 
-  buildVariableDefinitionsForm(variableDefinitions?: { [k: string]: IVariableFormat }): FormGroup {
+  buildVariableDefinitionsForm(variableDefinitions?: { [key: string]: IVariableFormat }): FormGroup {
     const variableDefinitionsForm = {};
     if (variableDefinitions) {
       Object.entries(variableDefinitions)

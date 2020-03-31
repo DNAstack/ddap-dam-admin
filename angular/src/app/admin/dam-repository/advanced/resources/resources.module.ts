@@ -22,11 +22,11 @@ import { ResourcesRoutingModule } from './resources-routing.module';
     ResourceAccessComponent,
     PolicyVariableDialogComponent,
   ],
-    imports: [
-        DamRepositorySharedModule,
-        ResourcesRoutingModule,
-        MatTabsModule,
-    ],
+  imports: [
+    DamRepositorySharedModule,
+    ResourcesRoutingModule,
+    MatTabsModule,
+  ],
   entryComponents: [
     PolicyVariableDialogComponent,
   ],

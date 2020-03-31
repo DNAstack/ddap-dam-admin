@@ -1,19 +1,21 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EntityModel, FormValidationService, isExpanded } from 'ddap-common-lib';
 import _get from 'lodash.get';
-import { Observable, Subscription } from 'rxjs';
-import { debounceTime, tap } from 'rxjs/operators';
+import _isEqual from 'lodash.isequal';
+import { Subscription } from 'rxjs';
+import Item = dam.v1.View.Item;
+import { debounceTime } from 'rxjs/operators';
 
 import { dam } from '../../../../../../shared/proto/dam-service';
 import { AccessPoliciesStore } from '../../../access-policies/access-policies.store';
 import { ServiceDefinitionService } from '../../../service-definitions/service-definitions.service';
 import { ServiceDefinitionsStore } from '../../../service-definitions/service-definitions.store';
-import View = dam.v1.View;
-import { ResourceFormBuilder } from '../resource-form-builder.service';
 import IViewPolicy = dam.v1.ViewRole.IViewPolicy;
 import ViewPolicy = dam.v1.ViewRole.ViewPolicy;
+import { TargetAdapterVariables } from '../../../target-adapters/target-adapter-variables.model';
+import { ResourceFormBuilder } from '../resource-form-builder.service';
 
 
 @Component({
@@ -28,30 +30,30 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   }
 
   get selectedTemplate(): EntityModel {
+    const equalToSelectedTemplateName = (template) => template.name === this.viewForm.get('serviceTemplate').value;
+
     if (!this.serviceDefinitions) {
       return null;
     }
-    return this.serviceDefinitions.find(this.equalToSelectedTemplateName);
+    return this.serviceDefinitions.find(equalToSelectedTemplateName);
   }
 
-  get variableItems() {
-    return this.viewForm.get('variables') as FormArray;
+  get items() {
+    return this.viewForm.get('items') as FormArray;
   }
 
   @Input()
-  view: EntityModel;
-  @Output()
-  readonly formChange: EventEmitter<any> = new EventEmitter<any>();
-
   viewForm: FormGroup;
+
   isExpanded: Function = isExpanded;
   serviceDefinitions: EntityModel[];
   serviceDefinitionStoreSubscription: Subscription;
   policies: EntityModel[];
+  targetAdapterVariables: TargetAdapterVariables;
 
   constructor(private formBuilder: FormBuilder,
               private resourceFormBuilder: ResourceFormBuilder,
-              private serviceDefinitionService: ServiceDefinitionService,
+              public serviceDefinitionService: ServiceDefinitionService,
               private serviceDefinitionsStore: ServiceDefinitionsStore,
               private accessPoliciesStore: AccessPoliciesStore,
               public dialog: MatDialog,
@@ -59,20 +61,18 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (!this.view || !this.view.name) {
-      this.view = new EntityModel('', View.create());
-    }
-
-    this.viewForm = this.resourceFormBuilder.buildViewForm(this.view);
-
     this.serviceDefinitionStoreSubscription = this.serviceDefinitionsStore.getAsList()
       .subscribe((serviceDefinitions) => {
         this.serviceDefinitions = serviceDefinitions;
         if (this.selectedTemplate) {
+          this.serviceDefinitionService.getTargetAdapterVariables(this.selectedTemplate.name)
+            .subscribe((targetAdapterVariables) => {
+              this.targetAdapterVariables = targetAdapterVariables;
+              this.addMissingVariablesToFormFromTargetAdapterVariables();
+            });
+
           this.addMissingRolesToFormFromServiceDefinition();
-          this.rebuildVariablesForItemsForm();
         }
-        this.subscribeToFormChanges();
       });
 
     this.accessPoliciesStore.getAsList()
@@ -137,8 +137,13 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   }
 
   serviceTemplateChange() {
+    this.serviceDefinitionService.getTargetAdapterVariables(this.selectedTemplate.name)
+      .subscribe((targetAdapterVariables) => {
+        this.targetAdapterVariables = targetAdapterVariables;
+        this.rebuildVariablesForItemsForm();
+      });
+
     this.addMissingRolesToFormFromServiceDefinition();
-    this.rebuildVariablesForItemsForm();
   }
 
   addMissingRolesToFormFromServiceDefinition() {
@@ -146,11 +151,11 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
 
     Object.entries(serviceDefRoles)
       .forEach(([roleKey, role]: any) => {
-      if (!this.viewForm.get(`roles.${roleKey}`)) {
-        const rolesForm = this.viewForm.get('roles') as FormGroup;
-        rolesForm.addControl(roleKey, this.resourceFormBuilder.buildRoleForm());
-      }
-    });
+        if (!this.viewForm.get(`roles.${roleKey}`)) {
+          const rolesForm = this.viewForm.get('roles') as FormGroup;
+          rolesForm.addControl(roleKey, this.resourceFormBuilder.buildRoleForm());
+        }
+      });
   }
 
   getPolicyControls(roleId: string): FormArray {
@@ -162,32 +167,6 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     return Object.keys(variables);
   }
 
-  rebuildVariablesForItemsForm(): void {
-    this.getVariablesBySelectedTemplate().subscribe((args) => {
-      const varArray: FormArray = this.formBuilder.array([]);
-      Object.entries(args).forEach(([key, value]: any) => {
-        const { ui, regexp, optional, type } = value;
-        varArray.push(this.formBuilder.group({
-          name: [key],
-          label: [ui.label],
-          description: [ui.description],
-          optional: [optional],
-          regexp: [regexp],
-          type: [type],
-          value: [this.getValueForVariable(key, type),
-            (regexp && !optional && (type !== 'split_pattern')) ? [Validators.pattern(regexp)] : []],
-        }));
-      });
-
-      this.viewForm.setControl('variables', varArray);
-    });
-  }
-
-  getVariablesBySelectedTemplate(): Observable<any> {
-    const serviceTemplateId = this.viewForm.get('serviceTemplate').value;
-    return this.serviceDefinitionService.getTargetAdapterVariables(serviceTemplateId);
-  }
-
   splitPatternValidators(pattern) {
     return [Validators.pattern(pattern)];
   }
@@ -196,21 +175,33 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     return paths.some((path) => !this.viewForm.get(path) || this.viewForm.get(path).invalid);
   }
 
-  private getValueForVariable(variableId: string, variableType: string): string | string[] {
-    let variableValue = _get(this.view, `dto.items[0].args[${variableId}]`, '');
-    if (variableType === 'split_pattern' && variableValue.length > 0) {
-      variableValue = variableValue.split(';');
-    }
-    return variableValue;
+  private addMissingVariablesToFormFromTargetAdapterVariables() {
+    Object.entries(this.targetAdapterVariables)
+      .forEach(([variableId, variableFormat]) => {
+        const numberOfItems = this.items.length;
+        for (let i = 0; i < numberOfItems; i++) {
+          const variableControl = this.items.get(`${i}.args.${variableId}`);
+          // If exists add just validators, otherwise add missing control
+          if (variableControl) {
+            variableControl.setValidators([Validators.pattern(variableFormat.regexp)]);
+          } else {
+            const args = this.items.get(`${i}.args`) as FormGroup;
+            args.addControl(variableId, this.formBuilder.control(undefined, [
+              Validators.pattern(variableFormat.regexp),
+            ]));
+          }
+        }
+      });
   }
 
-  private equalToSelectedTemplateName = (template) => template.name === this.viewForm.get('serviceTemplate').value;
-
-  private subscribeToFormChanges() {
-    this.viewForm.valueChanges.pipe(
-      debounceTime(300),
-      tap((changed) => this.formChange.emit(changed))
-    ).subscribe();
+  private rebuildVariablesForItemsForm() {
+    this.items.clear();
+    const args = {};
+    Object.keys(this.targetAdapterVariables)
+      .forEach((variableId) => {
+        args[variableId] = undefined;
+      });
+    this.items.push(this.resourceFormBuilder.buildItemForm(Item.create({ args })));
   }
 
 }

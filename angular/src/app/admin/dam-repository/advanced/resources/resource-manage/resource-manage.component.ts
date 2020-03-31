@@ -1,11 +1,11 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineForms, FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { DamConfigEntityManageComponentBase } from '../../../shared/dam/dam-config-entity-manage-component.base';
+import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { ResourceAccessComponent } from '../resource-access/resource-access.component';
 import { ResourceFormComponent } from '../resource-form/resource-form.component';
@@ -72,11 +72,8 @@ export class ResourceManageComponent extends DamConfigEntityManageComponentBase 
           this.accessForm.makeFieldsValid();
           this.accessForm.validatePersonaFields(details);
         } else {
-          if (details['resourceName'].includes('views')) {
-            this.resourceForm.setFormControlErrors(details);
-          } else {
-            this.displayFieldErrorMessage(error, 'resources', this.resourceForm.form);
-          }
+          this.translateViewPaths(error);
+          this.displayFieldErrorMessage(error, DamConfigEntityType.resources, this.resourceForm.form);
         }
       });
     } else if (!isDryRun) {
@@ -85,7 +82,35 @@ export class ResourceManageComponent extends DamConfigEntityManageComponentBase 
   }
 
   executeDryRun() {
-    this.save(true);
+    if (this.resourceForm) {
+      this.save(true);
+    }
+  }
+
+  /**
+   * When new View is added we create a new form controller with assigned id such as `zyx_1585646705796`. Each view has
+   * field 'name' which is basically the id provided by user. Requests to DAM includes view correctly named using that
+   * particular field for naming the View (see getModel), yet the controller is still named with the original assigned id.
+   * This method translates paths from real view names to assigned controller names to make error handling working.
+   */
+  private translateViewPaths(error) {
+    if ('details' in error) {
+      const { name: resourceId }  = this.resourceForm.getModel();
+      const viewNames = this.resourceForm.translateRealViewNamesToAssignedNames();
+
+      error.details.forEach(( errorDetail ) => {
+        const realViewName = Object.keys(viewNames)
+          .find((viewName) => {
+            const viewPath = `resources/${resourceId}/views/${viewName}/`;
+            return errorDetail.resourceName.includes(viewPath);
+          });
+
+        const existingViewPath = `resources/${resourceId}/views/${realViewName}/`;
+        const translatedViewPath = `resources/${resourceId}/views/${viewNames[realViewName]}/`;
+
+        errorDetail.resourceName = errorDetail.resourceName.replace(existingViewPath, translatedViewPath);
+      });
+    }
   }
 
 }

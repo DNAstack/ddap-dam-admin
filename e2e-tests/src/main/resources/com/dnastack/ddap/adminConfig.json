@@ -262,8 +262,8 @@
             "label": "Beacon Discovery Access"
           }
         },
-        "gcs-file-access": {
-          "serviceTemplate": "gcs",
+        "bigquery-access": {
+          "serviceTemplate": "bigquery",
           "labels": {
             "version": "Phase 3",
             "topic": "variants",
@@ -286,15 +286,14 @@
           "items": [
             {
               "args": {
-                "bucket": "ga4gh-apis-controlled-access",
                 "project": "ga4gh-apis"
               }
             }
           ],
           "defaultRole": "viewer",
           "ui": {
-            "description": "Read files from gcs bucket",
-            "label": "Full File Read Access"
+            "description": "BQ Access",
+            "label": "Read BQ Access"
           }
         }
       },
@@ -881,7 +880,7 @@
         "edit-me/discovery-access/discovery",
         "edit-me/gcs-file-access/viewer",
         "thousand-genomes/discovery-access/discovery",
-        "thousand-genomes/gcs-file-access/viewer",
+        "thousand-genomes/bigquery-access/viewer",
         "wes-resource/wes-view/execute"
       ],
       "ui": {

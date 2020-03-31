@@ -105,8 +105,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
 
         adminManagePage.switchToTab("tab-service-definition");
-        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Google Cloud Storage");
-        adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-bucket"), "ga4gh-apis-controlled-access");
+        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-view-service-template"), "Google BigQuery");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-project"), "ga4gh-apis");
         adminManagePage.enterButton(DdapBy.se(format("btn-add-%s-policy", view1Role)));
         adminManagePage.fillField(DdapBy.se(format("inp-%s-policy", view1Role)), "test_whitelist");
@@ -282,7 +281,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
 
         userWithAccessCheckbox.click();
         // If we don't wait, submitting the form will happen before validation can occur.
-        new WebDriverWait(driver, 10).until(d -> userWithAccessCheckbox.getAttribute("class").contains("ng-invalid"));
+        new WebDriverWait(driver, 10)
+            .until(d -> userWithAccessCheckbox.getAttribute("class").contains("ng-invalid"));
         adminManagePage.clickUpdate();
         adminManagePage.assertError(containsString("Please fix invalid fields"));
     }
@@ -311,7 +311,7 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickCheckbox(By.id("discovery-access/" + newDefaultRole + "/test_user_with_access"));
         adminManagePage.waitForInflightRequests();
         adminManagePage.findCheckedCheckbox("discovery-access/discovery/test_user_with_access");
-        adminManagePage.findCheckedCheckbox("gcs-file-access/viewer/test_user_with_access");
+        adminManagePage.findCheckedCheckbox("bigquery-access/viewer/test_user_with_access");
 
         adminListPage = adminManagePage.updateEntity();
 

@@ -1,18 +1,13 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { alignControlsWithModelDefinitions, EntityModel, Form, isExpanded, removeInternalFields } from 'ddap-common-lib';
-import { Observable } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Form, isExpanded } from 'ddap-common-lib';
 
-import { dam } from '../../../../../shared/proto/dam-service';
 import { ServiceDefinitionService } from '../../../advanced/service-definitions/service-definitions.service';
 import { TargetAdapterVariables } from '../../../advanced/target-adapters/target-adapter-variables.model';
-import { ConditionFormComponent } from '../../../shared/condition-form/condition-form.component';
 import { AccessLevel } from '../../shared/access-level.enum';
 import { AccessPolicyType } from '../../shared/access-policy-type.enum';
 
 import { AccessFormBuilder } from './access-form-builder.service';
-
-import Policy = dam.v1.Policy;
 
 @Component({
   selector: 'ddap-access-form',

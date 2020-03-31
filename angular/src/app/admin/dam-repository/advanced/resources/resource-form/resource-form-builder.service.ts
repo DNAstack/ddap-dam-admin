@@ -7,6 +7,8 @@ import _get from 'lodash.get';
 import { dam } from '../../../../../shared/proto/dam-service';
 import IViewRole = dam.v1.IViewRole;
 import IViewPolicy = dam.v1.ViewRole.IViewPolicy;
+import IView = dam.v1.IView;
+import IItem = dam.v1.View.IItem;
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +22,7 @@ export class ResourceFormBuilder {
     return this.formBuilder.group({
       id: [_get(resource, 'name'), [Validators.pattern(nameConstraintPattern)]],
       maxTokenTtl: [_get(resource, 'maxTokenTtl')],
+      views: this.buildViewsForm(_get(resource, 'dto.views')),
       ui: this.formBuilder.group({
         label: [_get(resource, 'dto.ui.label'), [Validators.required]],
         description: [_get(resource, 'dto.ui.description'), [Validators.required, Validators.maxLength(255)]],
@@ -36,28 +39,40 @@ export class ResourceFormBuilder {
     });
   }
 
-  buildViewForm(view?: EntityModel): FormGroup {
+  buildViewsForm(views?: IView[]): FormGroup {
+    const viewsForm = {};
+    if (views) {
+      Object.entries(views)
+        .forEach(([viewKey, viewValue]) => {
+          viewsForm[viewKey] = this.buildViewForm(viewKey, viewValue);
+        });
+    }
+    return this.formBuilder.group(viewsForm);
+  }
+
+  buildViewForm(viewId?: string, view?: IView): FormGroup {
     return this.formBuilder.group({
-      id: [_get(view, 'name'), [Validators.pattern(nameConstraintPattern)]],
-      serviceTemplate: [_get(view, 'dto.serviceTemplate'), [Validators.required]],
-      defaultRole: [_get(view, 'dto.defaultRole'), [Validators.required]],
-      roles: this.buildRolesForm(_get(view, 'dto.roles')),
-      contentTypes: [_get(view, 'dto.contentTypes')],
+      id: [viewId, [Validators.pattern(nameConstraintPattern)]],
+      serviceTemplate: [_get(view, 'serviceTemplate'), [Validators.required]],
+      defaultRole: [_get(view, 'defaultRole'), [Validators.required]],
+      roles: this.buildRolesForm(_get(view, 'roles')),
+      contentTypes: [_get(view, 'contentTypes')],
+      items: this.buildItemsForm(_get(view, 'items')),
       labels: this.formBuilder.group({
-        version: [_get(view, 'dto.labels.version'), [Validators.required]],
-        topic: [_get(view, 'dto.labels.topic')],
-        partition: [_get(view, 'dto.labels.partition')],
-        fidelity: [_get(view, 'dto.labels.fidelity')],
-        geoLocation: [_get(view, 'dto.labels.geoLocation')],
+        version: [_get(view, 'labels.version'), [Validators.required]],
+        topic: [_get(view, 'labels.topic')],
+        partition: [_get(view, 'labels.partition')],
+        fidelity: [_get(view, 'labels.fidelity')],
+        geoLocation: [_get(view, 'labels.geoLocation')],
       }),
       ui: this.formBuilder.group({
-        label: [_get(view, 'dto.ui.label'), [Validators.required]],
-        description: [_get(view, 'dto.ui.description'), [Validators.required, Validators.maxLength(255)]],
+        label: [_get(view, 'ui.label'), [Validators.required]],
+        description: [_get(view, 'ui.description'), [Validators.required, Validators.maxLength(255)]],
       }),
     });
   }
 
-  buildRolesForm(roles?: { [k: string]: IViewRole }): FormGroup {
+  buildRolesForm(roles?: { [key: string]: IViewRole }): FormGroup {
     const rolesForm = {};
     if (roles) {
       Object.entries(roles)
@@ -84,19 +99,32 @@ export class ResourceFormBuilder {
   buildPolicyForm(policy?: IViewPolicy): FormGroup {
     return this.formBuilder.group({
       name: [_get(policy, 'name'), [Validators.required]],
-      args: this.buildPolicyVariablesForm(_get(policy, 'args')),
+      args: this.buildVariablesForm(_get(policy, 'args'), [Validators.required]),
     });
   }
 
-  buildPolicyVariablesForm(variables?: { [k: string]: string }): FormGroup {
+  buildVariablesForm(variables?: { [key: string]: string }, validators?: any[]): FormGroup {
     const variablesForm = {};
     if (variables) {
       Object.entries(variables)
         .forEach(([variableKey, variableValue]) => {
-          variablesForm[variableKey] = [variableValue, [Validators.required]];
+          variablesForm[variableKey] = [variableValue, validators];
         });
     }
     return this.formBuilder.group(variablesForm);
+  }
+
+  buildItemsForm(items?: IItem[]): FormArray {
+    return this.formBuilder.array(items && items.length > 0
+                                  ? items.map((item: IItem) => this.buildItemForm(item))
+                                  : []
+    );
+  }
+
+  buildItemForm(item?: IItem): FormGroup {
+    return this.formBuilder.group({
+      args: this.buildVariablesForm(_get(item, 'args')),
+    });
   }
 
 }

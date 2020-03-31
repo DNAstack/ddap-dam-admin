@@ -43,7 +43,8 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
     if (details) {
       details.forEach(errorDetail => {
         const path = `${moduleName}/${form.get('id').value}/`;
-        const fieldName = errorDetail['resourceName']
+        const trailingSlashFreeResourceName = this.removeTrailingSlash(errorDetail['resourceName']);
+        const fieldName = trailingSlashFreeResourceName
           .replace(path, '')
           .replace(/\//g, '.');
         if (fieldName.length > 0) {
@@ -66,6 +67,12 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
 
   protected isConfigModification(errorType: string) {
     return errorType.includes('ConfigModification');
+  }
+
+  private removeTrailingSlash = (path: string): string => {
+    return path.endsWith('/')
+           ? path.slice(0, -1)
+           : path;
   }
 
 }

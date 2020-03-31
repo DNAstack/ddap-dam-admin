@@ -14,10 +14,10 @@ import { AccessesRoutingModule } from './accesses-routing.module';
     AccessManageComponent,
     AccessFormComponent,
   ],
-    imports: [
-        DamRepositorySharedModule,
-        AccessesRoutingModule,
-        MatRadioModule,
-    ],
+  imports: [
+    DamRepositorySharedModule,
+    AccessesRoutingModule,
+    MatRadioModule,
+  ],
 })
 export class AccessesModule { }

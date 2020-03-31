@@ -25,10 +25,9 @@ export class ResourceBuilderService {
                  variables: object,
                  accessLevel: AccessLevel,
                  accessPolicyId: string,
-                 accessPolicyValue: string,
-                 aud: string): Observable<any> {
+                 accessPolicyValue: string): Observable<any> {
     const resourceModel: EntityModel = this.buildResource(
-      id, serviceTemplate, variables, accessLevel, accessPolicyId, accessPolicyValue, aud
+      id, serviceTemplate, variables, accessLevel, accessPolicyId, accessPolicyValue
     );
     const resource = new ConfigModificationModel(resourceModel.dto, {});
     return this.resourceService.save(resourceModel.name, resource);
@@ -39,8 +38,7 @@ export class ResourceBuilderService {
                         variables: object,
                         accessLevel: AccessLevel,
                         accessPolicyId: string,
-                        accessPolicyValue: string,
-                        aud: string): EntityModel {
+                        accessPolicyValue: string): EntityModel {
     const viewId = `view-${id}`;
     const roleId = getRoleName(accessLevel, serviceTemplate);
     const accessPolicy = {
@@ -67,7 +65,6 @@ export class ResourceBuilderService {
           roles: {
             [roleId]: this.buildAccessRole(accessPolicyId, accessPolicyValue),
           },
-          aud,
         },
       },
     };

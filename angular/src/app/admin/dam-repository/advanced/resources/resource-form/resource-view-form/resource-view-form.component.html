@@ -10,7 +10,8 @@
     <mat-panel-description *ngIf="selectedTemplate">
       ({{ selectedTemplate.dto.ui.label }})
     </mat-panel-description>
-    <div class="invalid-warning" *ngIf="viewForm.invalid">
+    <div class="invalid-warning"
+         *ngIf="viewForm.invalid">
       <mat-icon class="icon icon-warning"
                 matTooltip="View is invalid">
       </mat-icon>
@@ -24,7 +25,7 @@
         <div class="tab-label">
           <span>Details</span>
           <div class="invalid-warning"
-               *ngIf="isAnyOfControlsInvalid(['id', 'ui.label', 'ui.description', 'labels.version', 'labels.aud'])">
+               *ngIf="isAnyOfControlsInvalid(['id', 'ui.label', 'ui.description', 'labels.version'])">
             <mat-icon class="icon icon-warning"
                       matTooltip="Details are invalid">
             </mat-icon>
@@ -37,10 +38,14 @@
           <input matInput
                  placeholder="Name"
                  formControlName="id"
-                 [readonly]="view.name.length > 0"
                  data-se="inp-view-id"
                  required>
           <mat-error *ngIf="viewForm.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
+          <mat-error *ngIf="viewForm.get('id') as control">
+            <ng-container *ngIf="control.invalid">
+              {{ control.errors?.serverError }}
+            </ng-container>
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="col"
                         formGroupName="ui">
@@ -49,18 +54,28 @@
                  formControlName="label"
                  data-se="inp-view-label"
                  required>
+          <mat-error *ngIf="viewForm.get('ui.label') as control">
+            <ng-container *ngIf="control.invalid">
+              {{ control.errors?.serverError }}
+            </ng-container>
+          </mat-error>
         </mat-form-field>
       </div>
       <div class="row">
         <mat-form-field class="col"
                         formGroupName="ui">
-        <textarea matInput
-                  placeholder="Description"
-                  formControlName="description"
-                  data-se="inp-view-description"
-                  required>
-        </textarea>
+          <textarea matInput
+                    placeholder="Description"
+                    formControlName="description"
+                    data-se="inp-view-description"
+                    required>
+          </textarea>
           <mat-error *ngIf="viewForm.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
+          <mat-error *ngIf="viewForm.get('ui.description') as control">
+            <ng-container *ngIf="control.invalid">
+              {{ control.errors?.serverError }}
+            </ng-container>
+          </mat-error>
         </mat-form-field>
       </div>
       <div class="row"
@@ -71,6 +86,11 @@
                  formControlName="version"
                  data-se="inp-view-version"
                  required>
+          <mat-error *ngIf="viewForm.get('labels.version') as control">
+            <ng-container *ngIf="control.invalid">
+              {{ control.errors?.serverError }}
+            </ng-container>
+          </mat-error>
         </mat-form-field>
       </div>
     </mat-tab>
@@ -81,7 +101,7 @@
              data-se="tab-service-definition">
           <span>Service Definition</span>
           <div class="invalid-warning"
-               *ngIf="isAnyOfControlsInvalid(['serviceTemplate', 'variables', 'roles'])">
+               *ngIf="isAnyOfControlsInvalid(['serviceTemplate', 'items', 'roles'])">
             <mat-icon class="icon icon-warning"
                       matTooltip="Service Definition is invalid">
             </mat-icon>
@@ -105,56 +125,74 @@
               {{ serviceDefinition.dto.ui.label }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="viewForm.get('serviceTemplate').invalid">
-            {{ viewForm.get('serviceTemplate').errors?.serverError }}
+          <mat-error *ngIf="viewForm.get('serviceTemplate') as control">
+            <ng-container *ngIf="control.invalid">
+              {{ control.errors?.serverError }}
+            </ng-container>
           </mat-error>
         </mat-form-field>
       </div>
 
       <ng-container *ngIf="selectedTemplate">
         <div class="ddap-view-service-template-variables"
-             *ngIf="viewForm.contains('variables')">
+             *ngIf="viewForm.contains('items')">
           <h3>
             <mat-icon class="icon icon-settings"></mat-icon>
             <span>Target Adapter Variables</span>
-            <mat-error *ngIf="viewForm.get('variables').invalid">
-              {{ viewForm.get('variables').errors?.serverError }}
-            </mat-error>
           </h3>
-          <ul class="timeline">
-            <li class="event row" *ngFor="let variable of variableItems.controls; let i=index"
-                formArrayName="variables">
-              <ng-container [formGroupName]="i">
-                <div class="line"></div>
-                <mat-form-field class="col" *ngIf="variable.get('type').value !== 'split_pattern'">
-                  <input matInput
-                         [attr.data-se]="'inp-view-target-adapter-variable-' + variable.get('name').value"
-                         [placeholder]="variable.get('label').value"
-                         [required]="!variable.get('optional').value"
-                         formControlName="value">
-                  <mat-hint>{{ variable.get('description').value }}</mat-hint>
-                  <mat-error *ngIf="variable.get('value').invalid">
-                    {{ variable.get('label').value }} must follow regex pattern {{ variable.get('regexp').value }}
-                  </mat-error>
-                </mat-form-field>
-                <div class="col variable-tag-input-container" *ngIf="variable.get('type').value === 'split_pattern'">
-                  <tag-input [secondaryPlaceholder]="variable.get('label').value"
-                             [placeholder]="'+' + variable.get('label').value"
-                             editable="true"
-                             formControlName="value"
-                             inputClass="variable-tag-input"
-                             [attr.data-se]="'inp-view-target-adapter-variable-' + variable.get('name').value"
-                             [validators]="splitPatternValidators(variable.get('regexp').value)"
-                             [errorMessages]="{'pattern': 'Please enter a value that matches ' + variable.get('regexp').value}"
-                             modelAsStrings="true"></tag-input>
-                  <mat-hint>{{ variable.get('description').value }}</mat-hint>
-                  <mat-error *ngIf="variable.get('value').invalid">
-                    {{ variable.get('label').value }} must follow regex pattern {{ variable.get('regexp').value }}
-                  </mat-error>
-                </div>
-              </ng-container>
-            </li>
-          </ul>
+
+          <div class="ddap-error-message"
+               *ngIf="viewForm.get('items') as control">
+            <ng-container *ngIf="control.invalid">
+              {{ control.errors?.serverError }}
+            </ng-container>
+          </div>
+
+          <ng-container *ngIf="targetAdapterVariables">
+            <div *ngFor="let item of items.controls; let i=index">
+              <ul class="timeline">
+                <li class="event row"
+                    formArrayName="items"
+                    *ngFor="let variableFormat of targetAdapterVariables | keyvalue">
+                  <ng-container [formGroupName]="i">
+                    <ng-container formGroupName="args">
+                      <div class="line"></div>
+                      <mat-form-field *ngIf="variableFormat.value.type !== 'split_pattern'; else tagInputFormField"
+                                      class="col">
+                        <input matInput
+                               [formControlName]="variableFormat.key"
+                               [attr.data-se]="'inp-view-target-adapter-variable-' + variableFormat.key"
+                               [placeholder]="variableFormat.value.ui.label"
+                               [required]="!variableFormat.value.optional">
+                        <mat-hint>{{ variableFormat.value.ui.description }}</mat-hint>
+                        <mat-error *ngIf="item.get('args.' + variableFormat.key).invalid">
+                          Must follow regex pattern {{ variableFormat.value.regexp }}
+                        </mat-error>
+                      </mat-form-field>
+                      <ng-template #tagInputFormField>
+                        <div class="col variable-tag-input-container">
+                          <tag-input [formControlName]="variableFormat.key"
+                                     [secondaryPlaceholder]="variableFormat.value.ui.label"
+                                     [placeholder]="'+' + variableFormat.value.ui.label"
+                                     editable="true"
+                                     inputClass="variable-tag-input"
+                                     [attr.data-se]="'inp-view-target-adapter-variable-' + variableFormat.key"
+                                     [validators]="splitPatternValidators(variableFormat.value.regexp)"
+                                     [errorMessages]="{'pattern': 'Please enter a value that matches ' + variableFormat.value.regexp}"
+                                     modelAsStrings="true">
+                          </tag-input>
+                          <mat-hint>{{ variableFormat.value.ui.description }}</mat-hint>
+                          <mat-error *ngIf="item.get('args.' + variableFormat.key).invalid">
+                            Must follow regex pattern {{ variableFormat.value.regexp }}
+                          </mat-error>
+                        </div>
+                      </ng-template>
+                    </ng-container>
+                  </ng-container>
+                </li>
+              </ul>
+            </div>
+          </ng-container>
         </div>
 
         <div class="ddap-view-service-template-roles">
@@ -163,12 +201,16 @@
             <span>Roles</span>
           </h3>
           <div>
-            <mat-error *ngIf="viewForm.get('defaultRole').invalid">
+            <div class="ddap-error-message"
+                 *ngIf="viewForm.get('defaultRole').invalid">
               Single role must be set as default
-            </mat-error>
-            <mat-error *ngIf="viewForm.get('roles').invalid">
-              {{ viewForm.get('roles').errors?.serverError }}
-            </mat-error>
+            </div>
+            <div class="ddap-error-message"
+                 *ngIf="viewForm.get('roles') as control">
+              <ng-container *ngIf="control.invalid">
+                {{ control.errors?.serverError }}
+              </ng-container>
+            </div>
           </div>
           <ul class="timeline">
             <li class="event"
@@ -204,11 +246,11 @@
               </h4>
               <p>{{ role.value.ui.description }}</p>
 
-              <div>
-                <mat-error *ngIf="viewForm.get('roles.' + role.key + '.policies').invalid"
-                           data-se="resources-role-policy-error">
-                  {{ viewForm.get('roles.' + role.key + '.policies').errors?.serverError }}
-                </mat-error>
+              <div class="ddap-error-message"
+                   *ngIf="viewForm.get('roles.' + role.key + '.policies') as control">
+                <ng-container *ngIf="control.invalid">
+                  {{ control.errors?.serverError }}
+                </ng-container>
               </div>
 
               <ng-container formGroupName="roles">
@@ -233,6 +275,12 @@
                               {{ formatPolicyAutocompleteText(policy.name) }}
                             </mat-option>
                           </mat-autocomplete>
+                          <mat-error *ngIf="policyControl.get('name') as control"
+                                     data-se="resources-role-policy-error">
+                            <ng-container *ngIf="control.invalid">
+                              {{ control.errors?.serverError }}
+                            </ng-container>
+                          </mat-error>
                         </mat-form-field>
                         <button mat-button
                                 color="primary"
@@ -257,6 +305,11 @@
                                    [placeholder]="policyVariable"
                                    [formControlName]="policyVariable"
                                    [attr.data-se]="'inp-' + role.key + '-policy-' + policyControl.get('name').value + '-variable-' + policyVariable">
+                            <mat-error *ngIf="policyControl.get('args') as control">
+                              <ng-container *ngIf="control.invalid">
+                                {{ control.errors?.serverError }}
+                              </ng-container>
+                            </mat-error>
                           </mat-form-field>
                         </div>
                       </div>
@@ -278,12 +331,22 @@
                    placeholder="Geo Location"
                    formControlName="geoLocation"
                    data-se="inp-view-geolocation">
+            <mat-error *ngIf="viewForm.get('labels.geoLocation') as control">
+              <ng-container *ngIf="control.invalid">
+                {{ control.errors?.serverError }}
+              </ng-container>
+            </mat-error>
           </mat-form-field>
           <mat-form-field class="col">
             <input matInput
                    placeholder="Topic"
                    formControlName="topic"
                    data-se="inp-view-topic">
+            <mat-error *ngIf="viewForm.get('labels.topic') as control">
+              <ng-container *ngIf="control.invalid">
+                {{ control.errors?.serverError }}
+              </ng-container>
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="row">
@@ -292,12 +355,22 @@
                    placeholder="Partition"
                    formControlName="partition"
                    data-se="inp-view-partition">
+            <mat-error *ngIf="viewForm.get('labels.partition') as control">
+              <ng-container *ngIf="control.invalid">
+                {{ control.errors?.serverError }}
+              </ng-container>
+            </mat-error>
           </mat-form-field>
           <mat-form-field class="col">
             <input matInput
                    placeholder="Fidelity"
                    formControlName="fidelity"
                    data-se="inp-view-fidelity">
+            <mat-error *ngIf="viewForm.get('labels.fidelity') as control">
+              <ng-container *ngIf="control.invalid">
+                {{ control.errors?.serverError }}
+              </ng-container>
+            </mat-error>
           </mat-form-field>
         </div>
       </ng-container>
@@ -309,6 +382,11 @@
                      editable="true"
                      modelAsStrings="true">
           </tag-input>
+          <mat-error *ngIf="viewForm.get('labels.contentTypes') as control">
+            <ng-container *ngIf="control.invalid">
+              {{ control.errors?.serverError }}
+            </ng-container>
+          </mat-error>
         </div>
       </div>
     </mat-tab>
