@@ -154,7 +154,7 @@ public abstract class AbstractBaseE2eTest {
         // There is logic in the DAM and IC that syncs client information in Hydra based on the state in the DAM/IC config.
         // Unfortunately, it does this based on whatever realm it runs from,
         // meaning you can wipe out a client accidentally while running the e2e tests.
-        String damConfig = appendMaterRealmClientsToExistingClientsInConfig(cookieStore, config);
+        String damConfig = appendCurrentRealmClientsToExistingClientsInConfig(cookieStore, config, realmName);
 
         final String modificationPayload = format("{ \"item\": %s }", damConfig);
 
@@ -172,29 +172,29 @@ public abstract class AbstractBaseE2eTest {
                    allOf(greaterThanOrEqualTo(200), lessThan(300)));
     }
 
-    private static JSONObject getClientsFromMasterRealm(CookieStore cookieStore) throws IOException {
+    private static JSONObject getClientsFromRealm(CookieStore cookieStore, String realmName) throws IOException {
         HttpClient httpclient = HttpClientBuilder.create()
             .setDefaultCookieStore(cookieStore)
             .build();
 
-        HttpGet request = new HttpGet(format("%s/dam/v1alpha/master/config", DDAP_BASE_URL));
+        HttpGet request = new HttpGet(format("%s/dam/v1alpha/%s/config", DDAP_BASE_URL, realmName));
         HttpResponse response = httpclient.execute(request);
         String responseBody = EntityUtils.toString(response.getEntity());
 
         JSONObject damConfig = new JSONObject(responseBody);
         JSONObject clients = damConfig.getJSONObject("clients");
 
-        log.debug("Parsed clients from master realm: {}", clients);
+        log.debug("Parsed clients from {} realm: {}", realmName, clients);
 
         return clients;
     }
 
-    private static String appendMaterRealmClientsToExistingClientsInConfig(CookieStore cookieStore, String damConfig) throws IOException {
+    private static String appendCurrentRealmClientsToExistingClientsInConfig(CookieStore cookieStore, String damConfig, String realmName) throws IOException {
         JSONObject damConfigClients = new JSONObject(damConfig).getJSONObject("clients");
-        JSONObject masterRealmClients = getClientsFromMasterRealm(cookieStore);
-        masterRealmClients.keySet()
+        JSONObject currentClients = getClientsFromRealm(cookieStore, realmName);
+        currentClients.keySet()
             .forEach((masterRealmClient) -> {
-                damConfigClients.put(masterRealmClient, masterRealmClients.get(masterRealmClient));
+                damConfigClients.put(masterRealmClient, currentClients.get(masterRealmClient));
             });
 
         JSONObject newDamConfig = new JSONObject(damConfig);
