@@ -27,19 +27,27 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
 
   protected navigateUp = (path: string) => this.router.navigate([path], { relativeTo: this.route });
 
+  // This method is specific to Resource form
   protected showError = ({ error }: HttpErrorResponse) => {
-    const { details } = error;
-    details.forEach(errorDetail => {
-      if (!this.isConfigModification(errorDetail['@type'])) {
-        this.formErrorMessage = errorDetail['description'];
-        this.isFormValid = false;
-        this.isFormValidated = true;
-      }
-    });
+    const { details, message } = error;
+    if (details) {
+      details.forEach(errorDetail => {
+        if (!this.isConfigModification(errorDetail['@type'])) {
+          this.formErrorMessage = errorDetail['description'];
+        }
+      });
+    } else if (message) {
+      this.formErrorMessage = message;
+    } else {
+      this.formErrorMessage = error;
+    }
+    this.isFormValid = false;
+    this.isFormValidated = true;
   }
 
+  // This method is used in all admin forms other than Resource
   protected displayFieldErrorMessage = (error, moduleName, form) => {
-    const { details } = error;
+    const { details, message } = error;
     if (details) {
       details.forEach(errorDetail => {
         const path = `${moduleName}/${form.get('id').value}/`;
@@ -54,15 +62,15 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
           form.get(fieldName).markAsTouched();
         } else {
           this.formErrorMessage = errorDetail['description'];
-          this.isFormValid = false;
-          this.isFormValidated = true;
         }
       });
+    } else if (message) {
+      this.formErrorMessage = message;
     } else {
       this.formErrorMessage = error;
-      this.isFormValid = false;
-      this.isFormValidated = true;
     }
+    this.isFormValid = false;
+    this.isFormValidated = true;
   }
 
   protected isConfigModification(errorType: string) {

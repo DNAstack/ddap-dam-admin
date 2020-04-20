@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineForms, FormValidationService } from 'ddap-common-lib';
@@ -64,20 +65,25 @@ export class ResourceManageComponent extends DamConfigEntityManageComponentBase 
       });
   }
 
-  handleError = (isDryRun: boolean, { error }) => {
+  handleError = (isDryRun: boolean, errorResponse: HttpErrorResponse ) => {
+    const { error } = errorResponse;
     if (error instanceof Object) {
       const errorDetails: object[] = error.details;
-      errorDetails.forEach(details => {
-        if (this.isConfigModification(details['@type'])) {
-          this.accessForm.makeFieldsValid();
-          this.accessForm.validatePersonaFields(details);
-        } else {
-          this.translateViewPaths(error);
-          this.displayFieldErrorMessage(error, DamConfigEntityType.resources, this.resourceForm.form);
-        }
-      });
+      if (errorDetails) {
+        errorDetails.forEach(details => {
+          if (this.isConfigModification(details['@type'])) {
+            this.accessForm.makeFieldsValid();
+            this.accessForm.validatePersonaFields(details);
+          } else {
+            this.translateViewPaths(error);
+            this.displayFieldErrorMessage(error, DamConfigEntityType.resources, this.resourceForm.form);
+          }
+        });
+      } else {
+        this.showError(errorResponse);
+      }
     } else if (!isDryRun) {
-      this.showError(error);
+      this.showError(errorResponse);
     }
   }
 
