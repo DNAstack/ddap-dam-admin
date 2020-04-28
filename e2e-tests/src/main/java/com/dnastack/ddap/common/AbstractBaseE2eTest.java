@@ -21,6 +21,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -181,12 +182,16 @@ public abstract class AbstractBaseE2eTest {
         HttpResponse response = httpclient.execute(request);
         String responseBody = EntityUtils.toString(response.getEntity());
 
-        JSONObject damConfig = new JSONObject(responseBody);
-        JSONObject clients = damConfig.getJSONObject("clients");
+        try {
+            JSONObject damConfig = new JSONObject(responseBody);
+            JSONObject clients = damConfig.getJSONObject("clients");
 
-        log.debug("Parsed clients from {} realm: {}", realmName, clients);
+            log.debug("Parsed clients from {} realm: {}", realmName, clients);
 
-        return clients;
+            return clients;
+        } catch (JSONException je) {
+            throw new RuntimeException(String.format("Failed to lookup previous clients. Response payload:\n%s\n", responseBody), je);
+        }
     }
 
     private static String appendCurrentRealmClientsToExistingClientsInConfig(CookieStore cookieStore, String damConfig, String realmName) throws IOException {
