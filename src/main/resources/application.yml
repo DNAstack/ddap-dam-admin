@@ -84,7 +84,7 @@ spring:
             - SetBearerTokenFromCookie=DAM,ACCESS
           uri: ${dam.base-url}
         - predicates:
-            - Path=/identity/**
+            - Path=/proxy/**
           filters:
             - name: TimeoutAndRetry
               args:
@@ -92,12 +92,13 @@ spring:
                 minimumTimeout: 1000
                 maximumTimeout: 20000
                 timeoutExponentialScalingBase: 10
+            - StripPrefix=1
             - Logging
-            - AddRequestParameter=clientId,${idp.client-id}
-            - AddRequestParameter=clientSecret,${idp.client-secret}
+            - AddRequestParameter=clientId,${dam.client-id}
+            - AddRequestParameter=clientSecret,${dam.client-secret}
             - RemoveRequestHeader=Authorization
-            - SetBearerTokenFromCookie=IC,ACCESS
-          uri: ${idp.base-url}
+            - SetBearerTokenFromCookie=DAM,ACCESS
+          uri: ${dam.base-url}
 logging:
   level:
     com:
