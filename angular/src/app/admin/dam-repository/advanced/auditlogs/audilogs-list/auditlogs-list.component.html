@@ -1,0 +1,32 @@
+<ddaplib-header iconClass="icon icon-rules" label="Auditlogs"></ddaplib-header>
+<ddaplib-main>
+  <div class="page-size">
+    <p>Items per page:</p>
+    <mat-form-field>
+      <mat-select [(value)]="pageSize" (selectionChange)="getLogs()">
+        <mat-option *ngFor="let page of ['10', '20', '30', '40', '50']" [value]="page">
+          {{page}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <table mat-table [dataSource]="auditLogs$ | async"
+         class="table--base mat-elevation-z1">
+    <ng-container matColumnDef="auditlogId">
+      <th mat-header-cell *matHeaderCellDef> Auditlog </th>
+      <td mat-cell *matCellDef="let log"
+          (click)="gotoAuditlogDetail(log)"
+          class="table--link">
+        {{log['auditlogId']}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Log Type </th>
+      <td mat-cell *matCellDef="let log" class="table--link"> {{log['type']}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row
+        *matRowDef="let log; columns: columnsToDisplay">
+    </tr>
+  </table>
+</ddaplib-main>

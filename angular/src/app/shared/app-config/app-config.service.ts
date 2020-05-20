@@ -119,6 +119,14 @@ export class AppConfigService {
         routerLink: 'admin/dam/advanced/tokens',
         group: 'advanced',
         isApp: false,
+      })
+      .registerModule({
+        key: 'advanced-auditlogs',
+        name: 'AuditLogs',
+        iconClasses: 'icon icon-rules',
+        routerLink: 'admin/dam/advanced/auditlogs',
+        group: 'advanced',
+        isApp: false,
       });
   }
 

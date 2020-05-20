@@ -1,0 +1,12 @@
+<ddaplib-header [backLink]="['..']" [label]="'AuditLog Info'"></ddaplib-header>
+
+<ddaplib-main>
+  <mat-card>
+    <div *ngFor="let logDetail of auditLog | keyvalue" class="log-row">
+      <ng-container *ngIf="logDetail.key !== 'auditlogId'">
+        <div class="log-row--key">{{toWords(logDetail.key)}}</div>
+        <div class="log-row--value">{{logDetail.value}}</div>
+      </ng-container>
+    </div>
+  </mat-card>
+</ddaplib-main>

@@ -60,6 +60,11 @@ export const routes: Routes = [
         loadChildren: () => import('./advanced/tokens/tokens.module')
           .then(mod => mod.TokensModule),
       },
+      {
+        path: 'auditlogs',
+        loadChildren: () => import('./advanced/auditlogs/auditlogs.module')
+          .then(mod => mod.AuditlogsModule),
+      },
     ],
   },
   {

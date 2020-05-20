@@ -1,0 +1,16 @@
+@import '~ddap-common-lib/styles/modules/colors';
+.page-size {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  font-size: 0.9rem;
+
+  p{
+    padding-right: 0.5rem;
+    color: $color-dark-grey;
+  }
+
+  mat-form-field {
+    width: 5%;
+  }
+}
