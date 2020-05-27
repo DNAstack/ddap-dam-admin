@@ -38,7 +38,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
     public void testScopes() throws Exception {
         // FIXME: DISCO-2686
         Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
-            2020, 5, 20, 12, 0, 0,0,
+            2020, 5, 31, 12, 0, 0,0,
             ZoneId.of("America/Toronto"))
         ));
         String requestedScope = "link";
