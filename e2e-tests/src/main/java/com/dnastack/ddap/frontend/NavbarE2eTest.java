@@ -70,7 +70,7 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
     public void testProfileNameAndDescriptionLinkNavigation() {
         // FIXME: DISCO-2686
         Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
-            2020, 5, 31, 12, 0, 0,0,
+            2020, 6, 30, 12, 0, 0,0,
             ZoneId.of("America/Toronto"))
         ));
         ddapPage = doBrowserLogin(REALM, ADMINISTRATOR, AdminDdapPage::new);
