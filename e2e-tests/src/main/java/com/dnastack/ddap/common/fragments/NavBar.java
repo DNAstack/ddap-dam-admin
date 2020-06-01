@@ -77,6 +77,10 @@ public class NavBar {
         return new NavLink("Tokens", DdapBy.se("nav-advanced-tokens"), damPanelSelectorLink());
     }
 
+    public static NavLink damAuditlogsLink() {
+        return new NavLink("Tokens", DdapBy.se("nav-advanced-auditlogs"), damPanelSelectorLink());
+    }
+
     public static NavLink simplifiedAdminPanelToggle() {
         return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-simplified-toggle']")), null);
     }

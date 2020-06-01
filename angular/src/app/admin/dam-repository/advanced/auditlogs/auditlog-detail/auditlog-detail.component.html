@@ -5,7 +5,7 @@
     <div *ngFor="let logDetail of auditLog | keyvalue" class="log-row">
       <ng-container *ngIf="logDetail.key !== 'auditlogId'">
         <div class="log-row--key">{{toWords(logDetail.key)}}</div>
-        <div class="log-row--value">{{logDetail.value}}</div>
+        <div class="log-row--value" [attr.data-se]="logDetail.key">{{logDetail.value}}</div>
       </ng-container>
     </div>
   </mat-card>
