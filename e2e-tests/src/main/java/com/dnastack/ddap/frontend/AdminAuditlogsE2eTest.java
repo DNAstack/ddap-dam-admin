@@ -15,7 +15,6 @@ import static org.hamcrest.Matchers.*;
 public class AdminAuditlogsE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
-    @Ignore("Auditlogs are empty")
     public void verifyAuditlogs() {
         AdminListPage adminListPage = ddapPage.getNavBar().goToAdmin(damAuditlogsLink());
         adminListPage.waitForInflightRequests();

@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -47,27 +46,10 @@ export class AuditlogsListComponent implements OnInit {
       .subscribe(result => this.auditLogs$ = this.formatTableData(result['auditLogs']));
   }
 
-  // This method would be refactored once type is introduced
   formatTableData(logs: object[]): Observable<object[]> {
     const auditLogs = [];
     logs.map(log => {
-      let logDetail = {};
-      if (log['accessLog']) {
-        logDetail['type'] = 'access';
-        logDetail['name'] = log['name'];
-        for (const [key, value] of Object.entries(log['accessLog'])) {
-          logDetail[key] = value;
-        }
-      } else if (log['policyLog']) {
-        logDetail['type'] = 'policy';
-        logDetail['name'] = log['name'];
-        for (const [key, value] of Object.entries(log['policyLog'])) {
-          logDetail[key] = value;
-        }
-      } else {
-        // default case where type is present
-        logDetail = Object.assign(logDetail, log);
-      }
+      const logDetail = Object.assign({}, log);
       logDetail['auditlogId'] = this.getIdFromName(log['name']);
       auditLogs.push(logDetail);
     });
