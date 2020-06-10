@@ -1,6 +1,6 @@
 <div class="site-container {{viewControllerService.view.leftSidebarOpened ? '' : 'zen-mode'}}">
   <ddaplib-main-header (realmChangeAcknowledge)="onAcknowledge($event)"
-                      [realmActions]="['edit', 'delete']"
+                       [realmActions]="[RealmActionType.edit, RealmActionType.delete]"
                       [isSandbox]="isSandbox"
                       [siteName]="'DDAP'">
     <ddaplib-menu-profile [showSignIn]="!account" [loginPath]="loginPath">

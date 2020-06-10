@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
-import { ViewControllerService } from 'ddap-common-lib';
+import { RealmActionType, ViewControllerService } from 'ddap-common-lib';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 
@@ -29,6 +29,8 @@ export class LayoutComponent implements OnInit {
   loginPath: string;
   simplifiedView: boolean;
   groupName: string;
+
+  readonly RealmActionType = RealmActionType;
 
   constructor(public loader: LoadingBarService,
               private activatedRoute: ActivatedRoute,
