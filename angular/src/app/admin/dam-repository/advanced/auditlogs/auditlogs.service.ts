@@ -13,8 +13,8 @@ export class AuditlogsService {
   currentAuditlog = this.auditLog.asObservable();
   constructor(private http: HttpClient) { }
 
-  getLogs(user: string, pageSize: string) {
-    return this.http.get(`${environment.damApiUrl}/users/${user}/auditlogs?page_size=${pageSize}`);
+  getLogs(user: string, pageSize: string, filter: string) {
+    return this.http.get(`${environment.damApiUrl}/users/${user}/auditlogs?page_size=${pageSize}&filter=${filter}`);
   }
 
   setCurrentAuditlog(log) {

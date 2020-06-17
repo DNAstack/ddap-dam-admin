@@ -1,8 +1,7 @@
 @import '~ddap-common-lib/styles/modules/colors';
-.page-size {
+.filters {
   display: flex;
   align-items: baseline;
-  justify-content: flex-end;
   font-size: 0.9rem;
 
   p{
@@ -11,6 +10,7 @@
   }
 
   mat-form-field {
-    width: 5%;
+    width: 10%;
+    margin-right: 2rem;
   }
 }

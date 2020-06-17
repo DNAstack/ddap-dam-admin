@@ -1,8 +1,30 @@
 <ddaplib-header iconClass="icon icon-rules" label="Auditlogs"></ddaplib-header>
 <ddaplib-main>
-  <div class="page-size">
-    <p>Items per page:</p>
+  <div>
     <mat-form-field>
+      <mat-chip-list #searchList>
+        <mat-chip *ngFor="let search of searchTextList" [removable]="true" (removed)="removeSearchText(search)">
+          {{search}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Search by text"
+               [matChipInputFor]="searchList"
+               [matChipInputSeparatorKeyCodes]="separatorCodes"
+               (matChipInputTokenEnd)="searchByText($event)" />
+      </mat-chip-list>
+    </mat-form-field>
+  </div>
+  <div class="filters">
+    <mat-form-field>
+      <mat-label>Log type</mat-label>
+      <mat-select [(value)]="logType" (selectionChange)="getLogs()" data-se="log-type">
+        <mat-option value="">ALL</mat-option>
+        <mat-option value="REQUEST">REQUEST</mat-option>
+        <mat-option value="POLICY">POLICY</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Logs per page</mat-label>
       <mat-select [(value)]="pageSize" (selectionChange)="getLogs()" data-se="page-size">
         <mat-option *ngFor="let page of ['10', '20', '30', '40', '50']" [value]="page">
           {{page}}
