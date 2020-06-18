@@ -33,52 +33,56 @@ public class NavBar {
         }
     }
 
-    public static NavLink damPanelSelectorLink() {
+    public static NavLink damPanelAdvancedSelectorLink() {
         return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-group-advanced']")), null);
     }
 
+    public static NavLink damPanelIdentitySelectorLink() {
+        return new NavLink(null, By.xpath(format("//*[@data-se='nav-group-identity']")), null);
+    }
+
     public static NavLink damOptionsLink() {
-        return new NavLink("Options", DdapBy.se("nav-advanced-options"), damPanelSelectorLink());
+        return new NavLink("Options", DdapBy.se("nav-advanced-options"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damResourceLink() {
-        return new NavLink("Resource", DdapBy.se("nav-advanced-resources"), damPanelSelectorLink());
+        return new NavLink("Resource", DdapBy.se("nav-advanced-resources"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damTestPersonaLink() {
-        return new NavLink("Test Personas", DdapBy.se("nav-advanced-test-personas"), damPanelSelectorLink());
+        return new NavLink("Test Personas", DdapBy.se("nav-advanced-test-personas"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damClientLink() {
-        return new NavLink("Client Applications", DdapBy.se("nav-advanced-client-applications"), damPanelSelectorLink());
+        return new NavLink("Client Applications", DdapBy.se("nav-advanced-client-applications"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damTrustedSourcesLink() {
-        return new NavLink("Trusted Sources", DdapBy.se("nav-advanced-trusted-sources"), damPanelSelectorLink());
+        return new NavLink("Trusted Sources", DdapBy.se("nav-advanced-trusted-sources"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damClaimDefinitionLink() {
-        return new NavLink("Claim Definitions", DdapBy.se("nav-advanced-claim-definitions"), damPanelSelectorLink());
+        return new NavLink("Claim Definitions", DdapBy.se("nav-advanced-claim-definitions"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damServiceDefinitionLink() {
-        return new NavLink("Service Definitions", DdapBy.se("nav-advanced-service-definitions"), damPanelSelectorLink());
+        return new NavLink("Service Definitions", DdapBy.se("nav-advanced-service-definitions"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damPoliciesLink() {
-        return new NavLink("Access Policies", DdapBy.se("nav-advanced-access-policies"), damPanelSelectorLink());
+        return new NavLink("Access Policies", DdapBy.se("nav-advanced-access-policies"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damPassportsLink() {
-        return new NavLink("Passport Issuers", DdapBy.se("nav-advanced-passport-issuers"), damPanelSelectorLink());
+        return new NavLink("Passport Issuers", DdapBy.se("nav-advanced-passport-issuers"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damTokensLink() {
-        return new NavLink("Tokens", DdapBy.se("nav-advanced-tokens"), damPanelSelectorLink());
+        return new NavLink("Tokens", DdapBy.se("nav-identity-tokens"), damPanelIdentitySelectorLink());
     }
 
     public static NavLink damAuditlogsLink() {
-        return new NavLink("Tokens", DdapBy.se("nav-advanced-auditlogs"), damPanelSelectorLink());
+        return new NavLink("Auditlogs", DdapBy.se("nav-identity-auditlogs"), damPanelIdentitySelectorLink());
     }
 
     public static NavLink simplifiedAdminPanelToggle() {
@@ -98,7 +102,7 @@ public class NavBar {
     }
 
     public void assertAdminNavBar() {
-        Stream.of(damPanelSelectorLink().getSelector())
+        Stream.of(damPanelAdvancedSelectorLink().getSelector())
             .forEach(this.driver::findElement);
     }
 

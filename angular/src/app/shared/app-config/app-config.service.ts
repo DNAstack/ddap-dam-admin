@@ -17,11 +17,19 @@ export class AppConfigService {
         name: 'Simplified Settings',
         collapsible: false,
         collapsibleByDefault: false,
+        nonAdmin: false,
       }).registerGroup({
         key: 'advanced',
         name: 'Advanced Settings',
         collapsible: true,
         collapsibleByDefault: true,
+        nonAdmin: false,
+      }).registerGroup({
+        key: 'identity',
+        name: 'Identity Management',
+        collapsible: true,
+        collapsibleByDefault: true,
+        nonAdmin: true,
       });
     this.viewController
       .registerModule({
@@ -113,19 +121,19 @@ export class AppConfigService {
         isApp: false,
       })
       .registerModule({
-        key: 'advanced-tokens',
+        key: 'identity-tokens',
         name: 'Tokens',
         iconClasses: 'icon icon-clients',
         routerLink: 'admin/dam/advanced/tokens',
-        group: 'advanced',
+        group: 'identity',
         isApp: false,
       })
       .registerModule({
-        key: 'advanced-auditlogs',
-        name: 'AuditLogs',
+        key: 'identity-auditlogs',
+        name: 'Auditlogs',
         iconClasses: 'icon icon-rules',
         routerLink: 'admin/dam/advanced/auditlogs',
-        group: 'advanced',
+        group: 'identity',
         isApp: false,
       });
   }
