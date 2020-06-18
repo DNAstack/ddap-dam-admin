@@ -1,6 +1,7 @@
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
-import { MatChipInput, MatChipInputEvent } from '@angular/material/chips';
+import { FormControl } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -8,6 +9,8 @@ import { map, mergeMap } from 'rxjs/operators';
 import { Identity, IdentityAccount } from '../../../../../identity/identity.model';
 import { IdentityStore } from '../../../../../identity/identity.store';
 import { AuditlogsService } from '../auditlogs.service';
+
+import { LogType } from './log-type.enum';
 
 @Component({
   selector: 'ddap-auditlogs-list',
@@ -17,12 +20,13 @@ import { AuditlogsService } from '../auditlogs.service';
 export class AuditlogsListComponent implements OnInit {
 
   auditLogs$: Observable<object[]>;
-  pageSize = '20';
-  logType = '';
-  searchTextList: string[] = [];
+  pageSize: FormControl = new FormControl('20');
+  logType: FormControl = new FormControl(LogType.all);
+  searchTextList: FormControl = new FormControl([]);
   account: IdentityAccount;
-  columnsToDisplay: string[];
   searchTextValues: string[] = [];
+  filter: string;
+  readonly columnsToDisplay: string[] = ['auditlogId', 'type', 'time', 'decision', 'resourceName'];
   readonly separatorCodes: number[] = [ENTER];
 
   constructor( private identityStore: IdentityStore,
@@ -30,9 +34,21 @@ export class AuditlogsListComponent implements OnInit {
                private router: Router,
                private route: ActivatedRoute) { }
 
+
+  get logTypes() {
+    return LogType;
+  }
+
   ngOnInit() {
-    this.columnsToDisplay = ['auditlogId', 'type'];
-    const filter = encodeURIComponent(this.getFilters());
+    const queryParams = this.route.snapshot.queryParams;
+    if (Object.keys(queryParams).length) {
+      const { pageSize, filter } = queryParams;
+      this.filter = filter || '';
+      this.pageSize.patchValue(pageSize);
+      this.updateFilters(decodeURIComponent(filter));
+    } else {
+      this.filter = encodeURIComponent(this.getFilters());
+    }
     this.identityStore.state$.pipe(
       map((identity: Identity) => {
         if (!identity) {
@@ -42,7 +58,18 @@ export class AuditlogsListComponent implements OnInit {
         this.account = account;
         return account;
       }),
-      mergeMap(account => this.auditlogsService.getLogs(account['sub'], this.pageSize, filter))
+      mergeMap((account) => {
+        const pageSize = this.pageSize.value;
+        this.router.navigate(
+          [],
+          {
+            relativeTo: this.route,
+            queryParams: {pageSize, filter: this.filter },
+            queryParamsHandling: 'merge',
+          }
+        );
+        return this.auditlogsService.getLogs(account['sub'], pageSize, this.filter);
+      })
     ).subscribe(result => {
       this.auditLogs$ = this.formatTableData(result['auditLogs']);
     });
@@ -50,10 +77,8 @@ export class AuditlogsListComponent implements OnInit {
 
   getFilters(): string {
     let filter = '';
-    if (this.logType.length > 0) {
-      filter = `type="${this.logType}"`;
-    } else {
-      filter = '';
+    if (this.logType.value.length > 0) {
+      filter = `type="${this.logType.value}"`;
     }
     if (this.searchTextValues.length > 0) {
       if (filter.length > 0) {
@@ -66,8 +91,17 @@ export class AuditlogsListComponent implements OnInit {
   }
 
   getLogs() {
-    const filter = encodeURIComponent(this.getFilters());
-    this.auditlogsService.getLogs(this.account['sub'], this.pageSize, filter)
+    this.filter = encodeURIComponent(this.getFilters());
+    const pageSize = this.pageSize.value;
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: {pageSize, filter: this.filter },
+        queryParamsHandling: 'merge',
+      }
+    );
+    this.auditlogsService.getLogs(this.account['sub'], pageSize, this.filter)
       .subscribe(result => this.auditLogs$ = this.formatTableData(result['auditLogs']));
   }
 
@@ -94,7 +128,8 @@ export class AuditlogsListComponent implements OnInit {
   }
 
   searchByText(event: MatChipInputEvent) {
-    this.searchTextList.push(`text:${event.value}`);
+    this.searchTextList.value.push(`text:${event.value}`);
+    this.searchTextList.updateValueAndValidity();
     if (event.input) {
       event.input.value = '';
     }
@@ -104,14 +139,30 @@ export class AuditlogsListComponent implements OnInit {
 
   removeSearchText(searchText: string) {
     const searchTextValue = searchText.replace('text:', '');
-    const searchTextListIndex = this.searchTextList.indexOf(searchText);
+    const searchTextListIndex = this.searchTextList.value.indexOf(searchText);
     const searchTextValuesIndex =  this.searchTextValues.indexOf(`"${searchTextValue}"`);
     if (searchTextListIndex > -1) {
-      this.searchTextList.splice(searchTextListIndex, 1);
+      this.searchTextList.value.splice(searchTextListIndex, 1);
+      this.searchTextList.updateValueAndValidity();
     }
     if (searchTextValuesIndex > -1) {
       this.searchTextValues.splice(searchTextValuesIndex, 1);
     }
     this.getLogs();
+  }
+
+  private updateFilters(filters: string) {
+    filters.split('AND').map(filter => {
+      if (filter.indexOf('type=') !== -1) {
+        this.logType.patchValue(filter.replace('type=', '')
+          .replace(/\s|["]/g, ''));
+        this.logType.updateValueAndValidity();
+      }
+      if (filter.trim().indexOf('text:') !== -1) {
+        this.searchTextList.value.push(filter.replace(/\s|["]/g, ''));
+        this.searchTextList.updateValueAndValidity();
+        this.searchTextValues.push(filter.trim().replace('text:', ''));
+      }
+    });
   }
 }
