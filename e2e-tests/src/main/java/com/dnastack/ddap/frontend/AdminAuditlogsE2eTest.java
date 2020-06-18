@@ -28,8 +28,8 @@ public class AdminAuditlogsE2eTest extends AbstractAdminFrontendE2eTest {
         assertThat("Auditlogs size", auditlogsTable.findElements(By.tagName("tr")).size(),
                 allOf(greaterThan(1), lessThanOrEqualTo(Integer.parseInt(pageSize) + 1)));
 
-        WebElement auditlog = auditlogsTable.findElements(By.tagName("tr")).get(2);
-        String auditlogId = auditlog.findElements(By.tagName("td")).get(0).getText();
+        WebElement auditlog = auditlogsTable.findElements(DdapBy.se("auditlog-id")).get(0);
+        String auditlogId = auditlog.getText();
         auditlog.click();
         adminListPage.waitForInflightRequests();
 

@@ -46,6 +46,7 @@
     <ng-container matColumnDef="auditlogId">
       <th mat-header-cell *matHeaderCellDef> Auditlog </th>
       <td mat-cell *matCellDef="let log"
+          data-se="auditlog-id"
           (click)="gotoAuditlogDetail(log)"
           class="table--link">
         {{log['auditlogId']}}
