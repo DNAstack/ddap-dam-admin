@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 
-import { DamRepositorySharedModule } from '../../admin/dam-repository/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
-import { TokensListComponent } from './tokens-list/tokens-list.component';
+import { TokenListComponent } from './token-list/token-list.component';
 import { TokensRoutingModule } from './tokens-routing.module';
 
 @NgModule({
   declarations: [
-    TokensListComponent,
+    TokenListComponent,
   ],
   imports: [
-    DamRepositorySharedModule,
+    SharedModule,
     TokensRoutingModule,
   ],
 })

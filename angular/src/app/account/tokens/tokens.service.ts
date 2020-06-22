@@ -1,22 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
-import { dam } from '../../shared/proto/dam-service';
-import ITokensResponse = dam.v1.ITokensResponse;
+import { environment } from '../../../environments/environment';
+import { tokens } from '../../shared/proto/dam-service';
+
+import ListTokensResponse = tokens.v1.ListTokensResponse;
 
 @Injectable({
   providedIn: 'root',
 })
 export class TokensService {
+
   constructor(private http: HttpClient) { }
 
-  getTokens(): Observable<ITokensResponse> {
-    return this.http.get<ITokensResponse>(`/api/v1alpha/realm/${realmIdPlaceholder}/tokens`);
+  getTokens(userId: string, params = {}): Observable<ListTokensResponse> {
+    return this.http.get<ListTokensResponse>(`${environment.damApiUrl}`
+      + `/users/${encodeURIComponent(userId)}/tokens`, { params });
   }
 
-  revokeToken(tokenId: string) {
-    return this.http.delete(`api/v1alpha/realm/${realmIdPlaceholder}/tokens/${tokenId}`);
+  revokeToken(userId: string, tokenId: string): Observable<null> {
+    return this.http.delete<any>(`${environment.damApiUrl}`
+      + `/users/${encodeURIComponent(userId)}/tokens/${encodeURIComponent(tokenId)}`
+    );
   }
+
 }

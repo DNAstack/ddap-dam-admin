@@ -10,6 +10,9 @@ export interface IdentityAccount {
   properties: {
     subject: string;
   };
+  sub: string;
+  sid: string;
+  tid: string;
 }
 
 export interface Account {
