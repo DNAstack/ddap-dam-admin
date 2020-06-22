@@ -13,6 +13,13 @@ export class AppConfigService {
   private registerModules() {
     this.viewController
       .registerGroup({
+        key: 'identity',
+        name: 'Identity Management',
+        collapsible: true,
+        collapsibleByDefault: true,
+        nonAdmin: true,
+      })
+      .registerGroup({
         key: 'simplified',
         name: 'Simplified Settings',
         collapsible: false,
@@ -24,12 +31,6 @@ export class AppConfigService {
         collapsible: true,
         collapsibleByDefault: true,
         nonAdmin: false,
-      }).registerGroup({
-        key: 'identity',
-        name: 'Identity Management',
-        collapsible: true,
-        collapsibleByDefault: true,
-        nonAdmin: true,
       });
     this.viewController
       .registerModule({
