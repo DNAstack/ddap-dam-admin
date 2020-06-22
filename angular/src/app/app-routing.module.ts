@@ -12,6 +12,11 @@ const routes: Routes = [
     canActivate: [RealmGuard],
     children: [
       {
+        path: 'account',
+        loadChildren: () => import('./account/account.module')
+          .then(mod => mod.AccountModule),
+      },
+      {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module')
           .then(mod => mod.AdminModule),

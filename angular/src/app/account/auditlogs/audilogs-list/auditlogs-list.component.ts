@@ -6,8 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
-import { Identity, IdentityAccount } from '../../../../../identity/identity.model';
-import { IdentityStore } from '../../../../../identity/identity.store';
+import { Identity, IdentityAccount } from '../../identity.model';
+import { IdentityStore } from '../../identity.store';
 import { AuditlogsService } from '../auditlogs.service';
 
 import { LogType } from './log-type.enum';

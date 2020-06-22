@@ -32,7 +32,24 @@ export class AppConfigService {
         collapsibleByDefault: true,
         nonAdmin: false,
       });
+
     this.viewController
+      .registerModule({
+        key: 'identity-tokens',
+        name: 'Sessions',
+        iconClasses: 'icon icon-clients',
+        routerLink: 'account/sessions',
+        group: 'identity',
+        isApp: false,
+      })
+      .registerModule({
+        key: 'identity-auditlogs',
+        name: 'Auditlogs',
+        iconClasses: 'icon icon-rules',
+        routerLink: 'account/auditlogs',
+        group: 'identity',
+        isApp: false,
+      })
       .registerModule({
         key: 'simplified-access',
         name: 'Access',
@@ -119,22 +136,6 @@ export class AppConfigService {
         iconClasses: 'icon icon-identities',
         routerLink: 'admin/dam/advanced/whitelists',
         group: 'advanced',
-        isApp: false,
-      })
-      .registerModule({
-        key: 'identity-tokens',
-        name: 'Tokens',
-        iconClasses: 'icon icon-clients',
-        routerLink: 'admin/dam/advanced/tokens',
-        group: 'identity',
-        isApp: false,
-      })
-      .registerModule({
-        key: 'identity-auditlogs',
-        name: 'Auditlogs',
-        iconClasses: 'icon icon-rules',
-        routerLink: 'admin/dam/advanced/auditlogs',
-        group: 'identity',
         isApp: false,
       });
   }

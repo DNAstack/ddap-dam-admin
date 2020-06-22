@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { pluck, switchMap } from 'rxjs/operators';
 
-import { common } from '../../../../../shared/proto/dam-service';
+import { common } from '../../../shared/proto/dam-service';
 import { TokensService } from '../tokens.service';
 
 import ITokenMetadata = common.ITokenMetadata;

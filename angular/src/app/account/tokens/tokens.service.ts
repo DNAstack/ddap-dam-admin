@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
-import { dam } from '../../../../shared/proto/dam-service';
+import { dam } from '../../shared/proto/dam-service';
 import ITokensResponse = dam.v1.ITokensResponse;
 
 @Injectable({
