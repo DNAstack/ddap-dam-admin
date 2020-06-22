@@ -181,14 +181,11 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
         const numberOfItems = this.items.length;
         for (let i = 0; i < numberOfItems; i++) {
           const variableControl = this.items.get(`${i}.args.${variableId}`);
-          // If exists add just validators, otherwise add missing control
-          if (variableControl) {
-            variableControl.setValidators([Validators.pattern(variableFormat.regexp)]);
-          } else {
+          if (!variableControl) {
             const args = this.items.get(`${i}.args`) as FormGroup;
-            args.addControl(variableId, this.formBuilder.control(undefined, [
-              Validators.pattern(variableFormat.regexp),
-            ]));
+            // TODO: figure out how to make validators work with split_pattern input
+            //       (not a high priority since DAM is validating our inputs on submit and sending description back to us)
+            args.addControl(variableId, this.formBuilder.control(undefined));
           }
         }
       });

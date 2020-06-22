@@ -108,7 +108,12 @@ export class ResourceFormBuilder {
     if (variables) {
       Object.entries(variables)
         .forEach(([variableKey, variableValue]) => {
-          variablesForm[variableKey] = [variableValue, validators];
+          // special case for 'paths' -> turn to string array
+          if (variableKey === 'paths' && variableValue) {
+            variablesForm[variableKey] = [variableValue.split(';'), validators];
+          } else {
+            variablesForm[variableKey] = [variableValue, validators];
+          }
         });
     }
     return this.formBuilder.group(variablesForm);

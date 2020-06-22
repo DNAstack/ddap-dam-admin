@@ -95,15 +95,33 @@ export class ResourceFormComponent implements OnInit, Form {
     if (views) {
       Object.entries(views)
         .forEach(([oldViewId, view]: any) => {
-          const { id, roles, ...rest } = view;
+          const { id, items, roles, ...rest } = view;
           // Use automatically generated ID only if there is none provided by user
           alteredViews[!id ? oldViewId : id] = {
+            items: this.sanitizeItems(items),
             roles: this.sanitizeRoles(roles),
             ...rest,
           };
         });
     }
     return alteredViews;
+  }
+
+  private sanitizeItems(items: any[]): any[] {
+    if (!items || items.length < 1) {
+      return [];
+    }
+
+    // We need to join array argument to single string separated by semicolon
+    items.forEach((item) => {
+      Object.entries(item.args)
+        .filter(([_, value]: any) => Array.isArray(value))
+        .forEach(([argKey, argValue]: any) => {
+          item.args[argKey] = argValue.join(';');
+        });
+    });
+
+    return items;
   }
 
   private sanitizeRoles(roles) {
