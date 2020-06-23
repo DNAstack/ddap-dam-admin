@@ -10,18 +10,18 @@
           {{search}}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
-        <input placeholder="Search by text"
+        <input (matChipInputTokenEnd)="searchByText($event)"
                [matChipInputFor]="searchList"
                [matChipInputSeparatorKeyCodes]="separatorCodes"
-               (matChipInputTokenEnd)="searchByText($event)" />
+               placeholder="Search by text" />
       </mat-chip-list>
     </mat-form-field>
   </div>
   <div class="filters">
     <mat-form-field>
       <mat-label>Log type</mat-label>
-      <mat-select [formControl]="logType"
-                  (selectionChange)="getLogs()"
+      <mat-select (selectionChange)="getLogs()"
+                  [formControl]="logType"
                   data-se="log-type">
         <mat-option [value]="logTypes.all">ALL</mat-option>
         <mat-option [value]="logTypes.request">REQUEST</mat-option>
@@ -30,8 +30,8 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Logs per page</mat-label>
-      <mat-select [formControl]="pageSize"
-                  (selectionChange)="getLogs()"
+      <mat-select (selectionChange)="getLogs()"
+                  [formControl]="pageSize"
                   data-se="page-size">
         <mat-option *ngFor="let page of ['10', '20', '30', '40', '50']"
                     [value]="page">
@@ -40,50 +40,54 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <table mat-table [dataSource]="auditLogs$ | async"
-         data-se="auditlog-result"
-         class="table--base mat-elevation-z1">
-    <ng-container matColumnDef="auditlogId">
-      <th mat-header-cell *matHeaderCellDef> Auditlog </th>
-      <td mat-cell *matCellDef="let log"
-          data-se="auditlog-id"
-          (click)="gotoAuditlogDetail(log)"
-          class="table--link">
-        {{log['auditlogId']}}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Log Type </th>
-      <td mat-cell *matCellDef="let log"
-          data-se="log-type-cell"
-          class="table--link">
-        {{log['type']}}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="decision">
-      <th mat-header-cell *matHeaderCellDef> Decision </th>
-      <td mat-cell *matCellDef="let log"
-          class="table--link">
-        {{log['decision']}}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="time">
-      <th mat-header-cell *matHeaderCellDef> Time </th>
-      <td mat-cell *matCellDef="let log"
-          class="table--link">
-        {{log['time']}}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="resourceName">
-      <th mat-header-cell *matHeaderCellDef> Resource Name </th>
-      <td mat-cell *matCellDef="let log"
-          class="table--link">
-        {{log['resourceName']}}
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row
-        *matRowDef="let log; columns: columnsToDisplay">
-    </tr>
-  </table>
+
+  <div class="table-container mat-elevation-z1">
+    <table [dataSource]="auditLogs$ | async" class="table--base"
+           data-se="auditlog-result"
+           mat-table>
+      <ng-container matColumnDef="auditlogId" sticky>
+        <th *matHeaderCellDef mat-header-cell>Auditlog</th>
+        <td *matCellDef="let log"
+            (click)="gotoAuditlogDetail(log)"
+            class="table--link"
+            data-se="auditlog-id"
+            mat-cell>
+          {{ log['auditlogId'] }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th *matHeaderCellDef mat-header-cell> Log Type </th>
+        <td *matCellDef="let log"
+            data-se="log-type-cell"
+            mat-cell>
+          {{ log['type'] }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="decision">
+        <th *matHeaderCellDef mat-header-cell> Decision </th>
+        <td *matCellDef="let log"
+            mat-cell>
+          {{log['decision']}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="time">
+        <th *matHeaderCellDef mat-header-cell> Time </th>
+        <td *matCellDef="let log"
+            mat-cell>
+          {{log['time']}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="resourceName">
+        <th *matHeaderCellDef mat-header-cell> Resource Name </th>
+        <td *matCellDef="let log"
+            mat-cell>
+          {{log['resourceName']}}
+        </td>
+      </ng-container>
+      <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+      <tr *matRowDef="let log; columns: columnsToDisplay"
+          mat-row>
+      </tr>
+    </table>
+  </div>
 </ddaplib-main>
