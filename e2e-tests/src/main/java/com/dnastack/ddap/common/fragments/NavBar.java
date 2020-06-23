@@ -77,11 +77,11 @@ public class NavBar {
         return new NavLink("Passport Issuers", DdapBy.se("nav-advanced-passport-issuers"), damPanelAdvancedSelectorLink());
     }
 
-    public static NavLink damTokensLink() {
-        return new NavLink("Tokens", DdapBy.se("nav-identity-tokens"), damPanelIdentitySelectorLink());
+    public static NavLink tokensLink() {
+        return new NavLink("Sessions", DdapBy.se("nav-identity-tokens"), damPanelIdentitySelectorLink());
     }
 
-    public static NavLink damAuditlogsLink() {
+    public static NavLink auditlogsLink() {
         return new NavLink("Auditlogs", DdapBy.se("nav-identity-auditlogs"), damPanelIdentitySelectorLink());
     }
 

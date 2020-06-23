@@ -43,4 +43,9 @@ public class AdminListPage extends AdminDdapPage {
                 .until(ExpectedConditions.invisibilityOfElementLocated(DdapBy.seAndText("entity-title", title)));
     }
 
+    public void assertTableNotEmpty() {
+        new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".mat-row"), 0));
+    }
+
 }

@@ -2,7 +2,6 @@ package com.dnastack.ddap.frontend;
 
 import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.util.DdapBy;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -12,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-import static com.dnastack.ddap.common.fragments.NavBar.damAuditlogsLink;
+import static com.dnastack.ddap.common.fragments.NavBar.auditlogsLink;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -21,7 +20,7 @@ public class AdminAuditlogsE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void verifyAuditlogs() {
-        AdminListPage adminListPage = ddapPage.getNavBar().goToAdmin(damAuditlogsLink());
+        AdminListPage adminListPage = ddapPage.getNavBar().goToAdmin(auditlogsLink());
         adminListPage.waitForInflightRequests();
         String pageSize = driver.findElement(DdapBy.se("page-size")).getText();
         WebElement auditlogsTable = driver.findElement(DdapBy.se("auditlog-result"));
@@ -39,7 +38,7 @@ public class AdminAuditlogsE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void filterAuditlogs() {
-        AdminListPage adminListPage = ddapPage.getNavBar().goToAdmin(damAuditlogsLink());
+        AdminListPage adminListPage = ddapPage.getNavBar().goToAdmin(auditlogsLink());
         adminListPage.waitForInflightRequests();
         String pageSize = driver.findElement(DdapBy.se("page-size")).getText();
         WebElement auditlogsTable = driver.findElement(DdapBy.se("auditlog-result"));
