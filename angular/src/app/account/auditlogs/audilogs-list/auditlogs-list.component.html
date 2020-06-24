@@ -30,6 +30,16 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field>
+      <mat-label>Decision</mat-label>
+      <mat-select (selectionChange)="getLogs()"
+                  [formControl]="decision"
+                  data-se="decision">
+        <mat-option [value]="decisionType.all">ALL</mat-option>
+        <mat-option [value]="decisionType.pass">PASS</mat-option>
+        <mat-option [value]="decisionType.fail">FAIL</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
       <mat-label>Logs per page</mat-label>
       <mat-select (selectionChange)="getLogs()"
                   [formControl]="pageSize"
