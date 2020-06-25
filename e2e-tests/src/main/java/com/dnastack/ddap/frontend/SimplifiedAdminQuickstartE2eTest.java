@@ -1,23 +1,23 @@
 package com.dnastack.ddap.frontend;
 
 import com.dnastack.ddap.common.page.AdminManagePage;
-import com.dnastack.ddap.common.page.AdminSimplifiedAccessPage;
+import com.dnastack.ddap.common.page.SimplifiedAdminQuickstartPage;
 import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.Test;
 
-import static com.dnastack.ddap.common.fragments.NavBar.simplifiedAccessLink;
+import static com.dnastack.ddap.common.fragments.NavBar.simplifiedAdminQuickstartLink;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @SuppressWarnings("Duplicates")
-public class AdminSimplifiedAccessE2eTest extends AbstractAdminFrontendE2eTest {
+public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void createResourceForGCSWithDefaults() {
-        AdminSimplifiedAccessPage simplifiedAccessPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAccessLink(), AdminSimplifiedAccessPage::new);
+        SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
+            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
-        AdminManagePage adminManagePage = simplifiedAccessPage.clickCreateGCSResource();
+        AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateGCSResource();
 
         String collection = "test-gcs-cag-read";
         adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
@@ -32,10 +32,10 @@ public class AdminSimplifiedAccessE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void createResourceForGCSWithRead() {
-        AdminSimplifiedAccessPage simplifiedAccessPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAccessLink(), AdminSimplifiedAccessPage::new);
+        SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
+            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
-        AdminManagePage adminManagePage = simplifiedAccessPage.clickCreateGCSResource();
+        AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateGCSResource();
 
         String collection = "test-gcs-rs-read";
         adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
@@ -52,10 +52,10 @@ public class AdminSimplifiedAccessE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void createResourceForGCSWithWrite() {
-        AdminSimplifiedAccessPage simplifiedAccessPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAccessLink(), AdminSimplifiedAccessPage::new);
+        SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
+            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
-        AdminManagePage adminManagePage = simplifiedAccessPage.clickCreateGCSResource();
+        AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateGCSResource();
 
         String collection = "test-gcs-rs-write";
         adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
@@ -72,10 +72,10 @@ public class AdminSimplifiedAccessE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void createResourceForBigQueryWithDefaults() {
-        AdminSimplifiedAccessPage simplifiedAccessPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAccessLink(), AdminSimplifiedAccessPage::new);
+        SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
+            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
-        AdminManagePage adminManagePage = simplifiedAccessPage.clickCreateBigQueryResource();
+        AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateBigQueryResource();
 
         String collection = "test-bigquery-cag-read";
         adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
@@ -89,10 +89,10 @@ public class AdminSimplifiedAccessE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void createResourceForBeaconWithDefaults() {
-        AdminSimplifiedAccessPage simplifiedAccessPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAccessLink(), AdminSimplifiedAccessPage::new);
+        SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
+            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
-        AdminManagePage adminManagePage = simplifiedAccessPage.clickCreateBeaconResource();
+        AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateBeaconResource();
 
         String collection = "test-beacon-cag-read";
         adminManagePage.fillField(DdapBy.se("inp-collection"), collection);

@@ -3,9 +3,9 @@ package com.dnastack.ddap.common.page;
 import com.dnastack.ddap.common.util.DdapBy;
 import org.openqa.selenium.WebDriver;
 
-public class AdminSimplifiedAccessPage extends AdminDdapPage {
+public class SimplifiedAdminQuickstartPage extends AdminDdapPage {
 
-    public AdminSimplifiedAccessPage(WebDriver driver) {
+    public SimplifiedAdminQuickstartPage(WebDriver driver) {
         super(driver);
     }
 

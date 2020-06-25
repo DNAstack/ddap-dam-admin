@@ -93,8 +93,8 @@ public class NavBar {
         return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-advanced-toggle']")), null);
     }
 
-    public static NavLink simplifiedAccessLink() {
-        return new NavLink("Access", DdapBy.se("nav-simplified-access"), null);
+    public static NavLink simplifiedAdminQuickstartLink() {
+        return new NavLink("Quickstart", DdapBy.se("nav-simplified-admin-quickstart"), null);
     }
 
     public NavBar(WebDriver driver) {

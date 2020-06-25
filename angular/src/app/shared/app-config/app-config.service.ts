@@ -51,7 +51,7 @@ export class AppConfigService {
         isApp: false,
       })
       .registerModule({
-        key: 'simplified-access',
+        key: 'simplified-admin-quickstart',
         name: 'Quickstart',
         iconClasses: 'icon icon-policies',
         routerLink: 'admin/dam/simple/quickstart',
