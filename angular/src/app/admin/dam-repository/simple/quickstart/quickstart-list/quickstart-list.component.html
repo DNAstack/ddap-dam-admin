@@ -1,30 +1,36 @@
-<ddaplib-header iconClass="icon icon-policies" label="Set up Resources and Access Policies">
+<ddaplib-header iconClass="icon icon-policies"
+                label="Select Service Type">
 </ddaplib-header>
 
 <ddaplib-main>
   <ddaplib-entity-description>
-    Simplified resource creation with desired access.
+    Select the service where your data is stored.
   </ddaplib-entity-description>
 
-  <mat-list>
-    <mat-list-item [routerLink]="['manage', 'gcs']"
-                   data-se="btn-create-gcs-resource">
-      <button mat-stroked-button>
-        Configure access to objects in Google Cloud Storage
-      </button>
-    </mat-list-item>
-    <mat-list-item [routerLink]="['manage', 'bigquery']"
-                   data-se="btn-create-bigquery-resource">
-      <button mat-stroked-button>
-        Configure access to tables in BigQuery
-      </button>
-    </mat-list-item>
-    <mat-list-item [routerLink]="['manage', 'beacon']"
-                   data-se="btn-create-beacon-resource">
-      <button mat-stroked-button>
-        Configure access to proxy protected Beacon
-      </button>
-    </mat-list-item>
-  </mat-list>
+  <div class="quickstart-list">
+    <mat-card [routerLink]="['manage', 'gcs']"
+              data-se="btn-create-gcs-resource">
+      <mat-card-title>Google Cloud Storage</mat-card-title>
+      <mat-card-content>
+        Google Cloud Storage is a RESTful online file storage web service for storing
+        and accessing data on Google Cloud Platform infrastructure.
+      </mat-card-content>
+    </mat-card>
 
+    <mat-card [routerLink]="['manage', 'bigquery']"
+              data-se="btn-create-bigquery-resource">
+      <mat-card-title>BigQuery</mat-card-title>
+      <mat-card-content>
+        BigQuery is a fully-managed, serverless data warehouse that enables scalable analysis over petabytes of data.
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card [routerLink]="['manage', 'beacon']"
+              data-se="btn-create-Beacon-resource">
+      <mat-card-title>Beacon</mat-card-title>
+      <mat-card-content>
+        The Beacon API is a platform for global discovery of genomic data and variant sharing.
+      </mat-card-content>
+    </mat-card>
+  </div>
 </ddaplib-main>
