@@ -9,17 +9,17 @@ import { AccessLevel } from '../../shared/access-level.enum';
 import { AccessPolicyBuilderService } from '../../shared/access-policy-builder.service';
 import { AccessPolicyType } from '../../shared/access-policy-type.enum';
 import { ResourceBuilderService } from '../../shared/resource-builder.service';
-import { AccessFormComponent } from '../access-form/access-form.component';
+import { QuickstartFormComponent } from '../quickstart-form/quickstart-form.component';
 
 @Component({
-  selector: 'ddap-access-manage',
-  templateUrl: './access-manage.component.html',
-  styleUrls: ['./access-manage.component.scss'],
+  selector: 'ddap-quickstart-manage',
+  templateUrl: './quickstart-manage.component.html',
+  styleUrls: ['./quickstart-manage.component.scss'],
 })
-export class AccessManageComponent implements OnInit {
+export class QuickstartManageComponent implements OnInit {
 
-  @ViewChild(AccessFormComponent, { static: false })
-  accessForm: AccessFormComponent;
+  @ViewChild(QuickstartFormComponent, { static: false })
+  quickstartForm: QuickstartFormComponent;
 
   serviceTemplate: string;
   formErrorMessage: string;
@@ -42,13 +42,13 @@ export class AccessManageComponent implements OnInit {
   }
 
   save() {
-    if (!this.validate(this.accessForm)) {
+    if (!this.validate(this.quickstartForm)) {
       return;
     }
 
-    const { collection, accessPolicyValue, variables } = this.accessForm.getModel();
-    const accessLevel: AccessLevel = this.accessForm.accessLevelRadio.value;
-    const accessPolicyId: AccessPolicyType = this.accessForm.accessPolicyRadio.value;
+    const { collection, accessPolicyValue, variables } = this.quickstartForm.getModel();
+    const accessLevel: AccessLevel = this.quickstartForm.accessLevelRadio.value;
+    const accessPolicyId: AccessPolicyType = this.quickstartForm.accessPolicyRadio.value;
 
     this.accessPolicyBuilderService.createReusableAccessPolicy(accessPolicyId)
       .pipe(

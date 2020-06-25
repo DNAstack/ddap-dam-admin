@@ -7,14 +7,14 @@ import { TargetAdapterVariables } from '../../../advanced/target-adapters/target
 import { AccessLevel } from '../../shared/access-level.enum';
 import { AccessPolicyType } from '../../shared/access-policy-type.enum';
 
-import { AccessFormBuilder } from './access-form-builder.service';
+import { AccessFormBuilder } from './quickstart-form-builder.service';
 
 @Component({
-  selector: 'ddap-access-form',
-  templateUrl: './access-form.component.html',
-  styleUrls: ['./access-form.component.scss'],
+  selector: 'ddap-quickstart-form',
+  templateUrl: './quickstart-form.component.html',
+  styleUrls: ['./quickstart-form.component.scss'],
 })
-export class AccessFormComponent implements OnInit, Form {
+export class QuickstartFormComponent implements OnInit, Form {
 
   @Input()
   serviceTemplate: string;

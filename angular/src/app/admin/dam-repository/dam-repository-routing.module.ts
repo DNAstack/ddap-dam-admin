@@ -61,9 +61,9 @@ export const routes: Routes = [
     path: 'simple',
     children: [
       {
-        path: 'access',
-        loadChildren: () => import('./simple/access/accesses.module')
-          .then(mod => mod.AccessesModule),
+        path: 'quickstart',
+        loadChildren: () => import('./simple/quickstart/quickstart.module')
+          .then(mod => mod.QuickstartModule),
       },
     ],
   },
