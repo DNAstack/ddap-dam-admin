@@ -189,4 +189,14 @@ public class NavBar {
         }
     }
 
+    public String getLoggedInUsername() {
+        new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(DdapBy.se("menu-profile-btn")))
+        .click();
+        WebElement menuContent = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(By.className("mat-menu-content")));
+        return menuContent.findElement(By.className("account-info-label"))
+            .getText();
+    }
+
 }

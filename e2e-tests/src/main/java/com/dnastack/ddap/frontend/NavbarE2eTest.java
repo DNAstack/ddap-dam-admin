@@ -5,16 +5,12 @@ import com.dnastack.ddap.common.page.AdminDdapPage;
 import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AnyDdapPage;
 import com.dnastack.ddap.common.util.DdapBy;
-import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
 import static com.dnastack.ddap.common.TestingPersona.USER_WITHOUT_ACCESS;
@@ -67,17 +63,11 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
     }
 
     @Test
-    public void testProfileNameAndDescriptionLinkNavigation() {
-        // FIXME: DISCO-2686
-        Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
-            2020, 6, 30, 12, 0, 0,0,
-            ZoneId.of("America/Toronto"))
-        ));
+    public void testProfileName() {
         ddapPage = doBrowserLogin(REALM, ADMINISTRATOR, AdminDdapPage::new);
 
         // check profile name
-        final String usernameXpath = "//*[@data-se='nav-account']//h4";
-        final String displayedName = driver.findElement(By.xpath(usernameXpath)).getText();
+        final String displayedName = ddapPage.getNavBar().getLoggedInUsername();
         assertThat(displayedName, not(isEmptyOrNullString()));
 
         /*
@@ -86,12 +76,17 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
          */
         final String firstLetter = displayedName.trim().substring(0, 1);
         assertEquals(format("Expected name [%s] to start with capital. Might not be a name?", displayedName), firstLetter.toUpperCase(), firstLetter);
+    }
+
+    @Test
+    public void testDescriptionLink() {
+        ddapPage = doBrowserLogin(REALM, ADMINISTRATOR, AdminDdapPage::new);
 
         AdminListPage adminListPage = ddapPage.getNavBar()
-                .goToAdmin(damResourceLink());
+            .goToAdmin(damResourceLink());
         adminListPage.clickDescriptionLink();
         new WebDriverWait(driver, 3)
-                .until(ExpectedConditions.textToBe(DdapBy.se("page-title"), "Access Policies"));
+            .until(ExpectedConditions.textToBe(DdapBy.se("page-title"), "Access Policies"));
     }
 
 }
