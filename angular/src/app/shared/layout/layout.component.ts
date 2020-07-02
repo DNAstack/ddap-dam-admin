@@ -78,11 +78,11 @@ export class LayoutComponent implements OnInit {
       });
   }
 
-  onAcknowledge(dialogData) {
+  realmActionConfirmed(dialogData) {
     if (dialogData) {
-      if (dialogData.action === 'edit') {
+      if (dialogData.action === RealmActionType.edit) {
         this.changeRealmAndGoToLogin(dialogData.realm);
-      } else if (dialogData.action === 'delete') {
+      } else if (dialogData.action === RealmActionType.delete) {
         this.deleteRealm(dialogData.realm);
       }
     }
