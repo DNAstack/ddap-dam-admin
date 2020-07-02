@@ -18,13 +18,13 @@ ADD target/pom.xml ./
 ADD target/.mvn ./.mvn
 ADD target/mvnw ./
 # Downloads npm and node in separate layer from running "npm install"
-RUN ./mvnw -B initialize
+RUN ./mvnw -T 4 -B initialize
 ADD target/angular/*.json ./angular/
 # Allows us to pass settings.xml configured on local machine or CI server to access private Nexus repo
 ADD target/.m2 /root/.m2
 # Resolves all maven dependencies and frontend dependencies (via "npm install")
-RUN ./mvnw -B -Presolve-dependencies initialize
-RUN ./mvnw -B versions:set -DnewVersion=${APP_VERSION}
+RUN ./mvnw -T 4 -B -Presolve-dependencies initialize
+RUN ./mvnw -T 4 -B versions:set -DnewVersion=${APP_VERSION}
 
 # Now add sources, which will bust the cache.
 ADD target/src ./src
@@ -41,7 +41,7 @@ RUN apt-get -qqy update && apt-get -qqy install curl libatomic1
 #     org.apache.maven.artifact.resolver.MultipleArtifactsNotFoundException: Missing:
 # then update the version number of surefire-junit4 in pom.xml under the
 # dynamicDependencies section of go-offline-maven-plugin configuration.
-RUN ./mvnw -B -o package
+RUN ./mvnw -T 4 -B -o package
 
 
 ##
