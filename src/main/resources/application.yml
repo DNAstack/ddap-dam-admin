@@ -21,6 +21,7 @@ idp:
   client-secret: 0000-0000-0000-0000-0000
 ddap:
   public-uri: http://localhost:8087
+  enable-experimental: false
   default-realm: dnastack
   # Development key should not be deployed. There is an e2e test preventing this.
   signingKey: |
