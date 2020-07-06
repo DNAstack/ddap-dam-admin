@@ -45,17 +45,23 @@ export class PassportIssuerFormComponent implements OnInit, Form {
       }),
       issuer: [issuer, Validators.required],
       translateUsing: [translateUsing],
+      clientId: [this.passportIssuer.dto ? this.passportIssuer.dto.clientId : ''],
+      tokenUrl: [this.passportIssuer.dto ? this.passportIssuer.dto.tokenUrl : ''],
+      authUrl: [this.passportIssuer.dto ? this.passportIssuer.dto.authUrl : ''],
     });
 
     this.passportIssuers$ = this.passportIssuersStore.getAsList(pick('dto.issuer'));
   }
 
   getModel(): EntityModel {
-    const {id, ui, issuer, translateUsing} = this.form.value;
+    const {id, ui, issuer, translateUsing, authUrl, tokenUrl, clientId} = this.form.value;
     const clientApplication: TrustedIssuer = TrustedIssuer.create({
       ui,
       issuer,
       translateUsing,
+      authUrl,
+      tokenUrl,
+      clientId,
     });
 
     return new EntityModel(id, clientApplication);
