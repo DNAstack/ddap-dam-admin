@@ -5,9 +5,9 @@ import { RealmActionType, ViewControllerService } from 'ddap-common-lib';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 
-import { Identity, Profile } from '../../account/identity.model';
-import { IdentityService } from '../../account/identity.service';
-import { IdentityStore } from '../../account/identity.store';
+import { Identity, Profile } from '../../account/identity/identity.model';
+import { IdentityService } from '../../account/identity/identity.service';
+import { IdentityStore } from '../../account/identity/identity.store';
 import { DamService } from '../../admin/dam-repository/dam.service';
 import { AppConfigService } from '../app-config/app-config.service';
 import { RealmService } from '../realm/realm.service';
@@ -72,7 +72,7 @@ export class LayoutComponent implements OnInit {
   }
 
   logout() {
-    this.identityService.invalidateTokens()
+    this.identityService.invalidateAccessTokens()
       .subscribe(() => {
         window.location.href = `/`;
       });
@@ -100,7 +100,7 @@ export class LayoutComponent implements OnInit {
   }
 
   private periodicallyRefreshTokens(): Observable<any> {
-    return this.identityService.refreshTokens()
+    return this.identityService.refreshAccessTokens()
       .pipe(
         repeatWhen(() => interval(refreshRepeatTimeoutInMs))
       );

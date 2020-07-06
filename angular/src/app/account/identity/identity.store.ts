@@ -3,11 +3,11 @@ import { Store } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
-import { common } from '../shared/proto/dam-service';
+import { common } from '../../shared/proto/dam-service';
 
 import { Identity } from './identity.model';
-import { IdentityService } from './identity.service';
 import ConnectedAccount = common.ConnectedAccount;
+import { IdentityService } from './identity.service';
 
 @Injectable({
   providedIn: 'root',

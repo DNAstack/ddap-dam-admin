@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ErrorHandlerService, realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 import { Identity } from './identity.model';
 
@@ -23,11 +23,11 @@ export class IdentityService {
       );
   }
 
-  refreshTokens(params?) {
+  refreshAccessTokens(params?) {
     return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/refresh`, {params});
   }
 
-  invalidateTokens(params?) {
+  invalidateAccessTokens(params?) {
     return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/logout`, {params});
   }
 

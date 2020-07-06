@@ -1,0 +1,9 @@
+@import '~ddap-common-lib/styles/modules/colors';
+
+form.ddap-form {
+  width: 90%;
+
+  .mat-button[disabled][disabled].primary-attribute-btn {
+    color: $success-color;
+  }
+}

@@ -28,10 +28,16 @@ import { TagInputModule } from 'ngx-chips';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { LayoutComponent } from './layout/layout.component';
+import { PersonalInfoFormComponent } from './users/personal-info-form/personal-info-form.component';
+import {
+  UserAccountCloseConfirmationDialogComponent
+} from './users/user-account-close-confirmation-dialog/user-account-close-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
+    PersonalInfoFormComponent,
+    UserAccountCloseConfirmationDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -99,6 +105,7 @@ import { LayoutComponent } from './layout/layout.component';
 
     DdapLayoutModule,
     DdapFormModule,
+    PersonalInfoFormComponent,
   ],
 })
 export class SharedModule {

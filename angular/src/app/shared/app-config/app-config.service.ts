@@ -35,6 +35,15 @@ export class AppConfigService {
 
     this.viewController
       .registerModule({
+        key: 'identity-admin',
+        name: 'My Identity',
+        iconClasses: 'icon icon-identity',
+        routerLink: 'account/identity',
+        isApp: false,
+        group: 'identity',
+        nonAdmin: true,
+      })
+      .registerModule({
         key: 'identity-tokens',
         name: 'Sessions',
         iconClasses: 'icon icon-clients',

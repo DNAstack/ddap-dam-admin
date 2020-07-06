@@ -3,9 +3,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { flatMap, switchMap, tap } from 'rxjs/operators';
 
 import { tokens } from '../../../shared/proto/dam-service';
-import { Identity } from '../../identity.model';
+import { Identity } from '../../identity/identity.model';
 import ListTokensResponse = tokens.v1.ListTokensResponse;
-import { IdentityService } from '../../identity.service';
+import { IdentityService } from '../../identity/identity.service';
 import { TokensService } from '../tokens.service';
 
 @Component({

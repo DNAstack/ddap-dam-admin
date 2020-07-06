@@ -5,13 +5,18 @@ export const routes: Routes = [
   { path: '',
     children: [
       {
+        path: 'identity',
+        loadChildren: () => import('./identity/identity.module')
+          .then(mod => mod.IdentityModule),
+      },
+      {
         path: 'sessions',
-        loadChildren: () => import('../account/tokens/tokens.module')
+        loadChildren: () => import('./tokens/tokens.module')
           .then(mod => mod.TokensModule),
       },
       {
         path: 'auditlogs',
-        loadChildren: () => import('../account/auditlogs/auditlogs.module')
+        loadChildren: () => import('./auditlogs/auditlogs.module')
           .then(mod => mod.AuditlogsModule),
       },
     ]},

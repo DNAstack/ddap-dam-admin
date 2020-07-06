@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   ddapApiUrl: 'http://localhost:8087/api/v1alpha',
-  idpApiUrl: 'http://localhost:8087/identity/v1alpha',
+  damBaseUrl: 'http://localhost:8087/proxy',
   damApiUrl: 'http://localhost:8087/dam/v1alpha',
   claimExpirationWarningThresholdInHours: 48,
 };
