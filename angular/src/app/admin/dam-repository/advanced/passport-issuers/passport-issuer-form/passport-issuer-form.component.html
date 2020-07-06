@@ -50,31 +50,28 @@
       <mat-error *ngIf="form.get('issuer').invalid">{{ form.get('issuer').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
-  <div class="row"
-       *ngIf="passportIssuer.dto?.clientId">
+  <div class="row">
     <mat-form-field class="col">
       <input matInput
              placeholder="Client Identifier"
-             formControlName="clientId"
-             readonly>
+             formControlName="clientId">
+      <mat-error *ngIf="form.get('clientId').invalid">{{ form.get('clientId').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
-  <div class="row"
-       *ngIf="passportIssuer.dto?.authUrl">
+  <div class="row">
     <mat-form-field class="col">
       <input matInput
              placeholder="Auth URL"
-             formControlName="authUrl"
-             readonly>
+             formControlName="authUrl">
+      <mat-error *ngIf="form.get('authUrl').invalid">{{ form.get('authUrl').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
-  <div class="row"
-       *ngIf="passportIssuer.dto?.tokenUrl">
+  <div class="row">
     <mat-form-field class="col">
       <input matInput
              placeholder="Token URL"
-             formControlName="tokenUrl"
-             readonly>
+             formControlName="tokenUrl">
+      <mat-error *ngIf="form.get('tokenUrl').invalid">{{ form.get('tokenUrl').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
   <div class="row">

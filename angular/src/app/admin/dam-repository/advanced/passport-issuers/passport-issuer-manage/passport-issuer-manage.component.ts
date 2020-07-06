@@ -45,7 +45,7 @@ export class PassportIssuerManageComponent extends DamConfigEntityFormComponentB
   }
 
   handleError = ({ error }) => {
-    this.displayFieldErrorMessage(error, 'trustedIssuer', this.passportIssuerForm.form);
+    this.displayFieldErrorMessage(error, 'trustedPassportIssuer', this.passportIssuerForm.form);
   }
 
 }
