@@ -20,7 +20,7 @@ public abstract class AbstractAdminFrontendE2eTest extends AbstractFrontendE2eTe
         ddapPage = doBrowserLogin(realm, ADMINISTRATOR, AdminDdapPage::new);
     }
 
-    private static String getRealm() {
+    protected static String getRealm() {
         return generateRealmName(MethodHandles.lookup().lookupClass().getSimpleName());
     }
 

@@ -97,6 +97,14 @@ public class NavBar {
         return new NavLink("Quickstart", DdapBy.se("nav-simplified-admin-quickstart"), null);
     }
 
+    public static NavLink userAdministrationPanelSelectorLink() {
+        return new NavLink("User Administration", DdapBy.se("nav-group-user-admin"), null);
+    }
+
+    public static NavLink usersLink() {
+        return new NavLink("Users", DdapBy.se("nav-admin-users"), userAdministrationPanelSelectorLink());
+    }
+
     public NavBar(WebDriver driver) {
         this.driver = driver;
     }

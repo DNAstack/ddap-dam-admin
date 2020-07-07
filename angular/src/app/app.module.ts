@@ -7,6 +7,9 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
+import {
+  UserAccountCloseConfirmationDialogComponent
+} from './shared/users/user-account-close-confirmation-dialog/user-account-close-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +23,9 @@ import { SharedModule } from './shared/shared.module';
 
     SharedModule,
     AppRoutingModule,
+  ],
+  entryComponents: [
+    UserAccountCloseConfirmationDialogComponent,
   ],
   bootstrap: [AppComponent],
 })
