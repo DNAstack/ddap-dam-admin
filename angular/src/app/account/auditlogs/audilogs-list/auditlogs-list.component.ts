@@ -51,7 +51,9 @@ export class AuditlogsListComponent implements OnInit {
     if (Object.keys(queryParams).length) {
       const { pageSize, filter } = queryParams;
       this.filter = filter || '';
-      this.pageSize.patchValue(pageSize);
+      if (pageSize) {
+        this.pageSize.patchValue(pageSize);
+      }
       this.updateFilters(decodeURIComponent(filter));
     } else {
       this.filter = encodeURIComponent(this.getFilters());
@@ -71,7 +73,7 @@ export class AuditlogsListComponent implements OnInit {
           [],
           {
             relativeTo: this.route,
-            queryParams: {pageSize, filter: this.filter },
+            queryParams: { pageSize, filter: this.filter },
             queryParamsHandling: 'merge',
           }
         );
