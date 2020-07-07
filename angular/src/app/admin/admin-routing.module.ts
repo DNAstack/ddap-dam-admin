@@ -7,6 +7,11 @@ export const routes: Routes = [
     loadChildren: () => import('./dam-repository/dam-repository.module')
       .then(mod => mod.DamRepositoryModule),
   },
+  {
+    path: 'users',
+    loadChildren: () => import('./users/users.module')
+      .then(mod => mod.UsersModule),
+  },
 ];
 
 @NgModule({

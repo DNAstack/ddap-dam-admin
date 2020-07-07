@@ -20,6 +20,13 @@ export class AppConfigService {
         nonAdmin: true,
       })
       .registerGroup({
+        key: 'user-admin',
+        name: 'User Administration',
+        collapsible: true,
+        collapsibleByDefault: true,
+        nonAdmin: false,
+      })
+      .registerGroup({
         key: 'simplified',
         name: 'Simplified Settings',
         collapsible: false,
@@ -58,6 +65,15 @@ export class AppConfigService {
         routerLink: 'account/auditlogs',
         group: 'identity',
         isApp: false,
+      })
+      .registerModule({
+        key: 'admin-users',
+        name: 'Users',
+        iconClasses: 'icon icon-identities',
+        routerLink: 'admin/users',
+        isApp: false,
+        group: 'user-admin',
+        nonAdmin: false,
       })
       .registerModule({
         key: 'simplified-admin-quickstart',
