@@ -59,6 +59,14 @@ export class AppConfigService {
         isApp: false,
       })
       .registerModule({
+        key: 'identity-consents',
+        name: 'Consents',
+        iconClasses: 'icon icon-passport',
+        routerLink: 'account/consents',
+        group: 'identity',
+        isApp: false,
+      })
+      .registerModule({
         key: 'identity-auditlogs',
         name: 'Auditlogs',
         iconClasses: 'icon icon-rules',

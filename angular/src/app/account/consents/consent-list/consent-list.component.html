@@ -1,0 +1,84 @@
+<ddaplib-header iconClass="icon icon-passport" label="Consents"></ddaplib-header>
+
+<ddaplib-main>
+  <div *ngIf="(consents$ | async) as consentsResponse"
+       class="table-container mat-elevation-z1">
+    <table mat-table [dataSource]="consentsResponse.consents"
+           class="table--base">
+      <!-- Name Definition -->
+      <ng-container matColumnDef="name" sticky>
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let model"
+            data-se="entity-title">
+          {{ getIdFromName(model.name) }}
+        </td>
+      </ng-container>
+      <!-- Client Definition -->
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef>Client</th>
+        <td mat-cell *matCellDef="let model">{{ model.client.name }}</td>
+      </ng-container>
+      <!-- Scopes Definition -->
+      <ng-container matColumnDef="scopes">
+        <th mat-header-cell *matHeaderCellDef>Scopes</th>
+        <td mat-cell *matCellDef="let model">
+        <span *ngFor="let scope of model.requestedScopes">
+          {{ scope }}
+          <br/>
+        </span>
+        </td>
+      </ng-container>
+      <!-- Visas Definition -->
+      <ng-container matColumnDef="visas">
+        <th mat-header-cell *matHeaderCellDef>Selected Visas</th>
+        <td mat-cell *matCellDef="let model">
+        <span *ngFor="let visa of model.selectedVisas">
+          {{ visa.type }}:
+          <span class="text-style--italic text-size--small text-color--subtle-darker">
+            {{ visa.source }}
+          </span>
+          <br/>
+        </span>
+        </td>
+      </ng-container>
+      <!-- Created At Definition -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Created At</th>
+        <td mat-cell *matCellDef="let model">{{ model.createTime ? dayjs.utc(model.createTime) : '' }}</td>
+      </ng-container>
+      <!-- Expires At Definition -->
+      <ng-container matColumnDef="expiresAt">
+        <th mat-header-cell *matHeaderCellDef>Expires At</th>
+        <td mat-cell *matCellDef="let model">{{ model.expireTime ? dayjs.utc(model.expireTime) : '' }}</td>
+      </ng-container>
+      <!-- More Actions Column -->
+      <ng-container matColumnDef="moreActions" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let model"
+            class="table--actions">
+          <mat-icon [matMenuTriggerFor]="moreActionsMenu"
+                    [matMenuTriggerData]="{ id: model.name }"
+                    data-se="btn-more-actions">
+            more_vert
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <mat-menu #moreActionsMenu="matMenu">
+        <ng-template matMenuContent
+                     let-id="id">
+          <button mat-menu-item
+                  class="color--warn"
+                  data-se="btn-revoke"
+                  (click)="revokeConsent(getIdFromName(id))">
+            Revoke
+          </button>
+        </ng-template>
+      </mat-menu>
+
+      <!-- Header and Row Declarations -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</ddaplib-main>

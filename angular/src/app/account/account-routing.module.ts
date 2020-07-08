@@ -15,6 +15,11 @@ export const routes: Routes = [
           .then(mod => mod.TokensModule),
       },
       {
+        path: 'consents',
+        loadChildren: () => import('./consents/consents.module')
+          .then(mod => mod.ConsentsModule),
+      },
+      {
         path: 'auditlogs',
         loadChildren: () => import('./auditlogs/auditlogs.module')
           .then(mod => mod.AuditlogsModule),
