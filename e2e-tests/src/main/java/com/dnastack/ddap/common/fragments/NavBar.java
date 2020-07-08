@@ -85,6 +85,10 @@ public class NavBar {
         return new NavLink("Auditlogs", DdapBy.se("nav-identity-auditlogs"), damPanelIdentitySelectorLink());
     }
 
+    public static NavLink consentsLink() {
+        return new NavLink("Consents", DdapBy.se("nav-identity-consents"), damPanelIdentitySelectorLink());
+    }
+
     public static NavLink simplifiedAdminPanelToggle() {
         return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-simplified-toggle']")), null);
     }
