@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { VisaPassportService } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
@@ -32,7 +31,6 @@ export class IdentityComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private identityService: IdentityService,
               private identityStore: IdentityStore,
-              private visaPassportService: VisaPassportService,
               private userService: UserService,
               private dialog: MatDialog,
               private snackBar: MatSnackBar) {
