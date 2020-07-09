@@ -59,6 +59,8 @@
                    data-se="inp-picture">
           </mat-form-field>
         </div>
+        <ddaplib-image-preview [photoUri]="form.get('passport.standardClaims.picture').value">
+        </ddaplib-image-preview>
       </mat-card>
     </ng-container>
 

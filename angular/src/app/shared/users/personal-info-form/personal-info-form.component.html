@@ -166,6 +166,8 @@
                      [attr.data-se]="'inp-photo-' + i">
             </mat-form-field>
           </div>
+          <ddaplib-image-preview [photoUri]="photo.get('value').value">
+          </ddaplib-image-preview>
         </ng-container>
     </mat-expansion-panel>
   </mat-accordion>

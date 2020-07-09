@@ -176,6 +176,8 @@
             </mat-error>
           </mat-form-field>
         </div>
+        <ddaplib-image-preview [photoUri]="form.get('ui.imageUrl').value">
+        </ddaplib-image-preview>
         <div class="row">
           <mat-form-field class="col">
             <input matInput
