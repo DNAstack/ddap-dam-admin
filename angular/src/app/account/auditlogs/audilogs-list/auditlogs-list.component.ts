@@ -20,6 +20,15 @@ import { LogType } from './log-type.enum';
 })
 export class AuditlogsListComponent implements OnInit {
 
+
+  get logTypes() {
+    return LogType;
+  }
+
+  get decisionType() {
+    return Decision;
+  }
+
   auditLogs$: Observable<object[]>;
   pageSize: FormControl = new FormControl('20');
   logType: FormControl = new FormControl(LogType.all);
@@ -38,15 +47,6 @@ export class AuditlogsListComponent implements OnInit {
                private auditlogsService: AuditlogsService,
                private router: Router,
                private route: ActivatedRoute) { }
-
-
-  get logTypes() {
-    return LogType;
-  }
-
-  get decisionType() {
-    return Decision;
-  }
 
   ngOnInit() {
     const queryParams = this.route.snapshot.queryParams;
@@ -163,6 +163,10 @@ export class AuditlogsListComponent implements OnInit {
     this.getLogs();
   }
 
+  getDisplayName() {
+    return this.displayName ? `Auditlogs of ${this.displayName}` : 'Auditlogs';
+  }
+
   private updateFilters(filters: string) {
     filters.split('AND').map(filter => {
       if (filter.indexOf('type=') !== -1) {
@@ -182,9 +186,5 @@ export class AuditlogsListComponent implements OnInit {
         this.decision.updateValueAndValidity();
       }
     });
-  }
-
-  private getDisplayName() {
-    return this.displayName ? `Auditlogs of ${this.displayName}` : 'Auditlogs';
   }
 }
