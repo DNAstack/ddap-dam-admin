@@ -29,6 +29,8 @@ export class AuditlogsListComponent implements OnInit {
   searchTextValues: string[] = [];
   filter: string;
   disableSearchText: boolean;
+  userId: string;
+  displayName: string;
   readonly columnsToDisplay: string[] = ['auditlogId', 'type', 'time', 'decision', 'resourceName'];
   readonly separatorCodes: number[] = [ENTER];
 
@@ -48,8 +50,10 @@ export class AuditlogsListComponent implements OnInit {
 
   ngOnInit() {
     const queryParams = this.route.snapshot.queryParams;
+    this.userId = this.route.snapshot.params.entityId;
     if (Object.keys(queryParams).length) {
-      const { pageSize, filter } = queryParams;
+      const { pageSize, filter, displayName } = queryParams;
+      this.displayName = displayName;
       this.filter = filter || '';
       if (pageSize) {
         this.pageSize.patchValue(pageSize);
@@ -58,30 +62,20 @@ export class AuditlogsListComponent implements OnInit {
     } else {
       this.filter = encodeURIComponent(this.getFilters());
     }
-    this.identityStore.state$.pipe(
-      map((identity: Identity) => {
+    this.getDisplayName();
+    if (!this.userId || !this.userId.length) {
+      this.identityStore.state$.subscribe((identity: Identity) => {
         if (!identity) {
           return;
         }
         const {account} = identity;
         this.account = account;
-        return account;
-      }),
-      mergeMap((account) => {
-        const pageSize = this.pageSize.value;
-        this.router.navigate(
-          [],
-          {
-            relativeTo: this.route,
-            queryParams: { pageSize, filter: this.filter },
-            queryParamsHandling: 'merge',
-          }
-        );
-        return this.auditlogsService.getLogs(account['sub'], pageSize, this.filter);
-      })
-    ).subscribe(result => {
-      this.auditLogs$ = this.formatTableData(result['auditLogs']);
-    });
+        this.userId = account['sub'];
+        this.getLogs();
+      });
+    } else {
+      this.getLogs();
+    }
   }
 
   getFilters(): string {
@@ -117,7 +111,7 @@ export class AuditlogsListComponent implements OnInit {
         queryParamsHandling: 'merge',
       }
     );
-    this.auditlogsService.getLogs(this.account['sub'], pageSize, this.filter)
+    this.auditlogsService.getLogs(this.userId, pageSize, this.filter)
       .subscribe(result => this.auditLogs$ = this.formatTableData(result['auditLogs']));
   }
 
@@ -188,5 +182,9 @@ export class AuditlogsListComponent implements OnInit {
         this.decision.updateValueAndValidity();
       }
     });
+  }
+
+  private getDisplayName() {
+    return this.displayName ? `Auditlogs of ${this.displayName}` : 'Auditlogs';
   }
 }

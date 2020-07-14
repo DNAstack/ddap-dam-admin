@@ -3,6 +3,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { DdapFormModule } from 'ddap-common-lib';
 
+import { AuditlogsModule } from '../../account/auditlogs/auditlogs.module';
 import { AdminSharedModule } from '../shared/shared.module';
 
 import { UserDetailComponent } from './user-detail/user-detail.component';
@@ -21,6 +22,7 @@ import { UsersRoutingModule } from './users-routing.module';
     DdapFormModule,
     MatRadioModule,
     MatDialogModule,
+    AuditlogsModule,
   ],
 })
 export class UsersModule {
