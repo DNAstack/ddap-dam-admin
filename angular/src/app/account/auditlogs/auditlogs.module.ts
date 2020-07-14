@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { MenuModule } from 'ddap-common-lib';
 
 import { DamRepositorySharedModule } from '../../admin/dam-repository/shared/shared.module';
@@ -18,6 +19,7 @@ import { AuditlogsRoutingModule } from './auditlogs-routing.module';
     AuditlogsRoutingModule,
     MenuModule,
     MatPaginatorModule,
+    NgJsonEditorModule,
   ],
 })
 

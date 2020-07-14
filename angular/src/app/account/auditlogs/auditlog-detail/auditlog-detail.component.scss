@@ -18,3 +18,10 @@
     width: 80%;
   }
 }
+
+.json-viewer {
+  margin-top: 2rem;
+    .json-menu, .jsoneditor-navigation-bar {
+      display: none;
+    }
+}
