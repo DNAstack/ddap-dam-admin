@@ -13,7 +13,7 @@
              [attr.data-se]="logDetail.key">
           {{logDetail.value}}
         </div>
-        <div class="log-row--value" *ngIf="isJson(logDetail.value)">
+        <div class="log-row--value" *ngIf="logDetail.key === 'reason' && isJson(logDetail.value)">
           <json-editor [options]="editorOptions"
                        [data]="jsonData"></json-editor>
         </div>
