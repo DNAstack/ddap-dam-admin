@@ -1,3 +1,8 @@
 @import '~ddap-common-lib/styles/modules/colors';
 
-
+.token--subject {
+  font-size: 0.8rem;
+  span {
+    color: $color-dark-grey;
+  }
+}
