@@ -6,6 +6,7 @@
     <ddaplib-menu-profile [showSignIn]="!account" [loginPath]="loginPath">
       <ng-container *ngIf="account">
         <button class="credentials-username"
+                (click)="logout()"
                 mat-menu-item
                 data-se="nav-account">
           <img [src]="account.profile?.picture || '/assets/images/placeholder_identity.png'"
@@ -15,8 +16,7 @@
               {{ account.profile?.name || 'DAM User' }}
             </span>
             <span class="account-info-sublabel"
-                  data-se="nav-logout"
-              (click)="logout()">Log Out</span>
+                  data-se="nav-logout">Log Out</span>
           </span>
         </button>
       </ng-container>
