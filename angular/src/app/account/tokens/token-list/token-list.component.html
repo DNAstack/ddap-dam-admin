@@ -9,8 +9,13 @@
     <div class="table-container mat-elevation-z1">
       <table mat-table [dataSource]="tokensResponse.tokens"
              class="table--base">
+        <!-- Issued At Definition -->
+        <ng-container matColumnDef="issuedAt" sticky>
+          <th mat-header-cell *matHeaderCellDef>Issued At</th>
+          <td mat-cell *matCellDef="let token">{{ formatTime(token['iat']) }}</td>
+        </ng-container>
         <!-- Name Definition -->
-        <ng-container matColumnDef="name" sticky>
+        <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let model"
               data-se="entity-title">
@@ -43,11 +48,6 @@
             </span>
             </ng-container>
           </td>
-        </ng-container>
-        <!-- Issued At Definition -->
-        <ng-container matColumnDef="issuedAt">
-          <th mat-header-cell *matHeaderCellDef>Issued At</th>
-          <td mat-cell *matCellDef="let token">{{ token['iat'] }}</td>
         </ng-container>
         <!-- Client Definition -->
         <ng-container matColumnDef="client">
