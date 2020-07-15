@@ -74,7 +74,7 @@ export class LayoutComponent implements OnInit {
   logout() {
     this.identityService.invalidateAccessTokens()
       .subscribe(() => {
-        window.location.href = `/`;
+        window.location.href = `${this.loginPath}`;
       });
   }
 
