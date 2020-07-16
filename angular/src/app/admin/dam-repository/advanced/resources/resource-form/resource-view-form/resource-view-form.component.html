@@ -70,6 +70,11 @@
                     data-se="inp-view-description"
                     required>
           </textarea>
+          <mat-icon matSuffix
+                    matTooltip="This field is a human-readable description of a view, which is a particular data medium
+                    and mechanism of access (example: VCF files in a GCS bucket).">
+            help_outline
+          </mat-icon>
           <mat-error *ngIf="viewForm.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
           <mat-error *ngIf="viewForm.get('ui.description') as control">
             <ng-container *ngIf="control.invalid">

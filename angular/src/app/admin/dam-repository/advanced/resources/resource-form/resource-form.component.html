@@ -53,6 +53,12 @@
                     data-se="inp-description"
                     required>
           </textarea>
+          <mat-icon matSuffix
+                    matTooltip="This field is a human-readable description of a resource, and is the first description
+                    users see before requesting access to data. Resources are collections of data that are typically
+                    from the same study or share similar access policies and consent rules.">
+            help_outline
+          </mat-icon>
           <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
           <mat-error *ngIf="form.get('ui.description') as control">
             <ng-container *ngIf="control.invalid">
