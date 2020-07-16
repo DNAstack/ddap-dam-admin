@@ -37,4 +37,8 @@
       </ul>
     </li>
   </ul>
+  <p *ngIf="!personas || !personas.length">
+    There are no personas configured. You can create personas in the “Test Personas” tab to generate test cases
+    for your resource policies.
+  </p>
 </form>
