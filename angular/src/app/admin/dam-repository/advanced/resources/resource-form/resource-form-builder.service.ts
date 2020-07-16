@@ -21,7 +21,7 @@ export class ResourceFormBuilder {
   buildForm(resource?: EntityModel): FormGroup {
     return this.formBuilder.group({
       id: [_get(resource, 'name'), [Validators.pattern(nameConstraintPattern)]],
-      maxTokenTtl: [_get(resource, 'maxTokenTtl')],
+      maxTokenTtl: [_get(resource, 'dto.maxTokenTtl')],
       views: this.buildViewsForm(_get(resource, 'dto.views')),
       ui: this.formBuilder.group({
         label: [_get(resource, 'dto.ui.label'), [Validators.required]],
