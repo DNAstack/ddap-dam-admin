@@ -91,7 +91,7 @@
         <th *matHeaderCellDef mat-header-cell> Time </th>
         <td *matCellDef="let log"
             mat-cell>
-          {{log['time']}}
+          {{ formatTime(log['time']) }}
         </td>
       </ng-container>
       <ng-container matColumnDef="resourceName">

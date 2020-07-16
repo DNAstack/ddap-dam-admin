@@ -167,6 +167,10 @@ export class AuditlogsListComponent implements OnInit {
     return this.displayName ? `Auditlogs of ${this.displayName}` : 'Auditlogs';
   }
 
+  formatTime(timeString: string): Date {
+    return new Date(timeString);
+  }
+
   private updateFilters(filters: string) {
     filters.split('AND').map(filter => {
       if (filter.indexOf('type=') !== -1) {
