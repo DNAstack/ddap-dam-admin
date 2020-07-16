@@ -90,6 +90,10 @@ export class ResourceFormComponent implements OnInit, Form {
     return realNameAssignedNameMap;
   }
 
+  isAnyOfControlsInvalid(paths: string[]): boolean {
+    return paths.some((path) => !this.form.get(path) || this.form.get(path).invalid);
+  }
+
   private getViewsModel(views): object {
     const alteredViews = {};
     if (views) {
@@ -140,5 +144,4 @@ export class ResourceFormComponent implements OnInit, Form {
 
     return roles;
   }
-
 }

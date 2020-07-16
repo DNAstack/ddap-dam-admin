@@ -1,3 +1,4 @@
+@import '~ddap-common-lib/styles/modules/colors';
 .ddap-form {
   h4 {
     display: flex;
@@ -17,6 +18,7 @@
 
   .invalid-warning {
     margin-right: 0;
+    color: $failure-color;
   }
 
   mat-icon {
