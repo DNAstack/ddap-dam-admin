@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as dayjs from 'dayjs';
 import * as utc from 'dayjs/plugin/utc';
 import ListConsentsResponse = consents.v1.ListConsentsResponse;
@@ -20,30 +21,39 @@ export class ConsentListComponent implements OnInit {
   readonly dayjs: Function = dayjs;
 
   consents$: Observable<ListConsentsResponse>;
+  displayName: string;
+  userId: string;
 
   private readonly refreshConsents$ = new BehaviorSubject<ListConsentsResponse>(undefined);
 
   constructor( private consentsService: ConsentsService,
-               private userService: UserService) {
+               private userService: UserService,
+               private route: ActivatedRoute) {
     dayjs.extend(utc);
   }
 
   ngOnInit() {
-    this.consents$ = this.userService.getLoggedInUser()
-      .pipe(
-        flatMap((user) => {
-          return this.refreshConsents$.pipe(
-            switchMap(() => this.consentsService.getConsents(user.id, { pageSize: 20 }))
-          );
-        })
-      );
+    this.userId = this.route.snapshot.params.entityId;
+    const { displayName } = this.route.snapshot.queryParams;
+    this.displayName = displayName;
+    if (!this.userId || !this.userId.length) {
+      this.userService.getLoggedInUser().subscribe(user => {
+        this.userId = user.id;
+        this.getConsents();
+      });
+    } else {
+      this.getConsents();
+    }
+  }
+
+  getConsents() {
+    this.consents$ = this.refreshConsents$.pipe(
+      switchMap(() => this.consentsService.getConsents(this.userId, { pageSize: 20 }))
+    );
   }
 
   revokeConsent(consentId: string): void {
-    this.userService.getLoggedInUser()
-      .pipe(
-        flatMap((user) => this.consentsService.revokeConsent(user.id, consentId))
-      )
+    this.consentsService.revokeConsent(this.userId, consentId)
       .subscribe(() => this.refreshConsents$.next(undefined));
   }
 
@@ -54,5 +64,9 @@ export class ConsentListComponent implements OnInit {
       return name;
     }
     return name.substring(name.lastIndexOf('/') + 1);
+  }
+
+  getDisplayName() {
+    return this.displayName ? `Consents of ${this.displayName}` : 'Consents';
   }
 }

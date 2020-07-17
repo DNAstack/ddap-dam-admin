@@ -4,6 +4,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { DdapFormModule } from 'ddap-common-lib';
 
 import { AuditlogsModule } from '../../account/auditlogs/auditlogs.module';
+import { ConsentsModule } from '../../account/consents/consents.module';
+import { TokensModule } from '../../account/tokens/tokens.module';
 import { AdminSharedModule } from '../shared/shared.module';
 
 import { UserDetailComponent } from './user-detail/user-detail.component';
@@ -23,6 +25,8 @@ import { UsersRoutingModule } from './users-routing.module';
     MatRadioModule,
     MatDialogModule,
     AuditlogsModule,
+    TokensModule,
+    ConsentsModule,
   ],
 })
 export class UsersModule {

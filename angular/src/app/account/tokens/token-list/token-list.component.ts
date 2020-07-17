@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { flatMap, switchMap, tap } from 'rxjs/operators';
 
@@ -21,40 +22,49 @@ export class TokenListComponent implements OnInit {
 
   tokens$: Observable<ListTokensResponse>;
   subject: string;
+  userId: string;
+  displayName: string;
 
   private readonly refreshTokens$ = new BehaviorSubject<ListTokensResponse>(undefined);
 
   constructor(
     private tokenService: TokensService,
-    private identityService: IdentityService
+    private identityService: IdentityService,
+    private route: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
-    this.tokens$ = this.identityService.getIdentity()
-      .pipe(
-        flatMap((identity: Identity) => {
-          return this.refreshTokens$.pipe(
-            switchMap(() => this.tokenService.getTokens(identity.account.sub)),
-            // NOTE: 'resources' column is experimental feature
-            // Hide 'resources' column if it is not provided in response
-            tap((tokensResponse: ListTokensResponse) => {
-              const hideResourcesColumn = tokensResponse.tokens.every((token) => !token.resources);
-              this.subject = tokensResponse.tokens.length ? tokensResponse.tokens[0]['sub'] : '';
-              if (hideResourcesColumn) {
-                this.displayedColumns.splice(this.displayedColumns.indexOf('resources'), 1);
-              }
-            })
-          );
-        })
-      );
+    this.userId = this.route.snapshot.params.entityId;
+    const { displayName } = this.route.snapshot.queryParams;
+    this.displayName = displayName;
+    if (!this.userId || !this.userId.length) {
+      this.identityService.getIdentity().subscribe((identity: Identity) => {
+        this.userId = identity.account.sub;
+        this.getTokens();
+      });
+    } else {
+      this.getTokens();
+    }
+  }
+
+  getTokens() {
+    this.tokens$ = this.refreshTokens$.pipe(
+      switchMap(() => this.tokenService.getTokens(this.userId)),
+      // NOTE: 'resources' column is experimental feature
+      // Hide 'resources' column if it is not provided in response
+      tap((tokensResponse: ListTokensResponse) => {
+        const hideResourcesColumn = tokensResponse.tokens.every((token) => !token.resources);
+        this.subject = tokensResponse.tokens.length ? tokensResponse.tokens[0]['sub'] : '';
+        if (hideResourcesColumn) {
+          this.displayedColumns.splice(this.displayedColumns.indexOf('resources'), 1);
+        }
+      })
+    );
   }
 
   revokeToken(tokenId: string) {
-    this.identityService.getIdentity()
-      .pipe(
-        flatMap((identity: Identity) => this.tokenService.revokeToken(identity.account.sub, tokenId))
-      )
+    this.tokenService.revokeToken(this.userId, tokenId)
       .subscribe(() => this.refreshTokens$.next(undefined));
   }
 
@@ -72,6 +82,10 @@ export class TokenListComponent implements OnInit {
       return new Date(parseInt(timeString, 10) * 1000).toString();
     }
     return timeString;
+  }
+
+  getDisplayName() {
+    return this.displayName ? `Sessions of ${this.displayName}` : 'Sessions';
   }
 
 }

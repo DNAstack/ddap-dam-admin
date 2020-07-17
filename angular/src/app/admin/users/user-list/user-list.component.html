@@ -104,6 +104,16 @@
             Auditlogs
           </button>
           <button mat-menu-item
+                  (click)="viewSessions(user)"
+                  data-se="btn-auditlog">
+            Sessions
+          </button>
+          <button mat-menu-item
+                  (click)="viewConsents(user)"
+                  data-se="btn-auditlog">
+            Consents
+          </button>
+          <button mat-menu-item
                   class="color--warn"
                   data-se="btn-close-user-account"
                   (click)="closeAccount(user)">
