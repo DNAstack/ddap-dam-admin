@@ -9,13 +9,20 @@ import IViewRole = dam.v1.IViewRole;
 import IViewPolicy = dam.v1.ViewRole.IViewPolicy;
 import IView = dam.v1.IView;
 import IItem = dam.v1.View.IItem;
+import { AccessPoliciesStore } from '../../access-policies/access-policies.store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ResourceFormBuilder {
+  policies: EntityModel[];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private accessPoliciesStore: AccessPoliciesStore) {
+    this.accessPoliciesStore.getAsList()
+      .subscribe((policies) => {
+        this.policies = policies;
+      });
   }
 
   buildForm(resource?: EntityModel): FormGroup {
@@ -99,7 +106,7 @@ export class ResourceFormBuilder {
   buildPolicyForm(policy?: IViewPolicy): FormGroup {
     return this.formBuilder.group({
       name: [_get(policy, 'name'), [Validators.required]],
-      args: this.buildVariablesForm(_get(policy, 'args'), [Validators.required]),
+      args: this.buildPolicyVariablesForm(policy),
     });
   }
 
@@ -114,6 +121,27 @@ export class ResourceFormBuilder {
           } else {
             variablesForm[variableKey] = [variableValue, validators];
           }
+        });
+    }
+    return this.formBuilder.group(variablesForm);
+  }
+
+  buildPolicyVariablesForm(selectedPolicy?: IViewPolicy): FormGroup {
+    const variablesForm = {};
+    if (selectedPolicy) {
+      const policyDef = this.policies.find(policy => policy.name === selectedPolicy.name);
+      const variables = _get(selectedPolicy, 'args');
+      const { variableDefinitions } = policyDef.dto;
+      Object.entries(variables)
+        .forEach(([variableKey, variableValue]) => {
+          const validators = [];
+          if (variableDefinitions[variableKey]['regexp']) {
+            validators.push(Validators.pattern(variableDefinitions[variableKey]['regexp']));
+          }
+          if (!variableDefinitions[variableKey]['optional']) {
+            validators.push(Validators.required);
+          }
+          variablesForm[variableKey] = [variableValue, validators];
         });
     }
     return this.formBuilder.group(variablesForm);

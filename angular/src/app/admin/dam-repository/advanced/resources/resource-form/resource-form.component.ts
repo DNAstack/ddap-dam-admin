@@ -142,6 +142,10 @@ export class ResourceFormComponent implements OnInit, Form {
       });
     emptyRoles.forEach((role) => delete roles[role]);
 
+    Object.entries(roles)
+      .map(([_, value]: any) => {
+        value.policies = this.sanitizeItems(value.policies);
+      });
     return roles;
   }
 }

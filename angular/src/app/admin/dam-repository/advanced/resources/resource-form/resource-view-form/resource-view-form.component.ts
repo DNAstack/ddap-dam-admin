@@ -175,6 +175,16 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
     return paths.some((path) => !this.viewForm.get(path) || this.viewForm.get(path).invalid);
   }
 
+  isSplitPattern(policyVariable: string, policyName: string): boolean {
+    const policyDefinition: EntityModel = this.policies.find((policy) => policy.name === policyName);
+    if (policyDefinition) {
+      const { variableDefinitions } = policyDefinition.dto;
+      return variableDefinitions[policyVariable] && variableDefinitions[policyVariable].type
+        ? variableDefinitions[policyVariable].type === 'split_pattern' : false;
+    }
+    return false;
+  }
+
   private addMissingVariablesToFormFromTargetAdapterVariables() {
     Object.entries(this.targetAdapterVariables)
       .forEach(([variableId, variableFormat]) => {
@@ -200,5 +210,4 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
       });
     this.items.push(this.resourceFormBuilder.buildItemForm(Item.create({ args })));
   }
-
 }

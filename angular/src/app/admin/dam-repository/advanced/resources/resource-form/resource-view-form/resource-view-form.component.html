@@ -304,18 +304,36 @@
                         </h4>
                         <div class="row"
                              *ngFor="let policyVariable of getPolicyVariables(policyVariables)">
-                          <mat-form-field class="col">
-                            <input matInput
-                                   required
-                                   [placeholder]="policyVariable"
-                                   [formControlName]="policyVariable"
-                                   [attr.data-se]="'inp-' + role.key + '-policy-' + policyControl.get('name').value + '-variable-' + policyVariable">
-                            <mat-error *ngIf="policyControl.get('args') as control">
-                              <ng-container *ngIf="control.invalid">
-                                {{ control.errors?.serverError }}
-                              </ng-container>
-                            </mat-error>
-                          </mat-form-field>
+                          <ng-container *ngIf="!isSplitPattern(policyVariable, policyControl.get('name').value); else showSplitPatternField">
+                            <mat-form-field class="col">
+                              <input matInput
+                                     [placeholder]="policyVariable"
+                                     [formControlName]="policyVariable"
+                                     [attr.data-se]="'inp-' + role.key + '-policy-' + policyControl.get('name').value + '-variable-' + policyVariable">
+                              <mat-error *ngIf="policyControl.get('args.' + policyVariable) as control">
+                                <ng-container *ngIf="control.invalid">
+                                  {{ control.errors?.serverError || ('Enter a valid ' + policyVariable)}}
+                                </ng-container>
+                              </mat-error>
+                            </mat-form-field>
+                          </ng-container>
+                          <ng-template #showSplitPatternField>
+                            <div class="col variable-tag-input-container">
+                              <tag-input [formControlName]="policyVariable"
+                                         [secondaryPlaceholder]="policyVariable"
+                                         [placeholder]="'+' + policyVariable"
+                                         editable="true"
+                                         inputClass="variable-tag-input"
+                                         [attr.data-se]="'inp-' + role.key + '-policy-' + policyControl.get('name').value + '-variable-' + policyVariable"
+                                         modelAsStrings="true">
+                              </tag-input>
+                              <mat-error *ngIf="policyControl.get('args.' + policyVariable) as control">
+                                <ng-container *ngIf="control.invalid">
+                                  {{ control.errors?.serverError || ('Enter a valid '+ policyVariable)}}
+                                </ng-container>
+                              </mat-error>
+                            </div>
+                          </ng-template>
                         </div>
                       </div>
                     </ng-container>
