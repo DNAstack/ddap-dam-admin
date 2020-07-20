@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
-import { DamConfigEntityDetailComponentBase } from '../../../shared/dam/dam-config-entity-detail-component.base';
+import { DamConfigEntityDetailComponentBaseDirective } from '../../../shared/dam/dam-config-entity-detail-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { ClaimDefinitionFormComponent } from '../claim-definition-form/claim-definition-form.component';
@@ -16,7 +16,7 @@ import { ClaimDefinitionsStore } from '../claim-definitions.store';
   styleUrls: ['./claim-definition-detail.component.scss'],
   providers: [FormValidationService],
 })
-export class ClaimDefinitionDetailComponent extends DamConfigEntityDetailComponentBase<ClaimDefinitionsStore> implements OnInit {
+export class ClaimDefinitionDetailComponent extends DamConfigEntityDetailComponentBaseDirective<ClaimDefinitionsStore> implements OnInit {
 
   @ViewChild(ClaimDefinitionFormComponent)
   claimDefinitionForm: ClaimDefinitionFormComponent;

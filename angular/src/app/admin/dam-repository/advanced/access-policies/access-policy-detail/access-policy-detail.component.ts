@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigModificationModel, EntityModel, FormValidationService } from 'ddap-common-lib';
 
-import { DamConfigEntityDetailComponentBase } from '../../../shared/dam/dam-config-entity-detail-component.base';
+import { DamConfigEntityDetailComponentBaseDirective } from '../../../shared/dam/dam-config-entity-detail-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { AccessPolicyService } from '../access-policies.service';
@@ -14,7 +14,7 @@ import { AccessPolicyFormComponent } from '../access-policy-form/access-policy-f
   templateUrl: './access-policy-detail.component.html',
   styleUrls: ['./access-policy-detail.component.scss'],
 })
-export class AccessPolicyDetailComponent extends DamConfigEntityDetailComponentBase<AccessPoliciesStore> {
+export class AccessPolicyDetailComponent extends DamConfigEntityDetailComponentBaseDirective<AccessPoliciesStore> {
 
   @ViewChild(AccessPolicyFormComponent)
   accessPolicyForm: AccessPolicyFormComponent;

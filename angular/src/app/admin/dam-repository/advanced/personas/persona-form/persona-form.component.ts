@@ -3,9 +3,8 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import { Form, isExpanded } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 import _get from 'lodash.get';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { Subscription } from 'rxjs';
-import { EMPTY } from 'rxjs/internal/observable/empty';
 import { catchError, debounceTime, map, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { common } from '../../../../../shared/proto/dam-service';
@@ -206,7 +205,7 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
       catchError((error) => {
         this.accessForm.validateAccessFields(personaId, error);
         this.displayError(error);
-        return EMPTY;
+        return of();
       }));
   }
 

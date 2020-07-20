@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineForms, FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
-import { DamConfigEntityDetailComponentBase } from '../../../shared/dam/dam-config-entity-detail-component.base';
+import { DamConfigEntityDetailComponentBaseDirective } from '../../../shared/dam/dam-config-entity-detail-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { ResourceAccessComponent } from '../resource-access/resource-access.component';
@@ -17,7 +17,7 @@ import { ResourcesStore } from '../resources.store';
   styleUrls: ['./resource-detail.component.scss'],
   providers: [FormValidationService],
 })
-export class ResourceDetailComponent extends DamConfigEntityDetailComponentBase<ResourcesStore> implements OnInit {
+export class ResourceDetailComponent extends DamConfigEntityDetailComponentBaseDirective<ResourcesStore> implements OnInit {
 
   @ViewChild(ResourceFormComponent)
   resourceForm: ResourceFormComponent;

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
-import { DamConfigEntityDetailComponentBase } from '../../../shared/dam/dam-config-entity-detail-component.base';
+import { DamConfigEntityDetailComponentBaseDirective } from '../../../shared/dam/dam-config-entity-detail-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { TrustedSourcesFormComponent } from '../trusted-sources-form/trusted-sources-form.component';
@@ -16,7 +16,7 @@ import { TrustedSourcesStore } from '../trusted-sources.store';
   styleUrls: ['./trusted-sources-detail.component.scss'],
   providers: [FormValidationService],
 })
-export class TrustedSourcesDetailComponent extends DamConfigEntityDetailComponentBase<TrustedSourcesStore> implements OnInit {
+export class TrustedSourcesDetailComponent extends DamConfigEntityDetailComponentBaseDirective<TrustedSourcesStore> implements OnInit {
 
   @ViewChild(TrustedSourcesFormComponent)
   trustedSourcesForm: TrustedSourcesFormComponent;

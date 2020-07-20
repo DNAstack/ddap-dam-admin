@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
-import { DamConfigEntityDetailComponentBase } from '../../../shared/dam/dam-config-entity-detail-component.base';
+import {
+  DamConfigEntityDetailComponentBaseDirective
+} from '../../../shared/dam/dam-config-entity-detail-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { ServiceDefinitionFormComponent } from '../service-definition-form/service-definition-form.component';
@@ -15,7 +17,9 @@ import { ServiceDefinitionsStore } from '../service-definitions.store';
   templateUrl: './service-definition-detail.component.html',
   styleUrls: ['./service-definition-detail.component.scss'],
 })
-export class ServiceDefinitionDetailComponent extends DamConfigEntityDetailComponentBase<ServiceDefinitionsStore> implements OnInit {
+export class ServiceDefinitionDetailComponent
+  extends DamConfigEntityDetailComponentBaseDirective<ServiceDefinitionsStore>
+  implements OnInit {
 
   @ViewChild(ServiceDefinitionFormComponent)
   serviceDefinitionForm: ServiceDefinitionFormComponent;
