@@ -130,7 +130,7 @@ export class ResourceFormBuilder {
     const variablesForm = {};
     if (selectedPolicy) {
       const policyDef = this.policies.find(policy => policy.name === selectedPolicy.name);
-      const variables = _get(selectedPolicy, 'args');
+      const variables = _get(selectedPolicy, 'args', {});
       const { variableDefinitions } = policyDef.dto;
       Object.entries(variables)
         .forEach(([variableKey, variableValue]) => {
