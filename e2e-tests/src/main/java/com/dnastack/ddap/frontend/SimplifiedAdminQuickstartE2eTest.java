@@ -20,7 +20,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateGCSResource();
 
         String collection = "test-gcs-cag-read";
-        adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
+        adminManagePage.fillField(DdapBy.se("inp-display-name"), collection);
         adminManagePage.fillField(DdapBy.se("inp-variable-bucket"), "test");
         adminManagePage.fillField(DdapBy.se("inp-variable-project"), "test");
         adminManagePage.fillField(DdapBy.se("inp-access-policy-value"), "http://test.dnastack.com");
@@ -38,7 +38,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateGCSResource();
 
         String collection = "test-gcs-rs-read";
-        adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
+        adminManagePage.fillField(DdapBy.se("inp-display-name"), collection);
         adminManagePage.fillField(DdapBy.se("inp-variable-bucket"), "test");
         adminManagePage.fillField(DdapBy.se("inp-variable-project"), "test");
         adminManagePage.fillField(DdapBy.se("inp-access-policy-value"), "http://test.dnastack.com");
@@ -58,7 +58,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateGCSResource();
 
         String collection = "test-gcs-rs-write";
-        adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
+        adminManagePage.fillField(DdapBy.se("inp-display-name"), collection);
         adminManagePage.fillField(DdapBy.se("inp-variable-bucket"), "test");
         adminManagePage.fillField(DdapBy.se("inp-variable-project"), "test");
         adminManagePage.fillField(DdapBy.se("inp-access-policy-value"), "http://test.dnastack.com");
@@ -78,7 +78,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateBigQueryResource();
 
         String collection = "test-bigquery-cag-read";
-        adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
+        adminManagePage.fillField(DdapBy.se("inp-display-name"), collection);
         adminManagePage.fillField(DdapBy.se("inp-variable-project"), "test");
         adminManagePage.fillField(DdapBy.se("inp-access-policy-value"), "http://test.dnastack.com");
 
@@ -95,7 +95,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateBeaconResource();
 
         String collection = "test-beacon-cag-read";
-        adminManagePage.fillField(DdapBy.se("inp-collection"), collection);
+        adminManagePage.fillField(DdapBy.se("inp-display-name"), collection);
         adminManagePage.fillField(DdapBy.se("inp-variable-aud"), "http://test.dnastack.com");
         adminManagePage.fillField(DdapBy.se("inp-variable-url"), "http://test.beacon.dnastack.com");
         adminManagePage.fillField(DdapBy.se("inp-access-policy-value"), "http://test.dnastack.com");

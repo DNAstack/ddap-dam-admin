@@ -21,36 +21,40 @@ export class ResourceBuilderService {
   }
 
   createResource(id: string,
+                 displayName: string,
                  serviceTemplate: string,
                  variables: object,
                  accessLevel: AccessLevel,
                  accessPolicyId: string,
                  accessPolicyValue: string): Observable<any> {
     const resourceModel: EntityModel = this.buildResource(
-      id, serviceTemplate, variables, accessLevel, accessPolicyId, accessPolicyValue
+      id, displayName, serviceTemplate, variables, accessLevel, accessPolicyId, accessPolicyValue
     );
     const resource = new ConfigModificationModel(resourceModel.dto, {});
     return this.resourceService.save(resourceModel.name, resource);
   }
 
-  private buildResource(id: string,
-                        serviceTemplate: string,
-                        variables: object,
-                        accessLevel: AccessLevel,
-                        accessPolicyId: string,
-                        accessPolicyValue: string): EntityModel {
+  private buildResource(
+    id: string,
+    displayName: string,
+    serviceTemplate: string,
+    variables: object,
+    accessLevel: AccessLevel,
+    accessPolicyId: string,
+    accessPolicyValue: string
+  ): EntityModel {
     const viewId = `view-${id}`;
     const roleId = getRoleName(accessLevel, serviceTemplate);
     const accessPolicy = {
       ui: {
-        label: id,
-        description: `Automatically generated resource for collection [${id}]`,
+        label: displayName,
+        description: `Automatically generated resource from Quickstart`,
       },
       views: {
         [viewId]: {
           ui: {
-            label: viewId,
-            description: `Automatically generated view for collection [${id}]`,
+            label: `View for ${displayName}`,
+            description: `Automatically generated view from Quickstart`,
           },
           items: [
             {

@@ -14,7 +14,7 @@ export class AccessFormBuilder {
 
   buildForm(variables: TargetAdapterVariables): FormGroup {
     return this.formBuilder.group({
-      collection: ['', [Validators.pattern(nameConstraintPattern)]],
+      displayName: ['', [Validators.required]],
       variables: this.buildVariablesForm(variables),
       accessPolicyValue: ['', [Validators.required, FormValidators.url]],
     });

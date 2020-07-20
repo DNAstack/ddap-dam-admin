@@ -5,12 +5,10 @@
   <div class="row">
     <mat-form-field class="col">
       <input matInput
-             placeholder="Collection Name"
-             formControlName="collection"
-             data-se="inp-collection"
+             placeholder="Display Name"
+             formControlName="displayName"
+             data-se="inp-display-name"
              required>
-      <mat-hint>Must be unique and alphanumeric</mat-hint>
-      <mat-error *ngIf="form.get('collection').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
     </mat-form-field>
   </div>
 
