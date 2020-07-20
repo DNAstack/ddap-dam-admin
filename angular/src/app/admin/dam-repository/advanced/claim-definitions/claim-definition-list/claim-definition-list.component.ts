@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DamConfigEntityListComponentBase } from '../../../shared/dam/dam-config-entity-list-component.base';
+import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { ClaimDefinitionsStore } from '../claim-definitions.store';
 
@@ -10,7 +10,7 @@ import { ClaimDefinitionsStore } from '../claim-definitions.store';
   templateUrl: './claim-definition-list.component.html',
   styleUrls: ['./claim-definition-list.component.scss'],
 })
-export class ClaimDefinitionListComponent extends DamConfigEntityListComponentBase<ClaimDefinitionsStore> implements OnInit {
+export class ClaimDefinitionListComponent extends DamConfigEntityListComponentBaseDirective<ClaimDefinitionsStore> implements OnInit {
 
   displayedColumns: string[] = ['label', 'description', 'infoUrl', 'moreActions'];
 

@@ -18,7 +18,7 @@ import { QuickstartFormComponent } from '../quickstart-form/quickstart-form.comp
 })
 export class QuickstartManageComponent implements OnInit {
 
-  @ViewChild(QuickstartFormComponent, { static: false })
+  @ViewChild(QuickstartFormComponent)
   quickstartForm: QuickstartFormComponent;
 
   serviceTemplate: string;

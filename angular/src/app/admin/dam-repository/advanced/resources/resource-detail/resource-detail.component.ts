@@ -19,9 +19,9 @@ import { ResourcesStore } from '../resources.store';
 })
 export class ResourceDetailComponent extends DamConfigEntityDetailComponentBase<ResourcesStore> implements OnInit {
 
-  @ViewChild(ResourceFormComponent, { static: false })
+  @ViewChild(ResourceFormComponent)
   resourceForm: ResourceFormComponent;
-  @ViewChild('accessForm', { static: false })
+  @ViewChild('accessForm')
   accessForm: ResourceAccessComponent;
 
   constructor(protected route: ActivatedRoute,

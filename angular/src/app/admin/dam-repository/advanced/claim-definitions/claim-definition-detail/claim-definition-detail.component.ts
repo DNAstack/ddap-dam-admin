@@ -18,7 +18,7 @@ import { ClaimDefinitionsStore } from '../claim-definitions.store';
 })
 export class ClaimDefinitionDetailComponent extends DamConfigEntityDetailComponentBase<ClaimDefinitionsStore> implements OnInit {
 
-  @ViewChild(ClaimDefinitionFormComponent, { static: false })
+  @ViewChild(ClaimDefinitionFormComponent)
   claimDefinitionForm: ClaimDefinitionFormComponent;
 
   constructor(protected route: ActivatedRoute,

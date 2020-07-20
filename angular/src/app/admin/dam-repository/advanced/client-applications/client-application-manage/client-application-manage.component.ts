@@ -16,7 +16,7 @@ import { ClientApplicationService } from '../client-applications.service';
 })
 export class ClientApplicationManageComponent extends DamConfigEntityFormComponentBase {
 
-  @ViewChild(ClientApplicationFormComponent, { static: false })
+  @ViewChild(ClientApplicationFormComponent)
   clientApplicationForm: ClientApplicationFormComponent;
 
   constructor(protected route: ActivatedRoute,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DamConfigEntityListComponentBase } from '../../../shared/dam/dam-config-entity-list-component.base';
+import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { PersonasStore } from '../personas.store';
 
@@ -10,7 +10,7 @@ import { PersonasStore } from '../personas.store';
   templateUrl: './persona-list.component.html',
   styleUrls: ['./persona-list.component.scss'],
 })
-export class PersonaListComponent extends DamConfigEntityListComponentBase<PersonasStore> implements OnInit {
+export class PersonaListComponent extends DamConfigEntityListComponentBaseDirective<PersonasStore> implements OnInit {
 
   displayedColumns: string[] = ['label', 'description', 'standardClaims', 'ga4ghClaims', 'moreActions'];
 

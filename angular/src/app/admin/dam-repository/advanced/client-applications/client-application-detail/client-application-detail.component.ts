@@ -18,7 +18,7 @@ import { ClientApplicationsStore } from '../client-applications.store';
 })
 export class ClientApplicationDetailComponent extends DamConfigEntityDetailComponentBase<ClientApplicationsStore> implements OnInit {
 
-  @ViewChild(ClientApplicationFormComponent, { static: false })
+  @ViewChild(ClientApplicationFormComponent)
   clientApplicationForm: ClientApplicationFormComponent;
 
   constructor(protected route: ActivatedRoute,

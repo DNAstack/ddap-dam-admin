@@ -1,11 +1,12 @@
-import { OnInit } from '@angular/core';
+import { Directive, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 
 import { DamConfigEntityFormComponentBase } from './dam-config-entity-form-component.base';
 import { DamConfigStore } from './dam-config.store';
 
-export class DamConfigEntityManageComponentBase extends DamConfigEntityFormComponentBase implements OnInit {
+@Directive()
+export class DamConfigEntityManageComponentBaseDirective extends DamConfigEntityFormComponentBase implements OnInit {
 
   constructor(protected route: ActivatedRoute,
               protected router: Router,

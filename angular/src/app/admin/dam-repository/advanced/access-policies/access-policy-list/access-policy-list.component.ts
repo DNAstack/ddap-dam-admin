@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DamConfigEntityListComponentBase } from '../../../shared/dam/dam-config-entity-list-component.base';
+import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { AccessPoliciesStore } from '../access-policies.store';
 
@@ -10,7 +10,7 @@ import { AccessPoliciesStore } from '../access-policies.store';
   templateUrl: './access-policy-list.component.html',
   styleUrls: ['./access-policy-list.component.scss'],
 })
-export class AccessPolicyListComponent extends DamConfigEntityListComponentBase<AccessPoliciesStore> implements OnInit {
+export class AccessPolicyListComponent extends DamConfigEntityListComponentBaseDirective<AccessPoliciesStore> implements OnInit {
 
   displayedColumns: string[] = ['label', 'description', 'variableDefinitions', 'conditions', 'infoUrl', 'moreActions'];
 

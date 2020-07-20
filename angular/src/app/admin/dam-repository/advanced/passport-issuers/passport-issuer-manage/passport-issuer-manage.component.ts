@@ -17,7 +17,7 @@ import TrustedIssuer = dam.v1.TrustedIssuer;
 })
 export class PassportIssuerManageComponent extends DamConfigEntityFormComponentBase implements OnInit {
 
-  @ViewChild(PassportIssuerFormComponent, { static: false })
+  @ViewChild(PassportIssuerFormComponent)
   passportIssuerForm: PassportIssuerFormComponent;
 
   passportIssuer: TrustedIssuer;

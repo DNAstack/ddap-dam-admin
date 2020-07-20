@@ -1,4 +1,4 @@
-import { OnDestroy, OnInit } from '@angular/core';
+import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
@@ -9,7 +9,8 @@ import { DamConfigEntityFormComponentBase } from './dam-config-entity-form-compo
 import { DamConfigEntityStore } from './dam-config-entity-store';
 import { DamConfigStore } from './dam-config.store';
 
-export class DamConfigEntityDetailComponentBase<T extends DamConfigEntityStore>
+@Directive()
+export class DamConfigEntityDetailComponentBaseDirective<T extends DamConfigEntityStore>
   extends DamConfigEntityFormComponentBase implements OnInit, OnDestroy {
 
   entity: EntityModel;

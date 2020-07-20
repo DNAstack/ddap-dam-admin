@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DamConfigEntityListComponentBase } from '../../../shared/dam/dam-config-entity-list-component.base';
+import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { TrustedSourcesStore } from '../trusted-sources.store';
 
@@ -10,7 +10,7 @@ import { TrustedSourcesStore } from '../trusted-sources.store';
   templateUrl: './trusted-sources-list.component.html',
   styleUrls: ['./trusted-sources-list.component.scss'],
 })
-export class TrustedSourcesListComponent extends DamConfigEntityListComponentBase<TrustedSourcesStore> implements OnInit {
+export class TrustedSourcesListComponent extends DamConfigEntityListComponentBaseDirective<TrustedSourcesStore> implements OnInit {
 
   displayedColumns: string[] = ['label', 'description', 'sources', 'claims', 'moreActions'];
 

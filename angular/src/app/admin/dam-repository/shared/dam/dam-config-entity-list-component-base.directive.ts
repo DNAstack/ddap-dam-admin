@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { Directive, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EntityModel } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
@@ -8,7 +8,8 @@ import { DamConfigEntityComponentBase } from './dam-config-entity-component.base
 import { DamConfigEntityStore } from './dam-config-entity-store';
 import { DamConfigStore } from './dam-config.store';
 
-export class DamConfigEntityListComponentBase<T extends DamConfigEntityStore>
+@Directive()
+export class DamConfigEntityListComponentBaseDirective<T extends DamConfigEntityStore>
   extends DamConfigEntityComponentBase implements OnInit {
 
   entities$: Observable<EntityModel[]>;

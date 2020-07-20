@@ -21,7 +21,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     return this.route.snapshot.params.entityId;
   }
 
-  @ViewChild(PersonalInfoFormComponent, { static: false })
+  @ViewChild(PersonalInfoFormComponent)
   personalInfoForm: PersonalInfoFormComponent;
 
   entity: IUser;

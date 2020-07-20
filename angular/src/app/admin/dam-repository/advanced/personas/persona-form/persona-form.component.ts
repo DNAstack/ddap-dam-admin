@@ -44,9 +44,9 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
     return this.form.get('resourceAccess') as FormGroup;
   }
 
-  @ViewChild(ConditionFormComponent, { static: false })
+  @ViewChild(ConditionFormComponent)
   conditionForm: ConditionFormComponent;
-  @ViewChild(PersonaAccessFormComponent, { static: false })
+  @ViewChild(PersonaAccessFormComponent)
   accessForm: PersonaAccessFormComponent;
 
   @Input()

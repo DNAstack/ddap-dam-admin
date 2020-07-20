@@ -22,7 +22,7 @@ import { IdentityStore } from './identity.store';
 })
 export class IdentityComponent implements OnInit {
 
-  @ViewChild(PersonalInfoFormComponent, { static: false })
+  @ViewChild(PersonalInfoFormComponent)
   personalInfoForm: PersonalInfoFormComponent;
 
   realm: string;

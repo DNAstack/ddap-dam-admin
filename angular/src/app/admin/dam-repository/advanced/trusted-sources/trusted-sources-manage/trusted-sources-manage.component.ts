@@ -16,7 +16,7 @@ import { TrustedSourcesService } from '../trusted-sources.service';
 })
 export class TrustedSourcesManageComponent extends DamConfigEntityFormComponentBase {
 
-  @ViewChild(TrustedSourcesFormComponent, { static: false })
+  @ViewChild(TrustedSourcesFormComponent)
   trustedSourcesForm: TrustedSourcesFormComponent;
 
   constructor(protected route: ActivatedRoute,

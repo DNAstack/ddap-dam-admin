@@ -23,7 +23,7 @@ import { PassportIssuersStore } from '../passport-issuers.store';
 })
 export class PassportIssuerDetailComponent extends DamConfigEntityDetailComponentBase<PassportIssuersStore> implements OnInit {
 
-  @ViewChild(PassportIssuerFormComponent, { static: false })
+  @ViewChild(PassportIssuerFormComponent)
   passportIssuerForm: PassportIssuerFormComponent;
 
   constructor(protected route: ActivatedRoute,

@@ -18,7 +18,7 @@ import { TrustedSourcesStore } from '../trusted-sources.store';
 })
 export class TrustedSourcesDetailComponent extends DamConfigEntityDetailComponentBase<TrustedSourcesStore> implements OnInit {
 
-  @ViewChild(TrustedSourcesFormComponent, { static: false })
+  @ViewChild(TrustedSourcesFormComponent)
   trustedSourcesForm: TrustedSourcesFormComponent;
 
   constructor(protected route: ActivatedRoute,

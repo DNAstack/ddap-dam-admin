@@ -12,7 +12,7 @@ import { WhitelistsService } from '../whitelists.service';
 })
 export class WhitelistManageComponent {
 
-  @ViewChild(WhitelistFormComponent, { static: false })
+  @ViewChild(WhitelistFormComponent)
   whitelistForm: WhitelistFormComponent;
 
   formErrorMessage: string;

@@ -17,7 +17,7 @@ import { ServiceDefinitionsStore } from '../service-definitions.store';
 })
 export class ServiceDefinitionDetailComponent extends DamConfigEntityDetailComponentBase<ServiceDefinitionsStore> implements OnInit {
 
-  @ViewChild(ServiceDefinitionFormComponent, {static: false})
+  @ViewChild(ServiceDefinitionFormComponent)
   serviceDefinitionForm: ServiceDefinitionFormComponent;
 
   constructor(protected route: ActivatedRoute,

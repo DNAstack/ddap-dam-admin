@@ -16,7 +16,7 @@ import { AccessPolicyFormComponent } from '../access-policy-form/access-policy-f
 })
 export class AccessPolicyDetailComponent extends DamConfigEntityDetailComponentBase<AccessPoliciesStore> {
 
-  @ViewChild(AccessPolicyFormComponent, { static: false })
+  @ViewChild(AccessPolicyFormComponent)
   accessPolicyForm: AccessPolicyFormComponent;
 
   constructor(protected route: ActivatedRoute,

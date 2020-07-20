@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
-import { DamConfigEntityManageComponentBase } from '../../../shared/dam/dam-config-entity-manage-component.base';
+import { DamConfigEntityManageComponentBaseDirective } from '../../../shared/dam/dam-config-entity-manage-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { PersonaFormComponent } from '../persona-form/persona-form.component';
 import { PersonaService } from '../personas.service';
@@ -14,9 +14,9 @@ import { PersonaService } from '../personas.service';
   styleUrls: ['./persona-manage.component.scss'],
   providers: [FormValidationService],
 })
-export class PersonaManageComponent extends DamConfigEntityManageComponentBase {
+export class PersonaManageComponent extends DamConfigEntityManageComponentBaseDirective {
 
-  @ViewChild(PersonaFormComponent, { static: false })
+  @ViewChild(PersonaFormComponent)
   personaForm: PersonaFormComponent;
 
   constructor(protected route: ActivatedRoute,

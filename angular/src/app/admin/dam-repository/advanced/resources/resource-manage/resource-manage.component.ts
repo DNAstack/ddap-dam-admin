@@ -5,7 +5,7 @@ import { combineForms, FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 import { Subject } from 'rxjs';
 
-import { DamConfigEntityManageComponentBase } from '../../../shared/dam/dam-config-entity-manage-component.base';
+import { DamConfigEntityManageComponentBaseDirective } from '../../../shared/dam/dam-config-entity-manage-component-base.directive';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { ResourceAccessComponent } from '../resource-access/resource-access.component';
@@ -18,11 +18,11 @@ import { ResourceService } from '../resources.service';
   styleUrls: ['./resource-manage.component.scss'],
   providers: [FormValidationService],
 })
-export class ResourceManageComponent extends DamConfigEntityManageComponentBase {
+export class ResourceManageComponent extends DamConfigEntityManageComponentBaseDirective {
 
-  @ViewChild(ResourceFormComponent, { static: false })
+  @ViewChild(ResourceFormComponent)
   resourceForm: ResourceFormComponent;
-  @ViewChild('accessForm', { static: false })
+  @ViewChild('accessForm')
   accessForm: ResourceAccessComponent;
 
   private errors: Subject<any> = new Subject();

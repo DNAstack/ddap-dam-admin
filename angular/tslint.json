@@ -141,9 +141,6 @@
     "directive-class-suffix": true,
     "no-unused-css": true,
     "import-destructuring-spacing": true,
-    "no-unused-variable": {
-      "severity": "warning"
-    },
     "trailing-comma": [
       true,
       {

@@ -2,7 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DamConfigEntityListComponentBase } from '../../../shared/dam/dam-config-entity-list-component.base';
+import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { ResourcesStore } from '../resources.store';
 
@@ -18,7 +18,7 @@ import { ResourcesStore } from '../resources.store';
     ]),
   ],
 })
-export class ResourceListComponent extends DamConfigEntityListComponentBase<ResourcesStore> implements OnInit {
+export class ResourceListComponent extends DamConfigEntityListComponentBaseDirective<ResourcesStore> implements OnInit {
 
   expandedRow: string;
   displayedColumns: string[] = ['label', 'description', 'views', 'moreActions'];

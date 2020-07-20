@@ -18,7 +18,7 @@ import { PersonasStore } from '../personas.store';
 })
 export class PersonaDetailComponent extends DamConfigEntityDetailComponentBase<PersonasStore> {
 
-  @ViewChild(PersonaFormComponent, { static: false })
+  @ViewChild(PersonaFormComponent)
   personaForm: PersonaFormComponent;
 
   constructor(protected route: ActivatedRoute,

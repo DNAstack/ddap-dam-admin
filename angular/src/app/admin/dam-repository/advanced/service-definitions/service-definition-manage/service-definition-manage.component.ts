@@ -15,7 +15,7 @@ import { ServiceDefinitionService } from '../service-definitions.service';
 })
 export class ServiceDefinitionManageComponent extends DamConfigEntityFormComponentBase {
 
-  @ViewChild(ServiceDefinitionFormComponent, {static: false})
+  @ViewChild(ServiceDefinitionFormComponent)
   serviceDefinitionForm: ServiceDefinitionFormComponent;
 
   constructor(private serviceDefinitionService: ServiceDefinitionService,

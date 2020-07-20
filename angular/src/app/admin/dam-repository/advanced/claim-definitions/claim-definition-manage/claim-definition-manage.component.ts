@@ -16,7 +16,7 @@ import { ClaimDefinitionService } from '../claim-definitions.service';
 })
 export class ClaimDefinitionManageComponent extends DamConfigEntityFormComponentBase {
 
-  @ViewChild(ClaimDefinitionFormComponent, { static: false })
+  @ViewChild(ClaimDefinitionFormComponent)
   claimDefinitionForm: ClaimDefinitionFormComponent;
 
   constructor(protected route: ActivatedRoute,

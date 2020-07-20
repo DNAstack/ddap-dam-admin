@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DamConfigEntityListComponentBase } from '../../../shared/dam/dam-config-entity-list-component.base';
+import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { ClientApplicationsStore } from '../client-applications.store';
 
@@ -10,7 +10,7 @@ import { ClientApplicationsStore } from '../client-applications.store';
   templateUrl: './client-application-list.component.html',
   styleUrls: ['./client-application-list.component.scss'],
 })
-export class ClientApplicationListComponent extends DamConfigEntityListComponentBase<ClientApplicationsStore> implements OnInit {
+export class ClientApplicationListComponent extends DamConfigEntityListComponentBaseDirective<ClientApplicationsStore> implements OnInit {
 
   displayedColumns: string[] = [
     'label', 'description', 'clientId', 'scopes', 'redirectUris', 'grantTypes', 'responseTypes', 'moreActions',

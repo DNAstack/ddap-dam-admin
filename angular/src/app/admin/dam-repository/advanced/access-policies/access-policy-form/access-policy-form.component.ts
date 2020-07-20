@@ -20,7 +20,7 @@ export class AccessPolicyFormComponent implements OnInit, Form {
     return this.form.get('variableDefinitions') as FormGroup;
   }
 
-  @ViewChild(ConditionFormComponent, { static: false })
+  @ViewChild(ConditionFormComponent)
   conditionForm: ConditionFormComponent;
 
   @Input()

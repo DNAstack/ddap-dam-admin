@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DamConfigEntityListComponentBase } from '../../../shared/dam/dam-config-entity-list-component.base';
+import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import { PassportIssuersStore } from '../passport-issuers.store';
 
@@ -10,7 +10,7 @@ import { PassportIssuersStore } from '../passport-issuers.store';
   templateUrl: './passport-issuer-list.component.html',
   styleUrls: ['./passport-issuer-list.component.scss'],
 })
-export class PassportIssuerListComponent extends DamConfigEntityListComponentBase<PassportIssuersStore> implements OnInit {
+export class PassportIssuerListComponent extends DamConfigEntityListComponentBaseDirective<PassportIssuersStore> implements OnInit {
 
   displayedColumns: string[] = ['label', 'description', 'clientId', 'issuer', 'authUrl', 'tokenUrl', 'moreActions'];
 
