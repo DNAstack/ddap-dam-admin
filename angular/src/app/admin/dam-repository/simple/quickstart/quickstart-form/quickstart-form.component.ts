@@ -25,6 +25,7 @@ export class QuickstartFormComponent implements OnInit, Form {
   form: FormGroup;
   isExpanded: Function = isExpanded;
   variables: TargetAdapterVariables;
+  helpDisplayed = false;
 
   constructor(private accessFormBuilder: AccessFormBuilder,
               private serviceDefinitionService: ServiceDefinitionService) {
