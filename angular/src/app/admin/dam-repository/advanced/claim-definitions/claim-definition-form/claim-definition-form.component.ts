@@ -1,12 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormValidators } from 'ddap-common-lib';
 import { Form } from 'ddap-common-lib';
 import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
+import VisaType = dam.v1.VisaType;
+import { Subscription } from 'rxjs';
 
 import { dam } from '../../../../../shared/proto/dam-service';
-import VisaType = dam.v1.VisaType;
+import { generateInternalName } from '../../../shared/internal-name.util';
 
 @Component({
   selector: 'ddap-claim-definition-form',
@@ -14,12 +16,15 @@ import VisaType = dam.v1.VisaType;
   styleUrls: ['./claim-definition-form.component.scss'],
 
 })
-export class ClaimDefinitionFormComponent implements OnInit, Form {
+export class ClaimDefinitionFormComponent implements OnInit, OnDestroy, Form {
 
+  @Input()
+  internalNameEditable = false;
   @Input()
   claimDefinition?: EntityModel = new EntityModel('', VisaType.create());
 
   form: FormGroup;
+  subscriptions: Subscription[] = [];
 
   constructor(private formBuilder: FormBuilder) {
   }
@@ -27,6 +32,7 @@ export class ClaimDefinitionFormComponent implements OnInit, Form {
   ngOnInit(): void {
     const { ui } = _get(this.claimDefinition, 'dto', {});
 
+    // TODO: move this to claim-definition-form-builder.service
     this.form = this.formBuilder.group({
       id: [this.claimDefinition.name || '', [Validators.pattern(nameConstraintPattern)]],
       ui: this.formBuilder.group({
@@ -35,6 +41,16 @@ export class ClaimDefinitionFormComponent implements OnInit, Form {
         infoUrl: [ui.infoUrl || '', [FormValidators.url]],
       }),
     });
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.form.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.form.get('id').setValue(generateInternalName(displayName));
+        }));
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getModel(): EntityModel {

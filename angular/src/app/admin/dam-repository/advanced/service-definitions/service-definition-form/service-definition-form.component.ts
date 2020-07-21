@@ -1,23 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { alignControlsWithModelDefinitions, EntityModel, isExpanded, removeInternalFields } from 'ddap-common-lib';
+import { Subscription } from 'rxjs';
 import { dam } from 'src/app/shared/proto/dam-service';
 
+import ServiceTemplate = dam.v1.ServiceTemplate;
+import IServiceDescriptor = dam.v1.IServiceDescriptor;
+import { generateInternalName } from '../../../shared/internal-name.util';
 import { TargetAdaptersService } from '../../target-adapters/target-adapters.service';
 import { ServiceDefinitionService } from '../service-definitions.service';
 import { VariablesDialogComponent } from '../variables-dialog/variables-dialog.component';
 
 import { ServiceDefinitionFormBuilder } from './service-definition-form-builder.service';
-import ServiceTemplate = dam.v1.ServiceTemplate;
-import IServiceDescriptor = dam.v1.IServiceDescriptor;
 
 @Component({
   selector: 'ddap-service-definition-form',
   templateUrl: './service-definition-form.component.html',
   styleUrls: ['./service-definition-form.component.scss'],
 })
-export class ServiceDefinitionFormComponent implements OnInit {
+export class ServiceDefinitionFormComponent implements OnInit, OnDestroy {
 
   get interfaces() {
     return this.form.get('interfaces') as FormGroup;
@@ -38,9 +40,12 @@ export class ServiceDefinitionFormComponent implements OnInit {
   }
 
   @Input()
+  internalNameEditable = false;
+  @Input()
   serviceTemplate?: EntityModel = new EntityModel( '' , ServiceTemplate.create());
 
   form: FormGroup;
+  subscriptions: Subscription[] = [];
   isExpanded: Function = isExpanded;
   interfaceCounter = 1;
   roleCounter = 1;
@@ -62,6 +67,16 @@ export class ServiceDefinitionFormComponent implements OnInit {
       });
 
     this.form = this.serviceDefinitionFormBuilder.buildForm(this.serviceTemplate);
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.form.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.form.get('id').setValue(generateInternalName(displayName));
+        }));
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getAllForms(): FormGroup[] {

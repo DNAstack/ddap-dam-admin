@@ -19,8 +19,8 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("inp-id"), "test-persona");
         adminManagePage.fillField(DdapBy.se("inp-label"), "test-persona-name");
+        adminManagePage.fillField(DdapBy.se("inp-id"), "test-persona");
         adminManagePage.fillFieldWithFirstValueFromDropdown(DdapBy.se("inp-iss"));
         adminManagePage.fillField(DdapBy.se("inp-email"), "test-subject@test-ddap.com");
         adminManagePage.fillField(DdapBy.se("inp-picture"), "https://pbs.twimg.com/profile_images/3443048571/ef5062acfce64a7aef1d75b4934fbee6_400x400.png");
@@ -99,8 +99,8 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("inp-id"), "123 invalid name");
         adminManagePage.fillField(DdapBy.se("inp-label"), "test-persona-name");
+        adminManagePage.fillField(DdapBy.se("inp-id"), "123 invalid name");
         adminManagePage.fillField(DdapBy.se("inp-iss"), "test-issuer");
         adminManagePage.fillField(DdapBy.se("inp-email"), "test-subject@test-ddap.com");
 

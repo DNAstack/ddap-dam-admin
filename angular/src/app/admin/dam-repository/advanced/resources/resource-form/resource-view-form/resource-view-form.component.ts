@@ -9,6 +9,7 @@ import Item = dam.v1.View.Item;
 import { debounceTime } from 'rxjs/operators';
 
 import { dam } from '../../../../../../shared/proto/dam-service';
+import { generateInternalName } from '../../../../shared/internal-name.util';
 import { AccessPoliciesStore } from '../../../access-policies/access-policies.store';
 import { ServiceDefinitionService } from '../../../service-definitions/service-definitions.service';
 import { ServiceDefinitionsStore } from '../../../service-definitions/service-definitions.store';
@@ -43,8 +44,11 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   }
 
   @Input()
+  internalNameEditable = false;
+  @Input()
   viewForm: FormGroup;
 
+  subscriptions: Subscription[] = [];
   isExpanded: Function = isExpanded;
   serviceDefinitions: EntityModel[];
   serviceDefinitionStoreSubscription: Subscription;
@@ -74,6 +78,12 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
           this.addMissingRolesToFormFromServiceDefinition();
         }
       });
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.viewForm.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.viewForm.get('id').setValue(generateInternalName(displayName));
+        }));
+    }
 
     this.accessPoliciesStore.getAsList()
       .subscribe((policies) => {
@@ -82,6 +92,7 @@ export class ResourceViewFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.serviceDefinitionStoreSubscription.unsubscribe();
   }
 

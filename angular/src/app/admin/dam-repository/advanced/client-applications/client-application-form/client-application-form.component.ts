@@ -1,19 +1,22 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Form, FormValidators, isExpanded } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
+import { Subscription } from 'rxjs';
 
 import { common } from '../../../../../shared/proto/dam-service';
+import { generateInternalName } from '../../../shared/internal-name.util';
+
+import { ClientApplicationFormBuilder } from './client-application-form-builder.service';
 
 import Client = common.Client;
-import { ClientApplicationFormBuilder } from './client-application-form-builder.service';
 
 @Component({
   selector: 'ddap-client-application-form',
   templateUrl: './client-application-form.component.html',
   styleUrls: ['./client-application-form.component.scss'],
 })
-export class ClientApplicationFormComponent implements OnInit, Form {
+export class ClientApplicationFormComponent implements OnInit, OnDestroy, Form {
 
   get redirectUris() {
     return this.form.get('redirectUris') as FormArray;
@@ -28,9 +31,12 @@ export class ClientApplicationFormComponent implements OnInit, Form {
   }
 
   @Input()
+  internalNameEditable = false;
+  @Input()
   clientApplication?: EntityModel = new EntityModel('', Client.create());
 
   form: FormGroup;
+  subscriptions: Subscription[] = [];
   isExpanded: Function = isExpanded;
 
   constructor(private clientApplicationFormBuilder: ClientApplicationFormBuilder) {
@@ -38,6 +44,16 @@ export class ClientApplicationFormComponent implements OnInit, Form {
 
   ngOnInit(): void {
     this.form = this.clientApplicationFormBuilder.buildForm(this.clientApplication);
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.form.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.form.get('id').setValue(generateInternalName(displayName));
+        }));
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   addRedirectUri(): void {

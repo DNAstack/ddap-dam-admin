@@ -19,8 +19,8 @@ public class AdminPassportIssuersE2eTest extends AbstractAdminFrontendE2eTest {
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("inp-id"), "full-passport-id");
         adminManagePage.fillField(DdapBy.se("inp-label"), "full-passport-issuer");
+        adminManagePage.fillField(DdapBy.se("inp-id"), "full-passport-id");
         adminManagePage.fillField(DdapBy.se("inp-description"), "full-passport-issuer-desc");
 
         adminManagePage.fillField(DdapBy.se("inp-issuer"), "https://dbgap.nlm.nih.gov/aa");

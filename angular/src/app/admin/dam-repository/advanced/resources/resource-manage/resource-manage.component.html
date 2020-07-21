@@ -3,7 +3,8 @@
 
 <ddaplib-main>
   <ddap-resource-form #resourceForm
-                      (formChange)="executeDryRun()">
+                      (formChange)="executeDryRun()"
+                      [internalNameEditable]="true">
     <ddap-resource-access #accessForm
                           [isNewResource]="true"
                           [resource]="resourceForm.getModel()"

@@ -1,16 +1,18 @@
 import {
   Component,
   EventEmitter,
-  Input,
+  Input, OnDestroy,
   OnInit,
-  Output
+  Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Form } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
+import { Subscription } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
 
 import { dam } from '../../../../../shared/proto/dam-service';
+import { generateInternalName } from '../../../shared/internal-name.util';
 
 import { ResourceFormBuilder } from './resource-form-builder.service';
 import { ResourceViewFormComponent } from './resource-view-form/resource-view-form.component';
@@ -23,18 +25,21 @@ import Resource = dam.v1.Resource;
   styleUrls: ['./resource-form.component.scss'],
   entryComponents: [ResourceViewFormComponent],
 })
-export class ResourceFormComponent implements OnInit, Form {
+export class ResourceFormComponent implements OnInit, OnDestroy, Form {
 
   get views(): FormGroup {
     return this.form.get('views') as FormGroup;
   }
 
   @Input()
+  internalNameEditable = false;
+  @Input()
   resource?: EntityModel = new EntityModel('', Resource.create());
   @Output()
   readonly formChange: EventEmitter<any> = new EventEmitter<any>();
 
   form: FormGroup;
+  subscriptions: Subscription[] = [];
   viewIndex = 99;
 
   constructor(private formBuilder: FormBuilder,
@@ -43,11 +48,22 @@ export class ResourceFormComponent implements OnInit, Form {
 
   ngOnInit(): void {
     this.form = this.resourceFormBuilder.buildForm(this.resource);
-    this.form.valueChanges
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.form.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.form.get('id').setValue(generateInternalName(displayName));
+        }));
+    }
+    this.subscriptions.push(this.form.valueChanges
       .pipe(
         debounceTime(300),
         tap(() => this.formChange.emit())
-      ).subscribe();
+      )
+      .subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   isValid() {

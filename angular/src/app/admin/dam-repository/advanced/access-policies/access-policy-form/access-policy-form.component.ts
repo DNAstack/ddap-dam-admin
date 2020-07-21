@@ -1,9 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { alignControlsWithModelDefinitions, EntityModel, Form, isExpanded, removeInternalFields } from 'ddap-common-lib';
+import { Subscription } from 'rxjs';
 
 import { dam } from '../../../../../shared/proto/dam-service';
 import { ConditionFormComponent } from '../../../shared/condition-form/condition-form.component';
+import { generateInternalName } from '../../../shared/internal-name.util';
 
 import { AccessPolicyFormBuilder } from './access-policy-form-builder.service';
 
@@ -14,7 +16,7 @@ import Policy = dam.v1.Policy;
   templateUrl: './access-policy-form.component.html',
   styleUrls: ['./access-policy-form.component.scss'],
 })
-export class AccessPolicyFormComponent implements OnInit, Form {
+export class AccessPolicyFormComponent implements OnInit, OnDestroy, Form {
 
   get variableDefinitions() {
     return this.form.get('variableDefinitions') as FormGroup;
@@ -24,9 +26,12 @@ export class AccessPolicyFormComponent implements OnInit, Form {
   conditionForm: ConditionFormComponent;
 
   @Input()
+  internalNameEditable = false;
+  @Input()
   accessPolicy?: EntityModel = new EntityModel('', Policy.create());
 
   form: FormGroup;
+  subscriptions: Subscription[] = [];
   isExpanded: Function = isExpanded;
   counter = 1;
 
@@ -35,6 +40,16 @@ export class AccessPolicyFormComponent implements OnInit, Form {
 
   ngOnInit(): void {
     this.form = this.accessPolicyFormBuilder.buildForm(this.accessPolicy);
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.form.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.form.get('id').patchValue(generateInternalName(displayName));
+        }));
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getModel(): EntityModel {

@@ -16,20 +16,6 @@
         </div>
       </ng-template>
       <div class="row">
-        <mat-form-field class="col">
-          <input matInput
-                 placeholder="Name"
-                 formControlName="id"
-                 [readonly]="resource.name.length > 0"
-                 data-se="inp-id"
-                 required>
-          <mat-error *ngIf="form.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
-          <mat-error *ngIf="form.get('id') as control">
-            <ng-container *ngIf="control.invalid">
-              {{ control.errors?.serverError }}
-            </ng-container>
-          </mat-error>
-        </mat-form-field>
         <mat-form-field class="col"
                         formGroupName="ui">
           <input matInput
@@ -38,6 +24,20 @@
                  data-se="inp-label"
                  required>
           <mat-error *ngIf="form.get('ui.label') as control">
+            <ng-container *ngIf="control.invalid">
+              {{ control.errors?.serverError }}
+            </ng-container>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col">
+          <input matInput
+                 placeholder="Internal Name"
+                 formControlName="id"
+                 [readonly]="resource.name.length > 0"
+                 data-se="inp-id"
+                 required>
+          <mat-error *ngIf="form.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
+          <mat-error *ngIf="form.get('id') as control">
             <ng-container *ngIf="control.invalid">
               {{ control.errors?.serverError }}
             </ng-container>
@@ -84,7 +84,8 @@
 
       <mat-accordion multi displayMode="flat">
         <ng-container *ngFor="let view of views.controls | keyvalue">
-          <ddap-resource-view-form [viewForm]="view.value">
+          <ddap-resource-view-form [viewForm]="view.value"
+                                   [internalNameEditable]="internalNameEditable">
             <div class="footer">
               <button mat-button
                       type="button"

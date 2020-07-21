@@ -2,10 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Form, FormValidationService } from 'ddap-common-lib';
-import _kebabCase from 'lodash.kebabcase';
 import { flatMap } from 'rxjs/operators';
 
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
+import { generateInternalName } from '../../../shared/internal-name.util';
 import { AccessLevel } from '../../shared/access-level.enum';
 import { AccessPolicyBuilderService } from '../../shared/access-policy-builder.service';
 import { AccessPolicyType } from '../../shared/access-policy-type.enum';
@@ -50,7 +50,7 @@ export class QuickstartManageComponent implements OnInit {
     const { displayName, accessPolicyValue, variables } = this.quickstartForm.getModel();
     const accessLevel: AccessLevel = this.quickstartForm.accessLevelRadio.value;
     const accessPolicyId: AccessPolicyType = this.quickstartForm.accessPolicyRadio.value;
-    const resourceId = this.generateResourceId(displayName);
+    const resourceId = generateInternalName(displayName);
 
     this.accessPolicyBuilderService.createReusableAccessPolicy(accessPolicyId)
       .pipe(
@@ -63,11 +63,6 @@ export class QuickstartManageComponent implements OnInit {
       .subscribe(() => {
         this.router.navigate([`../../../../advanced/resources/${resourceId}`], { relativeTo: this.activatedRoute });
       }, this.showError);
-  }
-
-  private generateResourceId(displayName: string) {
-    const kebabCasedId = _kebabCase(displayName).substring(0, 16);
-    return kebabCasedId.endsWith('-') ? kebabCasedId.substr(0, kebabCasedId.length - 1) : kebabCasedId;
   }
 
   private validate(form: Form): boolean {

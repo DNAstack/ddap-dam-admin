@@ -17,8 +17,8 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("inp-id"), "test-simple-policy");
         adminManagePage.fillField(DdapBy.se("inp-label"), "test-simple-policy-name");
+        adminManagePage.fillField(DdapBy.se("inp-id"), "test-simple-policy");
         adminManagePage.fillField(DdapBy.se("inp-description"), "test-policy-description");
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
 
@@ -40,8 +40,8 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("inp-id"), "test-complex-policy");
         adminManagePage.fillField(DdapBy.se("inp-label"), "test-complex-policy-name");
+        adminManagePage.fillField(DdapBy.se("inp-id"), "test-complex-policy");
         adminManagePage.fillField(DdapBy.se("inp-description"), "test-policy-description");
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
 

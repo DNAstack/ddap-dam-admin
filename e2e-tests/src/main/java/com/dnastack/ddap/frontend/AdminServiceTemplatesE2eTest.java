@@ -19,8 +19,8 @@ public class AdminServiceTemplatesE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemDoNotExist(serviceTemplateLabel);
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("id-field"), "discovery_test_1");
         adminManagePage.fillField(DdapBy.se("inp-label"), serviceTemplateLabel);
+        adminManagePage.fillField(DdapBy.se("id-field"), "discovery_test_1");
         adminManagePage.fillField(DdapBy.se("inp-description"), "Copy of Beacon Discovery");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-target-adapter"),
                 "Gatekeeper Token");

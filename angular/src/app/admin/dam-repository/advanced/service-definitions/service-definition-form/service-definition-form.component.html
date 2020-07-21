@@ -2,22 +2,22 @@
       novalidate
       [formGroup]="form">
   <div class="row">
-    <mat-form-field class="col">
-      <input matInput
-             required
-             placeholder="Name"
-             data-se="id-field"
-             [readonly]="serviceTemplate.name.length > 0"
-             formControlName="id"/>
-      <mat-error *ngIf="form.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
-    </mat-form-field>
     <mat-form-field class="col"
-    formGroupName="ui">
+                    formGroupName="ui">
       <input matInput
              required
              placeholder="Display Name"
              formControlName="label"
              data-se="inp-label"/>
+    </mat-form-field>
+    <mat-form-field class="col">
+      <input matInput
+             required
+             placeholder="Internal Name"
+             data-se="id-field"
+             [readonly]="serviceTemplate.name.length > 0"
+             formControlName="id"/>
+      <mat-error *ngIf="form.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
     </mat-form-field>
   </div>
   <mat-form-field formGroupName="ui">

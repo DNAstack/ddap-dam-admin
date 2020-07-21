@@ -1,14 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EntityModel, Form, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { dam } from '../../../../../shared/proto/dam-service';
 import { pick } from '../../../shared/autocomplete.util';
+import TrustedIssuer = dam.v1.TrustedIssuer;
+import { generateInternalName } from '../../../shared/internal-name.util';
 import { PassportTranslatorsService } from '../../passport-translators/passport-translators.service';
 import { PassportIssuersStore } from '../passport-issuers.store';
-import TrustedIssuer = dam.v1.TrustedIssuer;
 
 @Component({
   selector: 'ddap-passport-issuer-form',
@@ -16,13 +17,15 @@ import TrustedIssuer = dam.v1.TrustedIssuer;
   styleUrls: ['./passport-issuer-form.component.scss'],
 
 })
-export class PassportIssuerFormComponent implements OnInit, Form {
+export class PassportIssuerFormComponent implements OnInit, OnDestroy, Form {
 
+  @Input()
+  internalNameEditable = false;
   @Input()
   passportIssuer?: EntityModel = new EntityModel('', TrustedIssuer.create());
 
   form: FormGroup;
-
+  subscriptions: Subscription[] = [];
   passportIssuers$: Observable<any>;
   translators$: Observable<any>;
 
@@ -37,6 +40,7 @@ export class PassportIssuerFormComponent implements OnInit, Form {
 
     this.translators$ = this.passportTranslators.get();
 
+    // TODO: move to passport-issuer-form-builder.service.ts
     this.form = this.formBuilder.group({
       id: [this.passportIssuer.name || '', [Validators.required, Validators.pattern(nameConstraintPattern)]],
       ui: this.formBuilder.group({
@@ -49,8 +53,18 @@ export class PassportIssuerFormComponent implements OnInit, Form {
       tokenUrl: [this.passportIssuer.dto ? this.passportIssuer.dto.tokenUrl : ''],
       authUrl: [this.passportIssuer.dto ? this.passportIssuer.dto.authUrl : ''],
     });
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.form.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.form.get('id').setValue(generateInternalName(displayName));
+        }));
+    }
 
     this.passportIssuers$ = this.passportIssuersStore.getAsList(pick('dto.issuer'));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getModel(): EntityModel {

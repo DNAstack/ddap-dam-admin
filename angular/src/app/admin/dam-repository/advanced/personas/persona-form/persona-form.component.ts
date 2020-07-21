@@ -10,6 +10,7 @@ import { catchError, debounceTime, map, startWith, switchMap, tap } from 'rxjs/o
 import { common } from '../../../../../shared/proto/dam-service';
 import { filterBy, flatten, includes, makeDistinct, pick } from '../../../shared/autocomplete.util';
 import { ConditionFormComponent } from '../../../shared/condition-form/condition-form.component';
+import { generateInternalName } from '../../../shared/internal-name.util';
 import { PassportVisa } from '../../../shared/passport-visa/passport-visa.constant';
 import { ClaimDefinitionService } from '../../claim-definitions/claim-definitions.service';
 import { ClaimDefinitionsStore } from '../../claim-definitions/claim-definitions.store';
@@ -49,9 +50,12 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
   accessForm: PersonaAccessFormComponent;
 
   @Input()
+  internalNameEditable = false;
+  @Input()
   persona?: EntityModel = new EntityModel('', TestPersona.create());
 
   form: FormGroup;
+  subscriptions: Subscription[] = [];
   isExpanded: Function = isExpanded;
   resourcesList = [];
   authorityLevels: string[] = Object.values(AuthorityLevel);
@@ -80,6 +84,12 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
 
     this.form = this.personaFormBuilder.buildForm(this.persona);
     this.form.addControl('resourceAccess', this.formBuilder.group({}));
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.form.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.form.get('id').setValue(generateInternalName(displayName));
+        }));
+    }
 
     if (this.persona && this.persona.dto) {
       this.buildAccessForm(this.persona.dto);
@@ -97,6 +107,7 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
   }
 
   ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.validatorSubscription.unsubscribe();
   }
 

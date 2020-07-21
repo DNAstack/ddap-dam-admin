@@ -34,19 +34,6 @@
       </ng-template>
 
       <div class="row">
-        <mat-form-field class="col">
-          <input matInput
-                 placeholder="Name"
-                 formControlName="id"
-                 data-se="inp-view-id"
-                 required>
-          <mat-error *ngIf="viewForm.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
-          <mat-error *ngIf="viewForm.get('id') as control">
-            <ng-container *ngIf="control.invalid">
-              {{ control.errors?.serverError }}
-            </ng-container>
-          </mat-error>
-        </mat-form-field>
         <mat-form-field class="col"
                         formGroupName="ui">
           <input matInput
@@ -55,6 +42,19 @@
                  data-se="inp-view-label"
                  required>
           <mat-error *ngIf="viewForm.get('ui.label') as control">
+            <ng-container *ngIf="control.invalid">
+              {{ control.errors?.serverError }}
+            </ng-container>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col">
+          <input matInput
+                 placeholder="Internal Name"
+                 formControlName="id"
+                 data-se="inp-view-id"
+                 required>
+          <mat-error *ngIf="viewForm.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
+          <mat-error *ngIf="viewForm.get('id') as control">
             <ng-container *ngIf="control.invalid">
               {{ control.errors?.serverError }}
             </ng-container>

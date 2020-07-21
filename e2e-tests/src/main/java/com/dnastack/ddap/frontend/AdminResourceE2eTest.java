@@ -33,8 +33,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemDoNotExist(resourceId);
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
-        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
+        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
 
         adminListPage = adminManagePage.saveEntity();
@@ -54,13 +54,13 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemDoNotExist(resourceId);
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
-        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
+        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
-        adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
+        adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
 
@@ -94,13 +94,13 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemDoNotExist(resourceId);
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
-        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
+        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
-        adminManagePage.fillField(DdapBy.se("inp-view-id"), view1Id);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), view1Id);
+        adminManagePage.fillField(DdapBy.se("inp-view-id"), view1Id);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View 1 Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
 
@@ -112,8 +112,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + view1Role));
 
         adminManagePage.clickButton(DdapBy.se("btn-add-view"));
-        adminManagePage.fillField(DdapBy.se("inp-view-id"), view2Id);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), view2Id);
+        adminManagePage.fillField(DdapBy.se("inp-view-id"), view2Id);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View 2 Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Version 2");
 
@@ -149,13 +149,13 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemDoNotExist(resourceId);
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
-        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
+        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
-        adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
+        adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
 
@@ -177,8 +177,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("inp-id"), "policy-with-variables");
         adminManagePage.fillField(DdapBy.se("inp-label"), "policy-with-variables-name");
+        adminManagePage.fillField(DdapBy.se("inp-id"), "policy-with-variables");
         adminManagePage.fillField(DdapBy.se("inp-description"), "policy-with-variables-description");
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
 
@@ -213,13 +213,13 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemDoNotExist(resourceId);
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
-        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
+        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-view"));
-        adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-label"), viewId);
+        adminManagePage.fillField(DdapBy.se("inp-view-id"), viewId);
         adminManagePage.fillField(DdapBy.se("inp-view-description"), "View Description");
         adminManagePage.fillField(DdapBy.se("inp-view-version"), "Phase 3");
 
