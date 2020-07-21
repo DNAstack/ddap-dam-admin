@@ -10,13 +10,16 @@
   }
 
   mat-form-field {
-    width: 10%;
+    width: 16%;
+    max-width: 9rem;
     margin-right: 2%;
   }
 }
 .search-filter {
   mat-form-field {
-    width: 34%;
+    width: 52%;
+    max-width: 30rem;
+    margin-bottom: 1.5rem;
   }
   mat-icon {
     font-size: 100%;
