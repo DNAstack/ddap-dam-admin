@@ -220,21 +220,25 @@
                     mode="indeterminate">
   </mat-progress-bar>
 
-  <ng-container *ngIf="resourcesList">
-    <div class="access-description">
-      <p>
-        Headings are test persona names. Checkboxes represent the expected access on the labelled view (qualified by resource).
-        A box is checked if and only if the titled persona is expected to have access to the labelled view.
-      </p>
-      <p>
-        If a box is red, the changes you are making have altered the expected state. Please either modify your changes
-        to maintain the expected state, or click the checkbox to explicitly change the expected access.
-      </p>
-    </div>
+  <ng-container *ngIf="resourcesList && resourcesList.length > 0; else noResources">
+    <p>
+      Headings are test persona names. Checkboxes represent the expected access on the labelled view (qualified by resource).
+      A box is checked if and only if the titled persona is expected to have access to the labelled view.
+    </p>
+    <p>
+      If a box is red, the changes you are making have altered the expected state. Please either modify your changes
+      to maintain the expected state, or click the checkbox to explicitly change the expected access.
+    </p>
     <ddap-persona-access-form [resources]="resourcesList"
                               [form]="resourceAccess">
     </ddap-persona-access-form>
   </ng-container>
+  <ng-template #noResources>
+    <p>
+      There are currently no resources configured. Once you add a resource,
+      you will be able to configure the expected access of this test persona for those resources.
+    </p>
+  </ng-template>
 
   <ng-content></ng-content>
 </form>
