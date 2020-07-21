@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EntityModel } from 'ddap-common-lib';
+import _get from 'lodash.get';
 
 import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
@@ -18,6 +20,10 @@ export class AccessPolicyListComponent extends DamConfigEntityListComponentBaseD
               protected damConfigStore: DamConfigStore,
               protected accessPoliciesStore: AccessPoliciesStore) {
     super(route, damConfigStore, accessPoliciesStore);
+  }
+
+  isBuiltInPolicy(policy: EntityModel): boolean {
+    return _get(policy, 'dto.ui.source') === 'built-in';
   }
 
 }
