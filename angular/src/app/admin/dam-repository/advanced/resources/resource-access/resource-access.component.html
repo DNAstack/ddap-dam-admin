@@ -8,37 +8,49 @@
       <span>Access</span>
     </h3>
   </div>
-  <div class="description">
-    <p>
-      Headings are role names (qualified by view). Checkboxes represent the expected access of each test persona on a view.
-      A box is checked if and only if the labelled persona is expected to have access.
-    </p>
-    <p>
-      If a box is red, the changes you are making have altered the expected state. Please either modify your changes
-      to maintain the expected state, or click the checkbox to explicitly change the expected access.
-    </p>
-  </div>
-  <ul>
-    <li *ngFor="let view of views">
-      <h3>{{ view }}</h3>
-      <ul>
-        <li *ngFor="let persona of personas">
-          <ng-container *ngIf="form.get(persona.name) && form.get(persona.name).get(view)">
-            <ng-container [formGroupName]="persona.name">
-              <mat-checkbox [formControlName]="view"
-                            color="primary"
-                            (change)="emitChange()"
-                            id="{{ view }}/{{ persona.name }}">
-                {{ persona.name }}
-              </mat-checkbox>
+  <ng-container *ngIf="personas && personas.length > 0; else noPersonas">
+    <div class="description">
+      <ng-container *ngIf="views && views.length > 0; else noAccessPolicies">
+        <p>
+          Headings are role names (qualified by view). Checkboxes represent the expected access of each test persona on a view.
+          A box is checked if and only if the labelled persona is expected to have access.
+        </p>
+        <p>
+          If a box is red, the changes you are making have altered the expected state. Please either modify your changes
+          to maintain the expected state, or click the checkbox to explicitly change the expected access.
+        </p>
+      </ng-container>
+      <ng-template #noAccessPolicies>
+        <p>
+          You don’t yet have any active roles.
+          Please continue configuring your view, roles, and policies before configuring test persona access.
+        </p>
+      </ng-template>
+    </div>
+    <ul>
+      <li *ngFor="let view of views">
+        <h3>{{ view }}</h3>
+        <ul>
+          <li *ngFor="let persona of personas">
+            <ng-container *ngIf="form.get(persona.name) && form.get(persona.name).get(view)">
+              <ng-container [formGroupName]="persona.name">
+                <mat-checkbox [formControlName]="view"
+                              color="primary"
+                              (change)="emitChange()"
+                              id="{{ view }}/{{ persona.name }}">
+                  {{ persona.name }}
+                </mat-checkbox>
+              </ng-container>
             </ng-container>
-          </ng-container>
-        </li>
-      </ul>
-    </li>
-  </ul>
-  <p *ngIf="!personas || !personas.length">
-    There are no personas configured. You can create personas in the “Test Personas” tab to generate test cases
-    for your resource policies.
-  </p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </ng-container>
+  <ng-template #noPersonas>
+    <p>
+      There are no personas configured. You can create personas in the “Test Personas” tab to generate test cases
+      for your resource policies.
+    </p>
+  </ng-template>
 </form>
