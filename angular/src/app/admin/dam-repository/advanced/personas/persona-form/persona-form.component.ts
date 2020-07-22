@@ -129,7 +129,7 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
 
   getModel(): EntityModel {
     const { id, passport, ui } = this.form.value;
-    const access = this.accessForm.getModel();
+    const access = this.accessForm ? this.accessForm.getModel() : null;
     this.setAnyOfModel(passport);
     const testPersona: TestPersona = TestPersona.create({
       ui,
