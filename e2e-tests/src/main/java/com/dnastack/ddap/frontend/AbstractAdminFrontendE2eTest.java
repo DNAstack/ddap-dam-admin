@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
 import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
+import static java.lang.String.format;
 
 public abstract class AbstractAdminFrontendE2eTest extends AbstractFrontendE2eTest {
 
@@ -22,6 +23,11 @@ public abstract class AbstractAdminFrontendE2eTest extends AbstractFrontendE2eTe
 
     protected static String getRealm() {
         return generateRealmName(MethodHandles.lookup().lookupClass().getSimpleName());
+    }
+
+    protected static String getInternalName(String displayName) {
+        String name = format("%s-%s", displayName, System.currentTimeMillis());
+        return name.length() > 15 ? name.substring(0, 16) : name;
     }
 
 }

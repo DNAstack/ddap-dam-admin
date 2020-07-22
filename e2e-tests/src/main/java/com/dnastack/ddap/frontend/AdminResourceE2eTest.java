@@ -27,14 +27,13 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
     public void addResourceWithNoViews() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                                               .goToAdmin(damResourceLink());
-        String resourceId = "resource-" + System.currentTimeMillis();
+        String resourceId = getInternalName("r");
 
         waitForAccessTablesToLoad();
         adminListPage.assertListItemDoNotExist(resourceId);
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
         adminManagePage.fillField(DdapBy.se("inp-label"), resourceId);
-        adminManagePage.fillField(DdapBy.se("inp-id"), resourceId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
 
         adminListPage = adminManagePage.saveEntity();
@@ -46,8 +45,8 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
     public void addResourceAndSingleView() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                                               .goToAdmin(damResourceLink());
-        String resourceId = "resource-" + System.currentTimeMillis();
-        String viewId = "view-" + System.currentTimeMillis();
+        String resourceId = getInternalName("r");
+        String viewId = getInternalName("v");
         String role = "discovery";
 
         waitForAccessTablesToLoad();
@@ -82,10 +81,10 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
     public void addResourceAndMultipleViews() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                                               .goToAdmin(damResourceLink());
-        String resourceId = "resource-" + System.currentTimeMillis();
-        String view1Id = "view1-" + System.currentTimeMillis();
+        String resourceId = getInternalName("r");
+        String view1Id = getInternalName("v-1");
         String view1Role = "viewer";
-        String view2Id = "view2-" + System.currentTimeMillis();
+        String view2Id = getInternalName("v-2");
         String view2Role = "discovery";
 
         waitForAccessTablesToLoad();
@@ -133,11 +132,12 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void addResourceSingleViewPolicyVariables() {
-        addPolicyWithVariables();
+        String policyInternalName = "policy-with-vars";
+        addPolicyWithVariables(policyInternalName);
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damResourceLink());
-        String resourceId = "resource-" + System.currentTimeMillis();
-        String viewId = "view-" + System.currentTimeMillis();
+        String resourceId = getInternalName("r");
+        String viewId = getInternalName("v");
         String role = "discovery";
 
         waitForAccessTablesToLoad();
@@ -157,20 +157,20 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-aud"), "http://beacon-aud.com");
         adminManagePage.fillField(DdapBy.se("inp-view-target-adapter-variable-url"), "http://beacon-test.com");
         adminManagePage.enterButton(DdapBy.se(format("btn-add-%s-policy", role)));
-        adminManagePage.fillFieldFromDropdown(DdapBy.se(format("inp-%s-policy", role)), "policy-with-variables");
-        adminManagePage.fillField(DdapBy.se(format("inp-%s-policy-%s-variable-%s", role, "policy-with-variables", "TEST_VARIABLE_DATASET")), "beacon");
+        adminManagePage.fillFieldFromDropdown(DdapBy.se(format("inp-%s-policy", role)), policyInternalName);
+        adminManagePage.fillField(DdapBy.se(format("inp-%s-policy-%s-variable-%s", role, policyInternalName, "TEST_VARIABLE_DATASET")), "beacon");
         adminManagePage.enterButton(DdapBy.se("btn-make-default-role-" + role));
         adminListPage = adminManagePage.saveEntity();
         adminListPage.assertListItemExists(resourceId);
     }
 
-    private void addPolicyWithVariables() {
+    private void addPolicyWithVariables(String policyInternalName) {
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damPoliciesLink());
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("inp-label"), "policy-with-variables-name");
+        adminManagePage.fillField(DdapBy.se("inp-label"), policyInternalName);
         adminManagePage.fillField(DdapBy.se("inp-description"), "policy-with-variables-description");
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://info-url.com");
 
@@ -190,15 +190,15 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage = adminManagePage.saveEntity();
         adminManagePage.waitForInflightRequests();
 
-        adminListPage.assertListItemExists("policy-with-variables");
+        adminListPage.assertListItemExists(policyInternalName);
     }
 
     @Test
     public void createInvalidResourceShowsServerSideError() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                                               .goToAdmin(damResourceLink());
-        String resourceId = "resource-" + System.currentTimeMillis();
-        String viewId = "view-" + System.currentTimeMillis();
+        String resourceId = getInternalName("r");
+        String viewId = getInternalName("v");
         String role = "discovery";
 
         waitForAccessTablesToLoad();

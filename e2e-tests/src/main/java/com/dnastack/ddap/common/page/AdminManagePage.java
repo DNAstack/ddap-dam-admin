@@ -86,7 +86,8 @@ public class AdminManagePage extends AdminDdapPage {
     }
 
     public void clickCheckbox(By checkboxSelector) {
-        WebElement checkbox = driver.findElement(checkboxSelector);
+        WebElement checkbox = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(checkboxSelector));
         WebPageScroller.scrollTo(driver, checkbox);
         new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(checkbox));
         checkbox.click();
