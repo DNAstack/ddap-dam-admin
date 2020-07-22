@@ -122,4 +122,21 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
         assertThat(driver.findElement(DdapBy.se("page-title")).getText(), equalTo(collection));
     }
 
+    @Test
+    public void createResourceForAwsRedshiftWithDefaults() {
+        SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
+            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
+
+        AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateAwsRedshiftResource();
+
+        String collection = "test-redshift-cag-read";
+        adminManagePage.fillField(DdapBy.se("inp-display-name"), collection);
+        adminManagePage.fillField(DdapBy.se("inp-variable-cluster"), "arn:aws:redshift:us-east-1:123456:cluster:test-cluster");
+        adminManagePage.fillField(DdapBy.se("inp-access-policy-value"), "http://test.dnastack.com");
+
+        // Should be redirected to newly created resource detail page
+        AdminManagePage resourceAdminManagePage = adminManagePage.saveEntity(AdminManagePage::new);
+        assertThat(driver.findElement(DdapBy.se("page-title")).getText(), equalTo(collection));
+    }
+
 }

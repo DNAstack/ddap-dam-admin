@@ -33,4 +33,10 @@ public class SimplifiedAdminQuickstartPage extends AdminDdapPage {
         return new AdminManagePage(driver);
     }
 
+    public AdminManagePage clickCreateAwsRedshiftResource() {
+        driver.findElement(DdapBy.se("btn-create-redshift-resource"))
+            .click();
+        return new AdminManagePage(driver);
+    }
+
 }

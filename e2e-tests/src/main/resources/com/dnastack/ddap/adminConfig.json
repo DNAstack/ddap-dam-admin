@@ -529,6 +529,38 @@
         "label": "Amazon S3"
       }
     },
+    "redshift": {
+      "serviceName": "redshift",
+      "interfaces": {
+        "http:aws:redshift:arn": "${cluster}"
+      },
+      "roles": {
+        "dbuser": {
+          "serviceArgs": {
+            "roles": {
+              "values": [
+                "redshift:GetClusterCredentials",
+                "redshift:CreateClusterUser",
+                "redshift:JoinGroup"
+              ]
+            }
+          },
+          "damRoleCategories": [
+            "metadata",
+            "list",
+            "read"
+          ],
+          "ui": {
+            "description": "Ability to login as new user with group",
+            "label": "Ability to Get DB Credentials"
+          }
+        }
+      },
+      "ui": {
+        "description": "Offers AWS Redshift Access",
+        "label": "AWS Redshift"
+      }
+    },
     "beacon": {
       "serviceName": "gatekeeper",
       "interfaces": {

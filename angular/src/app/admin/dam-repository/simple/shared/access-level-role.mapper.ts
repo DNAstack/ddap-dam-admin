@@ -20,6 +20,11 @@ export function getRoleName(accessLevel: AccessLevel, serviceTemplateId: string)
     if (accessLevel === AccessLevel.write) {
       return 'writer';
     }
+  } else if (serviceTemplateId === 'redshift') {
+    if (accessLevel === AccessLevel.read) {
+      return 'dbuser';
+    }
+    // write for AWS Redshift is not supported
   } else if (serviceTemplateId === 'beacon') {
     if (accessLevel === AccessLevel.read) {
       return 'basic_discovery';

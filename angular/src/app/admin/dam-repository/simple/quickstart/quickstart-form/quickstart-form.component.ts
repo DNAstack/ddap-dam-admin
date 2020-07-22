@@ -19,7 +19,7 @@ export class QuickstartFormComponent implements OnInit, Form {
   @Input()
   serviceTemplate: string;
 
-  readonly readonlyServiceTemplates = ['amazon-s3'];
+  readonly readonlyServiceTemplates = ['amazon-s3', 'redshift'];
   readonly accessLevelRadio: FormControl = new FormControl(AccessLevel.read);
   readonly accessPolicyRadio: FormControl = new FormControl(AccessPolicyType.controlAccessGrants);
 
