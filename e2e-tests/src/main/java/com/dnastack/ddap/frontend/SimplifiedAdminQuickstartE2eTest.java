@@ -105,4 +105,21 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
         assertThat(driver.findElement(DdapBy.se("page-title")).getText(), equalTo(collection));
     }
 
+    @Test
+    public void createResourceForAwsS3WithDefaults() {
+        SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
+            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
+
+        AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateAwsS3Resource();
+
+        String collection = "test-s3-cag-read";
+        adminManagePage.fillField(DdapBy.se("inp-display-name"), collection);
+        adminManagePage.fillField(DdapBy.se("inp-variable-bucket"), "dnastack");
+        adminManagePage.fillField(DdapBy.se("inp-access-policy-value"), "http://test.dnastack.com");
+
+        // Should be redirected to newly created resource detail page
+        AdminManagePage resourceAdminManagePage = adminManagePage.saveEntity(AdminManagePage::new);
+        assertThat(driver.findElement(DdapBy.se("page-title")).getText(), equalTo(collection));
+    }
+
 }

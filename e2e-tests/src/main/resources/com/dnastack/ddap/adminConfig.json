@@ -497,6 +497,38 @@
   "clients": {
   },
   "serviceTemplates": {
+    "amazon-s3": {
+      "serviceName": "s3bucket",
+      "interfaces": {
+        "aws:s3": "s3://${bucket}",
+        "http:aws:s3": "https://s3.amazonaws.com/${bucket}"
+      },
+      "roles": {
+        "viewer": {
+          "serviceArgs": {
+            "roles": {
+              "values": [
+                "s3:GetObject",
+                "s3:GetBucketLocation"
+              ]
+            }
+          },
+          "damRoleCategories": [
+            "metadata",
+            "list",
+            "read"
+          ],
+          "ui": {
+            "description": "List and read files",
+            "label": "File Viewer"
+          }
+        }
+      },
+      "ui": {
+        "description": "Amazon Simple Storage Service (S3)",
+        "label": "Amazon S3"
+      }
+    },
     "beacon": {
       "serviceName": "gatekeeper",
       "interfaces": {

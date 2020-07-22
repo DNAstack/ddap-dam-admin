@@ -27,4 +27,10 @@ public class SimplifiedAdminQuickstartPage extends AdminDdapPage {
         return new AdminManagePage(driver);
     }
 
+    public AdminManagePage clickCreateAwsS3Resource() {
+        driver.findElement(DdapBy.se("btn-create-amazon-s3-resource"))
+            .click();
+        return new AdminManagePage(driver);
+    }
+
 }

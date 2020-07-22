@@ -54,6 +54,8 @@
         List and read
       </mat-radio-button>
       <mat-radio-button [value]="'Write'"
+                        [disabled]="readonlyServiceTemplates.includes(serviceTemplate)"
+                        [matTooltip]="readonlyServiceTemplates.includes(serviceTemplate) ? 'Write access is not supported' : null"
                         data-se="radio-access-level-Write">
         Read and write
       </mat-radio-button>

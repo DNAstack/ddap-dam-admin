@@ -8,6 +8,11 @@ export function getRoleName(accessLevel: AccessLevel, serviceTemplateId: string)
     if (accessLevel === AccessLevel.write) {
       return 'editor';
     }
+  } else if (serviceTemplateId === 'amazon-s3') {
+    if (accessLevel === AccessLevel.read) {
+      return 'viewer';
+    }
+    // write for AWS S3 is not supported
   } else if (serviceTemplateId === 'bigquery') {
     if (accessLevel === AccessLevel.read) {
       return 'viewer';

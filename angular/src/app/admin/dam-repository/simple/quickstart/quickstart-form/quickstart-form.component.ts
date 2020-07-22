@@ -19,8 +19,9 @@ export class QuickstartFormComponent implements OnInit, Form {
   @Input()
   serviceTemplate: string;
 
-  accessLevelRadio: FormControl = new FormControl(AccessLevel.read);
-  accessPolicyRadio: FormControl = new FormControl(AccessPolicyType.controlAccessGrants);
+  readonly readonlyServiceTemplates = ['amazon-s3'];
+  readonly accessLevelRadio: FormControl = new FormControl(AccessLevel.read);
+  readonly accessPolicyRadio: FormControl = new FormControl(AccessPolicyType.controlAccessGrants);
 
   form: FormGroup;
   isExpanded: Function = isExpanded;
