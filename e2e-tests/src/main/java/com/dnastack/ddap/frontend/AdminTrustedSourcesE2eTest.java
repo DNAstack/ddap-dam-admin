@@ -18,7 +18,6 @@ public class AdminTrustedSourcesE2eTest extends AbstractAdminFrontendE2eTest {
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
         adminManagePage.fillField(DdapBy.se("inp-label"), "test-source-name");
-        adminManagePage.fillField(DdapBy.se("inp-id"), "test-source");
         adminManagePage.fillField(DdapBy.se("inp-description"), "test-source-desc");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-source"));

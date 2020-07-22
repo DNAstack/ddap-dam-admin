@@ -19,7 +19,6 @@ public class AdminClaimDefinitionsE2eTest extends AbstractAdminFrontendE2eTest {
 
         String claimDefId = "test-claim-def-full";
         adminManagePage.fillField(DdapBy.se("inp-label"), claimDefId);
-        adminManagePage.fillField(DdapBy.se("inp-id"), claimDefId);
         adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
         adminManagePage.fillField(DdapBy.se("inp-infoUrl"), "http://this-is-info-url.com");
 
