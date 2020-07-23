@@ -27,18 +27,19 @@ td span.user-inactive {
   color: $color-grey;
 }
 
-button {
-  margin-left: 1rem;
-  span {
-    margin-left: 0.5rem;
-    margin-right: 1rem;
-  }
-}
-
 .clickable {
   cursor: pointer;
 }
 
 .search-input {
   max-width: 50rem;
+
+  button {
+    margin-left: 1rem;
+
+    span {
+      margin-left: 0.5rem;
+      margin-right: 1rem;
+    }
+  }
 }

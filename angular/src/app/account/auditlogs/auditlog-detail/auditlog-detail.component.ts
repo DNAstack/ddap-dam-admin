@@ -12,6 +12,7 @@ import { AuditlogsService } from '../auditlogs.service';
   styleUrls: ['./auditlog-detail.component.scss'],
 })
 export class AuditlogDetailComponent implements OnInit, OnDestroy {
+
   auditLog: object;
   editorOptions: JsonEditorOptions;
   jsonData: JSON;
@@ -23,7 +24,7 @@ export class AuditlogDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.auditlogsService.currentAuditlog.subscribe(log => {
+    this.auditlogsService.currentAuditlog$.subscribe(log => {
       if (Object.keys(log).length > 0) {
         this.auditLog = log;
         this.toJSON();
