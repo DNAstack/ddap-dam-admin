@@ -56,7 +56,7 @@ export class TokenListComponent implements OnInit {
       tap((tokensResponse: ListTokensResponse) => {
         const hideResourcesColumn = tokensResponse.tokens.every((token) => !token.resources);
         this.subject = tokensResponse.tokens.length ? tokensResponse.tokens[0]['sub'] : '';
-        if (hideResourcesColumn) {
+        if (hideResourcesColumn && this.displayedColumns.includes('resources')) {
           this.displayedColumns.splice(this.displayedColumns.indexOf('resources'), 1);
         }
       })
