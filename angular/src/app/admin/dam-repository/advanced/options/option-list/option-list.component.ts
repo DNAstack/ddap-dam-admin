@@ -66,6 +66,9 @@ export class OptionListComponent implements OnInit {
 
     if ('regexp' in optionDescriptor[optionKey]) {
       validators.push(Validators.pattern(optionDescriptor[optionKey].regexp));
+    } else if (optionDescriptor[optionKey]?.type === 'bool') {
+      const pattern = '^(true|false){1}$';
+      validators.push(Validators.pattern(pattern));
     }
 
     return new FormControl(options[optionKey], validators);
