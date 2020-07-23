@@ -1,40 +1,5 @@
 @import '~ddap-common-lib/styles/modules/colors';
 
-ddaplib-searchable-header {
-  form {
-    width: 100%;
-  }
-
-  input {
-    font-size: 1.5rem;
-  }
-
-  mat-form-field {
-    margin-left: 1rem;
-  }
-
-  .icon {
-    font-size: 2rem;
-    width: 2.5rem;
-    padding-bottom: .5rem;
-  }
-
-  .mat-form-field-appearance-legacy .mat-form-field-wrapper,
-  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
-    padding-bottom: 0;
-  }
-
-  ::ng-deep .mat-form-field-label-wrapper {
-    padding: 0;
-    overflow: visible;
-    top: -1.45rem;
-    font-size: 1.5rem;
-  }
-
-  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
-    display: none;
-  }
-}
 .mat-expansion-panel-header-description {
   text-transform: uppercase;
 }
@@ -60,4 +25,20 @@ td span.user-active {
 
 td span.user-inactive {
   color: $color-grey;
+}
+
+button {
+  margin-left: 1rem;
+  span {
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.search-input {
+  max-width: 50rem;
 }

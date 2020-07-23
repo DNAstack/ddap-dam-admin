@@ -54,11 +54,9 @@ export class UserListComponent implements OnInit {
       });
   }
 
-  resetQueryValue(searchInputVisible) {
-    if (!searchInputVisible) {
-      this.query.reset();
-      this.refreshUsers();
-    }
+  resetQueryValue() {
+    this.query.reset();
+    this.refreshUsers();
   }
 
   refreshUsers() {

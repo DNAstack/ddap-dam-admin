@@ -1,26 +1,33 @@
-<ddaplib-searchable-header iconClass="icon icon-identities"
-                           label="Users"
-                           [isSearchPage]="false"
-                           [searchInputVisible]="false"
-                           (searchOpenChange)="resetQueryValue($event)">
-  <form class="flex vertical-center">
+<ddaplib-header iconClass="icon icon-identities"
+                label="Users">
+</ddaplib-header>
+
+<ddaplib-main>
+  <div class="search-input flex vertical-center">
     <mat-form-field>
       <input matInput
              placeholder="Type search query..."
              [formControl]="query"
              data-se="inp-search">
+      <mat-icon *ngIf="query.value"
+                (click)="resetQueryValue()"
+                class="clickable"
+                data-se="btn-clear-search"
+                matSuffix>
+        clear
+      </mat-icon>
     </mat-form-field>
     <button color="primary"
-            mat-icon-button
+            mat-flat-button
             type="submit"
             data-se="btn-search"
+            class="flex vertical-center"
             (click)="refreshUsers()">
       <mat-icon class="icon icon-search"></mat-icon>
+      <span>Search</span>
     </button>
-  </form>
-</ddaplib-searchable-header>
+  </div>
 
-<ddaplib-main>
   <div class="filter-active">
     <label id="filter-active-label">Filter by activity:</label>
     <mat-radio-group aria-labelledby="filter-active-label"
