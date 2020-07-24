@@ -4,6 +4,7 @@ import com.dnastack.ddap.common.page.AdminDdapPage;
 import com.dnastack.ddap.common.page.UserAdminListPage;
 import com.dnastack.ddap.common.page.UserAdminManagePage;
 import com.dnastack.ddap.common.util.DdapBy;
+import com.dnastack.ddap.common.util.WebPageScroller;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -78,11 +79,13 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
         moreActionsButton.click();
 
-        WebElement auditlogsButton = driver.findElement(By.className("mat-menu-panel"))
-            .findElement(DdapBy.se("btn-auditlogs"));
-        new WebDriverWait(driver, 5).until(d -> auditlogsButton.isDisplayed());
-        auditlogsButton.click();
+        WebElement menuPanel = driver.findElement(By.className("mat-menu-panel"));
+        WebElement logsBtn = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(menuPanel.findElement(DdapBy.se("btn-auditlogs"))));
+        WebPageScroller.scrollTo(driver, logsBtn);
+        logsBtn.click();
         adminListPage.waitForInflightRequests();
+
         driver.navigate().refresh();
         new WebDriverWait(driver, 5)
             .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".mat-row"), 0));
@@ -116,8 +119,10 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
         moreActionsButton.click();
 
-        WebElement sessionsBtn = driver.findElement(By.className("mat-menu-panel"))
-            .findElement(DdapBy.se("btn-sessions"));
+        WebElement menuPanel = driver.findElement(By.className("mat-menu-panel"));
+        WebElement sessionsBtn = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(menuPanel.findElement(DdapBy.se("btn-sessions"))));
+        WebPageScroller.scrollTo(driver, sessionsBtn);
         sessionsBtn.click();
         adminListPage.waitForInflightRequests();
 
@@ -145,9 +150,11 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
         moreActionsButton.click();
 
-        WebElement sessionsBtn = driver.findElement(By.className("mat-menu-panel"))
-            .findElement(DdapBy.se("btn-consents"));
-        sessionsBtn.click();
+        WebElement menuPanel = driver.findElement(By.className("mat-menu-panel"));
+        WebElement consentsBtn = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(menuPanel.findElement(DdapBy.se("btn-consents"))));
+        WebPageScroller.scrollTo(driver, consentsBtn);
+        consentsBtn.click();
         adminListPage.waitForInflightRequests();
 
         assertThat(driver.findElement(DdapBy.se("page-title")).getText(), containsString("'s consents"));
