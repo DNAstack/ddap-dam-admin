@@ -17,8 +17,8 @@ import IPatch = scim.v2.IPatch;
 })
 export class UserDetailComponent implements OnInit, OnDestroy {
 
-  get entityId() {
-    return this.route.snapshot.params.entityId;
+  get userId() {
+    return this.route.snapshot.params.userId;
   }
 
   @ViewChild(PersonalInfoFormComponent)
@@ -38,7 +38,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.usersService.getUser(this.entityId)
+    this.subscription = this.usersService.getUser(this.userId)
       .subscribe((entity) => {
         this.entity = entity;
       });
