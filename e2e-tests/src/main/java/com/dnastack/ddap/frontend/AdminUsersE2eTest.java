@@ -42,6 +42,7 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         assertTrue("No active user present", activeUser.isPresent());
 
         UserAdminManagePage adminManagePage = adminListPage.editAccount(activeUser.get());
+        adminManagePage.waitForInflightRequests();
         // Don't change name, because it will affect future runs of test
         adminManagePage.replaceField(DdapBy.se("inp-displayName"), user);
         adminManagePage.replaceField(DdapBy.se("inp-locale"), "en_US");
