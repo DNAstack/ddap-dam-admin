@@ -4,7 +4,6 @@ import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
 
 import { Identity, IdentityAccount } from '../../identity/identity.model';
 import { IdentityStore } from '../../identity/identity.store';
