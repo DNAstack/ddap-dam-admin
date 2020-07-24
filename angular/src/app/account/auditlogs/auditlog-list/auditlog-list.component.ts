@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 
 import { UserService } from '../../../shared/users/user.service';
 
-
 @Component({
-  selector: 'ddap-consent-list',
-  templateUrl: './consent-list.component.html',
-  styleUrls: ['./consent-list.component.scss'],
+  selector: 'ddap-account-auditlog-list',
+  templateUrl: './auditlog-list.component.html',
+  styleUrls: ['./auditlog-list.component.scss'],
 })
-export class ConsentListComponent implements OnInit {
+export class AuditlogListComponent implements OnInit {
 
   userId: string;
 

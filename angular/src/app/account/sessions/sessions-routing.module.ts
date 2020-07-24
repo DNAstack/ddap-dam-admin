@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { TokenListComponent } from './token-list/token-list.component';
-
+import { SessionListComponent } from './session-list/session-list.component';
 
 export const routes: Routes = [
-  { path: '', component: TokenListComponent},
+  { path: '', component: SessionListComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TokensRoutingModule { }
+export class SessionsRoutingModule { }

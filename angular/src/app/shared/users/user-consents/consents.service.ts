@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import ListConsentsResponse = consents.v1.ListConsentsResponse;
 import { realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
-import ListConsentsResponse = consents.v1.ListConsentsResponse;
-import { environment } from '../../../environments/environment';
-import { consents } from '../../shared/proto/dam-service';
+import { environment } from '../../../../environments/environment';
+import { consents } from '../../proto/dam-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConsentsService {
-  constructor(private http: HttpClient) {}
+
+  constructor(private http: HttpClient) {
+  }
 
   getConsents(userId: string, params = {}): Observable<ListConsentsResponse> {
     return this.http.get<ListConsentsResponse>(
@@ -27,4 +29,5 @@ export class ConsentsService {
       + `/users/${encodeURIComponent(userId)}/consents/${encodeURIComponent(consentId)}`
     );
   }
+
 }

@@ -108,33 +108,6 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  viewAuditlog(user: scim.v2.IUser) {
-    this.router.navigate(
-      [user.id, 'auditlogs'],
-      {
-        relativeTo: this.route,
-        queryParams: { displayName: user.displayName },
-      });
-  }
-
-  viewConsents(user: scim.v2.IUser) {
-    this.router.navigate(
-      [user.id, 'consents'],
-      {
-        relativeTo: this.route,
-        queryParams: { displayName: user.displayName },
-      });
-  }
-
-  viewSessions(user: scim.v2.IUser) {
-    this.router.navigate(
-      [user.id, 'sessions'],
-      {
-        relativeTo: this.route,
-        queryParams: { displayName: user.displayName },
-      });
-  }
-
   private getStartIndexBasedOnPageChangeDirection(page: PageEvent, previousPageSize: number, previousStartIndex: number): number {
     const { previousPageIndex, pageIndex, pageSize } = page;
     // if page size has changed -> reset start index

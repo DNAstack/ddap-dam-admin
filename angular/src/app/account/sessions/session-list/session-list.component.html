@@ -1,0 +1,9 @@
+<ddaplib-header iconClass="icon icon-clients" label="Sessions">
+</ddaplib-header>
+
+<ddaplib-main>
+  <ng-container *ngIf="userId">
+    <ddap-session-table [userId]="userId">
+    </ddap-session-table>
+  </ng-container>
+</ddaplib-main>

@@ -11,8 +11,8 @@ export const routes: Routes = [
       },
       {
         path: 'sessions',
-        loadChildren: () => import('./tokens/tokens.module')
-          .then(mod => mod.TokensModule),
+        loadChildren: () => import('./sessions/sessions.module')
+          .then(mod => mod.SessionsModule),
       },
       {
         path: 'consents',

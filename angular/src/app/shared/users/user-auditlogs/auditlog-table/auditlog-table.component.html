@@ -1,0 +1,108 @@
+<div class="search-filter">
+  <mat-form-field>
+    <mat-chip-list #searchList
+                   [formControl]="searchTextList">
+      <mat-chip *ngFor="let search of searchTextList.value"
+                (removed)="removeSearchText(search)"
+                [removable]="true">
+        {{search}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="Search by text"
+             [matChipInputFor]="searchList"
+             [matChipInputSeparatorKeyCodes]="separatorCodes"
+             (matChipInputTokenEnd)="searchByText($event)"
+             [disabled]="disableSearchText"/>
+    </mat-chip-list>
+    <mat-icon matSuffix
+              matTooltipClass="auditlogs-tooltip"
+              matTooltip="Searches examples:
+                 “/master/config” to search for requests to the config endpoint in the master realm.
+                 “PUT” to search for HTTP PUT requests">
+      help_outline
+    </mat-icon>
+    <mat-hint>Search for text inside a log message (does not support dates, times, or numerical fields)</mat-hint>
+  </mat-form-field>
+</div>
+<div class="filters">
+  <mat-form-field>
+    <mat-label>Log type</mat-label>
+    <mat-select [formControl]="logType"
+                (selectionChange)="searchLogs()"
+                data-se="log-type">
+      <mat-option [value]="logTypes.all">ALL</mat-option>
+      <mat-option [value]="logTypes.request">REQUEST</mat-option>
+      <mat-option [value]="logTypes.policy">POLICY</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Decision</mat-label>
+    <mat-select (selectionChange)="getLogs()"
+                [formControl]="decision"
+                data-se="decision">
+      <mat-option [value]="decisionType.all">ALL</mat-option>
+      <mat-option [value]="decisionType.pass">PASS</mat-option>
+      <mat-option [value]="decisionType.fail">FAIL</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Logs per page</mat-label>
+    <mat-select [formControl]="pageSize"
+                (selectionChange)="searchLogs()"
+                data-se="page-size">
+      <mat-option *ngFor="let page of ['10', '20', '30', '40', '50']"
+                  [value]="page">
+        {{page}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="table-container mat-elevation-z1">
+  <table mat-table [dataSource]="auditLogs$ | async"
+         data-se="auditlog-result"
+         class="table--base">
+    <ng-container matColumnDef="auditlogId">
+      <th mat-header-cell *matHeaderCellDef>Auditlog</th>
+      <td mat-cell *matCellDef="let log"
+          data-se="auditlog-id"
+          (click)="gotoAuditlogDetail(log)"
+          class="table--link">
+        {{log['auditlogId']}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Log Type </th>
+      <td mat-cell *matCellDef="let log"
+          data-se="log-type-cell"
+          class="table--link">
+        {{log['type']}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="decision">
+      <th mat-header-cell *matHeaderCellDef> Decision </th>
+      <td mat-cell *matCellDef="let log"
+          class="table--link">
+        {{log['decision']}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef> Time </th>
+      <td mat-cell *matCellDef="let log"
+          class="table--link">
+        {{ formatTime(log['time']) }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="resourceName">
+      <th mat-header-cell *matHeaderCellDef> Resource Name </th>
+      <td mat-cell *matCellDef="let log"
+          class="table--link">
+        {{log['resourceName']}}
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row
+        *matRowDef="let log; columns: columnsToDisplay">
+    </tr>
+  </table>
+</div>

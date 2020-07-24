@@ -32,12 +32,20 @@ import { PersonalInfoFormComponent } from './users/personal-info-form/personal-i
 import {
   UserAccountCloseConfirmationDialogComponent
 } from './users/user-account-close-confirmation-dialog/user-account-close-confirmation-dialog.component';
+import { AuditlogDetailComponent } from './users/user-auditlogs/auditlog-detail/auditlog-detail.component';
+import { AuditlogTableComponent } from './users/user-auditlogs/auditlog-table/auditlog-table.component';
+import { ConsentTableComponent } from './users/user-consents/consent-table/consent-table.component';
+import { SessionTableComponent } from './users/user-sessions/session-table/session-table.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
     PersonalInfoFormComponent,
     UserAccountCloseConfirmationDialogComponent,
+    ConsentTableComponent,
+    SessionTableComponent,
+    AuditlogTableComponent,
+    AuditlogDetailComponent,
   ],
   imports: [
     CommonModule,
@@ -106,6 +114,10 @@ import {
     DdapLayoutModule,
     DdapFormModule,
     PersonalInfoFormComponent,
+    ConsentTableComponent,
+    SessionTableComponent,
+    AuditlogTableComponent,
+    AuditlogDetailComponent,
   ],
 })
 export class SharedModule {

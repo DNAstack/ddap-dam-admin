@@ -1,4 +1,4 @@
-export enum LogType {
+export enum LogTypes {
   all = '',
   request = 'REQUEST',
   policy = 'POLICY',

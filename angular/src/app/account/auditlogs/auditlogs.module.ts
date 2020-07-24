@@ -5,13 +5,13 @@ import { MenuModule } from 'ddap-common-lib';
 
 import { DamRepositorySharedModule } from '../../admin/dam-repository/shared/shared.module';
 
-import { AuditlogsListComponent } from './audilogs-list/auditlogs-list.component';
 import { AuditlogDetailComponent } from './auditlog-detail/auditlog-detail.component';
+import { AuditlogListComponent } from './auditlog-list/auditlog-list.component';
 import { AuditlogsRoutingModule } from './auditlogs-routing.module';
 
 @NgModule({
   declarations: [
-    AuditlogsListComponent,
+    AuditlogListComponent,
     AuditlogDetailComponent,
   ],
   imports: [

@@ -1,0 +1,21 @@
+@import '~ddap-common-lib/styles/modules/colors';
+
+.log-row {
+  padding: 0.5rem;
+  >div {
+    display: inline-block;
+    overflow: hidden;
+    word-break: break-all;
+    font-size: 0.9rem;
+    vertical-align: top;
+  }
+
+  .log-row--key {
+    width: 20%;
+    color: $color-dark-grey;
+    text-transform: capitalize;
+  }
+  .log-row--value {
+    width: 80%;
+  }
+}

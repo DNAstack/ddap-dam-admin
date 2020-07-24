@@ -1,85 +1,73 @@
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { Identity, IdentityAccount } from '../../identity/identity.model';
-import { IdentityStore } from '../../identity/identity.store';
+import { IdentityStore } from '../../../../account/identity/identity.store';
+import { AuditlogDetailStateService } from '../auditlog-detail-state.service';
 import { AuditlogsService } from '../auditlogs.service';
-
-import { Decision } from './decision.enum';
-import { LogType } from './log-type.enum';
+import { Decision } from '../decision.enum';
+import { LogTypes } from '../log-type.enum';
 
 @Component({
-  selector: 'ddap-auditlogs-list',
-  templateUrl: './auditlogs-list.component.html',
-  styleUrls: ['./auditlogs-list.component.scss'],
+  selector: 'ddap-auditlog-table',
+  templateUrl: './auditlog-table.component.html',
+  styleUrls: ['./auditlog-table.component.scss'],
 })
-export class AuditlogsListComponent implements OnInit {
+export class AuditlogTableComponent implements OnInit {
 
+  readonly columnsToDisplay: string[] = ['auditlogId', 'type', 'time', 'decision', 'resourceName'];
+  readonly separatorCodes: number[] = [ENTER];
+  readonly pageSize: FormControl = new FormControl('20');
+  readonly logType: FormControl = new FormControl(LogTypes.all);
+  readonly searchTextList: FormControl = new FormControl([]);
+  readonly decision: FormControl = new FormControl(Decision.all);
+
+  auditLogs$: Observable<object[]>;
+  account;
+  searchTextValues: string[] = [];
+  filter: string;
+  disableSearchText: boolean;
+
+  @Input()
+  userId: string;
+
+  constructor(private auditlogsService: AuditlogsService,
+              private auditlogDetailStateService: AuditlogDetailStateService,
+              private identityStore: IdentityStore,
+              private router: Router,
+              private route: ActivatedRoute) {
+  }
 
   get logTypes() {
-    return LogType;
+    return LogTypes;
   }
 
   get decisionType() {
     return Decision;
   }
 
-  auditLogs$: Observable<object[]>;
-  pageSize: FormControl = new FormControl('20');
-  logType: FormControl = new FormControl(LogType.all);
-  searchTextList: FormControl = new FormControl([]);
-  decision: FormControl = new FormControl(Decision.all);
-  account: IdentityAccount;
-  searchTextValues: string[] = [];
-  filter: string;
-  disableSearchText: boolean;
-  userId: string;
-  displayName: string;
-  readonly columnsToDisplay: string[] = ['auditlogId', 'type', 'time', 'decision', 'resourceName'];
-  readonly separatorCodes: number[] = [ENTER];
-
-  constructor( private identityStore: IdentityStore,
-               private auditlogsService: AuditlogsService,
-               private router: Router,
-               private route: ActivatedRoute) { }
-
   ngOnInit() {
     const queryParams = this.route.snapshot.queryParams;
-    this.userId = this.route.snapshot.params.entityId;
+
     if (Object.keys(queryParams).length) {
-      const { pageSize, filter, displayName } = queryParams;
-      this.displayName = displayName;
+      const { pageSize, filter } = queryParams;
       this.filter = filter || '';
-      if (pageSize) {
-        this.pageSize.patchValue(pageSize);
-      }
+      this.pageSize.patchValue(pageSize || this.pageSize.value);
       this.updateFilters(decodeURIComponent(filter));
     } else {
       this.filter = encodeURIComponent(this.getFilters());
     }
-    this.getDisplayName();
-    if (!this.userId || !this.userId.length) {
-      this.identityStore.state$.subscribe((identity: Identity) => {
-        if (!identity) {
-          return;
-        }
-        const {account} = identity;
-        this.account = account;
-        this.userId = account['sub'];
-        this.getLogs();
-      });
-    } else {
-      this.getLogs();
-    }
+
+    this.getLogs();
   }
 
   getFilters(): string {
     let filter = '';
-    if (this.logType.value.length > 0) {
+    if (this.logType.value.length) {
       filter = `type="${this.logType.value}"`;
     }
     if (this.searchTextValues.length > 0) {
@@ -91,7 +79,7 @@ export class AuditlogsListComponent implements OnInit {
     }
     if (this.decision.value.length > 0) {
       if (filter.length > 0) {
-        filter = filter + `AND decision="${this.decision.value}"`;
+        filter = filter + ` AND decision="${this.decision.value}"`;
       } else {
         filter = `decision="${this.decision.value}"`;
       }
@@ -99,7 +87,7 @@ export class AuditlogsListComponent implements OnInit {
     return filter;
   }
 
-  getLogs() {
+  getLogs(): void {
     this.filter = encodeURIComponent(this.getFilters());
     const pageSize = this.pageSize.value;
     this.router.navigate(
@@ -110,18 +98,25 @@ export class AuditlogsListComponent implements OnInit {
         queryParamsHandling: 'merge',
       }
     );
-    this.auditlogsService.getLogs(this.userId, pageSize, this.filter)
-      .subscribe(result => this.auditLogs$ = this.formatTableData(result['auditLogs']));
+    this.auditLogs$ = this.auditlogsService.getLogs(this.userId, pageSize, this.filter)
+      .pipe(
+        map((response) => this.formatTableData(response['auditLogs']))
+      );
   }
 
-  formatTableData(logs: object[] = []): Observable<object[]> {
+  searchLogs() {
+    this.filter = encodeURIComponent(this.getFilters());
+    this.getLogs();
+  }
+
+  formatTableData(logs: object[] = []): object[] {
     const auditLogs = [];
     logs.map(log => {
       const logDetail = Object.assign({}, log);
       logDetail['auditlogId'] = this.getIdFromName(log['name']);
       auditLogs.push(logDetail);
     });
-    return of(auditLogs);
+    return auditLogs;
   }
 
   getIdFromName(name: string): string {
@@ -132,7 +127,7 @@ export class AuditlogsListComponent implements OnInit {
   }
 
   gotoAuditlogDetail(log) {
-    this.auditlogsService.setCurrentAuditlog(log);
+    this.auditlogDetailStateService.saveAuditLog(log);
     this.router.navigate([log.auditlogId], {relativeTo: this.route});
   }
 
@@ -144,7 +139,7 @@ export class AuditlogsListComponent implements OnInit {
     }
     this.searchTextValues.push(`"${event.value}"`);
     this.disableSearchText = true;
-    this.getLogs();
+    this.searchLogs();
   }
 
   removeSearchText(searchText: string) {
@@ -159,11 +154,7 @@ export class AuditlogsListComponent implements OnInit {
       this.searchTextValues.splice(searchTextValuesIndex, 1);
     }
     this.disableSearchText = false;
-    this.getLogs();
-  }
-
-  getDisplayName() {
-    return this.displayName ? `Auditlogs of ${this.displayName}` : 'Auditlogs';
+    this.searchLogs();
   }
 
   formatTime(timeString: string): Date {
@@ -190,4 +181,5 @@ export class AuditlogsListComponent implements OnInit {
       }
     });
   }
+
 }

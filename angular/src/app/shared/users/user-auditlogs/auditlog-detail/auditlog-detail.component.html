@@ -1,0 +1,18 @@
+<mat-card>
+  <div *ngFor="let logDetail of auditLog | keyvalue" class="log-row">
+    <ng-container *ngIf="logDetail.key !== 'auditlogId'">
+      <div class="log-row--key">
+        {{toWords(logDetail.key)}}
+      </div>
+      <div class="log-row--value"
+           *ngIf="!(logDetail.key === 'reason' && isJson(logDetail.value))"
+           [attr.data-se]="logDetail.key">
+        {{logDetail.value}}
+      </div>
+      <div class="log-row--value" *ngIf="logDetail.key === 'reason' && isJson(logDetail.value)">
+        <json-editor [options]="editorOptions"
+                     [data]="jsonData"></json-editor>
+      </div>
+    </ng-container>
+  </div>
+</mat-card>

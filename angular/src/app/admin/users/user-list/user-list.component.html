@@ -106,18 +106,18 @@
             Edit
           </button>
           <button mat-menu-item
-                  (click)="viewAuditlog(user)"
-                  data-se="btn-auditlog">
+                  [routerLink]="[user.id, 'auditlogs']"
+                  data-se="btn-auditlogs">
             Auditlogs
           </button>
           <button mat-menu-item
-                  (click)="viewSessions(user)"
-                  data-se="btn-auditlog">
+                  [routerLink]="[user.id, 'sessions']"
+                  data-se="btn-sessions">
             Sessions
           </button>
           <button mat-menu-item
-                  (click)="viewConsents(user)"
-                  data-se="btn-auditlog">
+                  [routerLink]="[user.id, 'consents']"
+                  data-se="btn-consents">
             Consents
           </button>
           <button mat-menu-item

@@ -1,0 +1,12 @@
+<ddaplib-header *ngIf="userDisplayName"
+                [label]="userDisplayName + '\'s consents'"
+                [backLink]="['../..']"
+                iconClass="icon icon-passport">
+</ddaplib-header>
+
+<ddaplib-main>
+  <ng-container *ngIf="userId">
+    <ddap-consent-table [userId]="userId">
+    </ddap-consent-table>
+  </ng-container>
+</ddaplib-main>

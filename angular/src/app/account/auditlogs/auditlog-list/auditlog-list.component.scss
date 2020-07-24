@@ -1,0 +1,28 @@
+@import '~ddap-common-lib/styles/modules/colors';
+.filters {
+  display: flex;
+  align-items: baseline;
+  font-size: 0.9rem;
+
+  p{
+    padding-right: 0.5rem;
+    color: $color-dark-grey;
+  }
+
+  mat-form-field {
+    width: 16%;
+    max-width: 9rem;
+    margin-right: 2%;
+  }
+}
+.search-filter {
+  mat-form-field {
+    width: 52%;
+    max-width: 30rem;
+    margin-bottom: 1.5rem;
+  }
+  mat-icon {
+    font-size: 100%;
+    color: $color-dark-grey;
+  }
+}
