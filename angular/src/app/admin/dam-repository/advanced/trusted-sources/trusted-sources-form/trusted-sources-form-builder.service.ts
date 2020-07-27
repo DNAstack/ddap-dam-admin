@@ -3,11 +3,6 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
-import { dam } from '../../../../../shared/proto/dam-service';
-import IVariableFormat = dam.v1.IVariableFormat;
-import { ConditionAutocompleteService } from '../../../shared/condition-form/condition-autocomplete.service';
-import { ConditionFormBuilder } from '../../../shared/condition-form/condition-form-builder.service';
-
 @Injectable({
   providedIn: 'root',
 })

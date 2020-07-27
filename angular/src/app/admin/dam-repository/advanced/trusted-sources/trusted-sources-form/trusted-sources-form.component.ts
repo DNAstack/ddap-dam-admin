@@ -20,7 +20,7 @@ export class TrustedSourcesFormComponent implements OnInit, OnDestroy, Form {
     return this.form.get('sources') as FormArray;
   }
 
-  get claims() {
+  get visaTypes() {
     return this.form.get('visaTypes') as FormArray;
   }
 
@@ -59,13 +59,13 @@ export class TrustedSourcesFormComponent implements OnInit, OnDestroy, Form {
     this.sources.insert(0, this.trustedSourcesFormBuilder.buildStringControl());
   }
 
-  addClaim(): void {
-    const firstControl = this.getFirstControl(this.claims);
+  addVisaType(): void {
+    const firstControl = this.getFirstControl(this.visaTypes);
     if (firstControl && !firstControl.value) {
       // Skip if recently added was not touched
       return;
     }
-    this.claims.insert(0, this.trustedSourcesFormBuilder.buildStringControl());
+    this.visaTypes.insert(0, this.trustedSourcesFormBuilder.buildStringControl());
   }
 
   getModel(): EntityModel {
