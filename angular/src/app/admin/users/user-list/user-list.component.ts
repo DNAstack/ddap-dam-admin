@@ -4,6 +4,7 @@ import IUser = scim.v2.IUser;
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PaginationType } from 'ddap-common-lib';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import IListUsersResponse = scim.v2.IListUsersResponse;
 import { flatMap, switchMap } from 'rxjs/operators';
@@ -25,7 +26,8 @@ import { UserFilterService } from './user-filter.service';
 })
 export class UserListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'id', 'status', 'emails', 'moreActions'];
+  readonly displayedColumns: string[] = ['name', 'id', 'status', 'emails', 'moreActions'];
+  readonly PaginationType = PaginationType;
 
   query: FormControl = new FormControl('');
   activeFilter: FormControl = new FormControl(null);
@@ -33,7 +35,7 @@ export class UserListComponent implements OnInit {
   users$: Observable<IListUsersResponse>;
   realm: string;
 
-  private readonly defaultPageSize = 10;
+  private readonly defaultPageSize = 25;
   private readonly refreshUsers$ = new BehaviorSubject<any>({ startIndex: 1, count: this.defaultPageSize });
 
   constructor(private userService: UserService,
@@ -77,8 +79,12 @@ export class UserListComponent implements OnInit {
 
   changePage(page: PageEvent) {
     const params = this.refreshUsers$.getValue();
-    params.startIndex = this.getStartIndexBasedOnPageChangeDirection(page, params.count, params.startIndex);
-    params.count = page.pageSize;
+    if (page.pageIndex || page.previousPageIndex) {
+      params.startIndex = this.getStartIndexBasedOnPageChangeDirection(page, params.count, params.startIndex);
+    }
+    if (page.pageSize) {
+      params.count = page.pageSize;
+    }
     this.refreshUsers$.next(params);
   }
 

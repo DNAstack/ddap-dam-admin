@@ -134,7 +134,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <ddaplib-paginator color="primary"
-                       [paginationType]="'unidirectional'"
+                       [paginationType]="PaginationType.bidirectional"
                        [length]="usersResponse.totalResults"
                        [pageSize]="usersResponse.itemsPerPage"
                        (pageChange)="changePage($event)">
