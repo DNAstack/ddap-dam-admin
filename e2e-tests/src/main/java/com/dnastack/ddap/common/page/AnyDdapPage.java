@@ -30,8 +30,12 @@ public class AnyDdapPage {
     }
 
     public void waitForInflightRequests() {
-        new WebDriverWait(driver, 5)
-                .until(invisibilityOfElementLocated(By.xpath("//mat-progress-bar[contains(@class, 'main-progress-bar')]")));
+        waitForInflightRequests(5);
+    }
+
+    public void waitForInflightRequests(int timeoutInSeconds) {
+        new WebDriverWait(driver, timeoutInSeconds)
+            .until(invisibilityOfElementLocated(By.tagName("mat-progress-bar")));
     }
 
     private void acknowledgeSandboxIfAvailable() {

@@ -21,16 +21,16 @@ public class AdminAuditlogsE2eTest extends AbstractAdminFrontendE2eTest {
     @Test
     public void verifyAuditlogs() {
         AdminListPage adminListPage = ddapPage.getNavBar().goToAdmin(auditlogsLink());
-        adminListPage.waitForInflightRequests();
-        String pageSize = driver.findElement(DdapBy.se("page-size")).getText();
+        adminListPage.waitForInflightRequests(15);
+        int defaultPageSize = 25;
         WebElement auditlogsTable = driver.findElement(DdapBy.se("auditlog-result"));
         assertThat("Auditlogs size", auditlogsTable.findElements(By.tagName("tr")).size(),
-                allOf(greaterThan(1), lessThanOrEqualTo(Integer.parseInt(pageSize) + 1)));
+                allOf(greaterThan(1), lessThanOrEqualTo(defaultPageSize + 1)));
 
         WebElement auditlog = auditlogsTable.findElements(DdapBy.se("auditlog-id")).get(0);
         String auditlogId = auditlog.getText();
         auditlog.click();
-        adminListPage.waitForInflightRequests();
+        adminListPage.waitForInflightRequests(15);
 
         assertThat("Auditlogs detail page", driver.findElement(DdapBy.se("name")).getText(),
                 containsString(auditlogId));
@@ -39,14 +39,14 @@ public class AdminAuditlogsE2eTest extends AbstractAdminFrontendE2eTest {
     @Test
     public void filterAuditlogs() {
         AdminListPage adminListPage = ddapPage.getNavBar().goToAdmin(auditlogsLink());
-        adminListPage.waitForInflightRequests();
-        String pageSize = driver.findElement(DdapBy.se("page-size")).getText();
+        adminListPage.waitForInflightRequests(15);
+        int defaultPageSize = 25;
         WebElement auditlogsTable = driver.findElement(DdapBy.se("auditlog-result"));
         assertThat("Auditlogs size", auditlogsTable.findElements(By.tagName("tr")).size(),
-                allOf(greaterThan(1), lessThanOrEqualTo(Integer.parseInt(pageSize) + 1)));
+                allOf(greaterThan(1), lessThanOrEqualTo(defaultPageSize + 1)));
 
         fillFieldFromDropdown(DdapBy.se("log-type"), "REQUEST");
-        adminListPage.waitForInflightRequests();
+        adminListPage.waitForInflightRequests(15);
         String logType = driver.findElements(DdapBy.se("log-type-cell")).get(0).getText();
         assertThat("Filtered log type is REQUEST", logType, equalToIgnoringCase("REQUEST"));
     }
