@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigModificationModel, EntityModel, FormValidationService } from 'ddap-common-lib';
+import { ConfigModificationModel, DeleteActionConfirmationDialogComponent, EntityModel, FormValidationService } from 'ddap-common-lib';
+import _get from 'lodash.get';
 
 import { DamConfigEntityDetailComponentBaseDirective } from '../../../shared/dam/dam-config-entity-detail-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
@@ -19,13 +21,16 @@ export class AccessPolicyDetailComponent extends DamConfigEntityDetailComponentB
   @ViewChild(AccessPolicyFormComponent)
   accessPolicyForm: AccessPolicyFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected damConfigStore: DamConfigStore,
-              protected accessPoliciesStore: AccessPoliciesStore,
-              private accessPolicyService: AccessPolicyService) {
-    super(route, router, validationService, damConfigStore, accessPoliciesStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected damConfigStore: DamConfigStore,
+    protected accessPoliciesStore: AccessPoliciesStore,
+    protected dialog: MatDialog,
+    private accessPolicyService: AccessPolicyService
+  ) {
+    super(route, router, validationService, damConfigStore, accessPoliciesStore, dialog);
   }
 
   update() {
@@ -39,13 +44,26 @@ export class AccessPolicyDetailComponent extends DamConfigEntityDetailComponentB
       .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
-  delete() {
-    this.accessPolicyService.remove(this.entity.name)
-      .subscribe(() => this.navigateUp('..'), this.handleError);
-  }
-
   handleError = ({ error }) => {
     this.displayFieldErrorMessage(error, DamConfigEntityType.policies, this.accessPolicyForm.form);
+  }
+
+  openConfirmationDialog() {
+    this.dialog.open(DeleteActionConfirmationDialogComponent, {
+      data: {
+        entityName: _get(this.entity, 'dto.ui.label', this.entity.name),
+      },
+    }).afterClosed()
+      .subscribe(({ acknowledged }) => {
+        if (acknowledged) {
+          this.delete();
+        }
+      });
+  }
+
+  protected delete() {
+    this.accessPolicyService.remove(this.entity.name)
+      .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
@@ -24,13 +25,16 @@ export class ServiceDefinitionDetailComponent
   @ViewChild(ServiceDefinitionFormComponent)
   serviceDefinitionForm: ServiceDefinitionFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected damConfigStore: DamConfigStore,
-              protected serviceDefinitionsStore: ServiceDefinitionsStore,
-              public serviceDefinitionService: ServiceDefinitionService) {
-    super(route, router, validationService, damConfigStore, serviceDefinitionsStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected damConfigStore: DamConfigStore,
+    protected serviceDefinitionsStore: ServiceDefinitionsStore,
+    protected dialog: MatDialog,
+    public serviceDefinitionService: ServiceDefinitionService
+  ) {
+    super(route, router, validationService, damConfigStore, serviceDefinitionsStore, dialog);
   }
 
   update(): void {
@@ -44,13 +48,13 @@ export class ServiceDefinitionDetailComponent
       .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
-  delete(): void {
-    this.serviceDefinitionService.remove(this.entity.name)
-      .subscribe(() => this.navigateUp('..'), this.handleError);
-  }
-
   handleError = ({ error }) => {
     this.displayFieldErrorMessage(error, DamConfigEntityType.serviceTemplates, this.serviceDefinitionForm.form);
+  }
+
+  protected delete(): void {
+    this.serviceDefinitionService.remove(this.entity.name)
+      .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
 }

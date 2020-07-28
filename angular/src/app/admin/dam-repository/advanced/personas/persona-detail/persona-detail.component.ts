@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
@@ -21,13 +22,16 @@ export class PersonaDetailComponent extends DamConfigEntityDetailComponentBaseDi
   @ViewChild(PersonaFormComponent)
   personaForm: PersonaFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected damConfigStore: DamConfigStore,
-              protected personasStore: PersonasStore,
-              private personaService: PersonaService) {
-    super(route, router, validationService, damConfigStore, personasStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected damConfigStore: DamConfigStore,
+    protected personasStore: PersonasStore,
+    protected dialog: MatDialog,
+    private personaService: PersonaService
+  ) {
+    super(route, router, validationService, damConfigStore, personasStore, dialog);
   }
 
   update() {
@@ -40,11 +44,6 @@ export class PersonaDetailComponent extends DamConfigEntityDetailComponentBaseDi
       .subscribe(() => this.navigateUp('..'), this.showErrorMessage);
   }
 
-  delete() {
-    this.personaService.remove(this.entity.name)
-      .subscribe(() => this.navigateUp('..'), this.showErrorMessage);
-  }
-
   showErrorMessage = (error: HttpErrorResponse) => {
     if (error.status === 424) {
       const personaModel: EntityModel = this.personaForm.getModel();
@@ -52,6 +51,11 @@ export class PersonaDetailComponent extends DamConfigEntityDetailComponentBaseDi
     } else {
       this.personaForm.displayError(error);
     }
+  }
+
+  protected delete() {
+    this.personaService.remove(this.entity.name)
+      .subscribe(() => this.navigateUp('..'), this.showErrorMessage);
   }
 
 }

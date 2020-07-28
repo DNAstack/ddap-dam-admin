@@ -188,6 +188,12 @@ public class AdminManagePage extends AdminDdapPage {
 
     public AdminListPage deleteEntity() {
         this.clickButton(DdapBy.se("btn-delete"));
+
+        WebElement confirmationDialog = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.visibilityOfElementLocated(By.tagName("mat-dialog-container")));
+        WebElement confirmBtn = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(confirmationDialog.findElement(DdapBy.se("accept-btn"))));
+        confirmBtn.click();
         this.waitForInflightRequests();
 
         return new AdminListPage(driver);

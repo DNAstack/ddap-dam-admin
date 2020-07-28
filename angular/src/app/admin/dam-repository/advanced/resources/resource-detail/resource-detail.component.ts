@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineForms, FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
@@ -24,13 +25,16 @@ export class ResourceDetailComponent extends DamConfigEntityDetailComponentBaseD
   @ViewChild('accessForm')
   accessForm: ResourceAccessComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected damConfigStore: DamConfigStore,
-              protected resourcesStore: ResourcesStore,
-              private resourceService: ResourceService) {
-    super(route, router, validationService, damConfigStore, resourcesStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected damConfigStore: DamConfigStore,
+    protected resourcesStore: ResourcesStore,
+    protected dialog: MatDialog,
+    private resourceService: ResourceService
+  ) {
+    super(route, router, validationService, damConfigStore, resourcesStore, dialog);
   }
 
   update(isDryRun = false) {
@@ -47,11 +51,6 @@ export class ResourceDetailComponent extends DamConfigEntityDetailComponentBaseD
           this.navigateUp('..');
         }
       }, (error) => this.handleError(isDryRun, error));
-  }
-
-  delete() {
-    this.resourceService.remove(this.entity.name)
-      .subscribe(() => this.navigateUp('..'), this.showError);
   }
 
   handleError = (isDryRun: boolean, { error }) => {
@@ -75,6 +74,11 @@ export class ResourceDetailComponent extends DamConfigEntityDetailComponentBaseD
     if (this.resourceForm) {
       this.update(true);
     }
+  }
+
+  protected delete() {
+    this.resourceService.remove(this.entity.name)
+      .subscribe(() => this.navigateUp('..'), this.showError);
   }
 
   /**

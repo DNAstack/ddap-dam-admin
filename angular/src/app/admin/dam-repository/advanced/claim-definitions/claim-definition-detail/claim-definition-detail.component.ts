@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
@@ -21,13 +22,16 @@ export class ClaimDefinitionDetailComponent extends DamConfigEntityDetailCompone
   @ViewChild(ClaimDefinitionFormComponent)
   claimDefinitionForm: ClaimDefinitionFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected damConfigStore: DamConfigStore,
-              protected claimDefinitionsStore: ClaimDefinitionsStore,
-              private claimDefinitionService: ClaimDefinitionService) {
-    super(route, router, validationService, damConfigStore, claimDefinitionsStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected damConfigStore: DamConfigStore,
+    protected claimDefinitionsStore: ClaimDefinitionsStore,
+    protected dialog: MatDialog,
+    private claimDefinitionService: ClaimDefinitionService
+  ) {
+    super(route, router, validationService, damConfigStore, claimDefinitionsStore, dialog);
   }
 
   update() {
@@ -41,13 +45,13 @@ export class ClaimDefinitionDetailComponent extends DamConfigEntityDetailCompone
       .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
-  delete() {
-    this.claimDefinitionService.remove(this.entity.name)
-      .subscribe(() => this.navigateUp('..'), this.handleError);
-  }
-
   handleError = ({ error }) => {
     this.displayFieldErrorMessage(error, DamConfigEntityType.policies, this.claimDefinitionForm.form);
+  }
+
+  protected delete() {
+    this.claimDefinitionService.remove(this.entity.name)
+      .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
 }

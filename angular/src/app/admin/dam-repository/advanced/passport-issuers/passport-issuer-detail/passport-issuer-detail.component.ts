@@ -26,14 +26,16 @@ export class PassportIssuerDetailComponent extends DamConfigEntityDetailComponen
   @ViewChild(PassportIssuerFormComponent)
   passportIssuerForm: PassportIssuerFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected damConfigStore: DamConfigStore,
-              protected passportIssuersStore: PassportIssuersStore,
-              private passportIssuerService: PassportIssuerService,
-              public dialog: MatDialog) {
-    super(route, router, validationService, damConfigStore, passportIssuersStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected damConfigStore: DamConfigStore,
+    protected passportIssuersStore: PassportIssuersStore,
+    protected dialog: MatDialog,
+    private passportIssuerService: PassportIssuerService
+  ) {
+    super(route, router, validationService, damConfigStore, passportIssuersStore, dialog);
   }
 
   update() {
@@ -44,11 +46,6 @@ export class PassportIssuerDetailComponent extends DamConfigEntityDetailComponen
     const passportIssuer: EntityModel = this.passportIssuerForm.getModel();
     const change = new ConfigModificationModel(passportIssuer.dto, {});
     this.passportIssuerService.update(this.entity.name, change)
-      .subscribe(() => this.navigateUp('..'), this.showErrorMessage);
-  }
-
-  delete() {
-    this.passportIssuerService.remove(this.entity.name)
       .subscribe(() => this.navigateUp('..'), this.showErrorMessage);
   }
 
@@ -65,6 +62,12 @@ export class PassportIssuerDetailComponent extends DamConfigEntityDetailComponen
     this.displayFieldErrorMessage(error, 'trustedPassportIssuer', this.passportIssuerForm.form);
   }
 
+  protected delete() {
+    this.passportIssuerService.remove(this.entity.name)
+      .subscribe(() => this.navigateUp('..'), this.showErrorMessage);
+  }
+
+  // TODO: safe to delete?
   private openEntityRemovalConfirmationDialog(accessChange): void {
     const testPersonas = Object.keys(accessChange.testPersonas);
     const dialogRef = this.dialog.open(EntityRemovalConfirmationDialogComponent, {

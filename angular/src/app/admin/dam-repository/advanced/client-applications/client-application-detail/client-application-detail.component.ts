@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
@@ -25,13 +26,16 @@ export class ClientApplicationDetailComponent
   @ViewChild(ClientApplicationFormComponent)
   clientApplicationForm: ClientApplicationFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected damConfigStore: DamConfigStore,
-              protected clientApplicationsStore: ClientApplicationsStore,
-              private clientApplicationService: ClientApplicationService) {
-    super(route, router, validationService, damConfigStore, clientApplicationsStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected damConfigStore: DamConfigStore,
+    protected clientApplicationsStore: ClientApplicationsStore,
+    protected dialog: MatDialog,
+    private clientApplicationService: ClientApplicationService
+  ) {
+    super(route, router, validationService, damConfigStore, clientApplicationsStore, dialog);
   }
 
   update() {
@@ -45,13 +49,13 @@ export class ClientApplicationDetailComponent
       .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
-  delete() {
-    this.clientApplicationService.remove(this.entity.name)
-      .subscribe(() => this.navigateUp('..'), this.handleError);
-  }
-
   handleError = ({ error }) => {
     this.displayFieldErrorMessage(error, DamConfigEntityType.policies, this.clientApplicationForm.form);
+  }
+
+  protected delete() {
+    this.clientApplicationService.remove(this.entity.name)
+      .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
 }

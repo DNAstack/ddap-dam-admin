@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
@@ -21,13 +22,16 @@ export class TrustedSourcesDetailComponent extends DamConfigEntityDetailComponen
   @ViewChild(TrustedSourcesFormComponent)
   trustedSourcesForm: TrustedSourcesFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected damConfigStore: DamConfigStore,
-              protected trustedSourcesStore: TrustedSourcesStore,
-              private trustedSourcesService: TrustedSourcesService) {
-    super(route, router, validationService, damConfigStore, trustedSourcesStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected damConfigStore: DamConfigStore,
+    protected trustedSourcesStore: TrustedSourcesStore,
+    protected dialog: MatDialog,
+    private trustedSourcesService: TrustedSourcesService
+  ) {
+    super(route, router, validationService, damConfigStore, trustedSourcesStore, dialog);
   }
 
   update() {
@@ -41,13 +45,13 @@ export class TrustedSourcesDetailComponent extends DamConfigEntityDetailComponen
       .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
-  delete() {
-    this.trustedSourcesService.remove(this.entity.name)
-      .subscribe(() => this.navigateUp('..'), this.handleError);
-  }
-
   handleError = ({ error }) => {
     this.displayFieldErrorMessage(error, DamConfigEntityType.trustedSources, this.trustedSourcesForm.form);
+  }
+
+  protected delete() {
+    this.trustedSourcesService.remove(this.entity.name)
+      .subscribe(() => this.navigateUp('..'), this.handleError);
   }
 
 }
