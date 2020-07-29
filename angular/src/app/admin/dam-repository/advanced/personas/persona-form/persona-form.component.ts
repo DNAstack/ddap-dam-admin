@@ -63,6 +63,10 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
   claimDefinitions: Observable<string[]>;
   trustedSources: Observable<string[]>;
   claimSuggestedValues: string[];
+  conditionsComponentLabels = {
+    header: 'Visa Conditions',
+    description: 'Conditions are lists of requirements that are matched against visas. A condition is met if all its inner requirements are met. A visa containing a condition is only valid if one or more of its conditions are met by other user visas.',
+  };
 
   private validatorSubscription: Subscription = new Subscription();
   private resourceAccess$: Observable<any>;
