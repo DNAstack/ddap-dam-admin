@@ -58,8 +58,8 @@ export abstract class DamConfigEntityDetailComponentBaseDirective<T extends DamC
         entityName: _get(this.entity, 'dto.ui.label', this.entity.name),
       },
     }).afterClosed()
-      .subscribe(({ acknowledged }) => {
-        if (acknowledged) {
+      .subscribe((response) => {
+        if (response?.acknowledged) {
           this.delete();
         }
       });
