@@ -36,40 +36,19 @@
     </mat-form-field>
   </div>
 
-  <h3>
-    <span>Sources</span>
-    <div>
-      <button mat-button
-              color="primary"
-              class="uppercase"
-              type="button"
-              data-se="btn-add-source"
-              (click)="addSource()">
-        Add Source
-      </button>
-    </div>
-  </h3>
+  <h3>Sources</h3>
   <p>Trusted sources to issue access policy visas</p>
+  <mat-error *ngIf="form.get('sources.0').invalid">{{ form.get('sources.0').errors?.serverError }}</mat-error>
   <ddaplib-form-inline-editable-table [form]="form"
-                                      [arrayFieldName]="'sources'">
+                                      [arrayFieldName]="'sources'"
+                                      [fieldTitle]="'Source'">
   </ddaplib-form-inline-editable-table>
 
-  <h3>
-    <span>Visa Types</span>
-    <div>
-      <button mat-button
-              color="primary"
-              class="uppercase"
-              type="button"
-              data-se="btn-add-claim"
-              (click)="addVisaType()">
-        Add Visa Type
-      </button>
-    </div>
-  </h3>
+  <h3>Visa Types</h3>
   <p>Trusted visas to be issued from these sources</p>
   <ddaplib-form-inline-editable-table [form]="form"
-                                      [arrayFieldName]="'visaTypes'">
+                                      [arrayFieldName]="'visaTypes'"
+                                      [fieldTitle]="'Visa Type'">
   </ddaplib-form-inline-editable-table>
 
   <ng-content></ng-content>

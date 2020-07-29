@@ -71,12 +71,16 @@ export class TrustedSourcesFormComponent implements OnInit, OnDestroy, Form {
   getModel(): EntityModel {
     const {id, sources, visaTypes, ui} = this.form.value;
     const trustedSources = TrustedSource.create({
-      visaTypes,
-      sources,
+      visaTypes: this.removeEmptyValues(visaTypes),
+      sources: this.removeEmptyValues(sources),
       ui,
     });
 
     return new EntityModel(id, trustedSources);
+  }
+
+  removeEmptyValues(values: string[]) {
+    return values.filter(value => value.length > 0);
   }
 
   getAllForms(): FormGroup[] {

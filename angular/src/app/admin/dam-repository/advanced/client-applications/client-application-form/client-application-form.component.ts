@@ -84,12 +84,19 @@ export class ClientApplicationFormComponent implements OnInit, OnDestroy, Form {
   }
 
   getModel(): EntityModel {
-    const { id, ...rest } = this.form.value;
+    const { id, grantTypes, redirectUris, responseTypes, ...rest } = this.form.value;
     const clientApplication: Client = Client.create({
+      grantTypes: this.removeEmptyValues(grantTypes),
+      redirectUris: this.removeEmptyValues(redirectUris),
+      responseTypes: this.removeEmptyValues(responseTypes),
       ...rest,
     });
 
     return new EntityModel(id, clientApplication);
+  }
+
+  removeEmptyValues(values: string[]) {
+    return values.filter(value => value.length > 0);
   }
 
   getAllForms(): FormGroup[] {

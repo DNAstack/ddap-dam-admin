@@ -53,55 +53,22 @@
     </mat-form-field>
   </div>
 
-  <h3>
-    <span>Redirect URIs</span>
-    <div>
-      <button mat-button
-              color="primary"
-              class="uppercase"
-              type="button"
-              data-se="btn-add-redirectUri"
-              (click)="addRedirectUri()">
-        Add Redirect URI
-      </button>
-    </div>
-  </h3>
+  <h3>Redirect URIs</h3>
   <ddaplib-form-inline-editable-table [form]="form"
-                                      [arrayFieldName]="'redirectUris'">
+                                      [arrayFieldName]="'redirectUris'"
+                                      [fieldTitle]="'Redirect URI'">
   </ddaplib-form-inline-editable-table>
 
-  <h3>
-    <span>Grant Types</span>
-    <div>
-      <button mat-button
-              color="primary"
-              class="uppercase"
-              type="button"
-              data-se="btn-add-grantType"
-              (click)="addGrantType()">
-        Add Grant Type
-      </button>
-    </div>
-  </h3>
+  <h3>Grant Types</h3>
   <ddaplib-form-inline-editable-table [form]="form"
-                                      [arrayFieldName]="'grantTypes'">
+                                      [arrayFieldName]="'grantTypes'"
+                                      [fieldTitle]="'Grant Type'">
   </ddaplib-form-inline-editable-table>
 
-  <h3>
-    <span>Response Types</span>
-    <div>
-      <button mat-button
-              color="primary"
-              class="uppercase"
-              type="button"
-              data-se="btn-add-responseType"
-              (click)="addResponseType()">
-        Add Response type
-      </button>
-    </div>
-  </h3>
+  <h3>Response Types</h3>
   <ddaplib-form-inline-editable-table [form]="form"
-                                      [arrayFieldName]="'responseTypes'">
+                                      [arrayFieldName]="'responseTypes'"
+                                      [fieldTitle]="'Response Type'">
   </ddaplib-form-inline-editable-table>
 
   <ng-content></ng-content>
