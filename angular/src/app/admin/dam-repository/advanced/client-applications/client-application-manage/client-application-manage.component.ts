@@ -1,7 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormValidationService } from 'ddap-common-lib';
+import {
+  DeleteActionConfirmationDialogComponent,
+  FormValidationService,
+  SecretGeneratedDialogComponent,
+} from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
+import _get from 'lodash.get';
 
 import { DamConfigEntityFormComponentBase } from '../../../shared/dam/dam-config-entity-form-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
@@ -19,10 +25,13 @@ export class ClientApplicationManageComponent extends DamConfigEntityFormCompone
   @ViewChild(ClientApplicationFormComponent)
   clientApplicationForm: ClientApplicationFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              private clientApplicationService: ClientApplicationService) {
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    private dialog: MatDialog,
+    private clientApplicationService: ClientApplicationService
+  ) {
     super(route, router, validationService);
   }
 
@@ -34,11 +43,36 @@ export class ClientApplicationManageComponent extends DamConfigEntityFormCompone
     const clientApplication: EntityModel = this.clientApplicationForm.getModel();
     const change = new ConfigModificationModel(clientApplication.dto, {});
     this.clientApplicationService.save(clientApplication.name, change)
-      .subscribe(() => this.navigateUp('../..'), this.handleError);
+      .subscribe(
+        (response) => {
+          const secret = response.client_secret;
+          if (secret) {
+            this.openConfirmationDialog(secret);
+          } else {
+            this.navigateUp('../..');
+          }
+        },
+        this.handleError
+      );
   }
 
   handleError = ({ error }) => {
     this.displayFieldErrorMessage(error, DamConfigEntityType.policies, this.clientApplicationForm.form);
+  }
+
+  openConfirmationDialog(secretValue: string) {
+    this.dialog.open(SecretGeneratedDialogComponent, {
+      disableClose: true, // prevent closing dialog by clicking on backdrop
+      data: {
+        secretLabel: 'client secret',
+        secretValue,
+      },
+    }).afterClosed()
+      .subscribe(({ acknowledged }) => {
+        if (acknowledged) {
+          this.navigateUp('../..');
+        }
+      });
   }
 
 }
