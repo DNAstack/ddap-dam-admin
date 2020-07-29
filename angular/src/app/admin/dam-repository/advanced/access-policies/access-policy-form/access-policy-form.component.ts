@@ -34,6 +34,10 @@ export class AccessPolicyFormComponent implements OnInit, OnDestroy, Form {
   subscriptions: Subscription[] = [];
   isExpanded: Function = isExpanded;
   counter = 1;
+  conditionsComponentLabels = {
+    header: 'Conditions for Access',
+    description: 'Conditions are lists of requirements that are matched against visas. A condition is met if all its inner requirements are met. A policy is met, if one or more of its conditions are met.',
+  };
 
   constructor(public accessPolicyFormBuilder: AccessPolicyFormBuilder) {
   }

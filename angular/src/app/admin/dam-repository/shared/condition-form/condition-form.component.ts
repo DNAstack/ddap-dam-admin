@@ -35,7 +35,10 @@ export class ConditionFormComponent implements OnInit {
   @Input()
   anyOfFieldName: string;
   @Input()
-  label?: string;
+  labels: {
+    header: string;
+    description: string;
+  };
   @Input()
   showTrustedSources = false;
   @Input()
@@ -172,6 +175,12 @@ export class ConditionFormComponent implements OnInit {
       .map(([_, variableData]) => {
         return variableData ? variableData['id'] : '';
     });
+  }
+
+  getPanelTitle(numberOfConditions: number): string {
+    return numberOfConditions > 1
+      ? `Clause with ${numberOfConditions} Requirements`
+      : `Clause with ${numberOfConditions} Requirement`;
   }
 
   private subscribeToAutocompleteValuesForType() {

@@ -1,6 +1,6 @@
 <ng-container [formGroup]="form">
   <h3>
-    <span>{{ label || 'Conditions' }}</span>
+    <span>{{ labels.header }}</span>
     <div>
       <button mat-button
               color="primary"
@@ -17,10 +17,7 @@
     No conditions are applied.
   </p>
   <ng-template #conditionsInfo>
-    <p>
-      Multiple conditions act like logical <i>OR</i> clauses, while inner set of conditions act like logical <i>AND</i> clauses.
-      Each condition consists of <i>Type</i> and three prefix-suffix pairs <i>Source</i>, <i>Value</i> and <i>By</i>.
-    </p>
+    <p>{{ labels.description }}</p>
   </ng-template>
 
   <mat-accordion multi displayMode="flat"
@@ -32,7 +29,7 @@
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
         <mat-panel-title *ngIf="getClauses(condition).controls.length as numberOfConditions">
-          {{ numberOfConditions }} {{ numberOfConditions > 1 ? 'Condition Clauses' : 'Condition Clause' }}
+          {{ getPanelTitle(numberOfConditions) }}
         </mat-panel-title>
         <div class="invalid-warning"
              *ngIf="condition.invalid">
@@ -222,7 +219,7 @@
                         color="warn"
                         class="uppercase"
                         (click)="removeClauseCondition(condition, clauseIndex, conditionIndex)">
-                  Remove Clause
+                  Remove Requirement
                 </button>
               </mat-card-actions>
             </ng-container>
@@ -236,12 +233,13 @@
                 type="button"
                 data-se="btn-add-clause-condition"
                 (click)="addClauseCondition(condition)">
-          Add Clause
+          Add Requirement
         </button>
         <button mat-button
                 type="button"
                 color="warn"
                 class="uppercase"
+                data-se="btn-remove-condition"
                 (click)="removeCondition(conditionIndex)">
           Remove Condition
         </button>
