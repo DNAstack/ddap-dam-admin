@@ -47,7 +47,7 @@ export class ClientApplicationManageComponent extends DamConfigEntityFormCompone
         (response) => {
           const secret = response.client_secret;
           if (secret) {
-            this.openConfirmationDialog(secret);
+            this.openSecretGeneratedDialog(secret);
           } else {
             this.navigateUp('../..');
           }
@@ -60,7 +60,7 @@ export class ClientApplicationManageComponent extends DamConfigEntityFormCompone
     this.displayFieldErrorMessage(error, DamConfigEntityType.policies, this.clientApplicationForm.form);
   }
 
-  openConfirmationDialog(secretValue: string) {
+  openSecretGeneratedDialog(secretValue: string) {
     this.dialog.open(SecretGeneratedDialogComponent, {
       disableClose: true, // prevent closing dialog by clicking on backdrop
       data: {
