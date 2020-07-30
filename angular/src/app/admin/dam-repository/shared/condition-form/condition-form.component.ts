@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { EntityModel, isExpanded } from 'ddap-common-lib';
 import _get from 'lodash.get';
@@ -52,6 +52,10 @@ export class ConditionFormComponent implements OnInit {
   trustedSourcesValues: string[];
   prefixes: string[] = Object.values(ConditionPrefix);
   autocompleteValuesForType: any;
+  validators = [this.doesNotContainReservedSymbol];
+  errorMessages = {
+    'containsReservedSymbol': 'Semi-colons (“;”) are not allowed in patterns',
+  };
 
   constructor(public autocompleteService: ConditionAutocompleteService) {
   }
@@ -101,11 +105,16 @@ export class ConditionFormComponent implements OnInit {
     return condition.get('allOf') as FormArray;
   }
 
-  addSource(source, target, formGroup) {
-     // Force prefix to be 'split_pattern' when trusted source is selected
-    if (this.showTrustedSources && this.trustedSources[source.display]) {
-      formGroup.get('source.prefix').patchValue('split_pattern');
-    }
+  addBy(source, formGroup) {
+    formGroup.get('by.prefix').patchValue('split_pattern');
+  }
+
+  addSource(source, formGroup) {
+    formGroup.get('source.prefix').patchValue('split_pattern');
+  }
+
+  addValue(clauseValue: any | TagModelClass, formGroup: AbstractControl) {
+    formGroup.get('value.prefix').patchValue('split_pattern');
   }
 
   resolveTrustedSource(source) {
@@ -132,22 +141,6 @@ export class ConditionFormComponent implements OnInit {
     this.getClauses(condition).removeAt(clauseIndex);
     if (this.getClauses(condition).length < 1) {
       this.removeCondition(conditionIndex);
-    }
-  }
-
-  isSplitPattern = (prefix: string): boolean => prefix === ConditionPrefix.split_pattern;
-
-  showAutocompleteDropdown(prefix: string, control: AbstractControl): boolean {
-    if (prefix === ConditionPrefix.const || prefix === ConditionPrefix.pattern) {
-      const { value } = control;
-      return !value || value.length < 1;
-    }
-    return this.isSplitPattern(prefix);
-  }
-
-  addValue(clauseValue: any | TagModelClass, target: MatButtonToggleGroup, formGroup: AbstractControl) {
-    if (ConditionFormComponent.containsVariable(clauseValue.value)) {
-      formGroup.get('value.prefix').patchValue('split_pattern');
     }
   }
 
@@ -189,7 +182,14 @@ export class ConditionFormComponent implements OnInit {
     });
   }
 
-  private static containsVariable(value: string) {
-    return value.includes('${');
+  private doesNotContainReservedSymbol(control: FormControl) {
+    if (control.value.includes(';')) {
+      return {
+        'containsReservedSymbol': true,
+      };
+    }
+
+    return null;
   }
+
 }

@@ -1,23 +1,5 @@
 @import '~ddap-common-lib/styles/modules/colors';
 
-.timeline {
-  .event {
-    .line {
-      top: 5%;
-    }
-    .line.first {
-      height: 45%;
-    }
-    .line.last {
-      top: 53%;
-      height: 52%;
-    }
-  }
-  .event:after {
-    top: 5%;
-  }
-}
-
 mat-card-title {
   margin-bottom: 1.5rem;
 }
@@ -27,23 +9,9 @@ h4 {
   color: $color-grey;
 }
 
-div.row mat-button-toggle-group.col {
-  width: auto;
-  height: fit-content;
-  padding-right: 0;
-
-  mat-button-toggle {
-    font-size: 0.8rem;
-    width: 9.7rem;
-  }
-}
-
-::ng-deep .mat-button-toggle-label-content {
-  line-height: normal;
-}
-
 div.col tag-input {
   padding-bottom: 0;
+  border-bottom: 1px solid #9e9e9e;
 }
 
 h4:not(:first-child) {
