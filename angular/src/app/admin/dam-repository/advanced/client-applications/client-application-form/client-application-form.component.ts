@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Form, FormValidators, isExpanded } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
-import { Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
 import { common } from '../../../../../shared/proto/dam-service';
 import { generateInternalName } from '../../../shared/internal-name.util';
@@ -38,6 +38,8 @@ export class ClientApplicationFormComponent implements OnInit, OnDestroy, Form {
   form: FormGroup;
   subscriptions: Subscription[] = [];
   isExpanded: Function = isExpanded;
+  grantTypeValues: Observable<string[]> = of(['authorization_code', 'refresh_token', 'client_credentials']);
+  responseTypeValues: Observable<string[]> = of(['code', 'token', 'id_token']);
 
   constructor(private clientApplicationFormBuilder: ClientApplicationFormBuilder) {
   }
