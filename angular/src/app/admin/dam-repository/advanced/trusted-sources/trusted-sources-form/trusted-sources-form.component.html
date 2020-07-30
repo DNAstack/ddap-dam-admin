@@ -38,7 +38,7 @@
 
   <h3>Sources</h3>
   <p>Trusted sources to issue access policy visas</p>
-  <mat-error *ngIf="form.get('sources.0').invalid">{{ form.get('sources.0').errors?.serverError }}</mat-error>
+  <mat-error *ngIf="form.get('sources.0')?.invalid">{{ form.get('sources.0').errors?.serverError }}</mat-error>
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'sources'"
                                       [fieldTitle]="'Source'">
@@ -46,9 +46,12 @@
 
   <h3>Visa Types</h3>
   <p>Trusted visas to be issued from these sources</p>
+  <mat-error *ngIf="form.get('visaTypes.0')?.invalid">{{ form.get('visaTypes.0').errors?.serverError }}</mat-error>
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'visaTypes'"
-                                      [fieldTitle]="'Visa Type'">
+                                      [fieldTitle]="'Visa Type'"
+                                      [showAutocomplete]="true"
+                                      [autocompleteOptions]="visaTypesAutocompleteOptions">
   </ddaplib-form-inline-editable-table>
 
   <ng-content></ng-content>
