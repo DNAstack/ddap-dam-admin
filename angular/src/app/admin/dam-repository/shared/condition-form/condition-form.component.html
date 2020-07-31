@@ -110,7 +110,7 @@
                             </mat-icon>
                           </div>
                         </ng-template>
-                        <tag-input-dropdown [showDropdownIfEmpty]="true"
+                        <tag-input-dropdown [showDropdownIfEmpty]="!clause.get('source.value').value"
                                             [autocompleteItems]="trustedSourcesValues">
                         </tag-input-dropdown>
                       </tag-input>
@@ -140,7 +140,7 @@
                                  [attr.data-se]="'inp-condition-' + clauseIndex + '-by-value'"
                                  modelAsStrings="true"
                                  [onlyFromAutocomplete]="true">
-                        <tag-input-dropdown [showDropdownIfEmpty]="true"
+                        <tag-input-dropdown [showDropdownIfEmpty]="!clause.get('by.value').value"
                                             [autocompleteItems]="autocompleteService.getByValues()">
                         </tag-input-dropdown>
                       </tag-input>

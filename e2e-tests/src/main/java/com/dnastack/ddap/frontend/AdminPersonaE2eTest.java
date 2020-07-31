@@ -37,7 +37,6 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
 
-        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
         adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "faculty@uni-heidelberg.de");
 
         adminListPage = adminManagePage.saveEntity();
