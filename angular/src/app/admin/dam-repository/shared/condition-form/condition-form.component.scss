@@ -38,3 +38,7 @@ h4:not(:first-child) {
     top: 0.6rem;
   }
 }
+
+tag-input ~ mat-hint {
+  font-size: 75%;
+}
