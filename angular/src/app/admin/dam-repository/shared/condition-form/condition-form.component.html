@@ -98,18 +98,18 @@
                                  (onAdd)="addSource($event, clause)"
                                  [attr.data-se]="'inp-condition-' + clauseIndex + '-source-value'"
                                  modelAsStrings="true">
-                          <ng-template let-selected="item" let-index="index">
-                            <div class="source-tag-wrapper"
-                                 matTooltip="{{resolveTrustedSource(selected)}}">
-                              {{
-                                (showTrustedSources && isTrustedSource(selected))
-                                ? (selected + ':' + resolveTrustedSource(selected))
-                                : selected
-                              }}
-                              <mat-icon class="close-tag icon icon-close" (click)="sourceInput.removeItem(selected, index)">
-                              </mat-icon>
-                            </div>
-                          </ng-template>
+                        <ng-template let-selected="item" let-index="index">
+                          <div class="source-tag-wrapper"
+                               matTooltip="{{resolveTrustedSource(selected)}}">
+                            {{
+                            (showTrustedSources && isTrustedSource(selected))
+                              ? (selected + ':' + resolveTrustedSource(selected))
+                              : selected
+                            }}
+                            <mat-icon class="close-tag icon icon-close" (click)="sourceInput.removeItem(selected, index)">
+                            </mat-icon>
+                          </div>
+                        </ng-template>
                         <tag-input-dropdown [showDropdownIfEmpty]="true"
                                             [autocompleteItems]="trustedSourcesValues">
                         </tag-input-dropdown>

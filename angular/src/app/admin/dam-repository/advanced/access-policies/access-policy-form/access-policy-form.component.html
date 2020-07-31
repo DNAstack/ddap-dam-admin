@@ -28,12 +28,13 @@
   <ng-container formGroupName="ui">
     <div class="row">
       <mat-form-field class="col">
-      <textarea matInput
-                placeholder="Description"
-                formControlName="description"
-                data-se="inp-description"
-                required>
-      </textarea>
+        <textarea matInput
+                  placeholder="Description"
+                  formControlName="description"
+                  data-se="inp-description"
+                  required>
+        </textarea>
+        <mat-hint>A summary of this policy, shown to other administrators</mat-hint>
         <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
         <mat-error *ngIf="form.get('ui.description') as control">
           <ng-container *ngIf="control.invalid">
@@ -48,6 +49,7 @@
                placeholder="Info URL"
                formControlName="infoUrl"
                data-se="inp-infoUrl">
+        <mat-hint>A URL with information on this policy for end-users requesting access</mat-hint>
         <mat-error *ngIf="form.get('ui.infoUrl').hasError('url')">Must start with http:// or https://</mat-error>
         <mat-error *ngIf="form.get('ui.infoUrl') as control">
           <ng-container *ngIf="control.invalid">
@@ -101,6 +103,7 @@
                    placeholder="Name"
                    [attr.data-se]="'inp-variable-' + variableDefinition.key + '-name'"
                    required>
+            <mat-hint>Name of this variable. Variable names are typically short, with no spaces</mat-hint>
           </mat-form-field>
         </div>
         <div class="row">
@@ -112,6 +115,7 @@
                       [attr.data-se]="'inp-variable-' + variableDefinition.key + '-description'"
                       required>
             </textarea>
+            <mat-hint>Description of variable usage. Shown to administrators configuring this policy on a resource.</mat-hint>
             <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
             <mat-error *ngIf="variableDefinition.value.get('description') as control">
               <ng-container *ngIf="control.invalid">
@@ -127,6 +131,7 @@
                    placeholder="Regexp"
                    [attr.data-se]="'inp-variable-' + variableDefinition.key + '-regexp'"
                    required>
+            <mat-hint>A regular expression describing allowed values. If you don’t know what to put here, use ”.*” to allow anything</mat-hint>
             <mat-error *ngIf="variableDefinition.value.get('regexp') as control">
               <ng-container *ngIf="control.invalid">
                 {{ control.errors?.serverError }}
