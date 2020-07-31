@@ -184,7 +184,6 @@ public class AdminResourceE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.toggleExpansionPanel("condition-0");
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
         adminManagePage.waitForInflightRequests();
-        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
         adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "${TEST_VARIABLE_DATASET}");
 
         adminListPage = adminManagePage.saveEntity();

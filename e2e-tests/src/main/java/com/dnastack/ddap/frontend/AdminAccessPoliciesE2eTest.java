@@ -24,7 +24,6 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
         adminManagePage.waitForInflightRequests();
-        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
         adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "faculty@uni-heidelberg.de");
 
         adminListPage = adminManagePage.saveEntity();
@@ -52,20 +51,16 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-condition-0-type"), "AffiliationAndRole");
         adminManagePage.waitForInflightRequests();
-        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-value-prefix-const"));
         adminManagePage.fillTagField(DdapBy.se("inp-condition-0-value-value"), "faculty@uni-heidelberg.de");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-clause-condition"));
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-condition-1-type"), "AffiliationAndRole");
         adminManagePage.waitForInflightRequests();
-        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-1-value-prefix-const"));
         adminManagePage.fillTagField(DdapBy.se("inp-condition-1-value-value"), "https://dac.nih.gov/datasets/${TEST_VARIABLE_DATASET}");
 
         adminManagePage.clickButton(DdapBy.se("btn-add-condition"));
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-condition-0-type"), "ResearcherStatus");
         adminManagePage.waitForInflightRequests();
-        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-source-prefix-pattern"));
-        adminManagePage.clickButtonToggle(DdapBy.se("inp-condition-0-source-prefix-pattern")); // For some reason one click is not enough
         adminManagePage.fillTagField(DdapBy.se("inp-condition-0-source-value"), TRUSTED_SOURCE);
 
         adminListPage = adminManagePage.saveEntity();
