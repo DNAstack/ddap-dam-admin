@@ -114,6 +114,7 @@
                                             [autocompleteItems]="trustedSourcesValues">
                         </tag-input-dropdown>
                       </tag-input>
+                      <mat-hint>A URL that provides the organization that asserted a visa</mat-hint>
                       <div *ngIf="clause.get('source') as control"
                            class="field-error">
                         <ng-container *ngIf="control.invalid">
@@ -143,6 +144,7 @@
                                             [autocompleteItems]="autocompleteService.getByValues()">
                         </tag-input-dropdown>
                       </tag-input>
+                      <mat-hint>The level or type of authority within the "source" organization</mat-hint>
                       <div *ngIf="clause.get('by').invalid"
                            class="field-error">
                         {{ clause.get('by').errors?.serverError || 'choose one of the prefixes' }}
@@ -191,6 +193,14 @@
                           </tag-input-dropdown>
                         </tag-input>
                       </ng-container>
+                      <mat-hint>
+                        A string that represents any of the scope, process, identifier and version of the assertion. The format of the string can vary by the
+                        <a href="https://github.com/ga4gh-duri/ga4gh-duri.github.io/blob/64b4948e94e3a6250092ba11680b6982dd51b64a/researcher_ids/ga4gh_passport_v1.md#passport-visa-type"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                          Passport Visa Type
+                        </a>
+                      </mat-hint>
                       <div *ngIf="clause.get('value') as control"
                            class="field-error">
                         <ng-container *ngIf="control.invalid">
