@@ -17,7 +17,7 @@ export class ServiceDefinitionListComponent
   extends DamConfigEntityListComponentBaseDirective<ServiceDefinitionsStore>
   implements OnInit {
 
-  displayedColumns: string[] = ['label', 'description', 'targetAdapter', 'itemFormat', 'interfaces', 'roles', 'moreActions'];
+  displayedColumns: string[] = ['label', 'description', 'interfaces', 'roles', 'moreActions'];
 
   constructor(
     protected route: ActivatedRoute,
