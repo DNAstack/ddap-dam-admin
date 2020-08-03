@@ -42,3 +42,7 @@ h4:not(:first-child) {
 tag-input ~ mat-hint {
   font-size: 75%;
 }
+
+.nonstandard-value {
+  color: $warn-color;
+}

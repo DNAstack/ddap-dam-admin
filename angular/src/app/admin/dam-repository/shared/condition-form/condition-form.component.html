@@ -129,7 +129,8 @@
                   <h4 class="row">By</h4>
                   <div class="row">
                     <div class="col">
-                      <tag-input formControlName="value"
+                      <tag-input #byInput
+                                 formControlName="value"
                                  theme="minimal"
                                  maxItems="100"
                                  secondaryPlaceholder="Add By"
@@ -138,8 +139,14 @@
                                  [errorMessages]="errorMessages"
                                  (onAdd)="addBy($event, clause)"
                                  [attr.data-se]="'inp-condition-' + clauseIndex + '-by-value'"
-                                 modelAsStrings="true"
-                                 [onlyFromAutocomplete]="true">
+                                 modelAsStrings="true">
+                        <ng-template let-item="item" let-index="index">
+                          <span [class.nonstandard-value]="!isStandardByValue(item)"
+                                [matTooltip]="!isStandardByValue(item) ? 'This is an invalid value in the GA4GH Passport V1 specification' : ''">
+                            {{ item }}
+                          </span>
+                          <delete-icon (click)="byInput.removeItem(item, index)"></delete-icon>
+                        </ng-template>
                         <tag-input-dropdown [showDropdownIfEmpty]="!clause.get('by.value').value"
                                             [autocompleteItems]="autocompleteService.getByValues()">
                         </tag-input-dropdown>

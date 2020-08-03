@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { EntityModel, isExpanded } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import ConditionPrefix = PassportVisa.ConditionPrefix;
@@ -14,6 +13,7 @@ import { PassportVisa } from '../passport-visa/passport-visa.constant';
 
 import { ConditionAutocompleteService } from './condition-autocomplete.service';
 import { ConditionFormBuilder } from './condition-form-builder.service';
+import AuthorityLevel = PassportVisa.AuthorityLevel;
 
 @Component({
   selector: 'ddap-condition-form',
@@ -45,7 +45,8 @@ export class ConditionFormComponent implements OnInit {
   showVariables = false;
   @Input()
   variableDefinitions;
-
+  @Input()
+  warnOnInvalidValuesForByInput = true;
 
   isExpanded: Function = isExpanded;
   trustedSources: any;
@@ -174,6 +175,14 @@ export class ConditionFormComponent implements OnInit {
     return numberOfConditions > 1
       ? `Clause with ${numberOfConditions} Requirements`
       : `Clause with ${numberOfConditions} Requirement`;
+  }
+
+  isStandardByValue(by: string): boolean {
+    if (!this.warnOnInvalidValuesForByInput) {
+      return true;
+    }
+    const mayBeAuthorityLevel: AuthorityLevel | undefined = (<any>AuthorityLevel)[by];
+    return mayBeAuthorityLevel !== undefined;
   }
 
   private subscribeToAutocompleteValuesForType() {
