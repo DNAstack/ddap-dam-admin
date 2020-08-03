@@ -65,7 +65,7 @@
         <td mat-cell *matCellDef="let model"
             class="table--actions">
           <mat-icon [matMenuTriggerFor]="moreActionsMenu"
-                    [matMenuTriggerData]="{ id: model.name }"
+                    [matMenuTriggerData]="{ id: model.name, label: model.dto.ui?.label }"
                     data-se="btn-more-actions">
             more_vert
           </mat-icon>
