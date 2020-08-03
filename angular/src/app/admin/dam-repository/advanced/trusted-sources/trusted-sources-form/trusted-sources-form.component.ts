@@ -9,7 +9,7 @@ import { dam } from '../../../../../shared/proto/dam-service';
 import { makeDistinct, pick } from '../../../shared/autocomplete.util';
 import TrustedSource = dam.v1.TrustedSource;
 import { generateInternalName } from '../../../shared/internal-name.util';
-import { ClaimDefinitionsStore } from '../../claim-definitions/claim-definitions.store';
+import { VisaTypesStore } from '../../visa-types/visa-types.store';
 
 import { TrustedSourcesFormBuilder } from './trusted-sources-form-builder.service';
 
@@ -42,7 +42,7 @@ export class TrustedSourcesFormComponent implements OnInit, OnDestroy, Form {
   constructor(
     private route: ActivatedRoute,
     private trustedSourcesFormBuilder: TrustedSourcesFormBuilder,
-    private claimDefinitionsStore: ClaimDefinitionsStore
+    private claimDefinitionsStore: VisaTypesStore
   ) {
   }
 

@@ -132,10 +132,10 @@ export class AppConfigService {
         isApp: false,
       })
       .registerModule({
-        key: 'advanced-claim-definitions',
-        name: 'Claim Definitions',
+        key: 'advanced-visa-types',
+        name: 'Visa Types',
         iconClasses: 'icon icon-claims',
-        routerLink: 'admin/dam/advanced/claim-definitions',
+        routerLink: 'admin/dam/advanced/visa-types',
         group: 'advanced',
         isApp: false,
       })

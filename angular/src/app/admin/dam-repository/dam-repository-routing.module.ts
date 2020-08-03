@@ -11,9 +11,9 @@ export const routes: Routes = [
           .then(mod => mod.AccessPoliciesModule),
       },
       {
-        path: 'claim-definitions',
-        loadChildren: () => import('./advanced/claim-definitions/claim-definitions.module')
-          .then(mod => mod.ClaimDefinitionsModule),
+        path: 'visa-types',
+        loadChildren: () => import('./advanced/visa-types/visa-types.module')
+          .then(mod => mod.VisaTypesModule),
       },
       {
         path: 'client-applications',

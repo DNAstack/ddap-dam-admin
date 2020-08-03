@@ -12,12 +12,12 @@ import { filterBy, flatten, includes, makeDistinct, pick } from '../../../shared
 import { ConditionFormComponent } from '../../../shared/condition-form/condition-form.component';
 import { generateInternalName } from '../../../shared/internal-name.util';
 import { PassportVisa } from '../../../shared/passport-visa/passport-visa.constant';
-import { ClaimDefinitionService } from '../../claim-definitions/claim-definitions.service';
-import { ClaimDefinitionsStore } from '../../claim-definitions/claim-definitions.store';
 import { PassportIssuersStore } from '../../passport-issuers/passport-issuers.store';
 import TestPersona = common.TestPersona;
 import { ResourcesStore } from '../../resources/resources.store';
 import { TrustedSourcesStore } from '../../trusted-sources/trusted-sources.store';
+import { VisaTypeService } from '../../visa-types/visa-types.service';
+import { VisaTypesStore } from '../../visa-types/visa-types.store';
 import { PersonaAccessFormComponent } from '../persona-resource-form/persona-access-form.component';
 import { PersonaService } from '../personas.service';
 
@@ -75,8 +75,8 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
               public personaFormBuilder: PersonaFormBuilder,
               private personaService: PersonaService,
               private resourcesStore: ResourcesStore,
-              private claimDefService: ClaimDefinitionService,
-              private claimDefinitionsStore: ClaimDefinitionsStore,
+              private claimDefService: VisaTypeService,
+              private claimDefinitionsStore: VisaTypesStore,
               private passportIssuersStore: PassportIssuersStore,
               private trustedSourcesStore: TrustedSourcesStore) {
   }

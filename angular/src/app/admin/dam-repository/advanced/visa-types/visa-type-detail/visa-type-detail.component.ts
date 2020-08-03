@@ -7,29 +7,29 @@ import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 import { DamConfigEntityDetailComponentBaseDirective } from '../../../shared/dam/dam-config-entity-detail-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
-import { ClaimDefinitionFormComponent } from '../claim-definition-form/claim-definition-form.component';
-import { ClaimDefinitionService } from '../claim-definitions.service';
-import { ClaimDefinitionsStore } from '../claim-definitions.store';
+import { VisaTypeFormComponent } from '../visa-type-form/visa-type-form.component';
+import { VisaTypeService } from '../visa-types.service';
+import { VisaTypesStore } from '../visa-types.store';
 
 @Component({
-  selector: 'ddap-claim-definition-detail',
-  templateUrl: './claim-definition-detail.component.html',
-  styleUrls: ['./claim-definition-detail.component.scss'],
+  selector: 'ddap-visa-type-detail',
+  templateUrl: './visa-type-detail.component.html',
+  styleUrls: ['./visa-type-detail.component.scss'],
   providers: [FormValidationService],
 })
-export class ClaimDefinitionDetailComponent extends DamConfigEntityDetailComponentBaseDirective<ClaimDefinitionsStore> implements OnInit {
+export class VisaTypeDetailComponent extends DamConfigEntityDetailComponentBaseDirective<VisaTypesStore> implements OnInit {
 
-  @ViewChild(ClaimDefinitionFormComponent)
-  claimDefinitionForm: ClaimDefinitionFormComponent;
+  @ViewChild(VisaTypeFormComponent)
+  claimDefinitionForm: VisaTypeFormComponent;
 
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
     protected validationService: FormValidationService,
     protected damConfigStore: DamConfigStore,
-    protected claimDefinitionsStore: ClaimDefinitionsStore,
+    protected claimDefinitionsStore: VisaTypesStore,
     protected dialog: MatDialog,
-    private claimDefinitionService: ClaimDefinitionService
+    private claimDefinitionService: VisaTypeService
   ) {
     super(route, router, validationService, damConfigStore, claimDefinitionsStore, dialog);
   }

@@ -5,24 +5,24 @@ import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import { DamConfigEntityFormComponentBase } from '../../../shared/dam/dam-config-entity-form-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
-import { ClaimDefinitionFormComponent } from '../claim-definition-form/claim-definition-form.component';
-import { ClaimDefinitionService } from '../claim-definitions.service';
+import { VisaTypeFormComponent } from '../visa-type-form/visa-type-form.component';
+import { VisaTypeService } from '../visa-types.service';
 
 @Component({
-  selector: 'ddap-claim-definition-manage',
-  templateUrl: './claim-definition-manage.component.html',
-  styleUrls: ['./claim-definition-manage.component.scss'],
+  selector: 'ddap-visa-type-manage',
+  templateUrl: './visa-type-manage.component.html',
+  styleUrls: ['./visa-type-manage.component.scss'],
   providers: [FormValidationService],
 })
-export class ClaimDefinitionManageComponent extends DamConfigEntityFormComponentBase {
+export class VisaTypeManageComponent extends DamConfigEntityFormComponentBase {
 
-  @ViewChild(ClaimDefinitionFormComponent)
-  claimDefinitionForm: ClaimDefinitionFormComponent;
+  @ViewChild(VisaTypeFormComponent)
+  claimDefinitionForm: VisaTypeFormComponent;
 
   constructor(protected route: ActivatedRoute,
               protected router: Router,
               protected validationService: FormValidationService,
-              private claimDefinitionService: ClaimDefinitionService) {
+              private claimDefinitionService: VisaTypeService) {
     super(route, router, validationService);
   }
 

@@ -5,15 +5,15 @@ import com.dnastack.ddap.common.page.AdminManagePage;
 import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.Test;
 
-import static com.dnastack.ddap.common.fragments.NavBar.damClaimDefinitionLink;
+import static com.dnastack.ddap.common.fragments.NavBar.damVisaTypesLink;
 
 @SuppressWarnings("Duplicates")
-public class AdminClaimDefinitionsE2eTest extends AbstractAdminFrontendE2eTest {
+public class AdminVisaTypesE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void addClaimDefinition() {
         AdminListPage adminListPage = ddapPage.getNavBar()
-                .goToAdmin(damClaimDefinitionLink());
+                .goToAdmin(damVisaTypesLink());
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
@@ -30,7 +30,7 @@ public class AdminClaimDefinitionsE2eTest extends AbstractAdminFrontendE2eTest {
     @Test
     public void editClaimDefinition() {
         AdminListPage adminListPage = ddapPage.getNavBar()
-                .goToAdmin(damClaimDefinitionLink());
+                .goToAdmin(damVisaTypesLink());
 
         adminListPage.assertListItemExists("Accepted Terms and Policies");
         adminListPage.assertListItemDoNotExist("Acc3pt3d T3rms and Policies Edited");
@@ -49,7 +49,7 @@ public class AdminClaimDefinitionsE2eTest extends AbstractAdminFrontendE2eTest {
     @Test
     public void deleteClaimDefinition() {
         AdminListPage adminListPage = ddapPage.getNavBar()
-                .goToAdmin(damClaimDefinitionLink());
+                .goToAdmin(damVisaTypesLink());
         String entityToBeDeleted = "Affiliation and Role";
 
         adminListPage.assertListItemExists(entityToBeDeleted);
@@ -64,7 +64,7 @@ public class AdminClaimDefinitionsE2eTest extends AbstractAdminFrontendE2eTest {
     @Test
     public void deleteFromListClaimDefinition() {
         AdminListPage adminListPage = ddapPage.getNavBar()
-            .goToAdmin(damClaimDefinitionLink());
+            .goToAdmin(damVisaTypesLink());
         String entityToBeDeleted = "Delete Me List Claim";
 
         adminListPage.assertListItemExists(entityToBeDeleted);

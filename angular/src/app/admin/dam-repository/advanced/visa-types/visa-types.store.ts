@@ -7,7 +7,7 @@ import { DamConfigStore } from '../../shared/dam/dam-config.store';
 @Injectable({
   providedIn: 'root',
 })
-export class ClaimDefinitionsStore extends DamConfigEntityStore {
+export class VisaTypesStore extends DamConfigEntityStore {
 
   constructor(protected damConfigStore: DamConfigStore) {
     super(DamConfigEntityType.visaTypes, damConfigStore);

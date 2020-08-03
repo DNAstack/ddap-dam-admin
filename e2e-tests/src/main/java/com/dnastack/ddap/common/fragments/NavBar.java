@@ -61,8 +61,8 @@ public class NavBar {
         return new NavLink("Trusted Sources", DdapBy.se("nav-advanced-trusted-sources"), damPanelAdvancedSelectorLink());
     }
 
-    public static NavLink damClaimDefinitionLink() {
-        return new NavLink("Claim Definitions", DdapBy.se("nav-advanced-claim-definitions"), damPanelAdvancedSelectorLink());
+    public static NavLink damVisaTypesLink() {
+        return new NavLink("Visa Types", DdapBy.se("nav-advanced-visa-types"), damPanelAdvancedSelectorLink());
     }
 
     public static NavLink damServiceDefinitionLink() {

@@ -11,12 +11,12 @@ import { dam } from '../../../../../shared/proto/dam-service';
 import { generateInternalName } from '../../../shared/internal-name.util';
 
 @Component({
-  selector: 'ddap-claim-definition-form',
-  templateUrl: './claim-definition-form.component.html',
-  styleUrls: ['./claim-definition-form.component.scss'],
+  selector: 'ddap-visa-type-form',
+  templateUrl: './visa-type-form.component.html',
+  styleUrls: ['./visa-type-form.component.scss'],
 
 })
-export class ClaimDefinitionFormComponent implements OnInit, OnDestroy, Form {
+export class VisaTypeFormComponent implements OnInit, OnDestroy, Form {
 
   @Input()
   internalNameEditable = false;

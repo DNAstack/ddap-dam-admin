@@ -12,7 +12,7 @@ import { DamConfigService } from '../../shared/dam/dam-config.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ClaimDefinitionService extends DamConfigService {
+export class VisaTypeService extends DamConfigService {
 
   constructor(protected http: HttpClient,
               protected route: ActivatedRoute,
