@@ -18,6 +18,7 @@
              [readonly]="persona && persona.name.length > 0"
              required>
       <mat-icon matSuffix
+                          class="input-help"
                 matTooltip="The internal name is the unique identifier for this entity in the system. Once created, it cannot be changed.">
         help_outline
       </mat-icon>
@@ -40,6 +41,11 @@
                    data-se="inp-iss"
                    [matAutocomplete]="issuers"
                    required>
+            <mat-icon matSuffix
+                          class="input-help"
+                      matTooltip="The URL of the passport issuer for this persona.">
+              help_outline
+            </mat-icon>
             <mat-autocomplete #issuers="matAutocomplete">
               <mat-option *ngFor="let option of passportIssuers | async"
                           [value]="option">
@@ -53,6 +59,11 @@
                    placeholder="Email"
                    data-se="inp-email"
                    required>
+            <mat-icon matSuffix
+                          class="input-help"
+                      matTooltip="Email address for this persona.">
+              help_outline
+            </mat-icon>
           </mat-form-field>
         </div>
         <div class="row">
@@ -61,6 +72,11 @@
                    placeholder="Picture URL"
                    formControlName="picture"
                    data-se="inp-picture">
+            <mat-icon matSuffix
+                          class="input-help"
+                      matTooltip="Optional picture URL that may be displayed in places where this persona is used.">
+              help_outline
+            </mat-icon>
           </mat-form-field>
         </div>
         <ddaplib-image-preview [photoUri]="form.get('passport.standardClaims.picture').value">
@@ -112,6 +128,11 @@
                        placeholder="Passport Visa Type"
                        data-se="inp-passport-type"
                        required>
+                <mat-icon matSuffix
+                          class="input-help"
+                          matTooltip="The type of this visa. Not limited to Visa Types configured in this DAM.">
+                  help_outline
+                </mat-icon>
                 <mat-autocomplete #claims="matAutocomplete">
                   <mat-option *ngFor="let option of claimDefinitions | async"
                               [value]="option">
@@ -126,6 +147,11 @@
                        placeholder="Source"
                        data-se="inp-passport-source"
                        required>
+                <mat-icon matSuffix
+                          class="input-help"
+                          matTooltip="Source URL for this passport visa. Not limited to sources configured in this DAM.">
+                  help_outline
+                </mat-icon>
                 <mat-error *ngIf="ga4ghAssertion.get('source').hasError('url')">Must start with http:// or https://</mat-error>
                 <mat-autocomplete #sources="matAutocomplete">
                   <mat-option *ngFor="let option of trustedSources | async"
@@ -143,6 +169,11 @@
                      placeholder="Value"
                      data-se="inp-passport-value"
                      required>
+              <mat-icon matSuffix
+                          class="input-help"
+                        matTooltip="The value for this visa.">
+                help_outline
+              </mat-icon>
               <mat-autocomplete #values="matAutocomplete">
                 <mat-option *ngFor="let option of claimSuggestedValues"
                             [value]="option">
@@ -158,6 +189,11 @@
                        formControlName="assertedDuration"
                        placeholder="Asserted Duration"
                        data-se="inp-passport-asserted">
+                <mat-icon matSuffix
+                          class="input-help"
+                          matTooltip="A test persona visa is treated as if it were asserted at the current time minus the asserted duration. Example: A duration of “3d” means a test visa is asserted at three days ago.">
+                  help_outline
+                </mat-icon>
                 <mat-error *ngIf="ga4ghAssertion.get('assertedDuration').hasError('required')">
                   Duration is required
                 </mat-error>
@@ -171,6 +207,11 @@
                        formControlName="expiresDuration"
                        placeholder="Expires Duration"
                        data-se="inp-passport-expired">
+                <mat-icon matSuffix
+                          class="input-help"
+                          matTooltip="A test persona visa is treated as if it expires at the current time plus the expires duration. Example: A duration of “30d” means a test visa expires thirty days from now.">
+                  help_outline
+                </mat-icon>
                 <mat-error *ngIf="ga4ghAssertion.get('expiresDuration').hasError('required')">
                   Duration is required
                 </mat-error>
@@ -191,6 +232,11 @@
                     {{ authorityLevel }}
                   </mat-option>
                 </mat-select>
+                <mat-icon matSuffix
+                          class="input-help"
+                          matTooltip="The level or type of authority within the 'source' organization for this test visa.">
+                  help_outline
+                </mat-icon>
               </mat-form-field>
             </div>
 

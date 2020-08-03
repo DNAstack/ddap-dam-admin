@@ -18,6 +18,7 @@
              [readonly]="serviceTemplate.name.length > 0"
              formControlName="id"/>
       <mat-icon matSuffix
+                          class="input-help"
                 matTooltip="The internal name is the unique identifier for this entity in the system. Once created, it cannot be changed.">
         help_outline
       </mat-icon>
@@ -32,6 +33,7 @@
               data-se="inp-description">
     </textarea>
     <mat-icon matSuffix
+                          class="input-help"
               matTooltip="A description of this service, shown in summary views of this service definition.">
       help_outline
     </mat-icon>
@@ -50,6 +52,7 @@
       </mat-option>
     </mat-select>
     <mat-icon matSuffix
+                          class="input-help"
               matTooltip="A controller that can manage access to specific cloud services (ex. datastores, compute environments) or other web services.">
       help_outline
     </mat-icon>
@@ -114,6 +117,7 @@
                    placeholder="Interface Name"
                    [attr.data-se]="'inp-interface-' + interfaceObj.key + '-name'"/>
             <mat-icon matSuffix
+                          class="input-help"
                       matTooltip="A URN identifying a particular means of accessing data through this service.">
               help_outline
             </mat-icon>
@@ -136,6 +140,7 @@
               INSERT VARIABLE
             </button>
             <mat-icon matSuffix
+                          class="input-help"
                       matTooltip="A URL or other identifier for accessing this service via this interface. Can use variables from the External Service Controller. Click ”Insert Variable” to see variables with descriptions.">
               help_outline
             </mat-icon>
@@ -217,6 +222,7 @@
                    [attr.data-se]="'inp-role-' + role.key + '-name'"
                    [readonly]="!internalNameEditable"/>
             <mat-icon matSuffix
+                          class="input-help"
                       matTooltip="The internal name is the unique identifier for this entity in the system. Once created, it cannot be changed.">
               help_outline
             </mat-icon>
@@ -233,6 +239,7 @@
                     [attr.data-se]="'inp-role-' + role.key + '-description'">
           </textarea>
           <mat-icon matSuffix
+                          class="input-help"
                     matTooltip="Summary of the access granted by this role. Shown to administrators when configure this service definition in a resource.">
             help_outline
           </mat-icon>
@@ -296,6 +303,7 @@
         <h4 class="flex vertical-center">
           Role Categories
           <mat-icon matSuffix
+                          class="input-help"
                     matTooltip="List of tags that categorize this role by whether is yields metadata, read or write access, or the ability to enumerate data in the external service. These tags help administrators understand what level of access they are granting.">
             help_outline
           </mat-icon>
