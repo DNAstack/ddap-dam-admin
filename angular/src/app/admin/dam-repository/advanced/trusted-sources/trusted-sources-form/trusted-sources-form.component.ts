@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { EntityModel, Form, isExpanded } from 'ddap-common-lib';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -36,12 +37,17 @@ export class TrustedSourcesFormComponent implements OnInit, OnDestroy, Form {
   subscriptions: Subscription[] = [];
   isExpanded: Function = isExpanded;
   visaTypesAutocompleteOptions: Observable<string[]>;
+  realm: string;
 
-  constructor(private trustedSourcesFormBuilder: TrustedSourcesFormBuilder,
-              private claimDefinitionsStore: ClaimDefinitionsStore) {
+  constructor(
+    private route: ActivatedRoute,
+    private trustedSourcesFormBuilder: TrustedSourcesFormBuilder,
+    private claimDefinitionsStore: ClaimDefinitionsStore
+  ) {
   }
 
   ngOnInit(): void {
+    this.realm = this.route.root.firstChild.snapshot.params.realmId;
     this.form = this.trustedSourcesFormBuilder.buildForm(this.trustedSource);
     if (this.internalNameEditable) {
       this.subscriptions.push(this.form.get('ui.label').valueChanges

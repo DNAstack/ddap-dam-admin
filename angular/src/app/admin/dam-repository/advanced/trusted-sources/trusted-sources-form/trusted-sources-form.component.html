@@ -52,7 +52,8 @@
   <mat-error *ngIf="form.get('sources.0')?.invalid">{{ form.get('sources.0').errors?.serverError }}</mat-error>
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'sources'"
-                                      [fieldTitle]="'Source'">
+                                      [fieldTitle]="'Source'"
+                                      [linkable]="true">
   </ddaplib-form-inline-editable-table>
 
   <h3>Visa Types</h3>
@@ -65,7 +66,9 @@
                                       [arrayFieldName]="'visaTypes'"
                                       [fieldTitle]="'Visa Type'"
                                       [showAutocomplete]="true"
-                                      [autocompleteOptions]="visaTypesAutocompleteOptions">
+                                      [autocompleteOptions]="visaTypesAutocompleteOptions"
+                                      [linkable]="true"
+                                      [linkPrefix]="'/' + realm + '/admin/dam/advanced/claim-definitions/'">
   </ddaplib-form-inline-editable-table>
 
   <ng-content></ng-content>
