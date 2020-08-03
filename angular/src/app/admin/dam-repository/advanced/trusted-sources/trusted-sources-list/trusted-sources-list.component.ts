@@ -17,7 +17,7 @@ export class TrustedSourcesListComponent
   extends DamConfigEntityListComponentBaseDirective<TrustedSourcesStore>
   implements OnInit {
 
-  displayedColumns: string[] = ['label', 'description', 'sources', 'claims', 'moreActions'];
+  displayedColumns: string[] = ['label', 'description', 'sources', 'visaTypes', 'moreActions'];
 
   constructor(
     protected route: ActivatedRoute,
