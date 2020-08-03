@@ -17,6 +17,10 @@
              data-se="inp-id"
              [readonly]="claimDefinition.name.length > 0"
              required>
+      <mat-icon matSuffix
+                matTooltip="The internal name is the unique identifier for this entity in the system. Once created, it cannot be changed.">
+        help_outline
+      </mat-icon>
       <mat-error *ngIf="form.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
     </mat-form-field>
   </div>

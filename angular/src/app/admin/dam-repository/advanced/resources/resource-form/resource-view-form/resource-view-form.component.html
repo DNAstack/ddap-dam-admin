@@ -53,6 +53,10 @@
                  formControlName="id"
                  data-se="inp-view-id"
                  required>
+          <mat-icon matSuffix
+                    matTooltip="The internal name is the unique identifier for this entity in the system. Once created, it cannot be changed.">
+            help_outline
+          </mat-icon>
           <mat-error *ngIf="viewForm.get('id').invalid">Name must be 3-46 characters and alphanumeric</mat-error>
           <mat-error *ngIf="viewForm.get('id') as control">
             <ng-container *ngIf="control.invalid">
