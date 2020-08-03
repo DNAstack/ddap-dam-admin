@@ -34,14 +34,21 @@
                 formControlName="description"
                 data-se="inp-description"
                 required>
-        <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
-        <mat-error *ngIf="form.get('ui.description').invalid">{{ form.get('ui.description').errors?.serverError }}</mat-error>
       </textarea>
+      <mat-icon matSuffix
+                matTooltip="A description shown to administrators when summarising this trusted source.">
+        help_outline
+      </mat-icon>
+      <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
+      <mat-error *ngIf="form.get('ui.description').invalid">{{ form.get('ui.description').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
 
   <h3>Sources</h3>
-  <p>Trusted sources to issue access policy visas</p>
+  <p>
+    A list of trusted source organizations to make assertions within visas.
+    Each entry is a URL identifier that represents those organizations within visas.
+  </p>
   <mat-error *ngIf="form.get('sources.0')?.invalid">{{ form.get('sources.0').errors?.serverError }}</mat-error>
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'sources'"
@@ -49,7 +56,10 @@
   </ddaplib-form-inline-editable-table>
 
   <h3>Visa Types</h3>
-  <p>Trusted visas to be issued from these sources</p>
+  <p>
+    The list of Visa Types to accept from this list of Trusted Sources. An empty list means there are no restrictions.
+    One or more entries means only the listed Visa Types are accepted from this Trusted Source.
+  </p>
   <mat-error *ngIf="form.get('visaTypes.0')?.invalid">{{ form.get('visaTypes.0').errors?.serverError }}</mat-error>
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'visaTypes'"
