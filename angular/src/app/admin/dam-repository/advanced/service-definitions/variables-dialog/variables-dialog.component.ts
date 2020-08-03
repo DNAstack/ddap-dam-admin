@@ -1,5 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import { VariablesDialogModel } from './variables-dialog.model';
 
 @Component({
   selector: 'ddap-variables-dialog',
@@ -7,14 +10,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./variables-dialog.component.scss'],
 })
 export class VariablesDialogComponent {
-  selectedVariable: string;
+
+  selectedVariableControl = new FormControl();
+
   constructor(public dialogRef: MatDialogRef<VariablesDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data) {
-    dialogRef.afterClosed().subscribe(acknowledged => {
-      if (acknowledged) {
-        data.updateVariable(this.selectedVariable, data.interfaceKey);
-      }
-    });
+              @Inject(MAT_DIALOG_DATA) public data: VariablesDialogModel) {
   }
 
 }

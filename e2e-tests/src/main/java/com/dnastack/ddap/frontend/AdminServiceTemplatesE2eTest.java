@@ -34,8 +34,6 @@ public class AdminServiceTemplatesE2eTest extends AbstractAdminFrontendE2eTest {
 
         // Add role
         adminManagePage.enterButton(DdapBy.se("btn-add-role"));
-        adminManagePage.clearField(DdapBy.se("inp-role-UNDEFINED_ROLE_1-name"));
-        adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_1-name"), "basic_discovery");
         adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_1-label"), "Discovery Beacon Search without Metadata");
         adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_1-description"), "Query genome data and return 'found' or 'not found' status");
         adminManagePage.fillTagField(DdapBy.se("inp-role-UNDEFINED_ROLE_1-scope"), "registered");
@@ -43,8 +41,6 @@ public class AdminServiceTemplatesE2eTest extends AbstractAdminFrontendE2eTest {
 
         // Add role
         adminManagePage.enterButton(DdapBy.se("btn-add-role"));
-        adminManagePage.clearField(DdapBy.se("inp-role-UNDEFINED_ROLE_2-name"));
-        adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_2-name"), "discovery");
         adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_2-label"), "Discovery Beacon Search with Metadata");
         adminManagePage.fillField(DdapBy.se("inp-role-UNDEFINED_ROLE_2-description"), "Query genome data and receive metadata results");
         adminManagePage.fillTagField(DdapBy.se("inp-role-UNDEFINED_ROLE_2-scope"), "registered");

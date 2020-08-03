@@ -1,3 +1,5 @@
+@import '~ddap-common-lib/styles/modules/colors';
+
 mat-hint {
   font-size: 75%;
   padding-top: 0.2rem;
@@ -5,4 +7,17 @@ mat-hint {
 
 .add-variable {
   font-size: 0.8rem;
+}
+
+:host ::ng-deep .mat-form-field-suffix {
+  display: flex;
+  align-items: center;
+}
+
+h4 {
+  color: $color-grey;
+
+  mat-icon {
+    margin-left: 0.5rem;
+  }
 }

@@ -31,20 +31,28 @@
               formControlName="description"
               data-se="inp-description">
     </textarea>
+    <mat-icon matSuffix
+              matTooltip="A description of this service, shown in summary views of this service definition.">
+      help_outline
+    </mat-icon>
     <mat-error *ngIf="form.get('ui.description').invalid">Description must be up to 255 characters</mat-error>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Target Adapter</mat-label>
+    <mat-label>External Service Controller</mat-label>
     <mat-select formControlName="serviceName"
                 (selectionChange)="targetAdapterChange()"
                 data-se="inp-target-adapter"
                 required>
       <mat-option *ngFor="let targetAdapter of serviceDescriptors | keyvalue"
                   [value]="targetAdapter.key">
-        {{targetAdapter.value.ui.label}}
+        {{ targetAdapter.value.ui.label }}
       </mat-option>
     </mat-select>
+    <mat-icon matSuffix
+              matTooltip="A controller that can manage access to specific cloud services (ex. datastores, compute environments) or other web services.">
+      help_outline
+    </mat-icon>
     <mat-error *ngIf="form.get('serviceName') as control">
       <ng-container *ngIf="control.invalid">
         {{ control.errors?.serverError }}
@@ -65,6 +73,12 @@
       </button>
     </div>
   </h3>
+  <p>
+    Interfaces represent different means of accessing data from a particular service,
+    along with templated values that give users URLs or other identifiers necessary to access data.
+    Examples: GCS buckets can be accessed via a web browser, a headless HTTP client, or the “gsutil” command-line tool,
+    all of which require different URLs.
+  </p>
   <mat-accordion multi
                  displayMode="flat"
                  formGroupName="interfaces">
@@ -99,6 +113,10 @@
                    formControlName="id"
                    placeholder="Interface Name"
                    [attr.data-se]="'inp-interface-' + interfaceObj.key + '-name'"/>
+            <mat-icon matSuffix
+                      matTooltip="A URN identifying a particular means of accessing data through this service.">
+              help_outline
+            </mat-icon>
             <mat-hint>Example: <i>http:gcp:gs</i></mat-hint>
           </mat-form-field>
           <mat-form-field class="col">
@@ -117,6 +135,10 @@
                     (click)="showVariables(interfaceObj.key)">
               INSERT VARIABLE
             </button>
+            <mat-icon matSuffix
+                      matTooltip="A URL or other identifier for accessing this service via this interface. Can use variables from the External Service Controller. Click ”Insert Variable” to see variables with descriptions.">
+              help_outline
+            </mat-icon>
           </mat-form-field>
         </div>
       </ng-container>
@@ -147,6 +169,10 @@
       </button>
     </div>
   </h3>
+  <p>
+    Roles are a way of configuring different access levels of a service,
+    by mapping a set of permissions in the external service to a single role in the for this service definition.
+  </p>
   <mat-accordion multi
                  displayMode="flat"
                  formGroupName="roles">
@@ -170,16 +196,6 @@
 
       <ng-container [formGroupName]="role.key">
         <div class="row">
-          <mat-form-field class="col">
-            <input placeholder="Name"
-                   required
-                   matInput
-                   formControlName="id"
-                   [attr.data-se]="'inp-role-' + role.key + '-name'"/>
-            <mat-error *ngIf="role.value.get('id').invalid">
-              Name must be 3-46 characters and alphanumeric
-            </mat-error>
-          </mat-form-field>
           <mat-form-field class="col"
                           formGroupName="ui">
             <input matInput
@@ -193,6 +209,21 @@
               </ng-container>
             </mat-error>
           </mat-form-field>
+          <mat-form-field class="col">
+            <input placeholder="Internal Name"
+                   required
+                   matInput
+                   formControlName="id"
+                   [attr.data-se]="'inp-role-' + role.key + '-name'"
+                   [readonly]="!internalNameEditable"/>
+            <mat-icon matSuffix
+                      matTooltip="The internal name is the unique identifier for this entity in the system. Once created, it cannot be changed.">
+              help_outline
+            </mat-icon>
+            <mat-error *ngIf="role.value.get('id').invalid">
+              Name must be 3-46 characters and alphanumeric
+            </mat-error>
+          </mat-form-field>
         </div>
         <mat-form-field formGroupName="ui">
           <textarea matInput
@@ -201,6 +232,10 @@
                     formControlName="description"
                     [attr.data-se]="'inp-role-' + role.key + '-description'">
           </textarea>
+          <mat-icon matSuffix
+                    matTooltip="Summary of the access granted by this role. Shown to administrators when configure this service definition in a resource.">
+            help_outline
+          </mat-icon>
           <mat-error *ngIf="role.value.get('ui.description').invalid">
             Description must be up to 255 characters
           </mat-error>
@@ -210,12 +245,16 @@
             </ng-container>
           </mat-error>
         </mat-form-field>
+
+        <h4 class="flex vertical-center">
+          Target Roles
+        </h4>
         <ng-container formGroupName="serviceArgs">
           <div class="row">
             <div class="col">
               <ng-container formGroupName="roles">
                 <tag-input formControlName="values"
-                           [secondaryPlaceholder]="isRequired('roles') ? 'Add Target Role *' : 'Target Role'"
+                           [secondaryPlaceholder]="isRequired('roles') ? 'Add Target Role *' : 'Add Target Role'"
                            placeholder="+ Target Role"
                            editable="true"
                            modelAsStrings="true"
@@ -229,11 +268,15 @@
               </ng-container>
             </div>
           </div>
+
+          <h4 class="flex vertical-center">
+            Target Scopes
+          </h4>
           <div class="row">
             <div class="col">
               <ng-container formGroupName="scopes">
                 <tag-input formControlName="values"
-                           [secondaryPlaceholder]="isRequired('scopes') ? 'Add Target Scope *' : 'Target Scope'"
+                           [secondaryPlaceholder]="isRequired('scopes') ? 'Add Target Scope *' : 'Add Target Scope'"
                            placeholder="+ Target Scope"
                            editable="true"
                            modelAsStrings="true"
@@ -249,18 +292,25 @@
             </div>
           </div>
         </ng-container>
+
+        <h4 class="flex vertical-center">
+          Role Categories
+          <mat-icon matSuffix
+                    matTooltip="List of tags that categorize this role by whether is yields metadata, read or write access, or the ability to enumerate data in the external service. These tags help administrators understand what level of access they are granting.">
+            help_outline
+          </mat-icon>
+        </h4>
         <div class="row">
           <div class="col">
             <tag-input formControlName="damRoleCategories"
-                       secondaryPlaceholder="Add Dam Role Categories"
-                       placeholder="+ Dam Role Category"
+                       secondaryPlaceholder="Add Role Category"
+                       placeholder="+ Role Category"
                        modelAsStrings="true"
                        [attr.data-se]="'inp-role-' + role.key + '-dam-category'">
               <tag-input-dropdown [showDropdownIfEmpty]="showAutocompleteDropdown(role.value.get('damRoleCategories'))"
                                   [autocompleteItems]="serviceDefinitionService.getDamRoleCategories()">
               </tag-input-dropdown>
             </tag-input>
-
             <mat-error *ngIf="role.value.get('damRoleCategories') as control">
               <ng-container *ngIf="control.invalid">
                 {{ control.errors?.serverError }}

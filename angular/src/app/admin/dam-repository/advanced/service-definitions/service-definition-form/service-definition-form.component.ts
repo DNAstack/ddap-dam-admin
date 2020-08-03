@@ -13,6 +13,7 @@ import { ServiceDefinitionService } from '../service-definitions.service';
 import { VariablesDialogComponent } from '../variables-dialog/variables-dialog.component';
 
 import { ServiceDefinitionFormBuilder } from './service-definition-form-builder.service';
+import IVariableFormat = dam.v1.IVariableFormat;
 
 @Component({
   selector: 'ddap-service-definition-form',
@@ -50,7 +51,7 @@ export class ServiceDefinitionFormComponent implements OnInit, OnDestroy {
   interfaceCounter = 1;
   roleCounter = 1;
   serviceDescriptors: IServiceDescriptor[];
-  variables: string[] = [];
+  selectedTargetAdapterVariables: { [key: string]: IVariableFormat };
 
   constructor(private formBuilder: FormBuilder,
               public dialog: MatDialog,
@@ -101,6 +102,11 @@ export class ServiceDefinitionFormComponent implements OnInit, OnDestroy {
     const controlId = `UNDEFINED_ROLE_${this.roleCounter}`;
     this.roles.addControl(controlId, this.serviceDefinitionFormBuilder.buildServiceRoleForm(controlId));
     this.roleCounter += 1;
+
+    this.subscriptions.push(this.roles.get(controlId).get('ui.label').valueChanges
+      .subscribe((displayName) => {
+        this.roles.get(controlId).get('id').setValue(generateInternalName(displayName));
+      }));
   }
 
   removeRole(id: string) {
@@ -112,11 +118,7 @@ export class ServiceDefinitionFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const variables = this.selectedTargetAdapter['itemVariables'];
-    if (variables) {
-      this.variables = Object.keys(variables);
-    }
-    // this.updateRoleValidations();
+    this.selectedTargetAdapterVariables = this.selectedTargetAdapter['itemVariables'];
   }
 
   isRequired(fieldName: string): boolean {
@@ -142,8 +144,16 @@ export class ServiceDefinitionFormComponent implements OnInit, OnDestroy {
 
   showVariables(interfaceKey) {
     this.dialog.open(VariablesDialogComponent, {
-      data: {variables: this.variables, updateVariable: this.updateVariable, interfaceKey},
-    });
+      data: {
+        variables: this.selectedTargetAdapterVariables,
+        interfaceKey,
+      },
+    }).afterClosed()
+      .subscribe((response) => {
+        if (response?.acknowledged) {
+          this.updateVariable(response.selectedVariable, interfaceKey);
+        }
+      });
   }
 
   updateVariable = (selectedVariable, interfaceKey) => {
