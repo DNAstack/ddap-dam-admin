@@ -41,7 +41,7 @@
       </ng-container>
       <!-- Interface Definition -->
       <ng-container matColumnDef="interfaces">
-        <th mat-header-cell *matHeaderCellDef>Interface</th>
+        <th mat-header-cell *matHeaderCellDef>Interfaces</th>
         <td mat-cell *matCellDef="let model">
           <span *ngFor="let interface of model.dto.interfaces | keyvalue">
             {{ interface.key }}:
@@ -54,7 +54,7 @@
       </ng-container>
       <!-- Role Definition -->
       <ng-container matColumnDef="roles">
-        <th mat-header-cell *matHeaderCellDef>Role</th>
+        <th mat-header-cell *matHeaderCellDef>Roles</th>
         <td mat-cell *matCellDef="let model">
           <span *ngFor="let role of model.dto.roles | keyvalue">
             {{ role.value.ui.label }}:
