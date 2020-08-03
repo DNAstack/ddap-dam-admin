@@ -52,7 +52,7 @@ export abstract class DamConfigEntityDetailComponentBaseDirective<T extends DamC
     this.subscription.unsubscribe();
   }
 
-  openConfirmationDialog() {
+  openDeleteConfirmationDialog() {
     this.dialog.open(DeleteActionConfirmationDialogComponent, {
       data: {
         entityName: _get(this.entity, 'dto.ui.label', this.entity.name),

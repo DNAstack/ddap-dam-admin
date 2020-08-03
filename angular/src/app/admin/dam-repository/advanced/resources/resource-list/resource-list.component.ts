@@ -1,9 +1,12 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
+import { ResourceService } from '../resources.service';
 import { ResourcesStore } from '../resources.store';
 
 @Component({
@@ -18,15 +21,29 @@ import { ResourcesStore } from '../resources.store';
     ]),
   ],
 })
-export class ResourceListComponent extends DamConfigEntityListComponentBaseDirective<ResourcesStore> implements OnInit {
+export class ResourceListComponent
+  extends DamConfigEntityListComponentBaseDirective<ResourcesStore>
+  implements OnInit {
 
   expandedRow: string;
   displayedColumns: string[] = ['label', 'description', 'views', 'moreActions'];
 
-  constructor(protected route: ActivatedRoute,
-              protected damConfigStore: DamConfigStore,
-              protected resourcesStore: ResourcesStore) {
-    super(route, damConfigStore, resourcesStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected damConfigStore: DamConfigStore,
+    protected resourcesStore: ResourcesStore,
+    protected dialog: MatDialog,
+    private resourceService: ResourceService
+  ) {
+    super(route, damConfigStore, resourcesStore, dialog);
+  }
+
+  protected delete(id: string): void {
+    this.resourceService.remove(id)
+      .pipe(
+        tap(() => this.damConfigStore.set())
+      )
+      .subscribe();
   }
 
 }

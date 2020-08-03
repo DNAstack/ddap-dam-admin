@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
+import { ClaimDefinitionService } from '../claim-definitions.service';
 import { ClaimDefinitionsStore } from '../claim-definitions.store';
 
 @Component({
@@ -14,10 +17,22 @@ export class ClaimDefinitionListComponent extends DamConfigEntityListComponentBa
 
   displayedColumns: string[] = ['label', 'description', 'infoUrl', 'moreActions'];
 
-  constructor(protected route: ActivatedRoute,
-              protected damConfigStore: DamConfigStore,
-              protected claimDefinitionsStore: ClaimDefinitionsStore) {
-    super(route, damConfigStore, claimDefinitionsStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected damConfigStore: DamConfigStore,
+    protected claimDefinitionsStore: ClaimDefinitionsStore,
+    protected dialog: MatDialog,
+    private claimDefinitionService: ClaimDefinitionService
+  ) {
+    super(route, damConfigStore, claimDefinitionsStore, dialog);
+  }
+
+  protected delete(id: string): void {
+    this.claimDefinitionService.remove(id)
+      .pipe(
+        tap(() => this.damConfigStore.set())
+      )
+      .subscribe();
   }
 
 }

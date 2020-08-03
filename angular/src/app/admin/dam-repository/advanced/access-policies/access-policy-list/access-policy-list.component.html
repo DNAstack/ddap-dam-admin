@@ -87,7 +87,8 @@
           </ng-container>
           <ng-template #moreActions>
             <mat-icon [matMenuTriggerFor]="moreActionsMenu"
-                      [matMenuTriggerData]="{ id: model.name }">
+                      [matMenuTriggerData]="{ id: model.name, label: model.dto.ui?.label }"
+                      data-se="btn-more-actions">
               more_vert
             </mat-icon>
           </ng-template>
@@ -96,10 +97,18 @@
 
       <mat-menu #moreActionsMenu="matMenu">
         <ng-template matMenuContent
-                     let-id="id">
-          <button mat-menu-item
-                  [routerLink]="[id]">
+                     let-id="id"
+                     let-label="label">
+          <button [routerLink]="[id]"
+                  mat-menu-item
+                  data-se="btn-edit">
             Edit
+          </button>
+          <button (click)="openDeleteConfirmationDialog(id, label)"
+                  mat-menu-item
+                  class="color--warn"
+                  data-se="btn-delete">
+            Delete
           </button>
         </ng-template>
       </mat-menu>

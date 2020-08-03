@@ -48,7 +48,7 @@ export class AccessPolicyDetailComponent extends DamConfigEntityDetailComponentB
     this.displayFieldErrorMessage(error, DamConfigEntityType.policies, this.accessPolicyForm.form);
   }
 
-  openConfirmationDialog() {
+  openDeleteConfirmationDialog() {
     this.dialog.open(DeleteActionConfirmationDialogComponent, {
       data: {
         entityName: _get(this.entity, 'dto.ui.label', this.entity.name),

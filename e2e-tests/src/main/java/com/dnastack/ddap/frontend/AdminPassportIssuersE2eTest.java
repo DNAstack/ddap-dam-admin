@@ -1,10 +1,8 @@
 package com.dnastack.ddap.frontend;
 
-import com.dnastack.ddap.common.util.DdapBy;
 import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AdminManagePage;
-import com.dnastack.ddap.common.fragments.ConfirmationRemovalDialog;
-import org.junit.Ignore;
+import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.Test;
 
 import static com.dnastack.ddap.common.fragments.NavBar.damPassportsLink;
@@ -63,23 +61,17 @@ public class AdminPassportIssuersE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemDoNotExist("delete-me");
     }
 
-    /*
-     * TODO Figure out what made this trusted passport issuer require a confirmation before deleting.
-     */
     @Test
-    @Ignore
-    public void forceDeletePassportIssuer() {
+    public void deleteFromListPassportIssuer() {
         AdminListPage adminListPage = ddapPage.getNavBar()
-                .goToAdmin(damPassportsLink());
+            .goToAdmin(damPassportsLink());
+        String entityToBeDeleted = "delete-me-list";
 
-        adminListPage.assertListItemExists("nih");
+        adminListPage.assertListItemExists(entityToBeDeleted);
 
-        AdminManagePage adminManagePage = adminListPage.clickView("nih");
+        adminListPage = adminListPage.clickDelete(entityToBeDeleted);
 
-        adminManagePage.clickButton(DdapBy.se("btn-delete"));
-        ConfirmationRemovalDialog dialog = new ConfirmationRemovalDialog(driver);
-        adminListPage = dialog.confirmForceDelete();
-
-        adminListPage.assertListItemDoNotExist("nih");
+        adminListPage.assertListItemDoNotExist(entityToBeDeleted);
     }
+
 }

@@ -91,15 +91,28 @@ public class AdminAccessPoliciesE2eTest extends AbstractAdminFrontendE2eTest {
     public void deletePolicy() {
         AdminListPage adminListPage = ddapPage.getNavBar()
             .goToAdmin(damPoliciesLink());
+        String entityToBeDeleted = "Delete Me Policy";
 
-        adminListPage.assertListItemExists("Delete Me Policy");
+        adminListPage.assertListItemExists(entityToBeDeleted);
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Delete Me Policy");
+        AdminManagePage adminManagePage = adminListPage.clickView(entityToBeDeleted);
 
         adminListPage = adminManagePage.deleteEntity();
 
-        adminListPage.assertListItemDoNotExist("Delete Me Policy");
+        adminListPage.assertListItemDoNotExist(entityToBeDeleted);
     }
 
+    @Test
+    public void deleteFromListPolicy() {
+        AdminListPage adminListPage = ddapPage.getNavBar()
+            .goToAdmin(damPoliciesLink());
+        String entityToBeDeleted = "Delete Me List Policy";
+
+        adminListPage.assertListItemExists(entityToBeDeleted);
+
+        adminListPage = adminListPage.clickDelete(entityToBeDeleted);
+
+        adminListPage.assertListItemDoNotExist(entityToBeDeleted);
+    }
 
 }

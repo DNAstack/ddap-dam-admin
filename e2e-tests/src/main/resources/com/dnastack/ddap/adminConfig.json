@@ -32,6 +32,13 @@
         "label": "delete-me"
       }
     },
+    "delete-me-list": {
+      "issuer": "https://ic-chaopeng-dot-hcls-data-connect-demo.appspot.com/oidc",
+      "ui": {
+        "description": "test passport issuer for delete case",
+        "label": "delete-me-list"
+      }
+    },
     "ic_issuer": {
       "issuer": "$$E2E_PASSPORT_ISSUER$$",
       "ui": {
@@ -221,6 +228,22 @@
       "ui": {
         "description": "description",
         "label": "Delete Me Policy"
+      }
+    },
+    "delete-me-list": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "com.dnastack.test.claim",
+              "value": "split_pattern:foobar;foobar2"
+            }
+          ]
+        }
+      ],
+      "ui": {
+        "description": "description",
+        "label": "Delete Me List Policy"
       }
     }
   },
@@ -879,6 +902,12 @@
       "ui": {
         "description": "Claim for testing autocomplete",
         "label": "Autocomplete testing claim"
+      }
+    },
+    "delete-me-list": {
+      "ui": {
+        "description": "Delete Me List Claim",
+        "label": "Delete Me List Claim"
       }
     }
   },

@@ -1,8 +1,8 @@
 package com.dnastack.ddap.frontend;
 
-import com.dnastack.ddap.common.util.DdapBy;
 import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AdminManagePage;
+import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.Test;
 
 import static com.dnastack.ddap.common.fragments.NavBar.damClaimDefinitionLink;
@@ -50,13 +50,28 @@ public class AdminClaimDefinitionsE2eTest extends AbstractAdminFrontendE2eTest {
     public void deleteClaimDefinition() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damClaimDefinitionLink());
+        String entityToBeDeleted = "Affiliation and Role";
 
-        adminListPage.assertListItemExists("Affiliation and Role");
+        adminListPage.assertListItemExists(entityToBeDeleted);
 
-        AdminManagePage adminManagePage = adminListPage.clickView("Affiliation and Role");
+        AdminManagePage adminManagePage = adminListPage.clickView(entityToBeDeleted);
 
         adminListPage = adminManagePage.deleteEntity();
 
-        adminListPage.assertListItemDoNotExist("Affiliation and Role");
+        adminListPage.assertListItemDoNotExist(entityToBeDeleted);
     }
+
+    @Test
+    public void deleteFromListClaimDefinition() {
+        AdminListPage adminListPage = ddapPage.getNavBar()
+            .goToAdmin(damClaimDefinitionLink());
+        String entityToBeDeleted = "Delete Me List Claim";
+
+        adminListPage.assertListItemExists(entityToBeDeleted);
+
+        adminListPage = adminListPage.clickDelete(entityToBeDeleted);
+
+        adminListPage.assertListItemDoNotExist(entityToBeDeleted);
+    }
+
 }

@@ -6,7 +6,6 @@ import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import { DamConfigEntityDetailComponentBaseDirective } from '../../../shared/dam/dam-config-entity-detail-component.base';
-import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';
 import { DamConfigStore } from '../../../shared/dam/dam-config.store';
 import {
   EntityRemovalConfirmationDialogComponent
@@ -21,7 +20,9 @@ import { PassportIssuersStore } from '../passport-issuers.store';
   styleUrls: ['./passport-issuer-detail.component.scss'],
   providers: [FormValidationService],
 })
-export class PassportIssuerDetailComponent extends DamConfigEntityDetailComponentBaseDirective<PassportIssuersStore> implements OnInit {
+export class PassportIssuerDetailComponent
+  extends DamConfigEntityDetailComponentBaseDirective<PassportIssuersStore>
+  implements OnInit {
 
   @ViewChild(PassportIssuerFormComponent)
   passportIssuerForm: PassportIssuerFormComponent;
