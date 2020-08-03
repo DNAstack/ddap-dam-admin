@@ -18,6 +18,10 @@
   <ddaplib-form-footer-error [showError]="!isFormValid && isFormValidated"
                           [message]="formErrorMessage">
   </ddaplib-form-footer-error>
+  <mat-checkbox [checked]="rotateSecret"
+                (change)="updateRotateSecret($event)">
+    Rotate secret
+  </mat-checkbox>
   <button mat-flat-button
           (click)="openDeleteConfirmationDialog()"
           [disabled]="!entity"

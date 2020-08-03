@@ -19,8 +19,9 @@ export class ClientApplicationService extends DamConfigService {
     super(DamConfigEntityType.clients, http);
   }
 
-  update(entityId: string, change: ConfigModificationModel): Observable<any> {
-    return this.http.patch(`${environment.damApiUrl}/${realmIdPlaceholder}/config/${this.entityType}/${entityId}`,
+  update(entityId: string, change: ConfigModificationModel, rotateSecret?: boolean): Observable<any> {
+    return this.http.patch(
+      `${environment.damApiUrl}/${realmIdPlaceholder}/config/${this.entityType}/${entityId}?rotate_secret=${rotateSecret}`,
       change
     );
   }

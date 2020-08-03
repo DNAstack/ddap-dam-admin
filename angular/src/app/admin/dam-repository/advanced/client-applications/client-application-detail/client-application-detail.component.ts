@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormValidationService } from 'ddap-common-lib';
+import { FormValidationService, SecretGeneratedDialogComponent } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import {
@@ -25,6 +26,7 @@ export class ClientApplicationDetailComponent
 
   @ViewChild(ClientApplicationFormComponent)
   clientApplicationForm: ClientApplicationFormComponent;
+  rotateSecret = false;
 
   constructor(
     protected route: ActivatedRoute,
@@ -45,17 +47,42 @@ export class ClientApplicationDetailComponent
 
     const clientApplication: EntityModel = this.clientApplicationForm.getModel();
     const change = new ConfigModificationModel(clientApplication.dto, {});
-    this.clientApplicationService.update(this.entity.name, change)
-      .subscribe(() => this.navigateUp('..'), this.handleError);
+    this.clientApplicationService.update(this.entity.name, change, this.rotateSecret)
+      .subscribe((response) => {
+        const clientSecret = response.client_secret;
+        if (clientSecret) {
+          this.openSecretGeneratedDialog(clientSecret);
+        } else {
+          this.navigateUp('..');
+        }
+      }, this.handleError);
   }
 
   handleError = ({ error }) => {
     this.displayFieldErrorMessage(error, DamConfigEntityType.policies, this.clientApplicationForm.form);
   }
 
+  updateRotateSecret(event: MatCheckboxChange) {
+    this.rotateSecret = event.checked;
+  }
+
+  openSecretGeneratedDialog(secretValue: string) {
+    this.dialog.open(SecretGeneratedDialogComponent, {
+      disableClose: true, // prevent closing dialog by clicking on backdrop
+      data: {
+        secretLabel: 'client secret',
+        secretValue,
+      },
+    }).afterClosed()
+      .subscribe(({ acknowledged }) => {
+        if (acknowledged) {
+          this.navigateUp('..');
+        }
+      });
+  }
+
   protected delete() {
     this.clientApplicationService.remove(this.entity.name)
       .subscribe(() => this.navigateUp('..'), this.handleError);
   }
-
 }
