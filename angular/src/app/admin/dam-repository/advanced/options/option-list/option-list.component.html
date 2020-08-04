@@ -55,6 +55,7 @@
           <ng-container *ngIf="currentlyEditing === model.key; else readonlyMode">
             <ddaplib-form-field-btn-group [control]="formControls[model.key]"
                                           [fieldName]="model.key"
+                                          (cancelButtonClicked)="currentlyEditing = null"
                                           (doneButtonClicked)="updateOptionValue(options, model.key, $event)">
             </ddaplib-form-field-btn-group>
           </ng-container>
