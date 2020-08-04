@@ -18,7 +18,7 @@
              [readonly]="clientApplication.name.length > 0"
              required>
       <mat-icon matSuffix
-                          class="input-help"
+                class="input-help"
                 matTooltip="The internal name is the unique identifier for this entity in the system. Once created, it cannot be changed.">
         help_outline
       </mat-icon>
@@ -62,7 +62,7 @@
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'redirectUris'"
                                       [fieldTitle]="'Redirect URI'"
-                                      [linkable]="true">
+                                      [linkable]="false">
   </ddaplib-form-inline-editable-table>
 
   <h3>Grant Types</h3>
