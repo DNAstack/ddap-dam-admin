@@ -165,9 +165,9 @@ export class AppConfigService {
       })
       .registerModule({
         key: 'advanced-whitelists',
-        name: 'Whitelists',
+        name: 'Groups',
         iconClasses: 'icon icon-identities',
-        routerLink: 'admin/dam/advanced/whitelists',
+        routerLink: 'admin/dam/advanced/groups',
         group: 'advanced',
         isApp: false,
       });

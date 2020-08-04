@@ -1,16 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormGroup, Validators } from '@angular/forms';
 import { Form, isExpanded } from 'ddap-common-lib';
-import { EntityModel } from 'ddap-common-lib';
 
-import { WhitelistFormBuilder } from './whitelist-form-builder.service';
+import { GroupFormBuilder } from './group-form-builder.service';
 
 @Component({
-  selector: 'ddap-whitelist-form',
-  templateUrl: './whitelist-form.component.html',
-  styleUrls: ['./whitelist-form.component.scss'],
+  selector: 'ddap-group-form',
+  templateUrl: './group-form.component.html',
+  styleUrls: ['./group-form.component.scss'],
 })
-export class WhitelistFormComponent implements OnInit, Form {
+export class GroupFormComponent implements OnInit, Form {
 
   get users() {
     return this.form.get('users') as FormArray;
@@ -24,7 +23,7 @@ export class WhitelistFormComponent implements OnInit, Form {
   form: FormGroup;
   isExpanded: Function = isExpanded;
 
-  constructor(private whitelistFormBuilder: WhitelistFormBuilder) {
+  constructor(private whitelistFormBuilder: GroupFormBuilder) {
   }
 
   ngOnInit(): void {

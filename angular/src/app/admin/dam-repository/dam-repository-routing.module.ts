@@ -51,9 +51,9 @@ export const routes: Routes = [
           .then(mod => mod.TrustedSourcesModule),
       },
       {
-        path: 'whitelists',
-        loadChildren: () => import('./advanced/whitelists/whitelists.module')
-          .then(mod => mod.WhitelistsModule),
+        path: 'groups',
+        loadChildren: () => import('./advanced/groups/groups.module')
+          .then(mod => mod.GroupsModule),
       },
     ],
   },

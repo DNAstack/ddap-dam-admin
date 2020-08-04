@@ -5,8 +5,8 @@
 
 <ddaplib-main>
   <ng-container *ngIf="whitelist$ | async as whitelist">
-    <ddap-whitelist-form [whitelist]="whitelist"
+    <ddap-group-form [whitelist]="whitelist"
                          [editable]="false">
-    </ddap-whitelist-form>
+    </ddap-group-form>
   </ng-container>
 </ddaplib-main>

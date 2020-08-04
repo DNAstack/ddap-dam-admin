@@ -3,19 +3,19 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { share, switchMap } from 'rxjs/operators';
 
-import { WhitelistsService } from '../whitelists.service';
+import { GroupsService } from '../groups.service';
 
 @Component({
-  selector: 'ddap-whitelist-detail',
-  templateUrl: './whitelist-detail.component.html',
-  styleUrls: ['./whitelist-detail.component.scss'],
+  selector: 'ddap-group-detail',
+  templateUrl: './group-detail.component.html',
+  styleUrls: ['./group-detail.component.scss'],
 })
-export class WhitelistDetailComponent implements OnInit {
+export class GroupDetailComponent implements OnInit {
 
   whitelist$: Observable<any>;
 
   constructor(private route: ActivatedRoute,
-              private whitelistsService: WhitelistsService) {
+              private whitelistsService: GroupsService) {
   }
 
   ngOnInit(): void {

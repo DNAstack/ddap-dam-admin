@@ -3,14 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { WhitelistsService } from '../whitelists.service';
+import { GroupsService } from '../groups.service';
 
 @Component({
-  selector: 'ddap-whitelist-list',
-  templateUrl: './whitelist-list.component.html',
-  styleUrls: ['./whitelist-list.component.scss'],
+  selector: 'ddap-group-list',
+  templateUrl: './group-list.component.html',
+  styleUrls: ['./group-list.component.scss'],
 })
-export class WhitelistListComponent implements OnInit {
+export class GroupListComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'users', 'moreActions'];
 
@@ -19,7 +19,7 @@ export class WhitelistListComponent implements OnInit {
   private readonly refreshWhitelists$ = new BehaviorSubject<any>([]);
 
   constructor(private route: ActivatedRoute,
-              private whitelistsService: WhitelistsService) {
+              private whitelistsService: GroupsService) {
   }
 
   ngOnInit() {

@@ -2,18 +2,18 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Form, FormValidationService } from 'ddap-common-lib';
 
-import { WhitelistFormComponent } from '../whitelist-form/whitelist-form.component';
-import { WhitelistsService } from '../whitelists.service';
+import { GroupFormComponent } from '../group-form/group-form.component';
+import { GroupsService } from '../groups.service';
 
 @Component({
-  selector: 'ddap-whitelist-manage',
-  templateUrl: './whitelist-manage.component.html',
-  styleUrls: ['./whitelist-manage.component.scss'],
+  selector: 'ddap-group-manage',
+  templateUrl: './group-manage.component.html',
+  styleUrls: ['./group-manage.component.scss'],
 })
-export class WhitelistManageComponent {
+export class GroupManageComponent {
 
-  @ViewChild(WhitelistFormComponent)
-  whitelistForm: WhitelistFormComponent;
+  @ViewChild(GroupFormComponent)
+  whitelistForm: GroupFormComponent;
 
   formErrorMessage: string;
   isFormValid: boolean;
@@ -22,7 +22,7 @@ export class WhitelistManageComponent {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private validationService: FormValidationService,
-              private whitelistsService: WhitelistsService) {
+              private whitelistsService: GroupsService) {
   }
 
   save() {

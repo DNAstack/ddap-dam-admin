@@ -8,7 +8,7 @@ import { environment } from '../../../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class WhitelistsService {
+export class GroupsService {
 
   constructor(private http: HttpClient) {
   }

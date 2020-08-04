@@ -7,7 +7,7 @@ import _get from 'lodash.get';
 @Injectable({
   providedIn: 'root',
 })
-export class WhitelistFormBuilder {
+export class GroupFormBuilder {
 
   constructor(private formBuilder: FormBuilder) {
   }
