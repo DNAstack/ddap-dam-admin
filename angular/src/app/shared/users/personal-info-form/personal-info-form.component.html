@@ -38,22 +38,30 @@
   </div>
   <div class="row">
     <mat-form-field class="col">
-      <input matInput
+      <input [matAutocomplete]="localeAutocomplete"
+             matInput
              placeholder="Locale"
              formControlName="locale"
              data-se="inp-locale">
+      <mat-autocomplete #localeAutocomplete="matAutocomplete">
+        <mat-option *ngFor="let locale of filteredLocales$ | async"
+                    [value]="locale.id">
+          {{ locale.ui.label }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
     <mat-form-field class="col">
-      <input matInput
-             placeholder="Preferred Language"
-             formControlName="preferredLanguage"
-             data-se="inp-preferredLanguage">
-    </mat-form-field>
-    <mat-form-field class="col">
-      <input matInput
+      <input [matAutocomplete]="timezoneAutocomplete"
+             matInput
              placeholder="Timezone"
              formControlName="timezone"
              data-se="inp-timezone">
+      <mat-autocomplete #timezoneAutocomplete="matAutocomplete">
+        <mat-option *ngFor="let timezone of filteredTimezones$ | async"
+                    [value]="timezone.id">
+          {{ timezone.ui.label }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
   </div>
 
