@@ -1,0 +1,22 @@
+<ddaplib-header [backLink]="['../..']"
+             label="Add Visa Source">
+</ddaplib-header>
+
+<ddaplib-main>
+  <ddap-visa-sources-form [internalNameEditable]="true">
+  </ddap-visa-sources-form>
+</ddaplib-main>
+
+<div class="ddap-form-toolbar">
+  <ddaplib-form-footer-error [showError]="!isFormValid && isFormValidated"
+                          [message]="formErrorMessage">
+  </ddaplib-form-footer-error>
+  <button mat-flat-button
+          (click)="save()"
+          data-se="btn-save"
+          type="submit"
+          color="primary"
+          class="uppercase">
+    Add Visa Sources
+  </button>
+</div>

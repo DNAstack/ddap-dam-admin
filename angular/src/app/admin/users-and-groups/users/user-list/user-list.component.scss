@@ -1,0 +1,45 @@
+@import 'node_modules/ddap-common-lib/styles/modules/colors';
+
+.mat-expansion-panel-header-description {
+  text-transform: uppercase;
+}
+
+.filter-active {
+  margin-bottom: 1rem;
+
+  label {
+    color: $color-grey;
+  }
+
+  mat-radio-button:first-child {
+    margin-left: 1.5rem;
+  }
+  mat-radio-button {
+    margin-left: 1rem;
+  }
+}
+
+td span.user-active {
+  color: $primary-color;
+}
+
+td span.user-inactive {
+  color: $color-grey;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.search-input {
+  max-width: 50rem;
+
+  button {
+    margin-left: 1rem;
+
+    span {
+      margin-left: 0.5rem;
+      margin-right: 1rem;
+    }
+  }
+}

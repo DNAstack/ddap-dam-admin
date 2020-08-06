@@ -33,80 +33,84 @@ public class NavBar {
         }
     }
 
-    public static NavLink damPanelAdvancedSelectorLink() {
-        return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-group-advanced']")), null);
-    }
-
-    public static NavLink damPanelIdentitySelectorLink() {
-        return new NavLink(null, By.xpath(format("//*[@data-se='nav-group-identity']")), null);
-    }
-
-    public static NavLink damOptionsLink() {
-        return new NavLink("Options", DdapBy.se("nav-advanced-options"), damPanelAdvancedSelectorLink());
-    }
-
-    public static NavLink damResourceLink() {
-        return new NavLink("Resource", DdapBy.se("nav-advanced-resources"), damPanelAdvancedSelectorLink());
-    }
-
-    public static NavLink damTestPersonaLink() {
-        return new NavLink("Test Personas", DdapBy.se("nav-advanced-test-personas"), damPanelAdvancedSelectorLink());
-    }
-
-    public static NavLink damClientLink() {
-        return new NavLink("Client Applications", DdapBy.se("nav-advanced-client-applications"), damPanelAdvancedSelectorLink());
-    }
-
-    public static NavLink damTrustedSourcesLink() {
-        return new NavLink("Trusted Sources", DdapBy.se("nav-advanced-trusted-sources"), damPanelAdvancedSelectorLink());
-    }
-
-    public static NavLink damVisaTypesLink() {
-        return new NavLink("Visa Types", DdapBy.se("nav-advanced-visa-types"), damPanelAdvancedSelectorLink());
-    }
-
-    public static NavLink damServiceDefinitionLink() {
-        return new NavLink("Service Definitions", DdapBy.se("nav-advanced-service-definitions"), damPanelAdvancedSelectorLink());
-    }
-
-    public static NavLink damPoliciesLink() {
-        return new NavLink("Access Policies", DdapBy.se("nav-advanced-access-policies"), damPanelAdvancedSelectorLink());
-    }
-
-    public static NavLink damPassportsLink() {
-        return new NavLink("Passport Issuers", DdapBy.se("nav-advanced-passport-issuers"), damPanelAdvancedSelectorLink());
-    }
-
-    public static NavLink tokensLink() {
-        return new NavLink("Sessions", DdapBy.se("nav-identity-tokens"), damPanelIdentitySelectorLink());
-    }
-
-    public static NavLink auditlogsLink() {
-        return new NavLink("Auditlogs", DdapBy.se("nav-identity-auditlogs"), damPanelIdentitySelectorLink());
-    }
-
-    public static NavLink consentsLink() {
-        return new NavLink("Consents", DdapBy.se("nav-identity-consents"), damPanelIdentitySelectorLink());
-    }
-
-    public static NavLink simplifiedAdminPanelToggle() {
-        return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-simplified-toggle']")), null);
-    }
-
-    public static NavLink advancedAdminPanelToggle() {
-        return new NavLink(null, By.xpath(format("//*[@data-se = 'nav-advanced-toggle']")), null);
-    }
-
     public static NavLink simplifiedAdminQuickstartLink() {
         return new NavLink("Quickstart", DdapBy.se("nav-simplified-admin-quickstart"), null);
     }
 
+    public static NavLink myProfilePanelSelectorLink() {
+        return new NavLink("My Profile & Activity", DdapBy.se("nav-group-identity"), null);
+    }
+
+    public static NavLink tokensLink() {
+        return new NavLink("Sessions", DdapBy.se("nav-identity-tokens"), myProfilePanelSelectorLink());
+    }
+
+    public static NavLink auditlogsLink() {
+        return new NavLink("Audit Logs", DdapBy.se("nav-identity-auditlogs"), myProfilePanelSelectorLink());
+    }
+
+    public static NavLink consentsLink() {
+        return new NavLink("Remembered Consents", DdapBy.se("nav-identity-consents"), myProfilePanelSelectorLink());
+    }
+
     public static NavLink userAdministrationPanelSelectorLink() {
-        return new NavLink("User Administration", DdapBy.se("nav-group-user-admin"), null);
+        return new NavLink("Users and Groups", DdapBy.se("nav-group-user-admin"), null);
     }
 
     public static NavLink usersLink() {
         return new NavLink("Users", DdapBy.se("nav-admin-users"), userAdministrationPanelSelectorLink());
+    }
+
+    public static NavLink groupsLink() {
+        return new NavLink("Groups", DdapBy.se("nav-admin-groups"), userAdministrationPanelSelectorLink());
+    }
+
+    public static NavLink resourceSettingsPanelSelectorLink() {
+        return new NavLink("Resource Settings", DdapBy.se("nav-group-resource-settings"), null);
+    }
+
+    public static NavLink damResourceLink() {
+        return new NavLink("Data Resources", DdapBy.se("nav-resource-settings-data"), resourceSettingsPanelSelectorLink());
+    }
+
+    public static NavLink damPoliciesLink() {
+        return new NavLink("Data Access Policies", DdapBy.se("nav-resource-settings-policies"), resourceSettingsPanelSelectorLink());
+    }
+
+    public static NavLink damTestPersonaLink() {
+        return new NavLink("Test Personas", DdapBy.se("nav-resource-settings-personas"), resourceSettingsPanelSelectorLink());
+    }
+
+    public static NavLink trustConfigPanelSelectorLink() {
+        return new NavLink("Trust Config", DdapBy.se("nav-group-trust-config"), null);
+    }
+
+    public static NavLink damClientLink() {
+        return new NavLink("Client Applications", DdapBy.se("nav-trust-config-clients"), trustConfigPanelSelectorLink());
+    }
+
+    public static NavLink damTrustedSourcesLink() {
+        return new NavLink("Visa Sources", DdapBy.se("nav-trust-config-sources"), trustConfigPanelSelectorLink());
+    }
+
+    public static NavLink damPassportsLink() {
+        return new NavLink("Passport & Visa Issuers", DdapBy.se("nav-trust-config-issuers"), trustConfigPanelSelectorLink());
+    }
+
+    public static NavLink advancedSettingsPanelSelectorLink() {
+        return new NavLink("Advanced Settings", DdapBy.se("nav-group-advanced"), null);
+    }
+
+    public static NavLink damOptionsLink() {
+        return new NavLink("Options", DdapBy.se("nav-advanced-options"), advancedSettingsPanelSelectorLink());
+    }
+
+    public static NavLink damVisaTypesLink() {
+        return new NavLink("Visa Types", DdapBy.se("nav-advanced-visa-types"), advancedSettingsPanelSelectorLink());
+    }
+
+    public static NavLink damServiceDefinitionLink() {
+        return new NavLink("Service Definitions", DdapBy.se("nav-advanced-service-definitions"), advancedSettingsPanelSelectorLink());
     }
 
     public NavBar(WebDriver driver) {
@@ -114,7 +118,7 @@ public class NavBar {
     }
 
     public void assertAdminNavBar() {
-        Stream.of(damPanelAdvancedSelectorLink().getSelector())
+        Stream.of(advancedSettingsPanelSelectorLink().getSelector())
             .forEach(this.driver::findElement);
     }
 
@@ -154,16 +158,6 @@ public class NavBar {
         return goTo(navItem, AdminOptionPage::new);
     }
 
-    public <T> T goToSimplifiedAdmin(NavLink navItem, Function<WebDriver, T> pageFactory) {
-        try {
-            new WebDriverWait(driver, 1)
-                .until(ExpectedConditions.visibilityOfElementLocated(navItem.selector));
-        } catch (TimeoutException te) {
-            toggleSimplifiedAdminPanel();
-        }
-        return goTo(navItem, pageFactory);
-    }
-
     private WebElement getRealmInput() {
         return driver.findElement(DdapBy.se("realm-input"));
     }
@@ -193,12 +187,6 @@ public class NavBar {
                 .until(ExpectedConditions.elementToBeClickable(DdapBy.se("nav-logout")));
         driver.findElement(DdapBy.se("nav-logout")).click();
         return new AnyDdapPage(driver);
-    }
-
-    public void toggleSimplifiedAdminPanel() {
-        if (existsInNavBar(simplifiedAdminPanelToggle())) {
-            driver.findElement(simplifiedAdminPanelToggle().selector).click();
-        }
     }
 
     public String getLoggedInUsername() {

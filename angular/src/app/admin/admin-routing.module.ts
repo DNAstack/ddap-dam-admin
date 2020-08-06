@@ -8,9 +8,9 @@ export const routes: Routes = [
       .then(mod => mod.DamRepositoryModule),
   },
   {
-    path: 'users',
-    loadChildren: () => import('./users/users.module')
-      .then(mod => mod.UsersModule),
+    path: 'users-and-groups',
+    loadChildren: () => import('./users-and-groups/users-and-groups.module')
+      .then(mod => mod.UsersAndGroupsModule),
   },
 ];
 

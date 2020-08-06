@@ -1,0 +1,98 @@
+<ddaplib-header iconClass="icon icon-trusted" label="Visa Sources">
+  <ddaplib-header-add-btn [navigateTo]="['manage', 'add']"
+                          [label]="'add visa source'">
+  </ddaplib-header-add-btn>
+</ddaplib-header>
+
+<ddaplib-main>
+  <ddaplib-entity-description>
+    Trusted Sources are sources of GA4GH
+    <ddaplib-entity-description-link [path]="'../../advanced/visa-types'">visas</ddaplib-entity-description-link>
+    in researcher identity tokens. Typical
+    <ddaplib-entity-description-link [path]="'../../resource-settings/policies'">access policies</ddaplib-entity-description-link>
+    place restrictions on the value and source of visas.
+  </ddaplib-entity-description>
+  <ddaplib-entity-description>
+    You can learn more about Visa Sources
+    <a href="https://github.com/GoogleCloudPlatform/healthcare-federated-access-services/blob/master/docs/dam/admin/config/sources.md#trusted-sources-configuration"
+       target="_blank"
+       rel="noopener noreferrer">
+      here
+    </a>.
+  </ddaplib-entity-description>
+
+  <div class="table-container mat-elevation-z1">
+    <table mat-table [dataSource]="entities$ | async"
+           class="table--base">
+      <!-- Label Definition -->
+      <ng-container matColumnDef="label" sticky>
+        <th mat-header-cell *matHeaderCellDef>Label</th>
+        <td mat-cell *matCellDef="let model"
+            class="table--link"
+            data-se="entity-title"
+            [routerLink]="[model.name]">
+          {{ model.dto.ui.label }}
+        </td>
+      </ng-container>
+      <!-- Description Definition -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let model">{{ model.dto.ui.description }}</td>
+      </ng-container>
+      <!-- Sources Definition -->
+      <ng-container matColumnDef="sources">
+        <th mat-header-cell *matHeaderCellDef>Sources</th>
+        <td mat-cell *matCellDef="let model">
+          <span *ngFor="let source of model.dto.sources">
+            {{ source }}
+            <br/>
+          </span>
+        </td>
+      </ng-container>
+      <!-- Claims Definition -->
+      <ng-container matColumnDef="visaTypes">
+        <th mat-header-cell *matHeaderCellDef>Visa Type Restrictions</th>
+        <td mat-cell *matCellDef="let model">
+          <span *ngFor="let claim of model.dto.claims">
+            {{ claim }}
+            <br/>
+          </span>
+        </td>
+      </ng-container>
+      <!-- More Actions Column -->
+      <ng-container matColumnDef="moreActions" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let model"
+            class="table--actions">
+          <mat-icon [matMenuTriggerFor]="moreActionsMenu"
+                    [matMenuTriggerData]="{ id: model.name, label: model.dto.ui?.label }"
+                    data-se="btn-more-actions">
+            more_vert
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <mat-menu #moreActionsMenu="matMenu">
+        <ng-template matMenuContent
+                     let-id="id"
+                     let-label="label">
+          <button [routerLink]="[id]"
+                  mat-menu-item
+                  data-se="btn-edit">
+            Edit
+          </button>
+          <button (click)="openDeleteConfirmationDialog(id, label)"
+                  mat-menu-item
+                  class="color--warn"
+                  data-se="btn-delete">
+            Delete
+          </button>
+        </ng-template>
+      </mat-menu>
+
+      <!-- Header and Row Declarations -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</ddaplib-main>

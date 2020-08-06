@@ -3,7 +3,7 @@ import { EntityModel, flatten } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable } from 'rxjs';
 
-import { PersonasStore } from '../../advanced/personas/personas.store';
+import { PersonasStore } from '../../resource-settings/personas/personas.store';
 
 import { ViewRole } from './view-role.model';
 

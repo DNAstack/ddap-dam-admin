@@ -14,25 +14,33 @@ export class AppConfigService {
     this.viewController
       .registerGroup({
         key: 'identity',
-        name: 'Identity Management',
+        name: 'My Profile & Activity',
         collapsible: true,
         collapsibleByDefault: true,
         nonAdmin: true,
       })
       .registerGroup({
         key: 'user-admin',
-        name: 'User Administration',
+        name: 'Users and Groups',
         collapsible: true,
         collapsibleByDefault: true,
         nonAdmin: false,
       })
       .registerGroup({
-        key: 'simplified',
-        name: 'Simplified Settings',
-        collapsible: false,
-        collapsibleByDefault: false,
+        key: 'resource-settings',
+        name: 'Resource Settings',
+        collapsible: true,
+        collapsibleByDefault: true,
         nonAdmin: false,
-      }).registerGroup({
+      })
+      .registerGroup({
+        key: 'trust-config',
+        name: 'Trust Configuration',
+        collapsible: true,
+        collapsibleByDefault: true,
+        nonAdmin: false,
+      })
+      .registerGroup({
         key: 'advanced',
         name: 'Advanced Settings',
         collapsible: true,
@@ -41,9 +49,10 @@ export class AppConfigService {
       });
 
     this.viewController
+      // My Profile & Activity
       .registerModule({
         key: 'identity-admin',
-        name: 'My Identity',
+        name: 'Profile',
         iconClasses: 'icon icon-identity',
         routerLink: 'account/identity',
         isApp: false,
@@ -60,7 +69,7 @@ export class AppConfigService {
       })
       .registerModule({
         key: 'identity-consents',
-        name: 'Consents',
+        name: 'Remembered Consents',
         iconClasses: 'icon icon-passport',
         routerLink: 'account/consents',
         group: 'identity',
@@ -68,66 +77,97 @@ export class AppConfigService {
       })
       .registerModule({
         key: 'identity-auditlogs',
-        name: 'Auditlogs',
+        name: 'Audit Logs',
         iconClasses: 'icon icon-rules',
         routerLink: 'account/auditlogs',
         group: 'identity',
         isApp: false,
       })
+      // Users and Groups
       .registerModule({
         key: 'admin-users',
         name: 'Users',
         iconClasses: 'icon icon-identities',
-        routerLink: 'admin/users',
+        routerLink: 'admin/users-and-groups/users',
         isApp: false,
         group: 'user-admin',
         nonAdmin: false,
       })
       .registerModule({
+        key: 'admin-groups',
+        name: 'Groups',
+        iconClasses: 'icon icon-identities',
+        routerLink: 'admin/users-and-groups/groups',
+        group: 'user-admin',
+        isApp: false,
+        nonAdmin: false,
+      })
+      // FIXME: unable to put this in between of groups
+      // Quickstart
+      .registerModule({
         key: 'simplified-admin-quickstart',
         name: 'Quickstart',
         iconClasses: 'icon icon-policies',
         routerLink: 'admin/dam/simple/quickstart',
-        group: 'simplified',
+        group: null,
         isApp: false,
       })
+      // Resource Settings
       .registerModule({
-        key: 'advanced-resources',
-        name: 'Resources',
+        key: 'resource-settings-data',
+        name: 'Data Resources',
         iconClasses: 'icon icon-resource',
-        routerLink: 'admin/dam/advanced/resources',
-        group: 'advanced',
+        routerLink: 'admin/dam/resource-settings/resources',
+        group: 'resource-settings',
         isApp: false,
       })
       .registerModule({
-        key: 'advanced-access-policies',
-        name: 'Access Policies',
+        key: 'resource-settings-policies',
+        name: 'Data Access Policies',
         iconClasses: 'icon icon-policies',
-        routerLink: 'admin/dam/advanced/access-policies',
-        group: 'advanced',
+        routerLink: 'admin/dam/resource-settings/policies',
+        group: 'resource-settings',
         isApp: false,
       })
       .registerModule({
-        key: 'advanced-service-definitions',
-        name: 'Service Definitions',
-        iconClasses: 'icon icon-clients',
-        routerLink: 'admin/dam/advanced/service-definitions',
-        group: 'advanced',
+        key: 'resource-settings-personas',
+        name: 'Test Personas',
+        iconClasses: 'icon icon-tests',
+        routerLink: 'admin/dam/resource-settings/personas',
+        group: 'resource-settings',
         isApp: false,
       })
+      // Trust Configuration
       .registerModule({
-        key: 'advanced-trusted-sources',
-        name: 'Trusted Sources',
-        iconClasses: 'icon icon-trusted',
-        routerLink: 'admin/dam/advanced/trusted-sources',
-        group: 'advanced',
-        isApp: false,
-      })
-      .registerModule({
-        key: 'advanced-passport-issuers',
-        name: 'Passport Issuers',
+        key: 'trust-config-issuers',
+        name: 'Passport & Visa Issuers',
         iconClasses: 'icon icon-passport',
-        routerLink: 'admin/dam/advanced/passport-issuers',
+        routerLink: 'admin/dam/trust-config/issuers',
+        group: 'trust-config',
+        isApp: false,
+      })
+      .registerModule({
+        key: 'trust-config-sources',
+        name: 'Visa Sources',
+        iconClasses: 'icon icon-trusted',
+        routerLink: 'admin/dam/trust-config/sources',
+        group: 'trust-config',
+        isApp: false,
+      })
+      .registerModule({
+        key: 'trust-config-clients',
+        name: 'Client Applications',
+        iconClasses: 'icon icon-apps',
+        routerLink: 'admin/dam/trust-config/clients',
+        group: 'trust-config',
+        isApp: false,
+      })
+      // Advanced
+      .registerModule({
+        key: 'advanced-options',
+        name: 'Options',
+        iconClasses: 'icon icon-settings',
+        routerLink: 'admin/dam/advanced/options',
         group: 'advanced',
         isApp: false,
       })
@@ -140,34 +180,10 @@ export class AppConfigService {
         isApp: false,
       })
       .registerModule({
-        key: 'advanced-test-personas',
-        name: 'Test Personas',
-        iconClasses: 'icon icon-tests',
-        routerLink: 'admin/dam/advanced/test-personas',
-        group: 'advanced',
-        isApp: false,
-      })
-      .registerModule({
-        key: 'advanced-client-applications',
-        name: 'Client Applications',
-        iconClasses: 'icon icon-apps',
-        routerLink: 'admin/dam/advanced/client-applications',
-        group: 'advanced',
-        isApp: false,
-      })
-      .registerModule({
-        key: 'advanced-options',
-        name: 'Options',
-        iconClasses: 'icon icon-settings',
-        routerLink: 'admin/dam/advanced/options',
-        group: 'advanced',
-        isApp: false,
-      })
-      .registerModule({
-        key: 'advanced-whitelists',
-        name: 'Groups',
-        iconClasses: 'icon icon-identities',
-        routerLink: 'admin/dam/advanced/groups',
+        key: 'advanced-service-definitions',
+        name: 'Service Definitions',
+        iconClasses: 'icon icon-clients',
+        routerLink: 'admin/dam/advanced/service-definitions',
         group: 'advanced',
         isApp: false,
       });

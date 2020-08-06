@@ -15,7 +15,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
     @Test
     public void createResourceForGCSWithDefaults() {
         SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
+            .goTo(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateGCSResource();
 
@@ -33,7 +33,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
     @Test
     public void createResourceForGCSWithRead() {
         SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
+            .goTo(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateGCSResource();
 
@@ -53,7 +53,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
     @Test
     public void createResourceForGCSWithWrite() {
         SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
+            .goTo(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateGCSResource();
 
@@ -73,7 +73,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
     @Test
     public void createResourceForBigQueryWithDefaults() {
         SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
+            .goTo(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateBigQueryResource();
 
@@ -90,7 +90,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
     @Test
     public void createResourceForBeaconWithDefaults() {
         SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
+            .goTo(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateBeaconResource();
 
@@ -108,7 +108,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
     @Test
     public void createResourceForAwsS3WithDefaults() {
         SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
+            .goTo(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateAwsS3Resource();
 
@@ -125,7 +125,7 @@ public class SimplifiedAdminQuickstartE2eTest extends AbstractAdminFrontendE2eTe
     @Test
     public void createResourceForAwsRedshiftWithDefaults() {
         SimplifiedAdminQuickstartPage simplifiedQuickstartPage = ddapPage.getNavBar()
-            .goToSimplifiedAdmin(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
+            .goTo(simplifiedAdminQuickstartLink(), SimplifiedAdminQuickstartPage::new);
 
         AdminManagePage adminManagePage = simplifiedQuickstartPage.clickCreateAwsRedshiftResource();
 

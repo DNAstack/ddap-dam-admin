@@ -34,10 +34,10 @@
       <ng-container matColumnDef="scopes">
         <th mat-header-cell *matHeaderCellDef>Scopes</th>
         <td mat-cell *matCellDef="let token">
-        <span *ngFor="let scope of token.scope.split(' ')">
-          {{ scope }}
-          <br/>
-        </span>
+            <span *ngFor="let scope of token.scope?.split(' ')">
+              {{ scope }}
+              <br/>
+            </span>
         </td>
       </ng-container>
       <!-- Expires At Definition -->

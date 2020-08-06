@@ -3,67 +3,72 @@ import { RouterModule, Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'advanced',
-    children: [
-      {
-        path: 'access-policies',
-        loadChildren: () => import('./advanced/access-policies/access-policies.module')
-          .then(mod => mod.AccessPoliciesModule),
-      },
-      {
-        path: 'visa-types',
-        loadChildren: () => import('./advanced/visa-types/visa-types.module')
-          .then(mod => mod.VisaTypesModule),
-      },
-      {
-        path: 'client-applications',
-        loadChildren: () => import('./advanced/client-applications/client-applications.module')
-          .then(mod => mod.ClientApplicationsModule),
-      },
-      {
-        path: 'options',
-        loadChildren: () => import('./advanced/options/options.module')
-          .then(mod => mod.OptionsModule),
-      },
-      {
-        path: 'passport-issuers',
-        loadChildren: () => import('./advanced/passport-issuers/passport-issuers.module')
-          .then(mod => mod.PassportIssuersModule),
-      },
-      {
-        path: 'resources',
-        loadChildren: () => import('./advanced/resources/resources.module')
-          .then(mod => mod.ResourcesModule),
-      },
-      {
-        path: 'service-definitions',
-        loadChildren: () => import('./advanced/service-definitions/service-definitions.module')
-          .then(mod => mod.ServiceDefinitionsModule),
-      },
-      {
-        path: 'test-personas',
-        loadChildren: () => import('./advanced/personas/personas.module')
-          .then(mod => mod.PersonasModule),
-      },
-      {
-        path: 'trusted-sources',
-        loadChildren: () => import('./advanced/trusted-sources/trusted-sources.module')
-          .then(mod => mod.TrustedSourcesModule),
-      },
-      {
-        path: 'groups',
-        loadChildren: () => import('./advanced/groups/groups.module')
-          .then(mod => mod.GroupsModule),
-      },
-    ],
-  },
-  {
     path: 'simple',
     children: [
       {
         path: 'quickstart',
-        loadChildren: () => import('./simple/quickstart/quickstart.module')
+        loadChildren: () => import('./simplify-settings/quickstart/quickstart.module')
           .then(mod => mod.QuickstartModule),
+      },
+    ],
+  },
+  {
+    path: 'advanced',
+    children: [
+      {
+        path: 'visa-types',
+        loadChildren: () => import('./advanced-settings/visa-types/visa-types.module')
+          .then(mod => mod.VisaTypesModule),
+      },
+      {
+        path: 'options',
+        loadChildren: () => import('./advanced-settings/options/options.module')
+          .then(mod => mod.OptionsModule),
+      },
+      {
+        path: 'service-definitions',
+        loadChildren: () => import('./advanced-settings/service-definitions/service-definitions.module')
+          .then(mod => mod.ServiceDefinitionsModule),
+      },
+    ],
+  },
+  {
+    path: 'resource-settings',
+    children: [
+      {
+        path: 'policies',
+        loadChildren: () => import('./resource-settings/access-policies/access-policies.module')
+          .then(mod => mod.AccessPoliciesModule),
+      },
+      {
+        path: 'resources',
+        loadChildren: () => import('./resource-settings/resources/resources.module')
+          .then(mod => mod.ResourcesModule),
+      },
+      {
+        path: 'personas',
+        loadChildren: () => import('./resource-settings/personas/personas.module')
+          .then(mod => mod.PersonasModule),
+      },
+    ],
+  },
+  {
+    path: 'trust-config',
+    children: [
+      {
+        path: 'clients',
+        loadChildren: () => import('./trust-config/client-applications/client-applications.module')
+          .then(mod => mod.ClientApplicationsModule),
+      },
+      {
+        path: 'issuers',
+        loadChildren: () => import('./trust-config/passport-issuers/passport-issuers.module')
+          .then(mod => mod.PassportIssuersModule),
+      },
+      {
+        path: 'sources',
+        loadChildren: () => import('./trust-config/visa-sources/visa-sources.module')
+          .then(mod => mod.VisaSourcesModule),
       },
     ],
   },
