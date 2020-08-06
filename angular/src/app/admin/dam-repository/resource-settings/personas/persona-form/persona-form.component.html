@@ -47,7 +47,7 @@
               help_outline
             </mat-icon>
             <mat-autocomplete #issuers="matAutocomplete">
-              <mat-option *ngFor="let option of passportIssuers | async"
+              <mat-option *ngFor="let option of passportIssuers$ | async"
                           [value]="option">
                 {{ option }}
               </mat-option>
@@ -134,7 +134,7 @@
                   help_outline
                 </mat-icon>
                 <mat-autocomplete #claims="matAutocomplete">
-                  <mat-option *ngFor="let option of claimDefinitions | async"
+                  <mat-option *ngFor="let option of claimDefinitions$ | async"
                               [value]="option">
                     {{ option }}
                   </mat-option>
@@ -154,7 +154,7 @@
                 </mat-icon>
                 <mat-error *ngIf="ga4ghAssertion.get('source').hasError('url')">Must start with http:// or https://</mat-error>
                 <mat-autocomplete #sources="matAutocomplete">
-                  <mat-option *ngFor="let option of trustedSources | async"
+                  <mat-option *ngFor="let option of trustedSources$ | async"
                               [value]="option">
                     {{ option }}
                   </mat-option>

@@ -1,4 +1,13 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Form, isExpanded } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
@@ -59,9 +68,9 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
   isExpanded: Function = isExpanded;
   resourcesList = [];
   authorityLevels: string[] = Object.values(AuthorityLevel);
-  passportIssuers: Observable<string[]>;
-  claimDefinitions: Observable<string[]>;
-  trustedSources: Observable<string[]>;
+  passportIssuers$: Observable<string[]>;
+  claimDefinitions$: Observable<string[]>;
+  trustedSources$: Observable<string[]>;
   claimSuggestedValues: string[];
   conditionsComponentLabels = {
     header: 'Visa Conditions',
@@ -108,6 +117,7 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
     }
 
     this.getAutocompleteValues();
+    this.addGa4ghAssertion();
   }
 
   ngOnDestroy(): void {
@@ -181,16 +191,16 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
   }
 
   private getAutocompleteValues() {
-    this.claimDefinitions = this.claimDefinitionsStore.getAsList(pick('name'))
+    this.claimDefinitions$ = this.claimDefinitionsStore.getAsList(pick('name'))
       .pipe(
         map(makeDistinct)
       );
-    this.trustedSources = this.trustedSourcesStore.getAsList(pick('dto.sources'))
+    this.trustedSources$ = this.trustedSourcesStore.getAsList(pick('dto.sources'))
       .pipe(
         map(flatten),
         map(makeDistinct)
       );
-    this.passportIssuers = this.passportIssuersStore.getAsList(pick('dto.issuer'))
+    this.passportIssuers$ = this.passportIssuersStore.getAsList(pick('dto.issuer'))
       .pipe(
         map(makeDistinct)
       );
@@ -291,4 +301,5 @@ export class PersonaFormComponent implements OnInit, OnDestroy, Form {
       })
     ).subscribe();
   }
+
 }

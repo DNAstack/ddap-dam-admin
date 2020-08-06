@@ -48,7 +48,9 @@ public class AdminManagePage extends AdminDdapPage {
 
     public void fillFieldFromDropdown(By fieldSelector, String fieldValue) {
         WebElement field = driver.findElement(fieldSelector);
+        WebPageScroller.scrollTo(driver, field);
 
+        waitForInflightRequests();
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.elementToBeClickable(field));
         // This dismisses any previous auto-complete suggestions in other fields.

@@ -24,7 +24,6 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-email"), "test-subject@test-ddap.com");
         adminManagePage.fillField(DdapBy.se("inp-picture"), "https://pbs.twimg.com/profile_images/3443048571/ef5062acfce64a7aef1d75b4934fbee6_400x400.png");
 
-        adminManagePage.clickButton(DdapBy.se("btn-add-passport"));
         adminManagePage.fillField(DdapBy.se("inp-passport-type"), "ControlledAccessGrants");
         adminManagePage.fillField(DdapBy.se("inp-passport-source"), "https://institute1.test");
         adminManagePage.closeAutocompletes();
@@ -61,7 +60,6 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clearField(DdapBy.se("inp-email"));
         adminManagePage.fillField(DdapBy.se("inp-email"), "test-subject@test-ddap.com");
 
-        adminManagePage.clickButton(DdapBy.se("btn-add-passport"));
         adminManagePage.fillField(DdapBy.se("inp-passport-type"), "test-claimName");
         adminManagePage.fillField(DdapBy.se("inp-passport-source"), "https://institute1.test");
         adminManagePage.fillField(DdapBy.se("inp-passport-value"), "test-value");
@@ -111,7 +109,6 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
                 .goToAdmin(damTestPersonaLink());
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
-        adminManagePage.clickButton(DdapBy.se("btn-add-passport"));
 
         adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-passport-type"), "ControlledAccessGrants");
         adminManagePage.waitForInflightRequests();
@@ -137,7 +134,8 @@ public class AdminPersonaE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.clearField(DdapBy.se("inp-label"));
 
         adminManagePage.clickUpdate();
-        adminManagePage.assertError(containsString("Please fix invalid fields"));
+        adminManagePage.waitForInflightRequests();
+        adminManagePage.assertError(containsString("visa 1 missing assertion type"));
     }
 
 }
