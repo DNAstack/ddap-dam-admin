@@ -12,7 +12,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -73,6 +76,19 @@ public abstract class AbstractFrontendE2eTest extends AbstractBaseE2eTest {
     public void afterEach() {
         String testName = this.getClass().getSimpleName() + "." + name.getMethodName() + ".png";
         ScreenshotUtil.capture(testName, driver);
+    }
+
+    // Whenever test fails the JUnit retries the test, but it does not restart the test from the clean state.
+    // There might be unclosed dialogs or dropdowns which might prevent a valid test retry. We try to close those
+    // elements here if they exists after ending the test so the actual test retry won't be affected by them.
+    @After
+    public void tearDown() {
+        try {
+            WebElement overlay = driver.findElement(By.className("cdk-overlay-backdrop"));
+            overlay.click();
+        } catch (NoSuchElementException nsee) {
+            // intentionally left empty
+        }
     }
 
 }
