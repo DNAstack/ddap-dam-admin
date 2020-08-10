@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 import { scim } from '../../proto/dam-service';
 import { LocaleModel, TimezoneModel } from '../locale-metadata/locale-metadata.model';
 import { LocaleMetadataService } from '../locale-metadata/locale-metadata.service';
-import { ScimService } from '../scim.service';
+import { ScimUserService } from '../scim-user.service';
 import { UserService } from '../user.service';
 
 import { PersonalInfoFormBuilder } from './personal-info-form-builder.service';
@@ -74,7 +74,7 @@ export class PersonalInfoFormComponent implements Form, OnInit {
 
   unlinkAccount(email: AbstractControl) {
     const ref = email.get('$ref').value;
-    this.userService.patchUser(this.user.id, ScimService.getAccountUnlinkPatch(ref))
+    this.userService.patchUser(this.user.id, ScimUserService.getAccountUnlinkPatch(ref))
       .subscribe(() => window.location.reload());
   }
 
@@ -90,7 +90,7 @@ export class PersonalInfoFormComponent implements Form, OnInit {
   }
 
   getModel(): IPatch {
-    return  ScimService.getOperationsPatch(this.user, this.form.getRawValue());
+    return ScimUserService.getOperationsPatch(this.user, this.form.getRawValue());
   }
 
   private mapToArray<T>(source: { [id: string]: T }): T[] {

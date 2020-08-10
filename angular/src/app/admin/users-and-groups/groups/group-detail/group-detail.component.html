@@ -1,12 +1,38 @@
-<ng-container *ngIf="whitelist$ | async as whitelist">
-  <ddaplib-header [backLink]="['..']" [label]="whitelist.name">
+<ng-container *ngIf="group$ | async as group">
+  <ddaplib-header [backLink]="['..']" [label]="group.displayName">
   </ddaplib-header>
 </ng-container>
 
 <ddaplib-main>
-  <ng-container *ngIf="whitelist$ | async as whitelist">
-    <ddap-group-form [whitelist]="whitelist"
-                         [editable]="false">
+  <ng-container *ngIf="group$ | async as group">
+    <ddap-group-form #groupFrom
+                     [group]="group"
+                     [internalNameEditable]="false">
     </ddap-group-form>
   </ng-container>
 </ddaplib-main>
+
+<div *ngIf="group$ | async as group"
+     class="ddap-form-toolbar">
+  <ddaplib-form-footer-error [showError]="!isFormValid && isFormValidated"
+                             [message]="formErrorMessage">
+  </ddaplib-form-footer-error>
+  <button mat-flat-button
+          (click)="openDeleteConfirmationDialog(group.id, group.displayName)"
+          [disabled]="!group"
+          data-se="btn-delete"
+          type="button"
+          color="warn"
+          class="uppercase">
+    Delete
+  </button>
+  <button mat-flat-button
+          (click)="update(group)"
+          [disabled]="!group"
+          data-se="btn-update"
+          type="submit"
+          color="primary"
+          class="uppercase">
+    Save
+  </button>
+</div>

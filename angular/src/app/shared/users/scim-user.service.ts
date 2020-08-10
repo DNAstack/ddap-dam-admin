@@ -1,17 +1,17 @@
-import { flatDeep } from 'ddap-common-lib';
 import _get from 'lodash.get';
-import _isEqual from 'lodash.isequal';
 
 import { scim } from '../proto/dam-service';
 
-import IOperation = scim.v2.Patch.IOperation;
 import { PathOperation } from './path-operation.enum';
-import Operation = scim.v2.Patch.Operation;
+import { ScimBaseService } from './scim-base.service';
+
+import IOperation = scim.v2.Patch.IOperation;
+
 import IUser = scim.v2.IUser;
 import Patch = scim.v2.Patch;
 import IPatch = scim.v2.IPatch;
 
-export class ScimService {
+export class ScimUserService extends ScimBaseService {
 
   public static getOperationsPatch(user: IUser, formValues: any): IPatch {
     const pathsToFields = this.getListOfFullPathsToFields('', {
@@ -59,16 +59,6 @@ export class ScimService {
     });
   }
 
-  private static getOperations(newValue: string | boolean, path: string) {
-    if (typeof newValue === 'boolean') {
-      return this.getPatchOperationModel(PathOperation.replace, path, newValue);
-    }
-    if (!newValue || newValue === '') {
-      return this.getPatchOperationModel(PathOperation.remove, path, '');
-    }
-    return this.getPatchOperationModel(PathOperation.replace, path, newValue);
-  }
-
   private static emailValueReplaceOperation(user, pathToValue: string, newValue) {
     if (pathToValue.includes('.primary')) {
       const pathToRefValue = pathToValue.replace('.primary', '.$ref');
@@ -77,39 +67,6 @@ export class ScimService {
       return this.getPatchOperationModel(PathOperation.replace, path, newValue);
     }
     return this.getOperations(newValue, pathToValue);
-  }
-
-  private static valueHasChanged(user, pathToValue, newValue) {
-    const previousValue = _get(user, pathToValue);
-    if (!previousValue && !newValue) {
-      return false;
-    }
-    return !_isEqual(previousValue, newValue);
-  }
-
-  private static getPatchOperationModel(operation: PathOperation, path: string, value: string | boolean): IOperation {
-    return Operation.create({
-      op: operation,
-      path,
-      value: `${value}`,
-    });
-  }
-
-  private static getListOfFullPathsToFields(rootPath: string, obj: any): string[] {
-    const concatPaths = (parentPath: string, key: string): string => {
-      return parentPath !== '' ? `${parentPath}.${key}` : `${key}`;
-    };
-
-    const paths = [];
-    Object.entries(obj).forEach(([key, value]) => {
-      const path = concatPaths(rootPath, key);
-      if (value instanceof Object) {
-        paths.push(this.getListOfFullPathsToFields(path, value));
-      } else {
-        paths.push(path);
-      }
-    });
-    return flatDeep(paths);
   }
 
 }

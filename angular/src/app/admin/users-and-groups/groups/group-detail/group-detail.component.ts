@@ -1,9 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import IGroup = scim.v2.IGroup;
+import { DeleteActionConfirmationDialogComponent, Form, FormValidationService } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 import { share, switchMap } from 'rxjs/operators';
 
-import { GroupsService } from '../groups.service';
+import { scim } from '../../../../shared/proto/dam-service';
+import IPatch = scim.v2.IPatch;
+import { ScimGroupService } from '../../../../shared/users/scim-group.service';
+import { GroupFormComponent } from '../group-form/group-form.component';
+import { GroupService } from '../group.service';
 
 @Component({
   selector: 'ddap-group-detail',
@@ -12,20 +19,78 @@ import { GroupsService } from '../groups.service';
 })
 export class GroupDetailComponent implements OnInit {
 
-  whitelist$: Observable<any>;
+  @ViewChild(GroupFormComponent)
+  groupForm: GroupFormComponent;
 
-  constructor(private route: ActivatedRoute,
-              private whitelistsService: GroupsService) {
+  group$: Observable<IGroup>;
+  formErrorMessage: string;
+  isFormValid: boolean;
+  isFormValidated: boolean;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private validationService: FormValidationService,
+    private groupService: GroupService,
+    private dialog: MatDialog
+  ) {
   }
 
   ngOnInit(): void {
-    this.whitelist$ = this.route.params.pipe(
+    this.group$ = this.route.params.pipe(
       switchMap((params) => {
         const { entityId } = params;
-        return this.whitelistsService.get(entityId);
+        return this.groupService.getGroup(entityId);
       }),
       share()
     );
   }
+
+  openDeleteConfirmationDialog(groupId: string, groupName: string) {
+    this.dialog.open(DeleteActionConfirmationDialogComponent, {
+      data: {
+        entityName: groupName,
+      },
+    }).afterClosed()
+      .subscribe((response) => {
+        if (response?.acknowledged) {
+          this.delete(groupId);
+        }
+      });
+  }
+
+  delete(groupId: string): void {
+    this.groupService.deleteGroup(groupId)
+      .subscribe(() => this.navigateUp('..'), this.handleError);
+  }
+
+  update(group: IGroup) {
+    if (!this.validate(this.groupForm)) {
+      return;
+    }
+
+    const change: IPatch = ScimGroupService.getOperationsPatch(group, this.groupForm.getModel());
+    this.groupService.patchGroup(group.id, change)
+      .subscribe(() => this.navigateUp('..'), this.handleError);
+  }
+
+  handleError = ({ error }) => {
+    this.displayFieldErrorMessage(error?.message);
+  }
+
+  protected displayFieldErrorMessage = (error) => {
+    this.formErrorMessage = error;
+    this.isFormValid = false;
+    this.isFormValidated = true;
+  }
+
+  protected validate(form: Form): boolean {
+    this.formErrorMessage = null;
+    this.isFormValid = this.validationService.validate(form);
+    this.isFormValidated = true;
+    return this.isFormValid;
+  }
+
+  protected navigateUp = (path: string) => this.router.navigate([path], { relativeTo: this.route });
 
 }

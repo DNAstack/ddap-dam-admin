@@ -2,13 +2,14 @@
 </ddaplib-header>
 
 <ddaplib-main>
-  <ddap-group-form #whitelistForm>
+  <ddap-group-form #groupFrom
+                   [internalNameEditable]="true">
   </ddap-group-form>
 </ddaplib-main>
 
 <div class="ddap-form-toolbar">
   <ddaplib-form-footer-error [showError]="!isFormValid && isFormValidated"
-                          [message]="formErrorMessage">
+                             [message]="formErrorMessage">
   </ddaplib-form-footer-error>
   <button mat-flat-button
           (click)="save()"

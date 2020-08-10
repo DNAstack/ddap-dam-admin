@@ -2,8 +2,10 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Form, FormValidationService } from 'ddap-common-lib';
 
+import { scim } from '../../../../shared/proto/dam-service';
 import { GroupFormComponent } from '../group-form/group-form.component';
-import { GroupsService } from '../groups.service';
+import { GroupService } from '../group.service';
+import IGroup = scim.v2.IGroup;
 
 @Component({
   selector: 'ddap-group-manage',
@@ -13,25 +15,27 @@ import { GroupsService } from '../groups.service';
 export class GroupManageComponent {
 
   @ViewChild(GroupFormComponent)
-  whitelistForm: GroupFormComponent;
+  groupForm: GroupFormComponent;
 
   formErrorMessage: string;
   isFormValid: boolean;
   isFormValidated: boolean;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private validationService: FormValidationService,
-              private whitelistsService: GroupsService) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private validationService: FormValidationService,
+    private groupService: GroupService
+  ) {
   }
 
   save() {
-    if (!this.validate(this.whitelistForm)) {
+    if (!this.validate(this.groupForm)) {
       return;
     }
 
-    const whitelist: any = this.whitelistForm.getModel();
-    this.whitelistsService.save(whitelist)
+    const group: IGroup = this.groupForm.getModel();
+    this.groupService.createGroup(group.id, group)
       .subscribe(() => this.navigateUp('../..'), this.handleError);
   }
 
