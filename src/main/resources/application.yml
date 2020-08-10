@@ -48,20 +48,6 @@ ddap:
   wdl-validator:
     url: https://wdl-validator.staging.dnastack.com
     token: 1c0c52bedbc8c88bd998fa919243f32bcf5b201818288f112a477d118cc24d36
-  whitelists:
-    - name: whitelist-1
-      users:
-        - email: bob@dnastack.com
-        - email: ugo@dnastack.com
-        - email: ella@dnastack.com
-    - name: whitelist-2
-      users:
-        - email: red@dnastack.com
-        - email: blue@dnastack.com
-        - email: green@dnastack.com
-        - email: violet@dnastack.com
-        - email: black@dnastack.com
-
 
 spring:
   cloud:

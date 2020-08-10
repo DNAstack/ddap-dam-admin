@@ -9,6 +9,7 @@ import { share } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { scim } from '../proto/dam-service';
+import IListGroupsResponse = scim.v2.IListGroupsResponse;
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +54,17 @@ export class UserService {
   }
 
   deleteUser(userId: string): Observable<void> {
+    return this.http.delete<void>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
+  }
+
+  getGroups(params = {}): Observable<IListGroupsResponse> {
+    return this.http.get<IListGroupsResponse>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Groups`, { params })
+      .pipe(
+        this.errorHandler.notifyOnError(`Can't load groups.`)
+      );
+  }
+
+  deleteGroup(userId: string): Observable<void> {
     return this.http.delete<void>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
   }
 
