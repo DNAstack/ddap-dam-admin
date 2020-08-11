@@ -89,4 +89,16 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
             .until(ExpectedConditions.textToBe(DdapBy.se("page-title"), "Access Policies"));
     }
 
+    @Test
+    public void testPanelExpandedAfterRefresh() {
+        ddapPage = doBrowserLogin(REALM, ADMINISTRATOR, AdminDdapPage::new);
+        AdminListPage adminListPage = ddapPage.getNavBar()
+                .goToAdmin(damResourceLink());
+        final String resourcesButtonSelector = "nav-advanced-resources";
+
+        adminListPage.assertElementVisible(resourcesButtonSelector);
+        driver.navigate().refresh();
+        adminListPage.assertElementVisible(resourcesButtonSelector);
+    }
+
 }
