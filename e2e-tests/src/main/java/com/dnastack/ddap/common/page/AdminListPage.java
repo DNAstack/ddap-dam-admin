@@ -90,4 +90,8 @@ public class AdminListPage extends AdminDdapPage {
             .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".mat-row"), 0));
     }
 
+    public void assertElementVisible(String selector) {
+        new WebDriverWait(driver, 2)
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se(selector)));
+    }
 }
