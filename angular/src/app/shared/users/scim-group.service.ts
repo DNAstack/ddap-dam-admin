@@ -42,6 +42,18 @@ export class ScimGroupService extends ScimBaseService {
     };
   }
 
+  public static getOperationsPatchForBulkEmails(emails: string[]): IOperation[] {
+    const operations: IOperation[] = [];
+    emails.forEach((email) => {
+      operations.push(this.getPatchOperationModelForObject(PathOperation.add, 'members', {
+        type: 'User',
+        value: email,
+      }));
+    });
+
+    return operations;
+  }
+
   private static memberValueHasChanged(group: IGroup, newValue: IMember[]) {
     const previousValue = _get(group, 'members');
     if (!previousValue && !newValue) {

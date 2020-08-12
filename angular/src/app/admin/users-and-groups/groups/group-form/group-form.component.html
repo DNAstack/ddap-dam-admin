@@ -26,6 +26,20 @@
   </div>
 
   <h3>Members</h3>
+  <p>Add users' emails in a bulk or one by one.</p>
+  <div class="row bulk-input">
+    <mat-form-field class="col"
+                    appearance="fill">
+      <textarea [formControl]="bulkEmailsControl"
+                matInput
+                rows="7"
+                placeholder="Bulk Emails"
+                data-se="inp-bulk-emails">
+      </textarea>
+      <mat-hint>Paste here semicolon "<b>;</b>" separated list of users' emails</mat-hint>
+      <mat-error *ngIf="bulkEmailsControl.invalid">Content is not parsable</mat-error>
+    </mat-form-field>
+  </div>
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'members'"
                                       [fieldTitle]="'E-mail'"
