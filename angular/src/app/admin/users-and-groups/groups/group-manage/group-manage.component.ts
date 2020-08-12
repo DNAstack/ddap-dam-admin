@@ -35,6 +35,10 @@ export class GroupManageComponent {
     }
 
     const group: IGroup = this.groupForm.getModel();
+    const bulkEmails: string[] = this.groupForm.getBulkEmailsModel();
+    bulkEmails.forEach((email) => {
+      group.members.push({ type: 'User', value: email });
+    });
     this.groupService.createGroup(group.id, group)
       .subscribe(() => this.navigateUp('../..'), this.handleError);
   }

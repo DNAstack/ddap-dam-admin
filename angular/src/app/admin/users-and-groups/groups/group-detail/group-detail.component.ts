@@ -11,6 +11,7 @@ import IPatch = scim.v2.IPatch;
 import { ScimGroupService } from '../../../../shared/users/scim-group.service';
 import { GroupFormComponent } from '../group-form/group-form.component';
 import { GroupService } from '../group.service';
+import IOperation = scim.v2.Patch.IOperation;
 
 @Component({
   selector: 'ddap-group-detail',
@@ -70,6 +71,8 @@ export class GroupDetailComponent implements OnInit {
     }
 
     const change: IPatch = ScimGroupService.getOperationsPatch(group, this.groupForm.getModel());
+    const bulkEmails: IOperation[] = ScimGroupService.getOperationsPatchForBulkEmails(this.groupForm.getBulkEmailsModel());
+    bulkEmails.forEach((operation) => change.operations.push(operation));
     this.groupService.patchGroup(group.id, change)
       .subscribe(() => this.navigateUp('..'), this.handleError);
   }

@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { Form, isExpanded } from 'ddap-common-lib';
 import { Subscription } from 'rxjs';
 
@@ -27,6 +27,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
   form: FormGroup;
   isExpanded: Function = isExpanded;
   subscriptions: Subscription[] = [];
+  bulkEmailsControl: FormControl = new FormControl(undefined, this.isParsable);
 
   constructor(private groupFormBuilder: GroupFormBuilder) {
   }
@@ -45,6 +46,11 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  getBulkEmailsModel(): string[] {
+    const inputValue: string | undefined = this.bulkEmailsControl.value?.trim();
+    return GroupFormComponent.parseEmails(inputValue);
+  }
+
   getModel(): IGroup {
     const { members, ...rest } = this.form.value;
     return {
@@ -61,6 +67,15 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
     return this.form.valid;
   }
 
+  static parseEmails(inputValue: string): string[] {
+    if (inputValue?.includes(';')) {
+      return inputValue.split(';')
+        .map((email) => email.trim())
+        .filter((email) => email.length > 0);
+    }
+    return [];
+  }
+
   private getMembersModel(emails: string[]): IMember[] {
     return emails
       .filter((email) => email && email.length > 0)
@@ -70,6 +85,21 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
         value: email,
       };
     });
+  }
+
+  private isParsable(control: AbstractControl) {
+    if (!control || !control.value || control.value === '') {
+      return null;
+    }
+
+    const { value } = control;
+    if (GroupFormComponent.parseEmails(value)?.length > 0) {
+      return null;
+    }
+
+    return {
+      notParsable: true,
+    };
   }
 
 }
