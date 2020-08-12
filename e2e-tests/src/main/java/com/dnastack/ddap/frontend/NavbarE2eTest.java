@@ -94,7 +94,7 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
         ddapPage = doBrowserLogin(REALM, ADMINISTRATOR, AdminDdapPage::new);
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damResourceLink());
-        final String resourcesButtonSelector = "nav-advanced-resources";
+        final String resourcesButtonSelector = "nav-resource-settings-data";
 
         adminListPage.assertElementVisible(resourcesButtonSelector);
         driver.navigate().refresh();
