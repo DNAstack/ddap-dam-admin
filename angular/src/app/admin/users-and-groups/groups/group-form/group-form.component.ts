@@ -80,7 +80,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
   static parseEmails(inputValue: string): MemberParseResultModel {
     const parsedEmails: string[] = [];
     const unparsableValues: string[] = [];
-    const regExpEmailPattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/igm;
+    const regExpEmailPattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
     if (!inputValue || inputValue.trim() === '') {
       return {
