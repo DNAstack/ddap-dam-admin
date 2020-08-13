@@ -53,8 +53,8 @@
       <ng-container matColumnDef="visaTypes">
         <th mat-header-cell *matHeaderCellDef>Visa Type Restrictions</th>
         <td mat-cell *matCellDef="let model">
-          <span *ngFor="let claim of model.dto.claims">
-            {{ claim }}
+          <span *ngFor="let visaType of model.dto.visaTypes">
+            {{ visaType }}
             <br/>
           </span>
         </td>
