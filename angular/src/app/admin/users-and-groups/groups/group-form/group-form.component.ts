@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Form, isExpanded } from 'ddap-common-lib';
 import { Subscription } from 'rxjs';
 
@@ -9,6 +9,7 @@ import { generateInternalName } from '../../../dam-repository/shared/internal-na
 import { GroupFormBuilder } from './group-form-builder.service';
 import IGroup = scim.v2.IGroup;
 import IMember = scim.v2.IMember;
+import { MemberParseResultModel } from './member-parse-result.model';
 
 @Component({
   selector: 'ddap-group-form',
@@ -27,7 +28,8 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
   form: FormGroup;
   isExpanded: Function = isExpanded;
   subscriptions: Subscription[] = [];
-  bulkEmailsControl: FormControl = new FormControl(undefined, this.isParsable);
+  bulkEmailsControl: FormControl = new FormControl(undefined);
+  unparasbleValues: string[];
 
   constructor(private groupFormBuilder: GroupFormBuilder) {
   }
@@ -46,11 +48,6 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  getBulkEmailsModel(): string[] {
-    const inputValue: string | undefined = this.bulkEmailsControl.value?.trim();
-    return GroupFormComponent.parseEmails(inputValue);
-  }
-
   getModel(): IGroup {
     const { members, ...rest } = this.form.value;
     return {
@@ -67,13 +64,50 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
     return this.form.valid;
   }
 
-  static parseEmails(inputValue: string): string[] {
-    if (inputValue?.includes(';')) {
-      return inputValue.split(';')
-        .map((email) => email.trim())
-        .filter((email) => email.length > 0);
+  parseToList() {
+    const membersControl: FormArray = this.form.get('members') as FormArray;
+    const inputValue: string | undefined = this.bulkEmailsControl.value?.trim();
+    const parsedResult: MemberParseResultModel = GroupFormComponent.parseEmails(inputValue);
+    this.unparasbleValues = parsedResult.unparsableValues;
+    parsedResult.parsedEmails.forEach((parsedEmail) => {
+      // Do not add duplicate
+      if (!membersControl.value.some((email) => email === parsedEmail)) {
+        membersControl.push(this.groupFormBuilder.buildStringControl(parsedEmail, [Validators.required]));
+      }
+    });
+  }
+
+  static parseEmails(inputValue: string): MemberParseResultModel {
+    const parsedEmails: string[] = [];
+    const unparsableValues: string[] = [];
+    const regExpEmailPattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/igm;
+
+    if (!inputValue || inputValue.trim() === '') {
+      return {
+        parsedEmails,
+        unparsableValues,
+      };
     }
-    return [];
+
+    if (inputValue.includes(';')) {
+      inputValue.split(';')
+        .map((value) => value.trim())
+        .filter((value) => value.length > 0)
+        .filter((value) => {
+          if (regExpEmailPattern.test(value)) {
+            return true;
+          }
+          unparsableValues.push(value);
+        })
+        .forEach((parsedEmail) => parsedEmails.push(parsedEmail));
+    } else {
+      unparsableValues.push(inputValue.trim());
+    }
+
+    return {
+      parsedEmails,
+      unparsableValues,
+    };
   }
 
   private getMembersModel(emails: string[]): IMember[] {
@@ -85,21 +119,6 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
         value: email,
       };
     });
-  }
-
-  private isParsable(control: AbstractControl) {
-    if (!control || !control.value || control.value === '') {
-      return null;
-    }
-
-    const { value } = control;
-    if (GroupFormComponent.parseEmails(value)?.length > 0) {
-      return null;
-    }
-
-    return {
-      notParsable: true,
-    };
   }
 
 }

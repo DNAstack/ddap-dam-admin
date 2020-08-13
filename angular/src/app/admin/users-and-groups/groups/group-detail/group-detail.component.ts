@@ -71,8 +71,6 @@ export class GroupDetailComponent implements OnInit {
     }
 
     const change: IPatch = ScimGroupService.getOperationsPatch(group, this.groupForm.getModel());
-    const bulkEmails: IOperation[] = ScimGroupService.getOperationsPatchForBulkEmails(this.groupForm.getBulkEmailsModel());
-    bulkEmails.forEach((operation) => change.operations.push(operation));
     this.groupService.patchGroup(group.id, change)
       .subscribe(() => this.navigateUp('..'), this.handleError);
   }

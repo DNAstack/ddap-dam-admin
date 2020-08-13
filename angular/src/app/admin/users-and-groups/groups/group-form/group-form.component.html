@@ -37,9 +37,32 @@
                 data-se="inp-bulk-emails">
       </textarea>
       <mat-hint>Paste here semicolon "<b>;</b>" separated list of users' emails</mat-hint>
-      <mat-error *ngIf="bulkEmailsControl.invalid">Content is not parsable</mat-error>
     </mat-form-field>
   </div>
+  <button (click)="parseToList()"
+          mat-flat-button
+          color="primary"
+          class="uppercase">
+    Parse Emails
+  </button>
+
+  <ng-container *ngIf="unparasbleValues && unparasbleValues.length > 0">
+    <p class="warning-section">
+      <mat-icon class="icon icon-warning"></mat-icon>
+      <span>
+        Following <b>{{ unparasbleValues.length }}</b> values were not recognized as email address. Please make sure you have provided valid email addresses.
+        You can add them manually using input below or re-running the parser with corrected values.
+      </span>
+    </p>
+    <div class="warning-section">
+      <mat-list dense>
+        <mat-list-item *ngFor="let unparsableValue of unparasbleValues">
+          {{ unparsableValue }}
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </ng-container>
+
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'members'"
                                       [fieldTitle]="'E-mail'"
