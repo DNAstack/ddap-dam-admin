@@ -89,8 +89,8 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
       };
     }
 
-    if (inputValue.includes(';')) {
-      inputValue.split(';')
+    if (inputValue.includes(';') || inputValue.includes(',')) {
+      inputValue.split(inputValue.includes(';') ? ';' : ',')
         .map((value) => value.trim())
         .filter((value) => value.length > 0)
         .filter((value) => {
@@ -101,7 +101,11 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
         })
         .forEach((parsedEmail) => parsedEmails.push(parsedEmail));
     } else {
-      unparsableValues.push(inputValue.trim());
+      if (regExpEmailPattern.test(inputValue)) {
+        parsedEmails.push(inputValue);
+      } else {
+        unparsableValues.push(inputValue.trim());
+      }
     }
 
     return {
