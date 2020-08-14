@@ -56,13 +56,10 @@
       <ng-container matColumnDef="redirectUris">
         <th mat-header-cell *matHeaderCellDef>Redirect URIs</th>
         <td mat-cell *matCellDef="let model">
-          <a *ngFor="let redirectUri of model.dto.redirectUris"
-             [href]="redirectUri"
-             target="_blank"
-             rel="noopener noreferrer">
+          <span *ngFor="let redirectUri of model.dto.redirectUris">
             {{ redirectUri }}
             <br/>
-          </a>
+          </span>
         </td>
       </ng-container>
       <!-- Grant Type Definition -->
