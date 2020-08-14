@@ -5,7 +5,9 @@
       <!-- Issued At Definition -->
       <ng-container matColumnDef="issuedAt" sticky>
         <th mat-header-cell *matHeaderCellDef>Issued At</th>
-        <td mat-cell *matCellDef="let token">{{ formatTime(token['iat']) }}</td>
+        <td mat-cell *matCellDef="let token">
+          {{ dayjs.unix(token['iat']).format('DD MMM YYYY HH:mm:ss') }}
+        </td>
       </ng-container>
       <!-- Name Definition -->
       <ng-container matColumnDef="name">

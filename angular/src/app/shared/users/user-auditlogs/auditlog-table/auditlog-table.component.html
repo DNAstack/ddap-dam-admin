@@ -81,7 +81,7 @@
       <th mat-header-cell *matHeaderCellDef> Time </th>
       <td mat-cell *matCellDef="let log"
           class="table--link">
-        {{ formatTime(log['time']) }}
+        {{ dayjs(log['time']).format('DD MMM YYYY HH:mm:ss') }}
       </td>
     </ng-container>
     <ng-container matColumnDef="resourceName">

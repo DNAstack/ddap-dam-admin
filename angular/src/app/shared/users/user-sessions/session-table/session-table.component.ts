@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as dayjs_ from 'dayjs';
 import { BehaviorSubject, Observable } from 'rxjs';
 import ListTokensResponse = tokens.v1.ListTokensResponse;
 import { switchMap, tap } from 'rxjs/operators';
 
 import { tokens } from '../../../proto/dam-service';
 import { SessionsService } from '../sessions.service';
+
+const dayjs = dayjs_;
 
 @Component({
   selector: 'ddap-session-table',
@@ -17,6 +20,7 @@ export class SessionTableComponent implements OnInit {
   readonly displayedColumns: string[] = [
     'issuedAt', 'name', 'resources', 'issuer', 'scopes', 'expiresAt', 'client', 'moreActions',
   ];
+  readonly dayjs = dayjs;
 
   readonly #refreshTokens$ = new BehaviorSubject<ListTokensResponse>(undefined);
 
@@ -60,13 +64,6 @@ export class SessionTableComponent implements OnInit {
       return name;
     }
     return name.substring(name.lastIndexOf('/') + 1);
-  }
-
-  formatTime(timeString: string): string {
-    if (!isNaN(parseInt(timeString, 10))) {
-      return new Date(parseInt(timeString, 10) * 1000).toString();
-    }
-    return timeString;
   }
 
   private openSnackBar(message) {
