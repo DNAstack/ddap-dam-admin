@@ -11,10 +11,8 @@ import { switchMap, tap } from 'rxjs/operators';
 
 import { IdentityStore } from '../../../../account/identity/identity.store';
 import { AuditlogDetailStateService } from '../auditlog-detail-state.service';
-import { AuditlogResponseModel } from '../auditlog.model';
+import { AuditlogResponseModel, Decision, LogTypes } from '../auditlog.model';
 import { AuditlogsService } from '../auditlogs.service';
-import { Decision } from '../decision.enum';
-import { LogTypes } from '../log-type.enum';
 
 const dayjs = dayjs_;
 
