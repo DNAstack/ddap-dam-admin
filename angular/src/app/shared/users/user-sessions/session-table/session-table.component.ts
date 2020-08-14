@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable } from 'rxjs';
 import ListTokensResponse = tokens.v1.ListTokensResponse;
 import { switchMap, tap } from 'rxjs/operators';
@@ -24,7 +25,10 @@ export class SessionTableComponent implements OnInit {
   @Input()
   userId: string;
 
-  constructor(private tokenService: SessionsService) {
+  constructor(
+    private tokenService: SessionsService,
+    private snackBar: MatSnackBar
+  ) {
   }
 
   ngOnInit() {
@@ -43,7 +47,10 @@ export class SessionTableComponent implements OnInit {
 
   revokeToken(tokenId: string) {
     this.tokenService.revokeToken(this.userId, tokenId)
-      .subscribe(() => this.#refreshTokens$.next(undefined));
+      .subscribe(() => {
+        this.#refreshTokens$.next(undefined);
+        this.openSnackBar('Token has been revoked successfully. Mind that the token might still remain in the table for some time.');
+      });
   }
 
   // Example of 'name' 'users/ic_ba090f2bb80c42bc9e73263b145/tokens/hydra:ZDlhYTA1MzYtYmRmYS00ZmZjLTg1MDctMjA1ZDk2MDY5MjIy'
@@ -60,6 +67,12 @@ export class SessionTableComponent implements OnInit {
       return new Date(parseInt(timeString, 10) * 1000).toString();
     }
     return timeString;
+  }
+
+  private openSnackBar(message) {
+    this.snackBar.open(message, null, {
+      duration: 8000,
+    });
   }
 
 }
