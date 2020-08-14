@@ -51,6 +51,19 @@
       </mat-autocomplete>
     </mat-form-field>
     <mat-form-field class="col">
+      <input [matAutocomplete]="prefLanguageAutocomplete"
+             matInput
+             placeholder="Preferred Language"
+             formControlName="preferredLanguage"
+             data-se="inp-preferredLanguage">
+      <mat-autocomplete #prefLanguageAutocomplete="matAutocomplete">
+        <mat-option *ngFor="let locale of filteredPreferredLanguages$ | async"
+                    [value]="locale.id">
+          {{ locale.ui.label }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="col">
       <input [matAutocomplete]="timezoneAutocomplete"
              matInput
              placeholder="Timezone"

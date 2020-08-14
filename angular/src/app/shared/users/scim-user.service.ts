@@ -19,7 +19,7 @@ export class ScimUserService extends ScimBaseService {
       displayName: formValues.displayName,
       name: formValues.name,
       locale: formValues.locale,
-      preferredlanguage: formValues.preferredLanguage,
+      preferredLanguage: formValues.preferredLanguage,
       timezone: formValues.timezone,
       emails: formValues.emails,
       photos: formValues.photos,
