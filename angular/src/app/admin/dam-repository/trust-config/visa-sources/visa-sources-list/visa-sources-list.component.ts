@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ellipseIfLongerThan } from 'ddap-common-lib';
 import { tap } from 'rxjs/operators';
 
 import { DamConfigEntityListComponentBaseDirective } from '../../../shared/dam/dam-config-entity-list-component-base.directive';
@@ -17,7 +18,8 @@ export class VisaSourcesListComponent
   extends DamConfigEntityListComponentBaseDirective<VisaSourcesStore>
   implements OnInit {
 
-  displayedColumns: string[] = ['label', 'description', 'sources', 'visaTypes', 'moreActions'];
+  readonly displayedColumns: string[] = ['label', 'description', 'sources', 'visaTypes', 'moreActions'];
+  readonly ellipseIfLongerThan: Function = ellipseIfLongerThan;
 
   constructor(
     protected route: ActivatedRoute,

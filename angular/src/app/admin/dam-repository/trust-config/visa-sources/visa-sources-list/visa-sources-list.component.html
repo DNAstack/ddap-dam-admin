@@ -44,7 +44,7 @@
         <th mat-header-cell *matHeaderCellDef>Sources</th>
         <td mat-cell *matCellDef="let model">
           <span *ngFor="let source of model.dto.sources">
-            {{ source }}
+            {{ ellipseIfLongerThan(source, 45) }}
             <br/>
           </span>
         </td>
