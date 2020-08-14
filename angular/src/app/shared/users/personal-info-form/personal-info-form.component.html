@@ -49,6 +49,11 @@
           {{ locale.ui.label }}
         </mat-option>
       </mat-autocomplete>
+      <mat-icon matSuffix
+                class="input-help"
+                matTooltip="Format for dates, times, and currency.">
+        help_outline
+      </mat-icon>
     </mat-form-field>
     <mat-form-field class="col">
       <input [matAutocomplete]="prefLanguageAutocomplete"
@@ -62,6 +67,11 @@
           {{ locale.ui.label }}
         </mat-option>
       </mat-autocomplete>
+      <mat-icon matSuffix
+                class="input-help"
+                matTooltip="Written language locale.">
+        help_outline
+      </mat-icon>
     </mat-form-field>
     <mat-form-field class="col">
       <input [matAutocomplete]="timezoneAutocomplete"
@@ -75,6 +85,11 @@
           {{ timezone.ui.label }}
         </mat-option>
       </mat-autocomplete>
+      <mat-icon matSuffix
+                class="input-help"
+                matTooltip="Name of time zone location for use with time fields.">
+        help_outline
+      </mat-icon>
     </mat-form-field>
   </div>
 
