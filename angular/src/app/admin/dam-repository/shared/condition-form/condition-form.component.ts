@@ -38,6 +38,8 @@ export class ConditionFormComponent implements OnInit {
   labels: {
     header: string;
     description: string;
+    addBtn: string;
+    removeBtn: string;
   };
   @Input()
   showTrustedSources = false;

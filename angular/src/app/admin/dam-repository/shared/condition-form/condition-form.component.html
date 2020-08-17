@@ -8,7 +8,7 @@
               type="button"
               data-se="btn-add-condition"
               (click)="addCondition()">
-        Add Condition
+        {{ labels.addBtn || 'Add Condition' }}
       </button>
     </div>
   </h3>
@@ -247,7 +247,7 @@
                 class="uppercase"
                 data-se="btn-remove-condition"
                 (click)="removeCondition(conditionIndex)">
-          Remove Condition
+          {{ labels.removeBtn || 'Remove Condition' }}
         </button>
       </mat-action-row>
     </mat-expansion-panel>
