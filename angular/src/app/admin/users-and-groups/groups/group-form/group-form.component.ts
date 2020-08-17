@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Form, isExpanded } from 'ddap-common-lib';
 import { Subscription } from 'rxjs';
 
@@ -80,7 +80,6 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
   static parseEmails(inputValue: string): MemberParseResultModel {
     const parsedEmails: string[] = [];
     const unparsableValues: string[] = [];
-    const regExpEmailPattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
     if (!inputValue || inputValue.trim() === '') {
       return {
@@ -93,19 +92,9 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
       inputValue.split(inputValue.includes(';') ? ';' : ',')
         .map((value) => value.trim())
         .filter((value) => value.length > 0)
-        .filter((value) => {
-          if (regExpEmailPattern.test(value)) {
-            return true;
-          }
-          unparsableValues.push(value);
-        })
         .forEach((parsedEmail) => parsedEmails.push(parsedEmail));
     } else {
-      if (regExpEmailPattern.test(inputValue)) {
-        parsedEmails.push(inputValue);
-      } else {
-        unparsableValues.push(inputValue.trim());
-      }
+      unparsableValues.push(inputValue);
     }
 
     return {
