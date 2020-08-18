@@ -92,7 +92,7 @@ public class WalletLoginStrategy implements LoginStrategy {
     }
 
     private URI walletLogin(HttpClient httpClient, LoginInfo loginInfo) throws IOException {
-        final HttpGet request = new HttpGet(format("%s/login/token?token=%s", walletUrl, loginInfo.getPersonalAccessToken()));
+        final HttpGet request = new HttpGet(format("%s/login/token?token=%s&email=%s", walletUrl, loginInfo.getPersonalAccessToken(), loginInfo.getEmail()));
 
         final HttpClientContext context = new HttpClientContext();
         final HttpResponse response = httpClient.execute(request, context);
