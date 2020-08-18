@@ -106,7 +106,7 @@ export class AppConfigService {
       // Quickstart
       .registerModule({
         key: 'simplified-admin-quickstart',
-        name: 'Quickstart',
+        name: 'Add Data Quickstart',
         iconClasses: 'icon icon-policies',
         routerLink: 'admin/dam/simple/quickstart',
         group: null,

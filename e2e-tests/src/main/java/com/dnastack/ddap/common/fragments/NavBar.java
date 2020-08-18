@@ -34,7 +34,7 @@ public class NavBar {
     }
 
     public static NavLink simplifiedAdminQuickstartLink() {
-        return new NavLink("Quickstart", DdapBy.se("nav-simplified-admin-quickstart"), null);
+        return new NavLink("Add Data Quickstart", DdapBy.se("nav-simplified-admin-quickstart"), null);
     }
 
     public static NavLink myProfilePanelSelectorLink() {
