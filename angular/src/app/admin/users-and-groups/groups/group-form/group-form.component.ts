@@ -29,7 +29,6 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
   isExpanded: Function = isExpanded;
   subscriptions: Subscription[] = [];
   bulkEmailsControl: FormControl = new FormControl(undefined);
-  unparasbleValues: string[];
 
   constructor(private groupFormBuilder: GroupFormBuilder) {
   }
@@ -68,7 +67,6 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
     const membersControl: FormArray = this.form.get('members') as FormArray;
     const inputValue: string | undefined = this.bulkEmailsControl.value?.trim();
     const parsedResult: MemberParseResultModel = GroupFormComponent.parseEmails(inputValue);
-    this.unparasbleValues = parsedResult.unparsableValues;
     parsedResult.parsedEmails.forEach((parsedEmail) => {
       // Do not add duplicate
       if (!membersControl.value.some((email) => email === parsedEmail)) {
@@ -79,12 +77,10 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
 
   static parseEmails(inputValue: string): MemberParseResultModel {
     const parsedEmails: string[] = [];
-    const unparsableValues: string[] = [];
 
     if (!inputValue || inputValue.trim() === '') {
       return {
         parsedEmails,
-        unparsableValues,
       };
     }
 
@@ -94,12 +90,11 @@ export class GroupFormComponent implements OnInit, OnDestroy, Form {
         .filter((value) => value.length > 0)
         .forEach((parsedEmail) => parsedEmails.push(parsedEmail));
     } else {
-      unparsableValues.push(inputValue);
+      parsedEmails.push(inputValue);
     }
 
     return {
       parsedEmails,
-      unparsableValues,
     };
   }
 

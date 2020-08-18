@@ -49,24 +49,6 @@
   <h3>Members</h3>
   <p>Add user's email to the group.</p>
 
-  <ng-container *ngIf="unparasbleValues && unparasbleValues.length > 0">
-    <p class="warning-section">
-      <mat-icon class="icon icon-warning"></mat-icon>
-      <span>
-        Following <b>{{ unparasbleValues.length }}</b> values could not be parsed or were not recognized as email address.
-        Please make sure you have provided valid email addresses.
-        You can add them manually using input below or re-running the parser with corrected values.
-      </span>
-    </p>
-    <div class="warning-section">
-      <mat-list dense>
-        <mat-list-item *ngFor="let unparsableValue of unparasbleValues">
-          {{ unparsableValue }}
-        </mat-list-item>
-      </mat-list>
-    </div>
-  </ng-container>
-
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'members'"
                                       [fieldTitle]="'E-mail'"

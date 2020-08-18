@@ -40,7 +40,7 @@ export class GroupManageComponent {
   }
 
   handleError = ({ error }) => {
-    this.displayFieldErrorMessage(error);
+    this.displayFieldErrorMessage(error?.message);
   }
 
   protected displayFieldErrorMessage = (error) => {
