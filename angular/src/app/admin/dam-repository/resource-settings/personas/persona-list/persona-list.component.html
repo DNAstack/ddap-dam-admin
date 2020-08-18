@@ -62,18 +62,6 @@
           </span>
         </td>
       </ng-container>
-      <!-- Standard Claims Definition -->
-      <ng-container matColumnDef="standardClaims">
-        <th mat-header-cell *matHeaderCellDef>Standard Claims</th>
-        <td mat-cell *matCellDef="let model">
-          <a [href]="model.dto.passport.standardClaims.iss"
-             target="_blank"
-             rel="noopener noreferrer">
-            {{ model.dto.passport.standardClaims.iss }}
-            <br/>
-          </a>
-        </td>
-      </ng-container>
       <!-- GA4GH Claims Definition -->
       <ng-container matColumnDef="ga4ghClaims">
         <th mat-header-cell *matHeaderCellDef>GA4GH Claims</th>
