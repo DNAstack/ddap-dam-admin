@@ -14,12 +14,15 @@
     </a>
   </ddaplib-entity-description>
 
+  <!-- FIXME: find better place to display error -->
+  <p *ngIf="error"
+     class="alert-danger">
+    <mat-icon class="icon icon-warning"></mat-icon>
+    <span>{{ error }}</span>
+  </p>
+
   <div *ngIf="options$ | async as options"
        class="table-container mat-elevation-z1">
-    <!-- FIXME: find better place to display error -->
-    <p>
-      <mat-error>{{ error }}</mat-error>
-    </p>
     <table mat-table [dataSource]="options.descriptors | keyvalue"
            class="table--base">
       <!-- Label Definition -->
@@ -53,6 +56,7 @@
             <ddaplib-form-field-btn-group [control]="formControls[model.key]"
                                           [fieldName]="model.key"
                                           [showCancelBtn]="true"
+                                          [allowInvalidInputs]="true"
                                           (cancelButtonClicked)="resetValue(options, model.key)"
                                           (doneButtonClicked)="updateOptionValue(options, model.key, $event)">
             </ddaplib-form-field-btn-group>
