@@ -12,7 +12,8 @@ import { OptionService } from '../options.service';
 })
 export class OptionListComponent implements OnInit {
 
-  displayedColumns: string[] = ['label', 'description', 'type', 'defaultValue', 'value', 'moreActions'];
+  expandedRow: string;
+  readonly displayedColumns: string[] = ['label', 'description', 'defaultValue', 'value', 'moreActions'];
 
   options$: Observable<any>;
   error: string;
@@ -32,6 +33,11 @@ export class OptionListComponent implements OnInit {
             });
         })
       );
+  }
+
+  resetValue(options, optionKey) {
+    this.formControls[optionKey].reset(options[optionKey]);
+    this.currentlyEditing = null;
   }
 
   updateOptionValue(options, optionKey, newValue) {
