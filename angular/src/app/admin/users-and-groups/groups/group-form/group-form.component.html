@@ -25,8 +25,8 @@
     </mat-form-field>
   </div>
 
-  <h3>Members</h3>
-  <p>Add users' emails in a bulk or one by one.</p>
+  <h3>Bulk Import</h3>
+  <p>Add users' emails in a bulk.</p>
   <div class="row bulk-input">
     <mat-form-field class="col"
                     appearance="fill">
@@ -43,8 +43,11 @@
           mat-flat-button
           color="primary"
           class="uppercase">
-    Parse Emails
+    Parse Members
   </button>
+
+  <h3>Members</h3>
+  <p>Add user's email to the group.</p>
 
   <ng-container *ngIf="unparasbleValues && unparasbleValues.length > 0">
     <p class="warning-section">

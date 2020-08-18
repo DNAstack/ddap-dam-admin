@@ -51,7 +51,6 @@
     A list of trusted source organizations to make assertions within visas.
     Each entry is a URL identifier that represents those organizations within visas.
   </p>
-  <mat-error *ngIf="form.get('sources.0')?.invalid">{{ form.get('sources.0').errors?.serverError }}</mat-error>
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'sources'"
                                       [fieldTitle]="'Source'"
@@ -63,7 +62,6 @@
     The list of Visa Types to accept from this list of Trusted Sources. An empty list means there are no restrictions.
     One or more entries means only the listed Visa Types are accepted from this Trusted Source.
   </p>
-  <mat-error *ngIf="form.get('visaTypes.0')?.invalid">{{ form.get('visaTypes.0').errors?.serverError }}</mat-error>
   <ddaplib-form-inline-editable-table [form]="form"
                                       [arrayFieldName]="'visaTypes'"
                                       [fieldTitle]="'Visa Type'"
