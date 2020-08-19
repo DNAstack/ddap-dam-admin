@@ -24,7 +24,7 @@ export class UserService {
   }
 
   getLoggedInUser(): Observable<IUser> {
-    return this.http.get<IUser>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Me`)
+    return this.http.get<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`)
       .pipe(
         this.errorHandler.notifyOnError(`Can't load User information.`),
         share()
@@ -32,40 +32,40 @@ export class UserService {
   }
 
   patchLoggedInUser(patchModel: IPatch): Observable<IUser> {
-    return this.http.patch<IUser>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Me`, patchModel);
+    return this.http.patch<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`, patchModel);
   }
 
   getUsers(params = {}): Observable<IListUsersResponse> {
-    return this.http.get<IListUsersResponse>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users`, { params })
+    return this.http.get<IListUsersResponse>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users`, { params })
       .pipe(
         this.errorHandler.notifyOnError(`Can't load users.`)
       );
   }
 
   getUser(userId: string): Observable<IUser> {
-    return this.http.get<IUser>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`)
+    return this.http.get<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`)
       .pipe(
         this.errorHandler.notifyOnError(`Can't load user.`)
       );
   }
 
   patchUser(userId: string, patchModel: IPatch): Observable<IUser> {
-    return this.http.patch<IUser>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`, patchModel);
+    return this.http.patch<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`, patchModel);
   }
 
   deleteUser(userId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
+    return this.http.delete<void>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
   }
 
   getGroups(params = {}): Observable<IListGroupsResponse> {
-    return this.http.get<IListGroupsResponse>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Groups`, { params })
+    return this.http.get<IListGroupsResponse>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Groups`, { params })
       .pipe(
         this.errorHandler.notifyOnError(`Can't load groups.`)
       );
   }
 
   deleteGroup(userId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.damBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
+    return this.http.delete<void>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
   }
 
 }
