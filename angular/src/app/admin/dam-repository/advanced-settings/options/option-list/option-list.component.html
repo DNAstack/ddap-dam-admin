@@ -14,7 +14,6 @@
     </a>
   </ddaplib-entity-description>
 
-  <!-- FIXME: find better place to display error -->
   <p *ngIf="error"
      class="alert-danger">
     <mat-icon class="icon icon-warning"></mat-icon>
@@ -37,11 +36,6 @@
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef>Description</th>
         <td mat-cell *matCellDef="let model">{{ model.value.description }}</td>
-      </ng-container>
-      <!-- Type Definition -->
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef>Type</th>
-        <td mat-cell *matCellDef="let model">{{ model.value.type }}</td>
       </ng-container>
       <!-- Default Value Definition -->
       <ng-container matColumnDef="defaultValue">

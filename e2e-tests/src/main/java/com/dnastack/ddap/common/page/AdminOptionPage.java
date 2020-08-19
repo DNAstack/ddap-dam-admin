@@ -1,17 +1,15 @@
 package com.dnastack.ddap.common.page;
 
 import com.dnastack.ddap.common.util.DdapBy;
-import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matcher;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static java.lang.String.format;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
 
 public class AdminOptionPage extends AdminDdapPage {
 
@@ -34,12 +32,14 @@ public class AdminOptionPage extends AdminDdapPage {
         final WebElement input = row.findElement(DdapBy.se("inp-" + optionId));
         new WebDriverWait(driver, 5).until(d -> input.isDisplayed());
 
+        input.clear();
         String selectAll = Keys.chord(Keys.CONTROL, "a");
         input.sendKeys(selectAll);
         input.sendKeys(Keys.DELETE);
         input.sendKeys(optionValue);
         final WebElement updateButton = row.findElement(DdapBy.se("btn-done"));
         updateButton.click();
+        waitForInflightRequests();
 
         return this;
     }
@@ -64,50 +64,14 @@ public class AdminOptionPage extends AdminDdapPage {
             .collect(Collectors.toList());
     }
 
-    private By getError(String optionName) {
-        return By.xpath(format("//mat-expansion-panel[descendant::*[contains(text(), '%s')]]//*[@data-se='option-error']",
-            optionName
-        ));
+    public void assertNoError(int timeoutInSeconds) {
+        new WebDriverWait(driver, timeoutInSeconds)
+            .until(ExpectedConditions.invisibilityOfElementLocated(By.className("alert-danger")));
     }
 
-    public void assertNoError(String optionName, int timeoutInSeconds) {
-        try {
-            final String errorMsg = new WebDriverWait(driver, timeoutInSeconds).until(d -> {
-                final List<WebElement> errorElements = d.findElements(getError(optionName));
-
-                return errorElements.stream()
-                    .filter(e -> e.isDisplayed() && !StringUtils.isEmpty(e.getText()))
-                    .map(WebElement::getText)
-                    .findFirst()
-                    .orElse(null);
-            });
-
-            assertThat(String.format("Should not have error but this error observed: %s", errorMsg),
-                errorMsg,
-                isEmptyOrNullString());
-        } catch (TimeoutException e) {
-            // This means there was no error.
-        }
+    public void assertHasError(int timeoutInSeconds) {
+        new WebDriverWait(driver, timeoutInSeconds)
+            .until(ExpectedConditions.visibilityOfElementLocated(By.className("alert-danger")));
     }
 
-    public void assertError(String optionName, int timeoutInSeconds, Matcher<String> matcher) {
-        try {
-            final String errorMsg = new WebDriverWait(driver, timeoutInSeconds).until(d -> {
-                final List<WebElement> errorElements = d.findElements(By.tagName("mat-error"));
-
-                return errorElements.stream()
-                    .filter(e -> e.isDisplayed() && !StringUtils.isEmpty(e.getText()))
-                    .map(WebElement::getText)
-                    .findFirst()
-                    .orElse(null);
-            });
-
-            assertThat(String.format("Should not have error but this error observed: %s", errorMsg),
-                errorMsg,
-                matcher);
-        } catch (TimeoutException e) {
-            // This means there was no error.
-            throw new AssertionError("Expected error but none observed.", e);
-        }
-    }
 }
