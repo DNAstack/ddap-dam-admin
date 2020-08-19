@@ -40,10 +40,17 @@
       <ng-container matColumnDef="sources">
         <th mat-header-cell *matHeaderCellDef>Sources</th>
         <td mat-cell *matCellDef="let model">
-          <span *ngFor="let source of model.dto.sources">
-            {{ ellipseIfLongerThan(source, 45) }}
-            <br/>
-          </span>
+          <ng-container *ngFor="let source of model.dto.sources; let i = index">
+            <ng-container *ngIf="i < 5">
+              <span>{{ ellipseIfLongerThan(source, 45) }}</span>
+              <br/>
+            </ng-container>
+          </ng-container>
+          <button *ngIf="model.dto.sources.length > 5"
+                  [routerLink]="[model.name]"
+                  class="active"
+                  mat-button>+ more
+          </button>
         </td>
       </ng-container>
       <!-- Claims Definition -->
