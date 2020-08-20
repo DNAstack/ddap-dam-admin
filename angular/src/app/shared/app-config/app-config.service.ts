@@ -111,6 +111,7 @@ export class AppConfigService {
         routerLink: 'admin/dam/simple/quickstart',
         group: null,
         isApp: false,
+        nonAdmin: false,
       })
       // Resource Settings
       .registerModule({
