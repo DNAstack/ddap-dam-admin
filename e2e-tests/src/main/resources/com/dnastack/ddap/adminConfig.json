@@ -63,6 +63,18 @@
         "label": "trusted source for whitelisting users"
       }
     },
+    "edit-me-source": {
+      "sources": [
+        "https://edit.me"
+      ],
+      "visaTypes": [
+        "ResearcherStatus"
+      ],
+      "ui": {
+        "description": "test trusted source for edit case",
+        "label": "edit-me-source"
+      }
+    },
     "delete_me": {
       "sources": [
         "https://delete.me"

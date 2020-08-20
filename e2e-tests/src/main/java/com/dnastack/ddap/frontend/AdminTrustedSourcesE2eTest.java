@@ -34,18 +34,18 @@ public class AdminTrustedSourcesE2eTest extends AbstractAdminFrontendE2eTest {
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(damTrustedSourcesLink());
 
-        adminListPage.assertListItemExists("test-source-name");
-        adminListPage.assertListItemDoNotExist("t3st-source-nam3");
+        adminListPage.assertListItemExists("edit-me-source");
+        adminListPage.assertListItemDoNotExist("edited-me-source");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("test-source");
+        AdminManagePage adminManagePage = adminListPage.clickView("edit-me-source");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
-        adminManagePage.fillField(DdapBy.se("inp-label"), "t3st-source-nam3");
+        adminManagePage.fillField(DdapBy.se("inp-label"), "edited-me-source");
 
         adminListPage = adminManagePage.updateEntity();
 
-        adminListPage.assertListItemDoNotExist("test-source-name");
-        adminListPage.assertListItemExists("t3st-source-nam3");
+        adminListPage.assertListItemDoNotExist("edit-me-source");
+        adminListPage.assertListItemExists("edited-me-source");
     }
 
     @Test
