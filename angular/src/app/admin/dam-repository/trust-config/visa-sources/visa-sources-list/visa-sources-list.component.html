@@ -46,7 +46,7 @@
               <br/>
             </ng-container>
           </ng-container>
-          <button *ngIf="model.dto.sources.length > 5"
+          <button *ngIf="model.dto.sources?.length > 5"
                   [routerLink]="[model.name]"
                   class="active"
                   mat-button>+ more
