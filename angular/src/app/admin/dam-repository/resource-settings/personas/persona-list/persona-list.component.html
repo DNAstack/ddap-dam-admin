@@ -57,9 +57,9 @@
           </span>
         </td>
       </ng-container>
-      <!-- GA4GH Claims Definition -->
+      <!-- Passport Visas Definition -->
       <ng-container matColumnDef="ga4ghClaims">
-        <th mat-header-cell *matHeaderCellDef>GA4GH Claims</th>
+        <th mat-header-cell *matHeaderCellDef>Passport Visas</th>
         <td mat-cell *matCellDef="let model">
           <span *ngFor="let claim of model.dto.passport.ga4ghAssertions">
             {{ claim.type }}: <br/>
