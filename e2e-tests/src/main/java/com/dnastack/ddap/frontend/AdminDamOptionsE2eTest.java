@@ -14,10 +14,14 @@ public class AdminDamOptionsE2eTest extends AbstractAdminFrontendE2eTest {
     public void submitBooleanOptionWithoutTypeError() {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
                                                 .goToAdminOptionPage(damOptionsLink());
+        String option = "Read Only Master Realm";
 
-        assertThat(adminListPage.getOptionNames(), hasItem("Read Only Master Realm"));
-        final String oldValue = adminListPage.getOptionValue("Read Only Master Realm");
-        adminListPage.submitOption("Read Only Master Realm", "readOnlyMasterRealm", oldValue);
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+        final String oldValue = adminListPage.getOptionValue(option);
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput(oldValue);
+
         adminListPage.assertNoError( 5);
     }
 
@@ -26,9 +30,14 @@ public class AdminDamOptionsE2eTest extends AbstractAdminFrontendE2eTest {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
                                                 .goToAdminOptionPage(damOptionsLink());
 
-        assertThat(adminListPage.getOptionNames(), hasItem("GCP Managed Keys Per Account"));
-        final String oldValue = adminListPage.getOptionValue("GCP Managed Keys Per Account");
-        adminListPage.submitOption("GCP Managed Keys Per Account", "gcpManagedKeysPerAccount", oldValue);
+        String option = "GCP Managed Keys Per Account";
+
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+        final String oldValue = adminListPage.getOptionValue(option);
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput(oldValue);
+
         adminListPage.assertNoError( 5);
     }
 
@@ -37,9 +46,14 @@ public class AdminDamOptionsE2eTest extends AbstractAdminFrontendE2eTest {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
                                                 .goToAdminOptionPage(damOptionsLink());
 
-        assertThat(adminListPage.getOptionNames(), hasItem("GCP Service Account Project"));
-        final String oldValue = adminListPage.getOptionValue("GCP Service Account Project");
-        adminListPage.submitOption("GCP Service Account Project", "gcpServiceAccountProject", oldValue);
+        String option = "GCP Service Account Project";
+
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+        final String oldValue = adminListPage.getOptionValue(option);
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput(oldValue);
+
         adminListPage.assertNoError( 5);
     }
 
@@ -48,10 +62,14 @@ public class AdminDamOptionsE2eTest extends AbstractAdminFrontendE2eTest {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
             .goToAdminOptionPage(damOptionsLink());
 
-        assertThat(adminListPage.getOptionNames(), hasItem("Read Only Master Realm"));
-        final String oldValue = adminListPage.getOptionValue("Read Only Master Realm");
-        adminListPage.submitOption("Read Only Master Realm", "readOnlyMasterRealm", "invalid-value");
-        adminListPage.assertHasError(5);
+        String option = "Read Only Master Realm";
+
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput("invalid-value");
+
+        adminListPage.assertHasError( 5);
     }
 
 }

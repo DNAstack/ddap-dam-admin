@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfigOptionEditDialogComponent } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -20,7 +22,10 @@ export class OptionListComponent implements OnInit {
   formControls: { [key: string]: FormControl } = {};
   currentlyEditing: string;
 
-  constructor(public optionService: OptionService) {
+  constructor(
+    public optionService: OptionService,
+    private dialog: MatDialog
+  ) {
   }
 
   ngOnInit() {
@@ -60,6 +65,23 @@ export class OptionListComponent implements OnInit {
       // The only type of error we expect here a syntax error.
       this.error = `Syntax error. Value should be a ${typeof oldValue}`;
     }
+  }
+
+  openEditDialog(options, optionKey) {
+    this.dialog.open(ConfigOptionEditDialogComponent, {
+      disableClose: true, // prevent closing dialog by clicking on backdrop
+      width: '30rem',
+      data: {
+        label: options.descriptors[optionKey].label,
+        description: options.descriptors[optionKey].description,
+        value: options[optionKey],
+      },
+    }).afterClosed()
+      .subscribe(({ acknowledged, newValue }) => {
+        if (acknowledged) {
+          this.updateOptionValue(options, optionKey, newValue);
+        }
+      });
   }
 
   private cloneOptions(options): object {

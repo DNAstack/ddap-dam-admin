@@ -2,12 +2,10 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  DeleteActionConfirmationDialogComponent,
   FormValidationService,
   SecretGeneratedDialogComponent,
 } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
-import _get from 'lodash.get';
 
 import { DamConfigEntityFormComponentBase } from '../../../shared/dam/dam-config-entity-form-component.base';
 import { DamConfigEntityType } from '../../../shared/dam/dam-config-entity-type.enum';

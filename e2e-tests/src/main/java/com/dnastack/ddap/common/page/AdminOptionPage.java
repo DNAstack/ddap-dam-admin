@@ -17,9 +17,24 @@ public class AdminOptionPage extends AdminDdapPage {
         super(driver);
     }
 
-    public AdminOptionPage submitOption(String optionName, String optionId, String optionValue) {
-        WebElement row = getOptionRow(optionName);
+    public AdminOptionPage fillInput(String value) {
+        final WebElement input = driver.findElement(DdapBy.se("inp-value"));
+        new WebDriverWait(driver, 5).until(d -> input.isDisplayed());
 
+        input.clear();
+        String selectAll = Keys.chord(Keys.CONTROL, "a");
+        input.sendKeys(selectAll);
+        input.sendKeys(Keys.DELETE);
+        input.sendKeys(value);
+        final WebElement updateButton = driver.findElement(DdapBy.se("accept-btn"));
+        updateButton.click();
+        waitForInflightRequests();
+
+        return this;
+    }
+
+    public AdminOptionPage clickEdit(String optionName) {
+        WebElement row = getOptionRow(optionName);
         WebElement moreActionsButton = row.findElement(DdapBy.se("btn-more-actions"));
         new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
         moreActionsButton.click();
@@ -29,19 +44,7 @@ public class AdminOptionPage extends AdminDdapPage {
         new WebDriverWait(driver, 5).until(d -> editButton.isDisplayed());
         editButton.click();
 
-        final WebElement input = row.findElement(DdapBy.se("inp-" + optionId));
-        new WebDriverWait(driver, 5).until(d -> input.isDisplayed());
-
-        input.clear();
-        String selectAll = Keys.chord(Keys.CONTROL, "a");
-        input.sendKeys(selectAll);
-        input.sendKeys(Keys.DELETE);
-        input.sendKeys(optionValue);
-        final WebElement updateButton = row.findElement(DdapBy.se("btn-done"));
-        updateButton.click();
-        waitForInflightRequests();
-
-        return this;
+        return new AdminOptionPage(driver);
     }
 
     public WebElement getOptionRow(String optionName) {
