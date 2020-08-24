@@ -34,12 +34,14 @@ export class PassportIssuerManageComponent extends DamConfigEntityFormComponentB
   }
 
   save() {
+    this.passportIssuerForm.validateClientCredentials();
     if (!this.validate(this.passportIssuerForm)) {
       return;
     }
 
     const personaModel: EntityModel = this.passportIssuerForm.getModel();
-    const change = new ConfigModificationModel(personaModel.dto, {});
+    const clientSecret = this.passportIssuerForm.form.get('clientSecret').value;
+    const change = new ConfigModificationModel(personaModel.dto, {}, clientSecret);
     this.passportIssuerService.save(personaModel.name, change)
       .subscribe(() => this.navigateUp('../..'), this.handleError);
   }

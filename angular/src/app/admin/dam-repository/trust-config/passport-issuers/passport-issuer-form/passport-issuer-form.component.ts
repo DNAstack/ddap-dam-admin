@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EntityModel, Form, nameConstraintPattern } from 'ddap-common-lib';
-import _get from 'lodash.get';
+import { FormGroup } from '@angular/forms';
+import { EntityModel, Form } from 'ddap-common-lib';
 import { Observable, Subscription } from 'rxjs';
 
 import { dam } from '../../../../../shared/proto/dam-service';
@@ -10,6 +9,8 @@ import TrustedIssuer = dam.v1.TrustedIssuer;
 import { generateInternalName } from '../../../shared/internal-name.util';
 import { PassportTranslatorsService } from '../../passport-translators/passport-translators.service';
 import { PassportIssuersStore } from '../passport-issuers.store';
+
+import { PassportIssuerFormBuilder } from './passport-issuer-form-builder.service';
 
 @Component({
   selector: 'ddap-passport-issuer-form',
@@ -28,38 +29,26 @@ export class PassportIssuerFormComponent implements OnInit, OnDestroy, Form {
   subscriptions: Subscription[] = [];
   passportIssuers$: Observable<any>;
   translators$: Observable<any>;
+  clientCredentialsSet = false;
 
-  constructor(private formBuilder: FormBuilder,
-              private passportTranslators: PassportTranslatorsService,
-              private passportIssuersStore: PassportIssuersStore) {
-
+  constructor(
+    private passportIssuerFormBuilder: PassportIssuerFormBuilder,
+    private passportTranslators: PassportTranslatorsService,
+    private passportIssuersStore: PassportIssuersStore
+  ) {
   }
 
   ngOnInit(): void {
-    const { ui, issuer, translateUsing } = _get(this.passportIssuer, 'dto', {});
-
-    this.translators$ = this.passportTranslators.get();
-
-    // TODO: move to passport-issuer-form-builder.service.ts
-    this.form = this.formBuilder.group({
-      id: [this.passportIssuer.name || '', [Validators.required, Validators.pattern(nameConstraintPattern)]],
-      ui: this.formBuilder.group({
-        label: [_get(ui, 'label', ''), []],
-        description: [_get(ui, 'description', ''), [Validators.required, Validators.maxLength(255)]],
-      }),
-      issuer: [issuer, Validators.required],
-      translateUsing: [translateUsing],
-      clientId: [this.passportIssuer.dto ? this.passportIssuer.dto.clientId : ''],
-      tokenUrl: [this.passportIssuer.dto ? this.passportIssuer.dto.tokenUrl : ''],
-      authUrl: [this.passportIssuer.dto ? this.passportIssuer.dto.authUrl : ''],
-    });
+    this.form = this.passportIssuerFormBuilder.buildForm(this.passportIssuer);
     if (this.internalNameEditable) {
       this.subscriptions.push(this.form.get('ui.label').valueChanges
         .subscribe((displayName) => {
           this.form.get('id').setValue(generateInternalName(displayName));
         }));
     }
+    this.clientCredentialsSet = !!this.passportIssuer?.dto?.clientId;
 
+    this.translators$ = this.passportTranslators.get();
     this.passportIssuers$ = this.passportIssuersStore.getAsList(pick('dto.issuer'));
   }
 
@@ -68,17 +57,12 @@ export class PassportIssuerFormComponent implements OnInit, OnDestroy, Form {
   }
 
   getModel(): EntityModel {
-    const {id, ui, issuer, translateUsing, authUrl, tokenUrl, clientId} = this.form.value;
-    const clientApplication: TrustedIssuer = TrustedIssuer.create({
-      ui,
-      issuer,
-      translateUsing,
-      authUrl,
-      tokenUrl,
-      clientId,
+    const { id, clientSecret, ...rest } = this.form.value;
+    const issuer: TrustedIssuer = TrustedIssuer.create({
+      ...rest,
     });
 
-    return new EntityModel(id, clientApplication);
+    return new EntityModel(id, issuer);
   }
 
   getAllForms(): FormGroup[] {
@@ -87,6 +71,24 @@ export class PassportIssuerFormComponent implements OnInit, OnDestroy, Form {
 
   isValid(): boolean {
     return this.form.valid;
+  }
+
+  validateClientCredentials(): void {
+    const clientId: string = this.form.get('clientId').value;
+    const clientSecret: string = this.form.get('clientSecret').value;
+
+    const clientIdInputIsEmpty = !clientId || !clientId.trim();
+    const clientSecretInputIsEmpty = !clientSecret || !clientSecret.trim();
+
+    if (this.clientCredentialsSet && clientIdInputIsEmpty) {
+      this.form.get('clientId').setErrors({ empty: true });
+    }
+    if (!this.clientCredentialsSet && !clientIdInputIsEmpty && clientSecretInputIsEmpty) {
+      this.form.get('clientSecret').setErrors({ empty: true });
+    }
+    if (!this.clientCredentialsSet && clientIdInputIsEmpty) {
+      this.form.get('clientSecret').reset();
+    }
   }
 
 }

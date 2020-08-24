@@ -40,12 +40,14 @@ export class PassportIssuerDetailComponent
   }
 
   update() {
+    this.passportIssuerForm.validateClientCredentials();
     if (!this.validate(this.passportIssuerForm)) {
       return;
     }
 
     const passportIssuer: EntityModel = this.passportIssuerForm.getModel();
-    const change = new ConfigModificationModel(passportIssuer.dto, {});
+    const clientSecret = this.passportIssuerForm.form.get('clientSecret').value;
+    const change = new ConfigModificationModel(passportIssuer.dto, {}, clientSecret);
     this.passportIssuerService.update(this.entity.name, change)
       .subscribe(() => this.navigateUp('..'), this.showErrorMessage);
   }

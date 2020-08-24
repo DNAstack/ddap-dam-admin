@@ -18,7 +18,7 @@
              [readonly]="passportIssuer.name && passportIssuer.name.length > 0"
              required>
       <mat-icon matSuffix
-                          class="input-help"
+                class="input-help"
                 matTooltip="The internal name is the unique identifier for this entity in the system. Once created, it cannot be changed.">
         help_outline
       </mat-icon>
@@ -61,7 +61,24 @@
       <input matInput
              placeholder="Client Identifier"
              formControlName="clientId">
+      <mat-error *ngIf="form.get('clientId').getError('empty')">Client identifier cannot be removed once set. It can be only replaced.</mat-error>
       <mat-error *ngIf="form.get('clientId').invalid">{{ form.get('clientId').errors?.serverError }}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field [floatLabel]="clientCredentialsSet && form.get('clientId').value ? 'always' : 'auto'"
+                    class="col">
+      <mat-label>Client Secret</mat-label>
+      <input [placeholder]="clientCredentialsSet && form.get('clientId').value ? '<redacted> Client secret cannot be display once set. Editing this field will rewrite existing client secret.' : ''"
+             matInput
+             formControlName="clientSecret">
+      <mat-icon matSuffix
+                class="input-help"
+                matTooltip="A client secret is a secret value used by this deployment to interact with an external service. If you do not modify this input, the current client secret will not be changed.">
+        help_outline
+      </mat-icon>
+      <mat-error *ngIf="form.get('clientSecret').getError('empty')">Client secret must be provided with client identifier</mat-error>
+      <mat-error *ngIf="form.get('clientSecret').invalid">{{ form.get('clientSecret').errors?.serverError }}</mat-error>
     </mat-form-field>
   </div>
   <div class="row">
