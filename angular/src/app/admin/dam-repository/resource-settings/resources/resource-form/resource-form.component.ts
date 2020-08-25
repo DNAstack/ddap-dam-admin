@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Form } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
 import { Subscription } from 'rxjs';
@@ -108,6 +108,18 @@ export class ResourceFormComponent implements OnInit, OnDestroy, Form {
 
   isAnyOfControlsInvalid(paths: string[]): boolean {
     return paths.some((path) => !this.form.get(path) || this.form.get(path).invalid);
+  }
+
+  makeFieldsValid() {
+    this.getAllForms()
+      .map((form) => form.controls)
+      .forEach((formControls) => {
+        Object.values(formControls)
+          .forEach((control) => {
+            const formControl = control as FormControl;
+            formControl.setErrors(null);
+          });
+      });
   }
 
   private getViewsModel(views): object {

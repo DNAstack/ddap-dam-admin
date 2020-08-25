@@ -49,6 +49,9 @@ export class ResourceDetailComponent extends DamConfigEntityDetailComponentBaseD
       .subscribe(() => {
         if (!isDryRun) {
           this.navigateUp('..');
+        } else {
+          this.resourceForm.makeFieldsValid();
+          this.clearError();
         }
       }, (error) => this.handleError(isDryRun, error));
   }

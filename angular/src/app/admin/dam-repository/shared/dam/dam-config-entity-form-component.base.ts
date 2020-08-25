@@ -77,6 +77,12 @@ export class DamConfigEntityFormComponentBase extends DamConfigEntityComponentBa
     return errorType.includes('ConfigModification');
   }
 
+  protected clearError() {
+    this.formErrorMessage = null;
+    this.isFormValid = true;
+    this.isFormValidated = true;
+  }
+
   private removeTrailingSlash = (path: string): string => {
     return path.endsWith('/')
            ? path.slice(0, -1)
