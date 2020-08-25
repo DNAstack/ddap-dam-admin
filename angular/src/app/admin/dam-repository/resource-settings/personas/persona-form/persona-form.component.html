@@ -29,7 +29,6 @@
   <ng-container formGroupName="passport">
     <ng-container formGroupName="standardClaims">
       <h3>
-        <mat-icon class="icon icon-claims"></mat-icon>
         <span>Standard Claims</span>
       </h3>
       <mat-card>
@@ -109,12 +108,11 @@
           <mat-expansion-panel-header collapsedHeight="5rem"
                                       expandedHeight="5rem">
             <mat-panel-title>
-              <mat-icon class="icon icon-claims"></mat-icon>
               <span>{{ ga4ghAssertion.get('type').value || 'Passport' }}</span>
             </mat-panel-title>
             <div class="invalid-warning" *ngIf="ga4ghAssertion.invalid">
-              <mat-icon class="icon icon-warning"
-                        matTooltip="Passport Visa is invalid">
+              <mat-icon matTooltip="Passport Visa is invalid">
+                warning
               </mat-icon>
             </div>
           </mat-expansion-panel-header>

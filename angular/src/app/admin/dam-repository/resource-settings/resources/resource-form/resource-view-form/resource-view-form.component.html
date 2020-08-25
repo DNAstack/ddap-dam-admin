@@ -4,7 +4,6 @@
   <mat-expansion-panel-header collapsedHeight="5rem"
                               expandedHeight="5rem">
     <mat-panel-title>
-      <mat-icon class="icon icon-views"></mat-icon>
       <span>{{ viewForm.get('ui.label').value || 'View' }}</span>
     </mat-panel-title>
     <mat-panel-description *ngIf="selectedTemplate">
@@ -12,8 +11,8 @@
     </mat-panel-description>
     <div class="invalid-warning"
          *ngIf="viewForm.invalid">
-      <mat-icon class="icon icon-warning"
-                matTooltip="View is invalid">
+      <mat-icon matTooltip="View is invalid">
+        warning
       </mat-icon>
     </div>
   </mat-expansion-panel-header>
@@ -26,8 +25,8 @@
           <span>Details</span>
           <div class="invalid-warning"
                *ngIf="isAnyOfControlsInvalid(['id', 'ui.label', 'ui.description', 'labels.version'])">
-            <mat-icon class="icon icon-warning"
-                      matTooltip="Details are invalid">
+            <mat-icon matTooltip="Details are invalid">
+              warning
             </mat-icon>
           </div>
         </div>
@@ -113,15 +112,15 @@
           <span>Service Definition</span>
           <div class="invalid-warning"
                *ngIf="isAnyOfControlsInvalid(['serviceTemplate', 'items', 'roles'])">
-            <mat-icon class="icon icon-warning"
-                      matTooltip="Service Definition is invalid">
+            <mat-icon matTooltip="Service Definition is invalid">
+              warning
             </mat-icon>
           </div>
         </div>
       </ng-template>
 
       <h3>
-        <mat-icon class="icon icon-clients"></mat-icon>
+        <mat-icon class="icon icon-definitions"></mat-icon>
         <span>Service Template</span>
       </h3>
       <div class="row">
@@ -208,7 +207,7 @@
 
         <div class="ddap-view-service-template-roles">
           <h3>
-            <mat-icon class="icon icon-identity"></mat-icon>
+            <mat-icon class="icon icon-profile"></mat-icon>
             <span>Roles</span>
           </h3>
           <div>

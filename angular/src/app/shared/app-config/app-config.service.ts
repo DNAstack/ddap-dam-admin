@@ -53,7 +53,7 @@ export class AppConfigService {
       .registerModule({
         key: 'identity-admin',
         name: 'Profile',
-        iconClasses: 'icon icon-identity',
+        iconClasses: 'icon icon-profile',
         routerLink: 'account/identity',
         isApp: false,
         group: 'identity',
@@ -62,7 +62,7 @@ export class AppConfigService {
       .registerModule({
         key: 'identity-tokens',
         name: 'Sessions',
-        iconClasses: 'icon icon-clients',
+        iconClasses: 'icon icon-session',
         routerLink: 'account/sessions',
         group: 'identity',
         isApp: false,
@@ -70,7 +70,7 @@ export class AppConfigService {
       .registerModule({
         key: 'identity-consents',
         name: 'Remembered Consents',
-        iconClasses: 'icon icon-passport',
+        iconClasses: 'icon icon-consent',
         routerLink: 'account/consents',
         group: 'identity',
         isApp: false,
@@ -78,7 +78,7 @@ export class AppConfigService {
       .registerModule({
         key: 'identity-auditlogs',
         name: 'Audit Logs',
-        iconClasses: 'icon icon-rules',
+        iconClasses: 'icon icon-audit',
         routerLink: 'account/auditlogs',
         group: 'identity',
         isApp: false,
@@ -87,7 +87,7 @@ export class AppConfigService {
       .registerModule({
         key: 'admin-users',
         name: 'Users',
-        iconClasses: 'icon icon-identities',
+        iconClasses: 'icon icon-users',
         routerLink: 'admin/users-and-groups/users',
         isApp: false,
         group: 'user-admin',
@@ -96,7 +96,7 @@ export class AppConfigService {
       .registerModule({
         key: 'admin-groups',
         name: 'Groups',
-        iconClasses: 'icon icon-identities',
+        iconClasses: 'icon icon-groups',
         routerLink: 'admin/users-and-groups/groups',
         group: 'user-admin',
         isApp: false,
@@ -107,7 +107,7 @@ export class AppConfigService {
       .registerModule({
         key: 'simplified-admin-quickstart',
         name: 'Add Data Quickstart',
-        iconClasses: 'icon icon-policies',
+        iconClasses: 'icon icon-quickstart',
         routerLink: 'admin/dam/simple/quickstart',
         group: null,
         isApp: false,
@@ -117,7 +117,7 @@ export class AppConfigService {
       .registerModule({
         key: 'resource-settings-data',
         name: 'Data Resources',
-        iconClasses: 'icon icon-resource',
+        iconClasses: 'icon icon-resources',
         routerLink: 'admin/dam/resource-settings/resources',
         group: 'resource-settings',
         isApp: false,
@@ -125,7 +125,7 @@ export class AppConfigService {
       .registerModule({
         key: 'resource-settings-policies',
         name: 'Data Access Policies',
-        iconClasses: 'icon icon-policies',
+        iconClasses: 'icon icon-access-policy',
         routerLink: 'admin/dam/resource-settings/policies',
         group: 'resource-settings',
         isApp: false,
@@ -133,7 +133,7 @@ export class AppConfigService {
       .registerModule({
         key: 'resource-settings-personas',
         name: 'Test Personas',
-        iconClasses: 'icon icon-tests',
+        iconClasses: 'icon icon-test',
         routerLink: 'admin/dam/resource-settings/personas',
         group: 'resource-settings',
         isApp: false,
@@ -142,7 +142,7 @@ export class AppConfigService {
       .registerModule({
         key: 'trust-config-issuers',
         name: 'Passport & Visa Issuers',
-        iconClasses: 'icon icon-passport',
+        iconClasses: 'icon icon-passport-issuers',
         routerLink: 'admin/dam/trust-config/issuers',
         group: 'trust-config',
         isApp: false,
@@ -150,7 +150,7 @@ export class AppConfigService {
       .registerModule({
         key: 'trust-config-sources',
         name: 'Visa Sources',
-        iconClasses: 'icon icon-trusted',
+        iconClasses: 'icon icon-visa-sources',
         routerLink: 'admin/dam/trust-config/sources',
         group: 'trust-config',
         isApp: false,
@@ -175,7 +175,7 @@ export class AppConfigService {
       .registerModule({
         key: 'advanced-visa-types',
         name: 'Visa Types',
-        iconClasses: 'icon icon-claims',
+        iconClasses: 'icon icon-visa-types',
         routerLink: 'admin/dam/advanced/visa-types',
         group: 'advanced',
         isApp: false,
@@ -183,7 +183,7 @@ export class AppConfigService {
       .registerModule({
         key: 'advanced-service-definitions',
         name: 'Service Definitions',
-        iconClasses: 'icon icon-clients',
+        iconClasses: 'icon icon-definitions',
         routerLink: 'admin/dam/advanced/service-definitions',
         group: 'advanced',
         isApp: false,

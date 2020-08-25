@@ -113,8 +113,8 @@
               {{ email.get('primary').value ? 'Primary' : '' }}
             </mat-panel-description>
             <div class="invalid-warning" *ngIf="email.invalid">
-              <mat-icon class="icon icon-warning"
-                        matTooltip="Email is invalid">
+              <mat-icon matTooltip="Email is invalid">
+                warning
               </mat-icon>
             </div>
           </ng-container>
@@ -186,8 +186,8 @@
               {{ photo.get('primary').value ? 'Primary' : '' }}
             </mat-panel-description>
             <div class="invalid-warning" *ngIf="photo.invalid">
-              <mat-icon class="icon icon-warning"
-                        matTooltip="Photo is invalid">
+              <mat-icon matTooltip="Photo is invalid">
+                warning
               </mat-icon>
             </div>
           </ng-container>

@@ -9,8 +9,8 @@
           <span>Details</span>
           <div class="invalid-warning"
                *ngIf="isAnyOfControlsInvalid(['id', 'ui.label', 'ui.description'])">
-            <mat-icon class="icon icon-warning"
-                      matTooltip="Details are invalid">
+            <mat-icon matTooltip="Details are invalid">
+              warning
             </mat-icon>
           </div>
         </div>
@@ -113,8 +113,8 @@
           <span>Metadata</span>
           <div class="invalid-warning"
                *ngIf="isAnyOfControlsInvalid(['ui.owner', 'maxTokenTtl', 'ui.access', 'ui.year', 'ui.size', 'ui.tags', 'ui.imageUrl', 'ui.infoUrl', 'ui.applyUrl', 'ui.troubleshootUrl'])">
-            <mat-icon class="icon icon-warning"
-                      matTooltip="Metadata is invalid">
+            <mat-icon matTooltip="Metadata is invalid">
+              warning
             </mat-icon>
           </div>
         </div>

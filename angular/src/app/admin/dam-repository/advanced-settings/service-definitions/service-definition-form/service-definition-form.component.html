@@ -92,7 +92,6 @@
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
         <mat-panel-title>
-          <mat-icon class="icon icon-views"></mat-icon>
           <span>{{ interfaceObj.value.get('id').value || 'UNDEFINED_INTERFACE' }}</span>
         </mat-panel-title>
         <mat-panel-description *ngIf="interfaceObj.value as control">
@@ -102,8 +101,8 @@
         </mat-panel-description>
         <div class="invalid-warning"
              *ngIf="interfaceObj.value.invalid">
-          <mat-icon class="icon icon-warning"
-                    matTooltip="Interface is invalid">
+          <mat-icon matTooltip="Interface is invalid">
+            warning
           </mat-icon>
         </div>
       </mat-expansion-panel-header>
@@ -188,13 +187,12 @@
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">
         <mat-panel-title>
-          <mat-icon class="icon icon-identity"></mat-icon>
           <span>{{ role.value.get('id').value || 'UNDEFINED_ROLE' }}</span>
         </mat-panel-title>
         <div class="invalid-warning"
              *ngIf="role.value.invalid">
-          <mat-icon class="icon icon-warning"
-                    matTooltip="Role is invalid">
+          <mat-icon matTooltip="Role is invalid">
+            warning
           </mat-icon>
         </div>
       </mat-expansion-panel-header>
