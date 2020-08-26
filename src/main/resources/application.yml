@@ -100,8 +100,3 @@ spring:
     user:
       name: dev
       password: dev
-
-server:
-  servlet:
-    session:
-      timeout: 24h

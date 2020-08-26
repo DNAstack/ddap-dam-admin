@@ -1,4 +1,4 @@
-package com.dnastack.ddap.dam.admin.config;
+package com.dnastack.ddap.dam.config;
 
 import com.dnastack.ddap.common.config.DamProperties;
 import com.dnastack.ddap.common.security.UserTokenCookiePackager;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.DAM;
 
 @Configuration
-public class Config {
+public class DamConfig {
 
     @ConfigurationProperties("dam")
     @Bean
