@@ -58,7 +58,37 @@ public class AdminDamOptionsE2eTest extends AbstractAdminFrontendE2eTest {
     }
 
     @Test
-    public void submitOptionWithError() {
+    public void submitStringOptionWithError() {
+        AdminOptionPage adminListPage = ddapPage.getNavBar()
+            .goToAdminOptionPage(damOptionsLink());
+
+        String option = "GCP Service Account Project";
+
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput("11111111111");
+
+        adminListPage.assertHasError( 5);
+    }
+
+    @Test
+    public void submitIntOptionWithError() {
+        AdminOptionPage adminListPage = ddapPage.getNavBar()
+            .goToAdminOptionPage(damOptionsLink());
+
+        String option = "GCP Managed Keys Per Account";
+
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput("invalid-value");
+
+        adminListPage.assertHasError( 5);
+    }
+
+    @Test
+    public void submitBoolOptionWithError() {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
             .goToAdminOptionPage(damOptionsLink());
 

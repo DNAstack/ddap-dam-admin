@@ -14,7 +14,6 @@ import { OptionService } from '../options.service';
 })
 export class OptionListComponent implements OnInit {
 
-  expandedRow: string;
   readonly displayedColumns: string[] = ['label', 'description', 'defaultValue', 'value', 'moreActions'];
 
   options$: Observable<any>;
@@ -40,31 +39,56 @@ export class OptionListComponent implements OnInit {
       );
   }
 
-  resetValue(options, optionKey) {
-    this.formControls[optionKey].reset(options[optionKey]);
-    this.currentlyEditing = null;
-  }
-
   updateOptionValue(options, optionKey, newValue) {
     this.error = null;
-    const newOptions = this.cloneOptions(options);
-    const oldValue = newOptions[optionKey];
-    try {
-      const convertedNewValue = typeof oldValue !== 'string' ? JSON.parse(newValue) : newValue;
-      newOptions[optionKey] = convertedNewValue;
+    const newOptions: any = this.cloneOptions(options);
 
-      this.optionService.update(newOptions)
-        .subscribe(
-          () => {
-            options[optionKey] = convertedNewValue;
-            this.currentlyEditing = null;
-          },
-          ({ error }) => this.error = error?.message
-        );
-    } catch (e) {
-      // The only type of error we expect here a syntax error.
-      this.error = `Syntax error. Value should be a ${typeof oldValue}`;
+    const type: string = newOptions.descriptors[optionKey].type;
+    if (type.startsWith('string')) {
+      const pattern = newOptions.descriptors[optionKey].regexp;
+      const regexp: RegExp = new RegExp(pattern);
+      if (regexp && regexp.test(newValue)) {
+        newOptions[optionKey] = newValue;
+      } else {
+        this.error = `Please match the requested format ${pattern}`;
+      }
+    } else if (type.includes('int')) {
+      const newValueAsInt = Number(newValue);
+      if (isNaN(newValueAsInt)) {
+        this.error = `Value must be a number`;
+      }
+      const max: number = newOptions.descriptors[optionKey].max;
+      const min: number = newOptions.descriptors[optionKey].min;
+      if (max && newValueAsInt > max) {
+        this.error = `Value must be less or equal to ${max}`;
+      }
+      if (min && newValueAsInt < min) {
+        this.error = `Value must be more or equal to ${min}`;
+      }
+      newOptions[optionKey] = newValueAsInt;
+    } else if (type.includes('bool')) {
+      const newValueLowerCased = newValue?.toLowerCase();
+      if (newValueLowerCased !== 'true' && newValueLowerCased !== 'false') {
+        this.error = `Value must be True or False`;
+      }
+      // cast to boolean
+      newOptions[optionKey] = newValueLowerCased === 'true';
+    } else {
+      newOptions[optionKey] = newValue;
     }
+
+    // do not continue if there is error
+    if (this.error) {
+      return;
+    }
+    this.optionService.update(newOptions)
+      .subscribe(
+        () => {
+          options[optionKey] = newOptions[optionKey];
+          this.currentlyEditing = null;
+        },
+        ({ error }) => this.error = error?.message
+      );
   }
 
   openEditDialog(options, optionKey) {
