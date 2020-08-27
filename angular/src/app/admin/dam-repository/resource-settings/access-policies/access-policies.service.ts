@@ -14,7 +14,7 @@ export class AccessPolicyService extends DamConfigService {
   constructor(protected http: HttpClient,
               protected route: ActivatedRoute,
               protected errorHandler: ErrorHandlerService) {
-    super(DamConfigEntityType.policies, http);
+    super(DamConfigEntityType.policies, http, errorHandler);
   }
 
 }

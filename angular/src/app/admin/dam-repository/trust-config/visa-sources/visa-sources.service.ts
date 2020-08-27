@@ -14,7 +14,7 @@ export class VisaSourcesService extends DamConfigService {
   constructor(protected http: HttpClient,
               protected route: ActivatedRoute,
               protected errorHandler: ErrorHandlerService) {
-    super(DamConfigEntityType.trustedSources, http);
+    super(DamConfigEntityType.trustedSources, http, errorHandler);
   }
 
 }

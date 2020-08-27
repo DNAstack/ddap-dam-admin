@@ -14,7 +14,7 @@ export class PassportIssuerService extends DamConfigService {
   constructor(protected http: HttpClient,
               protected route: ActivatedRoute,
               protected errorHandler: ErrorHandlerService) {
-    super(DamConfigEntityType.passportIssuers, http);
+    super(DamConfigEntityType.passportIssuers, http, errorHandler);
   }
 
 

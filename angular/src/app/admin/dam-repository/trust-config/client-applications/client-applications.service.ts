@@ -16,13 +16,15 @@ export class ClientApplicationService extends DamConfigService {
   constructor(protected http: HttpClient,
               protected route: ActivatedRoute,
               protected errorHandler: ErrorHandlerService) {
-    super(DamConfigEntityType.clients, http);
+    super(DamConfigEntityType.clients, http, errorHandler);
   }
 
   update(entityId: string, change: ConfigModificationModel, rotateSecret?: boolean): Observable<any> {
     return this.http.patch(
       `${environment.damApiUrl}/${realmIdPlaceholder}/config/${this.entityType}/${entityId}?rotate_secret=${rotateSecret}`,
       change
+    ).pipe(
+      this.errorHandler.notifyOnError(`Unable to proceed with the action. Please try again.`, true)
     );
   }
 }

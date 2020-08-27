@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { realmIdPlaceholder } from 'ddap-common-lib';
+import { ErrorHandlerService, realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../../../environments/environment';
@@ -10,12 +10,17 @@ import { environment } from '../../../../../environments/environment';
 })
 export class TargetAdaptersService {
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private errorHandler: ErrorHandlerService
+  ) {
   }
 
   getTargetAdapters(): Observable<Object> {
     return this.http.get(
       `${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/dam/target-adapters`
+    ).pipe(
+      this.errorHandler.notifyOnError(`Can't load target adapters.`, true)
     );
   }
 

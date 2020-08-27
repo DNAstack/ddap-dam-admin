@@ -14,7 +14,7 @@ export class PersonaService extends DamConfigService {
   constructor(protected http: HttpClient,
               protected route: ActivatedRoute,
               protected errorHandler: ErrorHandlerService) {
-    super(DamConfigEntityType.personas, http);
+    super(DamConfigEntityType.personas, http, errorHandler);
   }
 
 }

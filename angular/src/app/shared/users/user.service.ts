@@ -26,46 +26,44 @@ export class UserService {
   getLoggedInUser(): Observable<IUser> {
     return this.http.get<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`)
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load User information.`),
+        this.errorHandler.notifyOnError(`Can't load User information.`, true),
         share()
       );
   }
 
   patchLoggedInUser(patchModel: IPatch): Observable<IUser> {
-    return this.http.patch<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`, patchModel);
+    return this.http.patch<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`, patchModel)
+      .pipe(
+        this.errorHandler.notifyOnError(`Unable to proceed with the action. Please try again.`, true)
+      );
   }
 
   getUsers(params = {}): Observable<IListUsersResponse> {
     return this.http.get<IListUsersResponse>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users`, { params })
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load users.`)
+        this.errorHandler.notifyOnError(`Can't load users.`, true)
       );
   }
 
   getUser(userId: string): Observable<IUser> {
     return this.http.get<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`)
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load user.`)
+        this.errorHandler.notifyOnError(`Can't load user.`, true)
       );
   }
 
   patchUser(userId: string, patchModel: IPatch): Observable<IUser> {
-    return this.http.patch<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`, patchModel);
-  }
-
-  deleteUser(userId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
-  }
-
-  getGroups(params = {}): Observable<IListGroupsResponse> {
-    return this.http.get<IListGroupsResponse>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Groups`, { params })
+    return this.http.patch<IUser>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`, patchModel)
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load groups.`)
+        this.errorHandler.notifyOnError(`Unable to proceed with the action. Please try again.`, true)
       );
   }
 
-  deleteGroup(userId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
+  deleteUser(userId: string): Observable<void> {
+    return this.http.delete<void>(`${environment.damBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`)
+      .pipe(
+        this.errorHandler.notifyOnError(`Unable to proceed with the action. Please try again.`, true)
+      );
   }
 
 }

@@ -17,7 +17,7 @@ export class VisaTypeService extends DamConfigService {
   constructor(protected http: HttpClient,
               protected route: ActivatedRoute,
               protected errorHandler: ErrorHandlerService) {
-    super(DamConfigEntityType.visaTypes, http);
+    super(DamConfigEntityType.visaTypes, http, errorHandler);
   }
 
   public isExpiring({ exp }: any): boolean {
@@ -30,6 +30,8 @@ export class VisaTypeService extends DamConfigService {
     return this.http.get<string[]>(
       `${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/dam/autocomplete/claim-value?claimName=${claimName}`,
       {}
+    ).pipe(
+      this.errorHandler.notifyOnError(`Unable to proceed with the action. Please try again.`, true)
     );
   }
 

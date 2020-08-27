@@ -19,12 +19,15 @@ export class IdentityService {
   getIdentity(params = {}): Observable<Identity> {
     return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity`, {params})
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load account's information.`)
+        this.errorHandler.notifyOnError(`Can't load account's information.`, true)
       );
   }
 
   refreshAccessTokens(params?) {
-    return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/refresh`, {params});
+    return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/refresh`, {params})
+      .pipe(
+        this.errorHandler.notifyOnError(`Can't load account's information.`, true)
+      );
   }
 
   invalidateAccessTokens(params?) {

@@ -19,13 +19,16 @@ export class OptionService {
     return this.http.get<any>(`${environment.damApiUrl}/${realmIdPlaceholder}/config`,
       {params}
     ).pipe(
-      pluck('options')
+      pluck('options'),
+      this.errorHandler.notifyOnError(`Can't load config object.`, true)
     );
   }
 
   public update(newOptions: object): Observable<any> {
     return this.http.put(`${environment.damApiUrl}/${realmIdPlaceholder}/config/options`,
       {item: newOptions}
+    ).pipe(
+      this.errorHandler.notifyOnError(`Can't update option.`, true)
     );
   }
 

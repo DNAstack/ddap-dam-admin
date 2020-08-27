@@ -21,7 +21,7 @@ export class PassportTranslatorsService {
       .pipe(
         pluck('passportTranslators'),
         map((passportTranslatorsDto) => this.getTranslatorList(passportTranslatorsDto)),
-        this.errorHandler.notifyOnError(`Can't load passport translators.`)
+        this.errorHandler.notifyOnError(`Can't load passport translators.`, true)
       );
   }
 

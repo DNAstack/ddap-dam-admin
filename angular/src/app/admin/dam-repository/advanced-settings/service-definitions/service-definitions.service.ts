@@ -17,13 +17,15 @@ export class ServiceDefinitionService extends DamConfigService {
 
   constructor(http: HttpClient,
               protected errorHandler: ErrorHandlerService) {
-    super(DamConfigEntityType.serviceTemplates, http);
+    super(DamConfigEntityType.serviceTemplates, http, errorHandler);
   }
 
   getTargetAdapterVariables(serviceTemplateId: string, params: {} = {}): Observable<TargetAdapterVariables> {
     return this.http.get<TargetAdapterVariables>(
       `${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/dam/service-templates/${serviceTemplateId}/variables`,
       {params}
+    ).pipe(
+      this.errorHandler.notifyOnError(`Can't load target adapter variables.`, true)
     );
   }
 

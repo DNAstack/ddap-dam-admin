@@ -14,7 +14,7 @@ export class ResourceService extends DamConfigService {
 
   constructor(http: HttpClient,
               protected errorHandler: ErrorHandlerService) {
-    super(DamConfigEntityType.resources, http);
+    super(DamConfigEntityType.resources, http, errorHandler);
   }
 
   getResource(resourceName: string): Observable<EntityModel> {
